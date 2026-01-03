@@ -1,13 +1,11 @@
+import browserCollections from 'fumadocs-mdx:collections/browser'
 import { createFileRoute, notFound } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { staticFunctionMiddleware } from '@tanstack/start-static-server-functions'
-import type * as PageTree from 'fumadocs-core/page-tree'
-import { createClientLoader } from 'fumadocs-mdx/runtime/vite'
+import { useFumadocsLoader } from 'fumadocs-core/source/client'
 import { DocsLayout } from 'fumadocs-ui/layouts/docs'
 import defaultMdxComponents from 'fumadocs-ui/mdx'
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/page'
-import { useMemo } from 'react'
-import { docs } from '@/.source'
 import { baseOptions } from '@/lib/layout.shared'
 import { source } from '@/lib/source'
 
@@ -21,19 +19,17 @@ export const Route = createFileRoute('/$')({
 	},
 })
 
-const loader = createServerFn({
-	method: 'GET',
-})
+const loader = createServerFn()
 	.inputValidator((slugs: string[]) => slugs)
 	.middleware([staticFunctionMiddleware])
 	.handler(async ({ data: slugs }) => {
 		const page = source.getPage(slugs)
 		if (!page) throw notFound()
 
-		return { tree: source.pageTree as object, path: page.path }
+		return { pageTree: await source.serializePageTree(source.getPageTree()), path: page.path }
 	})
 
-const clientLoader = createClientLoader(docs.doc, {
+const clientLoader = browserCollections.docs.createClientLoader({
 	id: 'docs',
 	component({ toc, frontmatter, default: MDX }) {
 		return (
@@ -51,39 +47,11 @@ const clientLoader = createClientLoader(docs.doc, {
 function Page() {
 	const data = Route.useLoaderData()
 	const Content = clientLoader.getComponent(data.path)
-	const tree = useMemo(() => transformPageTree(data.tree as PageTree.Folder), [data.tree])
+	const { pageTree } = useFumadocsLoader(data)
 
 	return (
-		<DocsLayout {...baseOptions()} tree={tree}>
+		<DocsLayout {...baseOptions()} tree={pageTree}>
 			<Content />
 		</DocsLayout>
 	)
-}
-
-function transformPageTree(root: PageTree.Root): PageTree.Root {
-	function mapNode<T extends PageTree.Node>(item: T): T {
-		if (typeof item.icon === 'string') {
-			item = {
-				...item,
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: This is fine.
-				icon: <span dangerouslySetInnerHTML={{ __html: item.icon }} />,
-			}
-		}
-
-		if (item.type === 'folder') {
-			return {
-				...item,
-				index: item.index ? mapNode(item.index) : undefined,
-				children: item.children.map(mapNode),
-			}
-		}
-
-		return item
-	}
-
-	return {
-		...root,
-		children: root.children.map(mapNode),
-		fallback: root.fallback ? transformPageTree(root.fallback) : undefined,
-	}
 }
