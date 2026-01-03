@@ -8,8 +8,6 @@ import defaultMdxComponents from 'fumadocs-ui/mdx'
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/page'
 import { useMemo } from 'react'
 import { docs } from '@/.source'
-import { Indent } from '@/components/indent'
-import { RuleAnchor } from '@/components/rule-anchor'
 import { baseOptions } from '@/lib/layout.shared'
 import { source } from '@/lib/source'
 
@@ -43,7 +41,7 @@ const clientLoader = createClientLoader(docs.doc, {
 				<DocsTitle>{frontmatter.title}</DocsTitle>
 				<DocsDescription>{frontmatter.description}</DocsDescription>
 				<DocsBody>
-					<MDX components={{ ...defaultMdxComponents, Indent, RuleAnchor }} />
+					<MDX components={defaultMdxComponents} />
 				</DocsBody>
 			</DocsPage>
 		)
