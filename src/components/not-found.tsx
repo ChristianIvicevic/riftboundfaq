@@ -4,8 +4,8 @@ import { baseOptions } from '@/lib/layout.shared'
 
 export function NotFound() {
 	return (
-		<HomeLayout {...baseOptions()} className="text-center py-32 justify-center">
-			<div className="flex flex-col items-center gap-4">
+		<HomeLayout {...baseOptions()} className="text-center">
+			<div className="flex flex-col items-center gap-4 justify-center py-32">
 				<h1 className="text-6xl font-bold text-fd-muted-foreground">404</h1>
 				<h2 className="text-2xl font-semibold">Page Not Found</h2>
 				<p className="text-fd-muted-foreground max-w-md">
