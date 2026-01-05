@@ -112,7 +112,7 @@ const clientLoader = browserCollections.docs.createClientLoader({
 								{CURRENT_CRD_VERSION}) and are not guaranteed to be correct. A revision is needed.
 							</>
 						)}
-</Callout>
+					</Callout>
 				)}
 				<DocsDescription>{frontmatter.description}</DocsDescription>
 				<DocsBody>
