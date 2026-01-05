@@ -3,9 +3,11 @@ import { createFileRoute, notFound } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { staticFunctionMiddleware } from '@tanstack/start-static-server-functions'
 import { useFumadocsLoader } from 'fumadocs-core/source/client'
+import { Callout } from 'fumadocs-ui/components/callout'
 import { DocsLayout } from 'fumadocs-ui/layouts/docs'
 import defaultMdxComponents from 'fumadocs-ui/mdx'
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/page'
+import { CURRENT_CRD_VERSION } from '@/lib/constants'
 import { baseOptions } from '@/lib/layout.shared'
 import { source } from '@/lib/source'
 
@@ -67,6 +69,22 @@ const clientLoader = browserCollections.docs.createClientLoader({
 				}}
 			>
 				<DocsTitle>{frontmatter.title}</DocsTitle>
+				{frontmatter.crdVersion && (
+					<Callout type={frontmatter.crdVersion === CURRENT_CRD_VERSION ? 'success' : 'warn'}>
+						{frontmatter.crdVersion === CURRENT_CRD_VERSION ? (
+							<>
+								<strong>Up-to-date:</strong> This page references the current core rules document version (
+								{CURRENT_CRD_VERSION}).
+							</>
+						) : (
+							<>
+								<strong>Outdated:</strong> This page references an older version ({frontmatter.crdVersion}) of
+								the core rules document. Rule numbers and content may have changed in the current version (
+								{CURRENT_CRD_VERSION}) and are not guaranteed to be correct. A revision is needed.
+							</>
+						)}
+					</Callout>
+				)}
 				<DocsDescription>{frontmatter.description}</DocsDescription>
 				<DocsBody>
 					<MDX components={defaultMdxComponents} />
