@@ -36,10 +36,39 @@ const clientLoader = browserCollections.docs.createClientLoader({
 	component({ toc, frontmatter, default: MDX }, props: { path: string }) {
 		return (
 			<DocsPage
+				footer={{ enabled: false }}
 				toc={toc}
 				tableOfContent={{
 					footer: (
-						<div className="text-sm text-fd-muted-foreground mt-6">
+						<div className="text-sm text-fd-muted-foreground mt-6 flex flex-col gap-4 justify-start">
+							{frontmatter.galleryLink && (
+								<a
+									className="hover:text-fd-foreground transition-colors flex gap-2 items-center"
+									href={frontmatter.galleryLink}
+									rel="noopener noreferrer"
+									target="_blank"
+								>
+									{/** biome-ignore lint/a11y/noSvgWithoutTitle: Ignore title */}
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="24"
+										height="24"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										strokeWidth="2"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										className="size-4"
+									>
+										<path d="m22 11-1.296-1.296a2.4 2.4 0 0 0-3.408 0L11 16" />
+										<path d="M4 8a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2" />
+										<circle cx="13" cy="7" r="1" fill="currentColor" />
+										<rect x="8" y="2" width="14" height="14" rx="2" />
+									</svg>
+									Open in Card Callery
+								</a>
+							)}
 							<a
 								className="hover:text-fd-foreground transition-colors flex gap-2 items-center"
 								href={`https://github.com/ChristianIvicevic/riftboundfaq/blob/main/content/${props.path}`}
@@ -83,7 +112,7 @@ const clientLoader = browserCollections.docs.createClientLoader({
 								{CURRENT_CRD_VERSION}) and are not guaranteed to be correct. A revision is needed.
 							</>
 						)}
-					</Callout>
+</Callout>
 				)}
 				<DocsDescription>{frontmatter.description}</DocsDescription>
 				<DocsBody>

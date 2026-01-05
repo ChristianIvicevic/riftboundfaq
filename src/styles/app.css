@@ -2,10 +2,6 @@
 @import "fumadocs-ui/css/vitepress.css";
 @import "fumadocs-ui/css/preset.css";
 
-html {
-	font-size: 18px;
-}
-
 td {
 	vertical-align: top;
 }
