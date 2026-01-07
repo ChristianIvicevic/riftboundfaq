@@ -19,6 +19,11 @@ export const Route = createFileRoute('/$')({
 		await clientLoader.preload(data.path)
 		return data
 	},
+	head: async ({ params, loaderData }) => {
+		const slugs = params._splat?.split('/') ?? []
+		const isRoot = slugs.filter(Boolean).length === 0
+		return { meta: !isRoot && loaderData?.title ? [{ title: `Riftbound FAQ - ${loaderData.title}` }] : [] }
+	},
 })
 
 const loader = createServerFn()
@@ -28,7 +33,11 @@ const loader = createServerFn()
 		const page = source.getPage(slugs)
 		if (!page) throw notFound()
 
-		return { pageTree: await source.serializePageTree(source.getPageTree()), path: page.path }
+		return {
+			pageTree: await source.serializePageTree(source.getPageTree()),
+			path: page.path,
+			title: page.data.title,
+		}
 	})
 
 const clientLoader = browserCollections.docs.createClientLoader({
