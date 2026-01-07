@@ -11,13 +11,7 @@ export default defineConfig({
 		mdx(await import('./source.config')),
 		tailwindcss(),
 		tsConfigPaths({ projects: ['./tsconfig.json'] }),
-		tanstackStart({
-			spa: {
-				enabled: true,
-				prerender: { outputPath: 'index.html', enabled: true, crawlLinks: true },
-			},
-			pages: [{ path: '/' }, { path: '/api/search' }],
-		}),
+		tanstackStart({ prerender: { enabled: true } }),
 		react(),
 	],
 })

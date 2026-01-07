@@ -5,5 +5,5 @@ import { source } from '@/lib/source'
 const server = createFromSource(source, { language: 'english' })
 
 export const Route = createFileRoute('/api/search')({
-	server: { handlers: { GET: () => server.staticGET() } },
+	server: { handlers: { GET: ({ request }) => server.GET(request) } },
 })

@@ -22,7 +22,28 @@ export const Route = createFileRoute('/$')({
 	head: async ({ params, loaderData }) => {
 		const slugs = params._splat?.split('/') ?? []
 		const isRoot = slugs.filter(Boolean).length === 0
-		return { meta: !isRoot && loaderData?.title ? [{ title: `Riftbound FAQ - ${loaderData.title}` }] : [] }
+
+		const title =
+			!isRoot && loaderData?.title ? `Riftbound FAQ - ${loaderData.title}` : 'Riftbound FAQ & Rules Wiki'
+		const description =
+			loaderData?.description ||
+			(loaderData?.title
+				? `FAQ and rules reference for ${loaderData.title} in Riftbound`
+				: 'Community-driven FAQ and rules reference for Riftbound TCG judges and players')
+
+		return {
+			meta: [
+				...(!isRoot && loaderData?.title ? [{ title }] : []),
+				{ name: 'description', content: description },
+				{ property: 'og:title', content: title },
+				{ property: 'og:description', content: description },
+				{ property: 'og:type', content: 'website' },
+				{ property: 'og:site_name', content: 'Riftbound FAQ' },
+				{ name: 'twitter:card', content: 'summary' },
+				{ name: 'twitter:title', content: title },
+				{ name: 'twitter:description', content: description },
+			],
+		}
 	},
 })
 
@@ -37,6 +58,7 @@ const loader = createServerFn()
 			pageTree: await source.serializePageTree(source.getPageTree()),
 			path: page.path,
 			title: page.data.title,
+			description: page.data.description,
 		}
 	})
 
