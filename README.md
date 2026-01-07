@@ -57,11 +57,11 @@ This project uses a dual-license structure:
 
 ### Source Code (MIT License)
 
-The source code and application framework are licensed under the [MIT License](LICENSE). This includes all TypeScript, React components, configuration files, and build scripts.
+The source code and application framework are licensed under the [MIT License](LICENSE-MIT). This includes all TypeScript, React components, configuration files, and build scripts.
 
 ### Wiki Content (CC BY-SA 4.0)
 
-All documentation and wiki content in the `/content` directory is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International License](LICENSE-CONTENT). This means:
+All documentation and wiki content in the `/content` directory is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International License](LICENSE-CC-BY-SA-4.0). This means:
 
 - You can freely share and adapt the content
 - You must give appropriate credit
