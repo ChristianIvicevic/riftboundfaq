@@ -7,6 +7,8 @@ import { Callout } from 'fumadocs-ui/components/callout'
 import { DocsLayout } from 'fumadocs-ui/layouts/docs'
 import defaultMdxComponents from 'fumadocs-ui/mdx'
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/page'
+import { CrdVersionProvider } from '@/components/crd-version'
+import { Rule } from '@/components/rule'
 import { CURRENT_CRD_VERSION } from '@/lib/constants'
 import { baseOptions } from '@/lib/layout.shared'
 import { source } from '@/lib/source'
@@ -147,7 +149,9 @@ const clientLoader = browserCollections.docs.createClientLoader({
 				)}
 				<DocsDescription>{frontmatter.description}</DocsDescription>
 				<DocsBody>
-					<MDX components={defaultMdxComponents} />
+					<CrdVersionProvider crdVersion={frontmatter.crdVersion}>
+						<MDX components={{ ...defaultMdxComponents, Rule }} />
+					</CrdVersionProvider>
 				</DocsBody>
 			</DocsPage>
 		)
