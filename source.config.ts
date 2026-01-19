@@ -4,7 +4,11 @@ import { z } from 'zod'
 export const docs = defineDocs({
 	dir: 'content',
 	docs: {
-		schema: frontmatterSchema.extend({ crdVersion: z.string().optional(), galleryLink: z.url().optional() }),
+		schema: frontmatterSchema.extend({
+			crdVersion: z.string().optional(),
+			galleryLink: z.url().optional(),
+			authors: z.array(z.string()).optional(),
+		}),
 	},
 })
 export default defineConfig()

@@ -3,13 +3,15 @@ import { createFileRoute, notFound } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { staticFunctionMiddleware } from '@tanstack/start-static-server-functions'
 import { useFumadocsLoader } from 'fumadocs-core/source/client'
-import { Callout } from 'fumadocs-ui/components/callout'
 import { DocsLayout } from 'fumadocs-ui/layouts/docs'
 import defaultMdxComponents from 'fumadocs-ui/mdx'
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/page'
+import { Authors } from '@/components/authors'
+import { CardGalleryLink } from '@/components/card-gallery-link'
+import { CrdCallout } from '@/components/crd-callout'
 import { CrdVersionProvider } from '@/components/crd-version'
+import { EditPageLink } from '@/components/edit-page-link'
 import { Rule } from '@/components/rule'
-import { CURRENT_CRD_VERSION } from '@/lib/constants'
 import { baseOptions } from '@/lib/layout.shared'
 import { source } from '@/lib/source'
 
@@ -67,86 +69,26 @@ const loader = createServerFn()
 const clientLoader = browserCollections.docs.createClientLoader({
 	id: 'docs',
 	component({ toc, frontmatter, default: MDX }, props: { path: string }) {
+		const authors = frontmatter.authors ?? []
 		return (
 			<DocsPage
 				footer={{ enabled: false }}
 				toc={toc}
 				tableOfContent={{
+					style: 'clerk',
 					footer: (
-						<div className="text-sm text-fd-muted-foreground mt-6 flex flex-col gap-4 justify-start">
-							{frontmatter.galleryLink && (
-								<a
-									className="hover:text-fd-foreground transition-colors flex gap-2 items-center"
-									href={frontmatter.galleryLink}
-									rel="noopener noreferrer"
-									target="_blank"
-								>
-									{/** biome-ignore lint/a11y/noSvgWithoutTitle: Ignore title */}
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										width="24"
-										height="24"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="currentColor"
-										strokeWidth="2"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										className="size-4"
-									>
-										<path d="m22 11-1.296-1.296a2.4 2.4 0 0 0-3.408 0L11 16" />
-										<path d="M4 8a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2" />
-										<circle cx="13" cy="7" r="1" fill="currentColor" />
-										<rect x="8" y="2" width="14" height="14" rx="2" />
-									</svg>
-									Open in Card Callery
-								</a>
-							)}
-							<a
-								className="hover:text-fd-foreground transition-colors flex gap-2 items-center"
-								href={`https://github.com/ChristianIvicevic/riftboundfaq/blob/main/content/${props.path}`}
-								rel="noopener noreferrer"
-								target="_blank"
-							>
-								{/** biome-ignore lint/a11y/noSvgWithoutTitle: Ignore title */}
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									strokeWidth="2"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									className="size-4"
-								>
-									<path d="M13 21h8" />
-									<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
-								</svg>
-								Edit this page
-							</a>
+						<div className="flex flex-col gap-8 mt-6">
+							{authors.length !== 0 && <Authors authors={authors} />}
+							<div className="text-sm text-fd-muted-foreground flex flex-col gap-4 justify-start">
+								{frontmatter.galleryLink && <CardGalleryLink galleryLink={frontmatter.galleryLink} />}
+								<EditPageLink filePath={props.path} />
+							</div>
 						</div>
 					),
 				}}
 			>
 				<DocsTitle>{frontmatter.title}</DocsTitle>
-				{frontmatter.crdVersion && (
-					<Callout type={frontmatter.crdVersion === CURRENT_CRD_VERSION ? 'success' : 'warn'}>
-						{frontmatter.crdVersion === CURRENT_CRD_VERSION ? (
-							<>
-								<strong>Up-to-date:</strong> This page references the current core rules document version (
-								{CURRENT_CRD_VERSION}).
-							</>
-						) : (
-							<>
-								<strong>Outdated:</strong> This page references an older version ({frontmatter.crdVersion}) of
-								the core rules document. Rule numbers and content may have changed in the current version (
-								{CURRENT_CRD_VERSION}) and are not guaranteed to be correct. A revision is needed.
-							</>
-						)}
-					</Callout>
-				)}
+				{frontmatter.crdVersion && <CrdCallout crdVersion={frontmatter.crdVersion} />}
 				<DocsDescription>{frontmatter.description}</DocsDescription>
 				<DocsBody>
 					<CrdVersionProvider crdVersion={frontmatter.crdVersion}>
