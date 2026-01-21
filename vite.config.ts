@@ -12,7 +12,7 @@ export default defineConfig({
 		mdx(await import('./source.config')),
 		tailwindcss(),
 		tsConfigPaths({ projects: ['./tsconfig.json'] }),
-		tanstackStart({ prerender: { enabled: true } }),
+		tanstackStart(),
 		nitro(),
 		react(),
 	],
