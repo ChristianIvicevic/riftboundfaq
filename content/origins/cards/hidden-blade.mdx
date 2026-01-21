@@ -1,0 +1,35 @@
+---
+title: "Hidden Blade"
+crdVersion: "1.2"
+galleryLink: "https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--ogn-213-298"
+authors:
+- "Near"
+---
+
+## Do players draw if the target becomes illegal?
+
+**No.** Whether the targeted player draws depends on whether the target is still legal when Hidden Blade resolves.
+
+### When the player DOES draw
+- The targeted unit is still at a battlefield when Hidden Blade resolves
+- The unit was moved to a different battlefield (still at "a battlefield")
+
+### When the player does NOT draw
+- The unit was moved to a base
+- The unit was killed by another effect
+- The unit was returned to hand
+- The unit changed zones in any way that makes it no longer "a unit at a battlefield"
+
+## Why?
+
+According to <Rule number="356.3.e.12" /> of the Riftbound Core Rules:
+
+> If the spell checks information about a target that is no longer legal or a card or permanent whose location, zone, or status has changed such that that information is no longer available, that check returns "null" and all calculations based on it are ignored.
+
+When Hidden Blade says "Its controller draws 2," the word "its" refers to the targeted unit. If the unit is no longer a legal target at resolution (because it's no longer at a battlefield), you cannot determine what "its controller" refers to—the reference returns null. Therefore, the draw instruction is ignored.
+
+Another related rule is <Rule number="356.3.e.5" />:
+
+> If any of the spell's targets are no longer legal, those targets are unaffected by the spell as it resolves.
+
+The unit won't be killed if it's no longer a legal target, AND the controller won't draw because "its controller" cannot be determined.

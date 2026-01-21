@@ -1,0 +1,16 @@
+{
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": [
+		"config:best-practices",
+		"customManagers:biomeVersions",
+		"schedule:weekly",
+		":disableRateLimiting",
+		":semanticCommitsDisabled",
+		":rebaseStalePrs",
+		":pinDependencies",
+		":pinDevDependencies",
+		"group:allNonMajor"
+	],
+	"minimumReleaseAge": "7 days",
+	"pinDigests": false
+}
