@@ -58,7 +58,7 @@ export async function generateMetadata(props: PageProps<'/[[...slug]]'>): Promis
 	const page = source.getPage(params.slug)
 	if (!page) notFound()
 
-	const isRoot = params.slug?.filter(Boolean).length === 0
+	const isRoot = params.slug === undefined || params.slug.length === 0
 
 	const title = !isRoot && page.data.title ? `Riftbound FAQ - ${page.data.title}` : 'Riftbound FAQ'
 	const description =

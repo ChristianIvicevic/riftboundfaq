@@ -7,7 +7,7 @@
 	},
 	"files": {
 		"ignoreUnknown": true,
-		"includes": ["**", "!node_modules", "!.source", "!**/routeTree.gen.ts", "!**/source.generated.ts"]
+		"includes": ["**", "!node_modules", "!.source", "!**/next-env.d.ts", "!**/source.generated.ts"]
 	},
 	"formatter": {
 		"enabled": true,
