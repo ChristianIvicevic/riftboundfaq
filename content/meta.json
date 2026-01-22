@@ -1,3 +1,11 @@
 {
-	"pages": ["index", "---Spiritforged---", "...spiritforged", "---Origins---", "...origins"]
+	"pages": [
+		"index",
+		"---General Rules---",
+		"...general-rules",
+		"---Spiritforged---",
+		"...sets/spiritforged",
+		"---Origins---",
+		"...sets/origins"
+	]
 }

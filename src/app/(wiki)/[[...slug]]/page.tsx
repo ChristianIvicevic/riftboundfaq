@@ -38,8 +38,8 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 			}}
 		>
 			<DocsTitle>{page.data.title}</DocsTitle>
-			{page.data.crdVersion && <CrdCallout crdVersion={page.data.crdVersion} />}
 			<DocsDescription className="mb-0">{page.data.description}</DocsDescription>
+			{page.data.crdVersion && <CrdCallout crdVersion={page.data.crdVersion} />}
 			<DocsBody>
 				<CrdVersionProvider crdVersion={page.data.crdVersion}>
 					<MDX components={getMDXComponents({ a: createRelativeLink(source, page), Rule })} />
