@@ -1,4 +1,5 @@
 import { defineConfig, defineDocs, frontmatterSchema, metaSchema } from 'fumadocs-mdx/config'
+import lastModified from 'fumadocs-mdx/plugins/last-modified'
 import { z } from 'zod'
 
 export const docs = defineDocs({
@@ -13,4 +14,4 @@ export const docs = defineDocs({
 	meta: { schema: metaSchema },
 })
 
-export default defineConfig()
+export default defineConfig({ plugins: [lastModified()] })

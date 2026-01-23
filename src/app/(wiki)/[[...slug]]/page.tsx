@@ -3,10 +3,10 @@ import { createRelativeLink } from 'fumadocs-ui/mdx'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Authors } from '@/components/authors'
-import { CardGalleryLink } from '@/components/card-gallery-link'
+import { CardGalleryLink, EditThisPageLink } from '@/components/buttons'
 import { CrdCallout } from '@/components/crd-callout'
 import { CrdVersionProvider } from '@/components/crd-version'
-import { EditPageLink } from '@/components/edit-page-link'
+import { LastUpdated } from '@/components/last-updated'
 import { Rule } from '@/components/rule'
 import { source } from '@/lib/source'
 import { getMDXComponents } from '@/mdx-components'
@@ -24,27 +24,24 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 			toc={page.data.toc}
 			full={page.data.full}
 			footer={{ enabled: false }}
-			tableOfContent={{
-				style: 'clerk',
-				footer: (
-					<div className="flex flex-col gap-8 mt-6">
-						{authors.length !== 0 && <Authors authors={authors} />}
-						<div className="text-sm text-fd-muted-foreground flex flex-col gap-4 justify-start">
-							{page.data.galleryLink && <CardGalleryLink galleryLink={page.data.galleryLink} />}
-							<EditPageLink filePath={page.path} />
-						</div>
-					</div>
-				),
-			}}
+			tableOfContent={{ style: 'clerk' }}
 		>
 			<DocsTitle>{page.data.title}</DocsTitle>
 			<DocsDescription className="mb-0">{page.data.description}</DocsDescription>
+			<div className="flex flex-row flex-wrap gap-2 items-center border-b pb-6">
+				{page.data.galleryLink && <CardGalleryLink href={page.data.galleryLink} />}
+				<EditThisPageLink filePath={page.path} />
+			</div>
 			{page.data.crdVersion && <CrdCallout crdVersion={page.data.crdVersion} />}
 			<DocsBody>
 				<CrdVersionProvider crdVersion={page.data.crdVersion}>
 					<MDX components={getMDXComponents({ a: createRelativeLink(source, page), Rule })} />
 				</CrdVersionProvider>
 			</DocsBody>
+			<div className="flex gap-1 border-t pt-2">
+				{authors.length !== 0 && <Authors authors={authors} />}
+				{page.data.lastModified && <LastUpdated value={page.data.lastModified} />}
+			</div>
 		</DocsPage>
 	)
 }

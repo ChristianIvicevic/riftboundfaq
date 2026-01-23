@@ -1,0 +1,64 @@
+import { cva } from 'class-variance-authority'
+import { Images, PencilLine } from 'lucide-react'
+import { cn } from '@/lib/cn'
+
+const buttonVariants = cva(
+	'inline-flex items-center justify-center rounded-md p-2 text-sm font-medium transition-colors duration-100 disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring',
+	{
+		variants: {
+			variant: {
+				primary: 'bg-fd-primary text-fd-primary-foreground hover:bg-fd-primary/80',
+				outline: 'border hover:bg-fd-accent hover:text-fd-accent-foreground',
+				ghost: 'hover:bg-fd-accent hover:text-fd-accent-foreground',
+				secondary:
+					'border bg-fd-secondary text-fd-secondary-foreground hover:bg-fd-accent hover:text-fd-accent-foreground',
+			},
+			size: {
+				sm: 'gap-1 px-2 py-1.5 text-xs',
+				icon: 'p-1.5 [&_svg]:size-5',
+				'icon-sm': 'p-1.5 [&_svg]:size-4.5',
+				'icon-xs': 'p-1 [&_svg]:size-4',
+			},
+		},
+	},
+)
+
+export function CardGalleryLink(props: { href: string }) {
+	return (
+		<a
+			href={props.href}
+			rel="noopener noreferrer"
+			target="_blank"
+			className={cn(
+				buttonVariants({
+					variant: 'secondary',
+					size: 'sm',
+					className: 'gap-2 [&_svg]:size-3.5 [&_svg]:text-fd-muted-foreground',
+				}),
+			)}
+		>
+			<Images />
+			Open in Card Gallery
+		</a>
+	)
+}
+
+export function EditThisPageLink(props: { filePath: string }) {
+	return (
+		<a
+			href={`https://github.com/ChristianIvicevic/riftboundfaq/blob/main/content/${props.filePath}`}
+			rel="noopener noreferrer"
+			target="_blank"
+			className={cn(
+				buttonVariants({
+					variant: 'secondary',
+					size: 'sm',
+					className: 'gap-2 [&_svg]:size-3.5 [&_svg]:text-fd-muted-foreground',
+				}),
+			)}
+		>
+			<PencilLine />
+			Edit this page
+		</a>
+	)
+}

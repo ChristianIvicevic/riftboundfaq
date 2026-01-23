@@ -1,14 +1,16 @@
 export function Authors({ authors }: { authors: string[] }) {
+	const listFormat = new Intl.ListFormat('en')
+
 	return (
-		<div className="text-sm text-fd-muted-foreground flex gap-6">
-			<div>{authors.length === 1 ? 'Author' : 'Authors'}:</div>
-			<div className="flex-1 flex flex-col gap-2">
-				{authors.map((it) => (
-					<span key={it} className="text-fd-secondary-foreground">
-						{it}
-					</span>
-				))}
-			</div>
-		</div>
+		<p className="text-sm text-fd-muted-foreground">
+			Written by{' '}
+			{listFormat.formatToParts(authors).map((item, index) => (
+				// biome-ignore lint/suspicious/noArrayIndexKey: Not dynamic.
+				<span key={index} className={item.type === 'element' ? 'text-fd-secondary-foreground' : undefined}>
+					{item.value}
+				</span>
+			))}
+			.
+		</p>
 	)
 }
