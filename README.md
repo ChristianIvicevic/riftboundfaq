@@ -1,89 +1,84 @@
 # Riftbound FAQ
 
-A lightweight, community-driven wiki for the Riftbound Trading Card Game. This resource helps judges and players quickly find answers to frequently asked questions about rules, card interactions, and gameplay scenarios.
+A community-driven wiki for the Riftbound Trading Card Game, built with Next.js and Fumadocs.
+This resource helps judges and players quickly find answers about rules, card interactions, and gameplay scenarios.
+
+## Tech Stack
+
+- **Framework**: Next.js 16 with React 19
+- **Content**: MDX via Fumadocs
+- **Styling**: Tailwind CSS 4
+- **Type Safety**: TypeScript
+- **Linting**: Biome
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js (see `.nvmrc` for version)
+- Node.js (see `.nvmrc`)
 - pnpm
 
 ### Installation
 
 ```bash
 pnpm install
+pnpm dev        # Start development server at http://localhost:3000
+pnpm build      # Build for production
+pnpm start      # Run production server
 ```
 
-### Development
+### Available Scripts
 
 ```bash
-pnpm dev
+pnpm lint         # Run Biome linter
+pnpm format       # Format code with Biome
+pnpm types:check  # Run TypeScript type checking
 ```
-
-Visit `http://localhost:3000` to see the wiki locally.
-
-### Build
-
-```bash
-pnpm build
-```
-
-## Contributing
-
-We welcome contributions from the community! Whether you want to:
-
-- Add documentation for new cards or mechanics
-- Fix errors or clarify existing content
-- Improve the wiki's structure or usability
-
-Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute.
 
 ## Project Structure
 
 ```
 riftboundfaq/
-├── content/           # Wiki content (MDX files)
-│   ├── origins/       # Origins card set
-│   ├── spiritforged/  # Spiritforged card set
-│   └── ...
-├── src/               # Application source code
+├── content/              # Wiki content (MDX files)
+│   ├── general-rules/    # General game rules
+│   ├── sets/
+│   │   ├── origins/      # Origins card set
+│   │   └── spiritforged/ # Spiritforged card set
+│   └── meta.json         # Navigation structure
+├── src/
+│   └── ...               # Application source code
 └── ...
 ```
 
+## Contributing
+
+Contributions are welcome!
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
+
+- Adding documentation for cards and mechanics
+- Fixing errors or clarifying content
+- Reporting issues
+
 ## License
 
-This project uses a dual-license structure:
+**Dual License Structure:**
 
-### Source Code (MIT License)
+- **Code**: MIT License ([LICENSE-MIT](LICENSE-MIT)) - All TypeScript, React components, and build scripts
+- **Content**: CC BY-SA 4.0 ([LICENSE-CC-BY-SA-4.0](LICENSE-CC-BY-SA-4.0)) - All wiki content in `/content`
 
-The source code and application framework are licensed under the [MIT License](LICENSE-MIT). This includes all TypeScript, React components, configuration files, and build scripts.
-
-### Wiki Content (CC BY-SA 4.0)
-
-All documentation and wiki content in the `/content` directory is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International License](LICENSE-CC-BY-SA-4.0). This means:
-
-- You can freely share and adapt the content
-- You must give appropriate credit
-- Your contributions must use the same license
-- Content remains freely available for everyone
+Content is freely shareable and adaptable with attribution.
 
 ## Legal Disclaimer
 
-**Riftbound** and all related game content, including but not limited to card names, artwork, game mechanics, lore, and terminology, are the intellectual property of **Riot Games, Inc.**
+**Riftbound** and all related content are the intellectual property of **Riot Games, Inc.**
 
-This is an **unofficial, community-maintained** resource and is **not affiliated with, endorsed, sponsored, or specifically approved by Riot Games**.
+This is an **unofficial, community-maintained** resource, **not affiliated with or endorsed by Riot Games**.
 
-This project was created under Riot Games' "Legal Jibber Jabber" policy using assets owned by Riot Games. Riot Games does not endorse or sponsor this project.
-
-For Riot Games' official legal policies, visit: https://www.riotgames.com/en/legal
+Created under Riot Games' "Legal Jibber Jabber" policy.
+For official policies, visit: https://www.riotgames.com/en/legal
 
 ## Maintainer
 
 Created and maintained by [Christian Ivicevic](https://github.com/ChristianIvicevic) and the Riftbound community.
 
-## Links
-
-- [Report Issues](https://github.com/ChristianIvicevic/riftboundfaq/issues)
-- [Riftbound Official](https://playriftbound.com/)
-- [Riot Games Legal](https://www.riotgames.com/en/legal)
+**Links**: [Report Issues](https://github.com/ChristianIvicevic/riftboundfaq/issues) • [Official Riftbound](https://playriftbound.com/)
