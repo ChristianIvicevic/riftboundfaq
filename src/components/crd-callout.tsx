@@ -12,8 +12,8 @@ export function CrdCallout({ crdVersion }: { crdVersion: string }) {
 			) : (
 				<>
 					<strong>Outdated:</strong> This page references an older version ({crdVersion}) of the core rules
-					document. Rule numbers and content may have changed in the current version ({CURRENT_CRD_VERSION})
-					and are not guaranteed to be correct. A revision is needed.
+					document. All links point to the corresponding rules in that version. The current version is{' '}
+					{CURRENT_CRD_VERSION}.
 				</>
 			)}
 		</Callout>
