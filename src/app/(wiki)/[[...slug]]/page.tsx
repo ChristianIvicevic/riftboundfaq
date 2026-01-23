@@ -8,7 +8,7 @@ import { CrdCallout } from '@/components/crd-callout'
 import { CrdVersionProvider } from '@/components/crd-version'
 import { LastUpdated } from '@/components/last-updated'
 import { Rule } from '@/components/rule'
-import { source } from '@/lib/source'
+import { getPageImage, source } from '@/lib/source'
 import { getMDXComponents } from '@/mdx-components'
 
 export default async function Page(props: PageProps<'/[[...slug]]'>) {
@@ -62,5 +62,9 @@ export async function generateMetadata(props: PageProps<'/[[...slug]]'>): Promis
 			? `FAQ and rules reference for ${page.data.title} in Riftbound`
 			: 'Community-driven FAQ for Riftbound judges and players')
 
-	return { title, description }
+	return {
+		title,
+		description,
+		openGraph: { images: getPageImage(page).url },
+	}
 }
