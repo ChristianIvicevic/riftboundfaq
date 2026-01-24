@@ -13,7 +13,12 @@ export async function GET(_req: Request, { params }: RouteContext<'/og/[...slug]
 	return new ImageResponse(
 		<DefaultImage
 			title={page.data.title}
-			description={page.data.description}
+			description={
+				page.data.description ||
+				(page.data.title
+					? `FAQ and rules reference for ${page.data.title} in Riftbound`
+					: 'Community-driven FAQ for Riftbound judges and players')
+			}
 			site="Riftbound FAQ"
 			primaryColor="#123456"
 			primaryTextColor="#ABCDEF"
