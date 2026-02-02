@@ -6,7 +6,7 @@ import { Authors } from '@/components/authors'
 import { CardGalleryLink, EditThisPageLink } from '@/components/buttons'
 import { CrdCallout } from '@/components/crd-callout'
 import { CrdVersionProvider } from '@/components/crd-version'
-import { Assault, Energy, Repeat, Shield } from '@/components/keywords'
+import { Assault, Energy, Power, Repeat, Shield } from '@/components/keywords'
 import { LastUpdated } from '@/components/last-updated'
 import { Rule } from '@/components/rule'
 import { getPageImage, source } from '@/lib/source'
@@ -41,6 +41,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 							a: createRelativeLink(source, page),
 							Rule,
 							Energy,
+							Power,
 							Assault,
 							Shield,
 							Repeat,

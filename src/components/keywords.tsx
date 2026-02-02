@@ -11,6 +11,12 @@ export function Energy({ value }: { value: number }) {
 	)
 }
 
+export function Power({ type }: { type: string }) {
+	return (
+		<img alt={type.toLocaleUpperCase()} src={`/images/${type}.webp`} className="mx-0.5 my-0! inline size-5" />
+	)
+}
+
 // Keywords
 const keywordVariants = cva(
 	'mx-0.5 inline-flex -skew-x-12 items-center justify-center px-2 text-sm font-bold uppercase text-white',
