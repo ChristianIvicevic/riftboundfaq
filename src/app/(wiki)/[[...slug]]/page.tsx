@@ -6,6 +6,7 @@ import { Authors } from '@/components/authors'
 import { CardGalleryLink, EditThisPageLink } from '@/components/buttons'
 import { CrdCallout } from '@/components/crd-callout'
 import { CrdVersionProvider } from '@/components/crd-version'
+import { Assault, Energy, Repeat, Shield } from '@/components/keywords'
 import { LastUpdated } from '@/components/last-updated'
 import { Rule } from '@/components/rule'
 import { getPageImage, source } from '@/lib/source'
@@ -35,7 +36,16 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 			{page.data.crdVersion && <CrdCallout crdVersion={page.data.crdVersion} />}
 			<DocsBody>
 				<CrdVersionProvider crdVersion={page.data.crdVersion}>
-					<MDX components={getMDXComponents({ a: createRelativeLink(source, page), Rule })} />
+					<MDX
+						components={getMDXComponents({
+							a: createRelativeLink(source, page),
+							Rule,
+							Energy,
+							Assault,
+							Shield,
+							Repeat,
+						})}
+					/>
 				</CrdVersionProvider>
 			</DocsBody>
 			<div className="flex gap-1 border-t pt-2">
