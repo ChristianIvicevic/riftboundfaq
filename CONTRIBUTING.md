@@ -73,7 +73,7 @@ pnpm format       # Format code
 
 ### Standards
 
-- Follow code style enforced by Biome
+- Follow code style enforced by Oxfmt and Oxlint
 - Write TypeScript with proper types
 - Test locally before submitting
 - Keep commits focused and atomic

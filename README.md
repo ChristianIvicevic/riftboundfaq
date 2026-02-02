@@ -9,7 +9,7 @@ This resource helps judges and players quickly find answers about rules, card in
 - **Content**: MDX via Fumadocs
 - **Styling**: Tailwind CSS 4
 - **Type Safety**: TypeScript
-- **Linting**: Biome
+- **Linting**: Oxlint
 
 ## Getting Started
 
@@ -30,8 +30,8 @@ pnpm start      # Run production server
 ### Available Scripts
 
 ```bash
-pnpm lint         # Run Biome linter
-pnpm format       # Format code with Biome
+pnpm lint         # Run linter
+pnpm format       # Format code
 pnpm types:check  # Run TypeScript type checking
 ```
 
