@@ -1,0 +1,36 @@
+---
+title: "Repeat"
+crdVersion: "1.2"
+authors:
+- "Near"
+---
+
+## When do I decide whether to pay for Repeat? [#repeat-decision-timing]
+
+You must decide whether to pay a spell's Repeat cost when you play the spell, not later.
+
+When you play a spell with Repeat, you follow the normal process for playing a card (<Rule number="350" />):
+1. First, you put the spell onto the Chain (<Rule number="351" />)
+2. Then, you make necessary choices (<Rule number="352" />), including whether or not you will Repeat it (<Rule number="352.1" />, <Rule number="746.1.d" />)
+3. Next, you determine its total cost (<Rule number="353" />).
+If you chose to Repeat the spell, you apply the Repeat cost as an Optional Additional Cost (<Rule number="353.2" />, <Rule number="353.2.b" />, <Rule number="353.2.b.1" />, <Rule number="746.1.d" />)
+4. Finally, you complete the remaining steps of playing the card to finalize the spell
+
+This means you cannot put a spell on the Chain, pass Priority to see what happens, and then decide whether to Repeat it later.
+The decision must be made upfront during finalization.
+
+**Example**:
+You put [Blood Rush](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-003-221), a spell with <Repeat /> <Energy value={1} />, that says "Give a unit <Assault value={2} /> this turn.", onto the Chain.
+Before anyone can respond, you must decide: are you paying the <Energy value={1} /> to Repeat it and give <Assault value={2} /> twice to units, or not?
+Once you've made this choice and paid costs, the spell is finalized.
+Your opponent can now respond with Priority, but your Repeat decision is locked in.
+
+## What happens if a repeated spell is countered? [#countering-repeated-spells]
+
+The entire spell is countered, including all repeated instructions.
+
+Repeat does *not* create a second instance of the spell on the Chain.
+Instead, it modifies how the spell resolves by executing its instructions an additional time (<Rule number="746.1.d.1" />).
+
+When a spell is countered, it does nothing and is placed in the Trash (<Rule number="412.1.a" />).
+Since the spell never resolves, none of its instructions are executed, whether they came from Repeat or not.
