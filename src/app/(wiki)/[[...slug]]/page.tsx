@@ -28,7 +28,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 		>
 			<DocsTitle>{page.data.title}</DocsTitle>
 			<DocsDescription className="mb-0">{page.data.description}</DocsDescription>
-			<div className="flex flex-row flex-wrap gap-2 items-center border-b pb-6">
+			<div className="flex flex-row flex-wrap items-center gap-2 border-b pb-6">
 				{page.data.galleryLink && <CardGalleryLink href={page.data.galleryLink} />}
 				<EditThisPageLink filePath={page.path} />
 			</div>
@@ -39,7 +39,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 				</CrdVersionProvider>
 			</DocsBody>
 			<div className="flex gap-1 border-t pt-2">
-				{authors.length !== 0 && <Authors authors={authors} />}
+				{authors.length > 0 && <Authors authors={authors} />}
 				{page.data.lastModified && <LastUpdated value={page.data.lastModified} />}
 			</div>
 		</DocsPage>

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 
 export function LastUpdated(props: { value: Date }) {
-	const [date, setDate] = useState<string | undefined>(undefined)
+	const [date, setDate] = useState<string | undefined>()
 
 	useEffect(() => {
 		setDate(props.value.toLocaleDateString())
