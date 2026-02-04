@@ -1,0 +1,42 @@
+---
+title: "Arcane Shift"
+crdVersion: "1.2"
+galleryLink: "https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-200-221"
+authors:
+- "Near"
+---
+
+## Can I use Arcane Shift to banish my only unit at a battlefield and replay it there? [#replay-at-same-battlefield]
+
+Yes, but only if you are the defender during combat.
+
+The key is understanding when you choose where to play the banished unit and when battlefield control is lost.
+
+### How Arcane Shift Resolves [#resolution-process]
+
+When Arcane Shift resolves, the following happens:
+
+1. "Banish a friendly unit" - the unit leaves the board and goes to banishment
+2. "then its owner plays it, ignoring its cost" - the unit goes on the chain as a Pending Item (<Rule number="351.3" />), but **you don't choose where to play it yet**
+3. "Deal 3 to an enemy unit" and "Banish this" both resolve
+4. Arcane Shift finishes resolving and a Cleanup occurs
+5. **Cleanup Step 4** (<Rule number="322.6" />): Battlefields with no units **and no Contested status** become Uncontrolled
+6. **Cleanup Step 8** (<Rule number="322.12" />): The banished unit finalizes and you choose where to play it
+
+**The critical timing**: the battlefield's control status is determined in step 4, before you choose where to play the unit in step 8.
+
+### During Combat (Defender Only) [#during-combat]
+
+During combat, the battlefield has **Contested status**, so cleanup step 4 does NOT make it Uncontrolled.
+
+When the unit finalizes in step 8, the battlefield is still controlled by you (the defender) and is a valid location.
+Control is only established or lost later in the Combat Resolution Step (<Rule number="444.2" />).
+
+**Important**: Attackers cannot replay their units to the battlefield because attackers never control the battlefield they're attacking in the first place (<Rule number="184.4.b" />).
+
+### Outside of Combat [#outside-combat]
+
+Outside of combat, there is **no Contested status**, so cleanup step 4 makes the battlefield Uncontrolled immediately (<Rule number="184.4.c" />).
+
+When the unit finalizes in step 8, the battlefield is no longer controlled by you and is not a valid location.
+You must replay the unit to your base or a different battlefield you control.
