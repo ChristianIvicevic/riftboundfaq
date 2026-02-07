@@ -3,13 +3,14 @@ import { ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 
 const keywordVariants = cva(
-	'mx-0.5 inline-flex -skew-x-12 items-center justify-center px-2 text-sm font-bold uppercase text-white',
+	'mx-0.5 inline-flex -skew-x-12 items-center justify-center px-2 text-sm font-bold uppercase',
 	{
 		variants: {
 			variant: {
-				primary: 'bg-[#4e9f8b]',
-				secondary: 'bg-[#b8416d]',
-				tertiary: 'bg-[#6c7071]',
+				primary: 'bg-[#4e9f8b] text-white',
+				secondary: 'bg-[#9eb149] text-black',
+				accent: 'bg-[#b8416d] text-white',
+				tertiary: 'bg-[#6c7071] text-white',
 			},
 		},
 	},
@@ -23,11 +24,11 @@ function Keyword({
 }
 
 export function Assault({ value }: { value?: number }) {
-	return <Keyword variant="secondary">Assault {value}</Keyword>
+	return <Keyword variant="accent">Assault {value}</Keyword>
 }
 
 export function Shield({ value }: { value?: number }) {
-	return <Keyword variant="secondary">Shield {value}</Keyword>
+	return <Keyword variant="accent">Shield {value}</Keyword>
 }
 
 export function Equip() {
