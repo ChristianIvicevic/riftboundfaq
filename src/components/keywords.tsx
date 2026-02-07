@@ -7,8 +7,9 @@ const keywordVariants = cva(
 	{
 		variants: {
 			variant: {
-				generic: 'bg-[#4e9f8b]',
-				combat: 'bg-[#b8416d]',
+				primary: 'bg-[#4e9f8b]',
+				secondary: 'bg-[#b8416d]',
+				tertiary: 'bg-[#6c7071]',
 			},
 		},
 	},
@@ -22,13 +23,25 @@ function Keyword({
 }
 
 export function Assault({ value }: { value?: number }) {
-	return <Keyword variant="combat">Assault {value}</Keyword>
+	return <Keyword variant="secondary">Assault {value}</Keyword>
 }
 
 export function Shield({ value }: { value?: number }) {
-	return <Keyword variant="combat">Shield {value}</Keyword>
+	return <Keyword variant="secondary">Shield {value}</Keyword>
+}
+
+export function Equip() {
+	return <Keyword variant="tertiary">Equip</Keyword>
+}
+
+export function QuickDraw() {
+	return <Keyword variant="primary">Quick-Draw</Keyword>
+}
+
+export function Weaponmaster() {
+	return <Keyword variant="tertiary">Weaponmaster</Keyword>
 }
 
 export function Repeat() {
-	return <Keyword variant="generic">Repeat</Keyword>
+	return <Keyword variant="primary">Repeat</Keyword>
 }
