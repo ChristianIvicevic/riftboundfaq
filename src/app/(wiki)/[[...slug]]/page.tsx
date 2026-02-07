@@ -2,10 +2,12 @@ import { DocsBody, DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/layo
 import { createRelativeLink } from 'fumadocs-ui/mdx'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { submitPageFeedback } from '@/app/(wiki)/[[...slug]]/actions'
 import { Authors } from '@/components/authors'
 import { CardGalleryLink, EditThisPageLink } from '@/components/buttons'
 import { CrdCallout } from '@/components/crd-callout'
 import { CrdVersionProvider } from '@/components/crd-version'
+import { Feedback } from '@/components/feedback/client'
 import { Accelerate, Assault, Equip, QuickDraw, Repeat, Shield, Weaponmaster } from '@/components/keywords'
 import { LastUpdated } from '@/components/last-updated'
 import { Energy, Power } from '@/components/resources'
@@ -54,7 +56,8 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 					/>
 				</CrdVersionProvider>
 			</DocsBody>
-			<div className="flex gap-1 border-t pt-2">
+			<Feedback onSendAction={submitPageFeedback} />
+			<div className="flex gap-1 pt-2">
 				{authors.length > 0 && <Authors authors={authors} />}
 				{page.data.lastModified && <LastUpdated value={page.data.lastModified} />}
 			</div>

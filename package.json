@@ -15,6 +15,8 @@
 		"lint:github": "oxlint --format=github --deny-warnings"
 	},
 	"dependencies": {
+		"@radix-ui/react-collapsible": "1.1.12",
+		"@radix-ui/react-popover": "1.1.15",
 		"@vercel/analytics": "1.6.1",
 		"@vercel/speed-insights": "1.3.1",
 		"class-variance-authority": "0.7.1",
@@ -23,6 +25,7 @@
 		"fumadocs-ui": "16.4.10",
 		"lucide-react": "0.563.0",
 		"next": "16.1.6",
+		"posthog-node": "5.24.11",
 		"react": "19.2.4",
 		"react-dom": "19.2.4",
 		"tailwind-merge": "3.4.0",
