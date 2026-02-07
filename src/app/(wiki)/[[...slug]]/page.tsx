@@ -6,7 +6,7 @@ import { Authors } from '@/components/authors'
 import { CardGalleryLink, EditThisPageLink } from '@/components/buttons'
 import { CrdCallout } from '@/components/crd-callout'
 import { CrdVersionProvider } from '@/components/crd-version'
-import { Assault, Equip, QuickDraw, Repeat, Shield, Weaponmaster } from '@/components/keywords'
+import { Accelerate, Assault, Equip, QuickDraw, Repeat, Shield, Weaponmaster } from '@/components/keywords'
 import { LastUpdated } from '@/components/last-updated'
 import { Energy, Power } from '@/components/resources'
 import { Rule } from '@/components/rule'
@@ -43,6 +43,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 							Rule,
 							Energy,
 							Power,
+							Accelerate,
 							Assault,
 							Shield,
 							Equip,

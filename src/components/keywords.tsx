@@ -23,6 +23,10 @@ function Keyword({
 	return <span className={cn(keywordVariants({ variant }))}>{children}</span>
 }
 
+export function Accelerate() {
+	return <Keyword variant="primary">Accelerate</Keyword>
+}
+
 export function Assault({ value }: { value?: number }) {
 	return <Keyword variant="accent">Assault {value}</Keyword>
 }

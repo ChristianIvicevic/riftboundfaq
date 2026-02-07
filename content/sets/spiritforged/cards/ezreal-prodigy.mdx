@@ -1,0 +1,55 @@
+---
+title: "Ezreal, Prodigy"
+crdVersion: "1.2"
+galleryLink: "https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-149-221"
+authors:
+- "Near"
+---
+
+## What are "optional additional costs"? [#what-are-optional-additional-costs]
+
+Optional additional costs are costs that use both the phrase "as an additional cost" AND the word "may."
+
+Ezreal, Prodigy's passive ability ("Optional additional costs you pay cost <Energy value={1} /> or <Power type="universal" /> less.") only reduces costs that meet both criteria (<Rule number="353.2.b" />, <Rule number="353.2.b.1" />):
+
+1. The cost uses the exact phrase "as an additional cost"
+2. The cost includes the word "may"
+
+**Example**:
+[Blast Corps Cadet](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-013-221)'s ability reads "You may pay <Energy value={1} /><Power type="fury" /> as an additional cost to play me."
+This is an optional additional cost because it uses both "as an additional cost" AND "may."
+Ezreal's ability would reduce this cost to <Energy value={1} /> or <Power type="fury" />.
+
+Optional additional costs are determined when you calculate a card's total cost during the playing process, and Ezreal's discount is applied when you apply discounts (<Rule number="353.4" />).
+
+## Do Accelerate and Repeat count as optional additional costs? [#accelerate-and-repeat]
+
+Yes.
+
+<Accelerate /> and <Repeat /> are keyworded instances of optional additional costs (<Rule number="731.1.a" />, <Rule number="746.1.d" />).
+Both use the phrases "as an additional cost" and "may," making them optional additional costs that Ezreal's ability reduces.
+
+**Example**:
+You play [Sivir, Mercenary](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-143a-221) with <Accelerate /><Energy value={1} /><Power type="chaos" /> while you control Ezreal, Prodigy.
+With Ezreal's ability, you can choose to reduce this to either <Energy value={1} /> or <Power type="chaos" />.
+
+## What doesn't count as an optional additional cost? [#not-optional-additional-costs]
+
+Several similar-looking costs are NOT optional additional costs and are not reduced by Ezreal's ability.
+
+### Mandatory additional costs [#mandatory-additional-costs]
+
+Costs that use "as an additional cost" but NOT "may" are mandatory additional costs, not optional (<Rule number="353.2.a.1" />).
+
+**Example**:
+[Cruel Patron](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--ogn-208-298) reads "As an additional cost to play me, kill a friendly unit."
+This is NOT an optional additional cost because it doesn't include "may."
+
+### Costs within instructions [#costs-within-instructions]
+
+Costs that appear within ability instructions are NOT additional costs.
+
+**Example**:
+[Hard Bargain](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-136-221) reads "Counter a spell unless its controller pays <Energy value={2} />."
+This is NOT an optional additional cost.
+The <Energy value={2} /> is a cost within the counter's instruction.
