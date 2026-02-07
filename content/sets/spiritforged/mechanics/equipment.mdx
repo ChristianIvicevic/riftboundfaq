@@ -13,3 +13,18 @@ When a unit with attached equipment dies, the equipment detaches and remains at 
 
 If that location is a battlefield, the detached equipment will be recalled to its controller's base during the next Cleanup (<Rule number="422.4.a" />).
 If that location is the controller's base, the equipment simply remains there.
+
+## Which equipment effects choose units? [#equipment-choose-units]
+
+<Equip /> and <QuickDraw /> choose units; <Weaponmaster /> does not.
+
+Some abilities trigger or care about when you choose friendly units. Here's how equipment-related effects interact with such abilities:
+
+- When you activate a gear's <Equip /> ability, you choose a unit you control to attach the equipment to (<Rule number="744.1.b.1" />).
+This choice is a target, so activating <Equip /> counts as choosing a unit.
+- When you play a gear with <QuickDraw />, its triggered ability instructs you to "attach it to a Unit you control" (<Rule number="745.1.d" />).
+While attaching cards doesn't inherently choose or specify a target (<Rule number="421.3" />), <QuickDraw />'s ability does require you to choose which unit to attach to.
+This counts as choosing a unit.
+- When you play a unit with <Weaponmaster />, you choose an equipment you control, not the unit (<Rule number="747.1.c" />).
+The rules explicitly state that "The <Equip /> ability is not activated this way, and the unit with the <Weaponmaster /> ability is not chosen" (<Rule number="747.1.c.6" />).
+Therefore, <Weaponmaster /> does **not** count as choosing a unit.
