@@ -1,5 +1,6 @@
 'use server'
 
+import { after } from 'next/server'
 import { PostHog } from 'posthog-node'
 import { type ActionResponse, BlockFeedback, PageFeedback } from '@/components/feedback/schema'
 import { env } from '@/env'
@@ -22,7 +23,11 @@ async function captureAnalyticsEvent(
 			isProduction: process.env.NODE_ENV === 'production',
 		},
 	})
-	await client.shutdown()
+
+	after(async () => {
+		await client.shutdown()
+	})
+
 	return {}
 }
 
