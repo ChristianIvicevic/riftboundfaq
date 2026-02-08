@@ -1,0 +1,89 @@
+---
+title: "Switcheroo"
+crdVersion: "1.2"
+galleryLink: "https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-145-221"
+authors:
+- "Near"
+---
+
+## How does Switcheroo actually work? [#how-it-works]
+
+Switcheroo doesn't actually swap Might values - it snapshots the difference in effective Might when it resolves and applies +X/-X Might modifiers respectively.
+Nothing more, nothing less.
+
+Despite the card reading "Swap the Might of two units at the same battlefield this turn," the game doesn't swap the values directly.
+Instead, Switcheroo uses the Swap action (<Rule number="420" />), which determines the difference between the two units' current Might values, then applies a -X modifier to the higher Might unit and a +X modifier to the lower Might unit.
+
+Current Might means the unit's total Might including all active modifiers - equipment bonuses, battlefield passives, conditional abilities, and any other effects currently affecting it.
+The modifiers that Switcheroo applies persist until end of turn.
+
+## Can I apply equipment bonuses or passive effects after Switcheroo resolves? [#no-double-dipping]
+
+No.
+Equipment bonuses, battlefield passives, and conditional abilities are already factored into the current Might when Switcheroo resolves.
+
+This is the most common misconception about Switcheroo.
+Players often think they can "double-dip" by applying these modifiers after the swap, but Switcheroo calculates based on total current Might at resolution time.
+
+Consider this example: You have a unit with 2 base Might and attached equipment granting +3 Might, giving it 5 current Might total.
+Your opponent has a 1 Might unit at the same battlefield.
+When Switcheroo resolves, it calculates the difference of 4, then applies -4 to your unit and +4 to your opponent's unit.
+Your unit ends up with 1 Might while your opponent's unit has 5 Might.
+
+The equipment bonus is already included in this calculation - Switcheroo saw your unit as having 5 Might when it resolved.
+You cannot reapply the +3 equipment bonus after the fact to get a different result.
+
+## What happens when equipment detaches or passives stop applying after Switcheroo? [#modifiers-changing]
+
+The Switcheroo modifier persists, but the equipment/passive bonus is removed, which can result in very low or negative Might.
+
+Switcheroo's +X/-X modifiers last until end of turn, but equipment bonuses and passive effects have their own conditions for when they apply.
+When these conditions change, only their specific bonus is added or removed - the Switcheroo modifier remains.
+
+### Equipment Detaching [#equipment-detaching]
+
+Continuing the previous example where your unit has 1 Might after Switcheroo - if the equipment detaches, things get interesting.
+Your unit loses the +3 equipment bonus but keeps the -4 modifier from Switcheroo, leaving it with -2 Might (2 base - 4 from Switcheroo).
+
+This happens because Switcheroo calculated based on the equipment being attached at resolution time.
+The spell saw your unit as having 5 total Might and applied a -4 modifier accordingly.
+When the equipment detaches later, only its +3 bonus is removed - the -4 from Switcheroo remains active until end of turn.
+
+### Passives [#passives]
+
+Passive abilities work the same way - they apply based on conditions and can turn on or off during the turn.
+
+[Trifarian War Camp](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--ogn-294-298) creates a straightforward example.
+The battlefield grants units +1 Might while they're present.
+If your 1 Might unit at War Camp (currently 2 Might with the battlefield bonus) swaps with your opponent's 6 Might unit at the same battlefield, Switcheroo applies +4 to your unit and -4 to your opponent's.
+Your unit now has 6 Might total (1 base + 4 from Switcheroo + 1 from War Camp).
+If your unit later moves away from War Camp, it loses the +1 bonus and drops to 5 Might, but the +4 from Switcheroo stays until end of turn.
+
+[Wuju Bladesman](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--ogs-019-024) demonstrates how conditional passives interact with Switcheroo.
+Wuju Bladesman's ability grants a friendly unit +2 Might while it defends alone.
+Suppose your 3 Might unit is defending alone against your opponent's 1 Might attacker, making your defender's current Might 5 with Wuju's bonus.
+Your opponent plays Switcheroo targeting both units.
+Switcheroo calculates the difference of 4 and applies -4 to your defender and +4 to the attacker.
+Your defender now has 1 Might (3 base - 4 from Switcheroo + 2 from Wuju) while it's still defending alone.
+After combat ends or another friendly unit joins the defense, Wuju's passive deactivates and your unit drops to -1 Might.
+
+The key insight is that each modifier is independent.
+When equipment detaches or passives deactivate, only their specific bonus is removed—the Switcheroo modifier stays until end of turn.
+
+## Can Switcheroo result in negative Might? [#negative-might]
+
+Yes, but the unit treats its Might as 0 for game purposes while calculations still use the actual negative value.
+
+As shown in the previous examples, units can end up with negative Might when modifiers that contributed to their current Might at resolution time are later removed.
+The rules state that units with Might less than 0 treat it as 0 for all purposes (<Rule number="142.2.b" />).
+This means the unit contributes 0 Might in combat and effects that reference the unit's Might see 0, but the underlying value is still negative for calculation purposes.
+
+Importantly, units with 0 or negative Might don't automatically die.
+Units are only killed during cleanup if they have non-zero damage marked on them equalling or exceeding their Might (<Rule number="322.4" />).
+A unit at -2 Might with no damage marked on it will survive - it just can't contribute to combat or defend itself effectively.
+
+If a unit later gains additional Might modifiers, they add to the actual negative value.
+
+**Example**:
+Suppose a unit with -2 Might is targeted with [Punch First](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-097-221), which reads "Give a unit +5 Might this turn."
+The unit ends up with 3 Might (not 5) — the +5 modifier adds to the actual -2 value, resulting in 3 total Might.
