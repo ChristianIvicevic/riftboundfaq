@@ -74,7 +74,6 @@ export async function generateMetadata(props: PageProps<'/[[...slug]]'>): Promis
 	const page = source.getPage(params.slug)
 	if (!page) notFound()
 
-	const title = `Riftbound FAQ - ${page.data.title}`
 	const description =
 		page.data.description ||
 		(page.data.title
@@ -82,7 +81,7 @@ export async function generateMetadata(props: PageProps<'/[[...slug]]'>): Promis
 			: 'Community-driven FAQ for Riftbound judges and players')
 
 	return {
-		title,
+		title: page.data.title,
 		description,
 		openGraph: { images: getPageImage(page).url },
 	}
