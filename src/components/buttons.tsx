@@ -1,6 +1,7 @@
 import { cva } from 'class-variance-authority'
 import { Images, PencilLine } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { GITHUB_REPO_URL } from '@/lib/constants'
 
 const buttonVariants = cva(
 	'inline-flex items-center justify-center rounded-md p-2 text-sm font-medium transition-colors duration-100 disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring',
@@ -46,7 +47,7 @@ export function CardGalleryLink(props: { href: string }) {
 export function EditThisPageLink(props: { filePath: string }) {
 	return (
 		<a
-			href={`https://github.com/ChristianIvicevic/riftboundfaq/blob/main/content/${props.filePath}`}
+			href={`${GITHUB_REPO_URL}/blob/main/content/${props.filePath}`}
 			rel="noopener noreferrer"
 			target="_blank"
 			className={cn(

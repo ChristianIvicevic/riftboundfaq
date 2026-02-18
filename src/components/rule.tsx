@@ -5,7 +5,12 @@ import { CrdVersionContext } from '@/components/crd-version'
 
 export function Rule({ number }: { number: string }) {
 	const { crdVersion } = use(CrdVersionContext)
-	const urlFormattedVersion = crdVersion?.replaceAll('.', '-')
+
+	if (!crdVersion) {
+		return <span>CR {number}</span>
+	}
+
+	const urlFormattedVersion = crdVersion.replaceAll('.', '-')
 
 	return (
 		<a

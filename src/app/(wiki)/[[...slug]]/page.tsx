@@ -12,6 +12,7 @@ import { Accelerate, Assault, Equip, QuickDraw, Repeat, Shield, Weaponmaster } f
 import { LastUpdated } from '@/components/last-updated'
 import { Energy, Power } from '@/components/resources'
 import { Rule } from '@/components/rule'
+import { baseUrl } from '@/lib/metadata'
 import { getPageImage, source } from '@/lib/source'
 import { getMDXComponents } from '@/mdx-components'
 
@@ -80,9 +81,17 @@ export async function generateMetadata(props: PageProps<'/[[...slug]]'>): Promis
 			? `FAQ and rules reference for ${page.data.title} in Riftbound`
 			: 'Community-driven FAQ for Riftbound judges and players')
 
+	const url = new URL(page.url, baseUrl).toString()
+
 	return {
 		title: page.data.title,
 		description,
-		openGraph: { images: getPageImage(page).url },
+		alternates: { canonical: url },
+		openGraph: {
+			type: 'website',
+			siteName: 'Riftbound FAQ',
+			url,
+			images: getPageImage(page).url,
+		},
 	}
 }

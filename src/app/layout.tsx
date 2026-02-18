@@ -11,12 +11,12 @@ export const metadata: Metadata = {
 	applicationName: 'Riftbound FAQ',
 	title: {
 		default: 'Riftbound FAQ',
-		template: 'Riftbound FAQ - %s',
+		template: '%s | Riftbound FAQ',
 	},
 	description: 'Community-driven FAQ for Riftbound judges and players',
 }
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'], display: 'swap' })
 
 export default function Layout({ children }: LayoutProps<'/'>) {
 	return (

@@ -1,15 +1,11 @@
-'use client'
-
-import { useEffect, useState } from 'react'
-
-export function LastUpdated(props: { value: Date }) {
-	const [date, setDate] = useState<string | undefined>()
-
-	useEffect(() => {
-		setDate(props.value.toLocaleDateString())
-	}, [props.value])
-
+export function LastUpdated({ value }: { value: Date }) {
 	return (
-		<>{date !== undefined && <p className="text-sm text-fd-muted-foreground">Last updated on {date}.</p>}</>
+		<p className="text-sm text-fd-muted-foreground">
+			Last updated on{' '}
+			<time dateTime={value.toISOString()}>
+				{value.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+			</time>
+			.
+		</p>
 	)
 }
