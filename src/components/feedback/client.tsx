@@ -75,7 +75,7 @@ export function Feedback({
 			className="border-y py-3"
 		>
 			<div className="flex flex-row items-center gap-2">
-				<p className="pe-2 text-sm font-medium">Was this helpful?</p>
+				<p className="pe-2 text-sm font-medium">How was this page?</p>
 				<button
 					disabled={previous !== null}
 					className={cn(rateButtonVariants({ active: activeOpinion === 'good' }))}
