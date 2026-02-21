@@ -26,3 +26,28 @@ Since there is no Combat yet, combat-related keywords (such as <Assault /> or <S
 
 When the non-combat Showdown closes with units of two players still remaining, a Combat will be Staged (<Rule number="345.2.b" />) as part of a Cleanup (<Rule number="322.10" />).
 Once staged, a Combat (which includes its own Showdown) will open as usual, with the player who contested the battlefield first becoming the Attacker (<Rule number="345.2.b.1" />), not necessarily the one who moved in last.
+
+## When do Attack/Defend triggers happen? [#attack-defend-triggers]
+
+Attack and Defend triggered abilities (such as "When I attack" or "When I defend") trigger when a unit receives its Attacker or Defender designation, not necessarily at the start of combat.
+These designations are assigned during Cleanups (<Rule number="322.5" />), which means units don't need to be present at the beginning of combat to get their triggers.
+
+### Units can join combat late and still trigger
+
+If a unit is moved into a battlefield where combat is already in progress, it will receive the appropriate Attacker or Defender designation during the next Cleanup (<Rule number="322.5.a" />).
+When it receives this designation, any "When I attack" or "When I defend" abilities will trigger at that time.
+
+<Callout type="idea" title="Example">
+	Combat has started at a battlefield where you are the Attacker.
+	During the Showdown, you play [Ride the Wind](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--ogn-173-298) to move your [Draven, Vanquisher](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-020-221) (which reads "When I attack or defend, you may pay <Power type="fury" />. If you do, give me +2 Might this turn.") from your Base to that battlefield.
+	When the spell resolves and the subsequent Cleanup occurs, Draven gains the Attacker designation and his "When I attack" ability triggers.
+	You may pay <Power type="fury" /> to give him +2 Might, even though he wasn't there when combat started.
+</Callout>
+
+### Attack/Defend abilities only trigger once per combat
+
+Attack and Defend triggered abilities can only trigger once per combat, even if a unit gains and loses its designation multiple times (<Rule number="376.4.d.2.a" />, <Rule number="376.4.e.2.a" />).
+
+Once a unit has been assigned an Attacker or Defender designation during a combat, moving it away from the battlefield will cause it to lose that designation (<Rule number="322.5.c" />).
+If that unit is moved back to the same battlefield during the same combat, it will gain the same designation as its controller (<Rule number="322.5.a" />), which will be the same designation it previously had.
+However, its "When I attack" or "When I defend" ability will not trigger again, as these abilities can only be fulfilled once per combat.
