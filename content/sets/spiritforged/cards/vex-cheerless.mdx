@@ -1,0 +1,22 @@
+---
+title: "Vex, Cheerless"
+crdVersion: "1.2"
+galleryLink: "https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-146-221"
+authors:
+- "Near"
+---
+
+## Do opponents have to pay resources to play cards from Hidden while Vex is in combat? [#hidden-cost-increase]
+
+Yes.
+Cards played from Hidden by your opponents cost <Energy value={1} /><Power type="universal" /> when Vex is in combat.
+
+When a card with Hidden is played from its facedown state, it is played "ignoring its base cost" (<Rule number="737.1.b" />).
+During step 3 of playing a card ("Determine Total Cost"), the following happens in order:
+
+1. Set base costs to zero (<Rule number="353.1" />): If an ability or instruction allows you to "ignore" costs, set the base cost(s) to zero. Hidden cards played from facedown have their base cost set to <Energy value={0} />.
+2. Apply cost increases (<Rule number="353.3" />): Vex's ability increases enemy spell costs by <Energy value={1} /><Power type="universal" />. This is applied to the total cost even though the base cost is zero
+3. Apply discounts (<Rule number="353.4" />): No discounts apply in this scenario
+
+The total cost ends up being <Energy value={1} /><Power type="universal" /> because cost increases are applied after base costs are set to zero.
+
