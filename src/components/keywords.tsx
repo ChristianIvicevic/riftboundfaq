@@ -1,5 +1,5 @@
-import { cva, VariantProps } from 'class-variance-authority'
-import { ReactNode } from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
+import type { ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 
 const keywordVariants = cva(
@@ -16,6 +16,28 @@ const keywordVariants = cva(
 	},
 )
 
+type KeywordConfig = {
+	label: string
+	variant: Required<VariantProps<typeof keywordVariants>>['variant']
+	hasValue?: true
+}
+
+// Configuration object mapping keyword names to their properties
+const KEYWORD_CONFIG: Record<string, KeywordConfig> = {
+	Accelerate: { label: 'Accelerate', variant: 'primary' },
+	Action: { label: 'Action', variant: 'primary' },
+	Add: { label: 'Add', variant: 'tertiary' },
+	Assault: { label: 'Assault', variant: 'accent', hasValue: true },
+	Equip: { label: 'Equip', variant: 'tertiary' },
+	QuickDraw: { label: 'Quick-Draw', variant: 'primary' },
+	Reaction: { label: 'Reaction', variant: 'primary' },
+	Repeat: { label: 'Repeat', variant: 'primary' },
+	Shield: { label: 'Shield', variant: 'accent', hasValue: true },
+	Weaponmaster: { label: 'Weaponmaster', variant: 'tertiary' },
+}
+
+type KeywordName = keyof typeof KEYWORD_CONFIG
+
 function Keyword({
 	children,
 	variant,
@@ -23,42 +45,44 @@ function Keyword({
 	return <span className={cn(keywordVariants({ variant }))}>{children}</span>
 }
 
-export function Accelerate() {
-	return <Keyword variant="primary">Accelerate</Keyword>
+function createKeywordComponent(name: KeywordName) {
+	const config = KEYWORD_CONFIG[name]
+
+	if (config.hasValue) {
+		return function KeywordWithValue({ value }: { value?: number }) {
+			return (
+				<Keyword variant={config.variant}>
+					{config.label} {value}
+				</Keyword>
+			)
+		}
+	}
+
+	return function KeywordSimple() {
+		return <Keyword variant={config.variant}>{config.label}</Keyword>
+	}
 }
 
-export function Assault({ value }: { value?: number }) {
-	return <Keyword variant="accent">Assault {value}</Keyword>
-}
+const Accelerate = createKeywordComponent('Accelerate')
+const Action = createKeywordComponent('Action')
+const Add = createKeywordComponent('Add')
+const Assault = createKeywordComponent('Assault')
+const Equip = createKeywordComponent('Equip')
+const QuickDraw = createKeywordComponent('QuickDraw')
+const Reaction = createKeywordComponent('Reaction')
+const Repeat = createKeywordComponent('Repeat')
+const Shield = createKeywordComponent('Shield')
+const Weaponmaster = createKeywordComponent('Weaponmaster')
 
-export function Shield({ value }: { value?: number }) {
-	return <Keyword variant="accent">Shield {value}</Keyword>
-}
-
-export function Equip() {
-	return <Keyword variant="tertiary">Equip</Keyword>
-}
-
-export function QuickDraw() {
-	return <Keyword variant="primary">Quick-Draw</Keyword>
-}
-
-export function Weaponmaster() {
-	return <Keyword variant="tertiary">Weaponmaster</Keyword>
-}
-
-export function Repeat() {
-	return <Keyword variant="primary">Repeat</Keyword>
-}
-
-export function Add() {
-	return <Keyword variant="tertiary">Add</Keyword>
-}
-
-export function Action() {
-	return <Keyword variant="primary">Action</Keyword>
-}
-
-export function Reaction() {
-	return <Keyword variant="primary">Reaction</Keyword>
+export const KEYWORDS = {
+	Accelerate,
+	Action,
+	Add,
+	Assault,
+	Equip,
+	QuickDraw,
+	Reaction,
+	Repeat,
+	Shield,
+	Weaponmaster,
 }
