@@ -50,3 +50,7 @@ export function Weaponmaster() {
 export function Repeat() {
 	return <Keyword variant="primary">Repeat</Keyword>
 }
+
+export function Add() {
+	return <Keyword variant="tertiary">Add</Keyword>
+}
