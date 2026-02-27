@@ -20,3 +20,13 @@ During step 3 of playing a card ("Determine Total Cost"), the following happens 
 
 The total cost ends up being <Energy value={1} /><Power type="universal" /> because cost increases are applied after base costs are set to zero.
 
+## Does Vex reduce Deflect costs when you play spells? [#deflect-cost-reduction]
+
+Yes.
+Vex's cost reduction applies to <Deflect /> costs when you target an opponent's permanent with this keyword while she's in combat.
+
+<Deflect /> is a mandatory additional cost (<Rule number="353.2.a.2" />, <Rule number="735.1.d" />).
+When you play a spell or ability that targets an opponent's permanent with it, the <Deflect /> value is added to your total cost during "Apply additional costs" (<Rule number="353.2" />) when determining total cost.
+
+Vex's <Energy value={1} /><Power type="universal" /> discount is applied during "Apply discounts" (<Rule number="353.4" />), which comes after additional costs are applied.
+Discounts can reduce additional costs, including to 0 (<Rule number="353.4.d" />).
