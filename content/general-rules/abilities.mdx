@@ -6,6 +6,18 @@ authors:
 - "Near"
 ---
 
+## When do triggered abilities trigger? [#triggered-ability-timing]
+
+When their condition is met, triggered abilities go on the Chain immediately, regardless of whose turn it is (<Rule number="376.3" />, <Rule number="376.3.a" />).
+
+The <Reaction /> keyword is not required for this to work on an opponent's turn.
+Unlike spells and activated abilities which require <Reaction /> to be played outside your turn, triggered abilities are automatic and will trigger whenever their condition is met, on any player's turn.
+
+<Callout type="idea" title="Example">
+	[Blade Dancer](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-195-221) triggers when you choose a friendly unit.
+	This can happen on your opponent's turn, for example when you play a <Reaction /> spell that targets one of your own units.
+</Callout>
+
 ## Can I react to triggered and activated abilities? [#reacting-to-abilities]
 
 Yes, with one important exception: abilities that use the <Add /> keyword.

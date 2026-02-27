@@ -54,3 +54,11 @@ export function Repeat() {
 export function Add() {
 	return <Keyword variant="tertiary">Add</Keyword>
 }
+
+export function Action() {
+	return <Keyword variant="primary">Action</Keyword>
+}
+
+export function Reaction() {
+	return <Keyword variant="primary">Reaction</Keyword>
+}

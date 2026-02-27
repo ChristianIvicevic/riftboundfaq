@@ -10,10 +10,12 @@ import { CrdVersionProvider } from '@/components/crd-version'
 import { Feedback } from '@/components/feedback/client'
 import {
 	Accelerate,
+	Action,
 	Add,
 	Assault,
 	Equip,
 	QuickDraw,
+	Reaction,
 	Repeat,
 	Shield,
 	Weaponmaster,
@@ -63,6 +65,8 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 							Weaponmaster,
 							Repeat,
 							Add,
+							Action,
+							Reaction,
 						})}
 					/>
 				</CrdVersionProvider>
