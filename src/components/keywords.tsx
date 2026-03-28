@@ -30,6 +30,7 @@ const KEYWORD_CONFIG: Record<string, KeywordConfig> = {
 	Assault: { label: 'Assault', variant: 'accent', hasValue: true },
 	Deflect: { label: 'Deflect', variant: 'secondary', hasValue: true },
 	Equip: { label: 'Equip', variant: 'tertiary' },
+	Mighty: { label: 'Mighty', variant: 'tertiary' },
 	QuickDraw: { label: 'Quick-Draw', variant: 'primary' },
 	Reaction: { label: 'Reaction', variant: 'primary' },
 	Repeat: { label: 'Repeat', variant: 'primary' },
@@ -70,6 +71,7 @@ const Add = createKeywordComponent('Add')
 const Assault = createKeywordComponent('Assault')
 const Deflect = createKeywordComponent('Deflect')
 const Equip = createKeywordComponent('Equip')
+const Mighty = createKeywordComponent('Mighty')
 const QuickDraw = createKeywordComponent('QuickDraw')
 const Reaction = createKeywordComponent('Reaction')
 const Repeat = createKeywordComponent('Repeat')
@@ -83,6 +85,7 @@ export const KEYWORDS = {
 	Assault,
 	Deflect,
 	Equip,
+	Mighty,
 	QuickDraw,
 	Reaction,
 	Repeat,

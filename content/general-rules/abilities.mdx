@@ -25,6 +25,32 @@ Yes, with one important exception: abilities that use the <Add /> keyword.
 All triggered and activated abilities are placed on the chain (<Rule number="370.2" />, <Rule number="376.3" />).
 However, abilities that add resources resolve immediately when finalized, which means players do not receive priority to react to them (<Rule number="333.1.c" />, <Rule number="416.2.a" />).
 
+## How are additional conditions in triggered abilities evaluated? [#triggered-ability-if-conditions]
+
+It depends on where the condition appears in the ability's text.
+
+In Riftbound, the trigger condition is precisely the event that follows "When", "At", or "The [Nth] time" - including any qualifiers on that event, up to the first comma (<Rule number="376.2.a" />). Everything after that comma is the ability's Effect (<Rule number="376.2.b" />). "If" clauses that appear in the effect text are evaluated only on resolution, not when the trigger fires.
+
+Conditions before the comma are part of the trigger condition and must be satisfied for the ability to be placed on the chain at all. For example, [Sunken Temple](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-218-221) reads "When you conquer here with one or more <Mighty /> units, you may pay <Energy value={1} /> to draw 1." The requirement that the conquering units be <Mighty /> is embedded in the trigger condition; if no Mighty unit participated in the conquer, the ability does not trigger.
+
+"If" clauses after the comma are part of the Effect and are only checked when the ability resolves. The ability is placed on the chain as soon as the triggering event occurs, regardless of whether the "if" condition is currently satisfied (<Rule number="376.3" />). After it is placed on the chain, priority passes normally and both players may respond with <Reaction /> cards and abilities (<Rule number="376.3.a" />, <Rule number="312.2" />, <Rule number="312.2.c" />, <Rule number="312.2.d" />). Only when the ability resolves is the "if" condition evaluated; if it isn't met at that point, the ability does nothing.
+
+<Callout type="info">
+	Players familiar with Magic: The Gathering should note that Riftbound does not have an "intervening if" rule. The "if" clause is checked once - on resolution - and never at trigger time.
+</Callout>
+
+<Callout type="idea" title="Example">
+	[Gutter Palace](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--unl-088-219) reads "At the start of your Beginning Phase, if you have exactly 4 cards in hand and exactly 4 units at battlefields, you win the game."
+
+	The trigger condition is "at the start of your Beginning Phase" - the "if" clause comes after the comma and is part of the Effect. This ability triggers at the start of each of your Beginning Phases. After it is placed on the chain, both players may respond with <Reaction /> cards and abilities. The win condition is only checked when the ability resolves.
+</Callout>
+
+<Callout type="idea" title="Example">
+	[Grand Plaza](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--ogn-293-298) reads "When you hold here, if you have 7+ units here, you win the game."
+
+	The trigger condition is "when you hold here" - the "if" clause comes after the comma and is part of the Effect. This ability triggers whenever you hold Grand Plaza. After it is placed on the chain, both players may respond with <Reaction /> cards and abilities - for example, a unit with <Reaction /> could be played to reach 7 units before the ability resolves. The unit count is only checked on resolution.
+</Callout>
+
 ## When do I pay costs within instructions using "may"? [#costs-within-instructions]
 
 On resolution.
