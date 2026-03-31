@@ -1,6 +1,6 @@
 ---
 title: "Arcane Shift"
-crdVersion: "1.2"
+crdVersion: "1.3"
 galleryLink: "https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-200-221"
 authors:
 - "Near"
@@ -8,68 +8,20 @@ authors:
 
 ## Can I use Arcane Shift to banish my only unit at a battlefield and replay it there? [#replay-at-same-battlefield]
 
-Yes, but only if the battlefield has contested status when cleanup occurs.
-This most commonly happens when you're the defender during combat, but also applies in other contested scenarios.
+Yes, as long as you control the battlefield.
 
-The key is understanding when you choose where to play the banished unit and how contested status prevents the battlefield from becoming uncontrolled.
+When Arcane Shift resolves, the replayed unit sits on the chain as a pending item throughout the cleanup that follows.
+Because a chain exists, the turn is in a Closed State, and cleanup step 4 — which would make the battlefield uncontrolled — only applies during an Open State (<Rule number="323.6" />).
+The battlefield stays controlled, and when the pending unit is finalized you can choose to replay it there.
+Attackers cannot replay their unit to the attacking battlefield because they never control it in the first place.
 
 ### How Arcane Shift Resolves [#resolution-process]
 
 When Arcane Shift resolves, the following happens:
 
-1. "Banish a friendly unit" - the unit leaves the board and goes to banishment
-2. "then its owner plays it, ignoring its cost" - the unit goes on the chain as a pending item (<Rule number="351.3" />), but you don't choose where to play it yet
+1. "Banish a friendly unit" — the unit leaves the board
+2. "then its owner plays it, ignoring its cost" — the unit is added to the chain as a pending item (<Rule number="354.2" />), but its play process pauses while Arcane Shift continues resolving (<Rule number="354.3" />)
 3. "Deal 3 to an enemy unit" and "Banish this" both resolve
-4. Arcane Shift finishes resolving and a cleanup occurs
-5. Cleanup step 4 (<Rule number="322.6" />): Battlefields with no units and no contested status become uncontrolled
-6. Cleanup step 8 (<Rule number="322.12" />): The banished unit finalizes and you choose where to play it
-
-The critical timing: the battlefield's control status is determined in step 4, before you choose where to play the unit in step 8.
-
-### Contested status [#contested-status]
-
-The ability to replay to the same battlefield depends entirely on whether that battlefield has contested status during cleanup step 4.
-Contested status is applied when a unit moves to or is played to a battlefield not controlled by that unit's controller (<Rule number="184.3.a" />).
-
-During cleanup, battlefields with no units become uncontrolled unless they have contested status (<Rule number="322.6" />).
-Additionally, a defending player maintains control of a contested battlefield even while it's being contested (<Rule number="184.4.b" />).
-
-This means if the battlefield is contested when cleanup step 4 occurs, and you control it, the battlefield remains under your control and is a valid location to replay your unit in step 8.
-
-### As defender in combat [#as-defender]
-
-During combat, the battlefield has contested status, so cleanup step 4 does NOT make it uncontrolled.
-As the defender, you maintain control of the battlefield even while it's contested.
-When the unit finalizes in step 8, the battlefield is still controlled by you and is a valid location to replay your unit.
-
-However, attackers cannot replay their units to the battlefield because attackers never control the battlefield they're attacking in the first place.
-
-### Mid-showdown contested status [#mid-showdown-contested]
-
-Contested status can be applied to a battlefield you control even when you're not initially the defender.
-Here's how this works:
-
-Example scenario:
-1. You control Battlefield A with one unit
-2. An enemy contests an open Battlefield B, starting a showdown
-3. Mid-showdown, the enemy moves their unit from B to your Battlefield A
-4. This applies Contested status to A because the enemy doesn't control it (<Rule number="184.3.a.1" />) and stages combat there (<Rule number="322.10" />)
-
-You can use Arcane Shift to bounce and replay your unit to Battlefield A in this scenario because:
-
-- Battlefield A becomes contested while you control it (<Rule number="184.4.b" />)
-- The contested status prevents A from becoming uncontrolled during cleanup step 4
-- As long as Arcane Shift's damage doesn't kill the enemy unit (keeping contested status active), you maintain control
-- You can replay your unit to A in cleanup step 8
-
-Afterwards, Combat will be unstaged when only the enemy unit remains at A (<Rule number="322.11" />), then restaged when you replay your unit (<Rule number="322.10" />).
-However, the battlefield remains contested and under your control throughout.
-The enemy unit is still there, so the contested status persists until combat resolves or one side leaves.
-
-### When you cannot replay to the same battlefield [#cannot-replay]
-
-If the battlefield does not have contested status, cleanup step 4 makes the battlefield uncontrolled immediately (<Rule number="184.4.c" />).
-This happens when you're at a battlefield alone with no opponent units present, or outside of any contested scenario (no showdown, no combat).
-
-When the unit finalizes in step 8, the battlefield is no longer controlled by you and is not a valid location.
-You must replay the unit to your base or a different battlefield you control.
+4. Arcane Shift finishes resolving, queuing one or more cleanups as Outstanding Tasks
+5. **HOT** — the cleanups run; the pending unit keeps the chain alive, so the turn remains in a Closed State (<Rule number="309.1" />) and cleanup step 4 (<Rule number="323.6" />) does not fire
+6. **FEPR** — once all outstanding tasks are complete, the pending unit is finalized (<Rule number="335.2" />); you choose where to play it, and the battlefield is still under your control
