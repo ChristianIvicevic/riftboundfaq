@@ -1,6 +1,6 @@
 ---
 title: "Switcheroo"
-crdVersion: "1.2"
+crdVersion: "1.3"
 galleryLink: "https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-145-221"
 authors:
 - "Near"
@@ -12,7 +12,7 @@ Switcheroo doesn't actually swap Might values - it determines the difference in 
 Nothing more, nothing less.
 
 Despite the card reading "Swap the Might of two units at the same battlefield this turn," the game doesn't swap the values directly.
-Instead, Switcheroo uses the Swap action (<Rule number="420" />), which determines the difference between the two units' current Might values, then applies a -X modifier to the higher Might unit and a +X modifier to the lower Might unit.
+Instead, Switcheroo uses the Swap action (<Rule number="433" />), which determines the difference between the two units' current Might values, then applies a -X modifier to the higher Might unit and a +X modifier to the lower Might unit.
 
 Current Might means the unit's total Might including all active modifiers - equipment bonuses, battlefield passives, conditional abilities, and any other effects currently affecting it.
 The modifiers that Switcheroo applies persist until end of turn.
@@ -75,11 +75,11 @@ When equipment detaches or passives deactivate, only their specific bonus is rem
 Yes, but the unit treats its Might as 0 for game purposes while calculations still use the actual negative value.
 
 As shown in the previous examples, units can end up with negative Might when modifiers that contributed to their current Might at resolution time are later removed.
-The rules state that units with Might less than 0 treat it as 0 for all purposes (<Rule number="142.2.b" />).
+The rules state that units with Might less than 0 are treated as having 0 Might when referenced by spells and abilities, and when summing Might to be assigned as damage in the Combat Damage Step (<Rule number="143.2.b" />).
 This means the unit contributes 0 Might in combat and effects that reference the unit's Might see 0, but the underlying value is still negative for calculation purposes.
 
 Importantly, units with 0 or negative Might don't automatically die.
-Units are only killed during cleanup if they have non-zero damage marked on them equalling or exceeding their Might (<Rule number="322.4" />).
+Units are only killed during cleanup if they have non-zero damage marked on them equalling or exceeding their Might (<Rule number="323.5" />).
 A unit at -2 Might with no damage marked on it will survive - it just can't contribute to combat or defend itself effectively.
 
 If a unit later gains additional Might modifiers, they add to the actual negative value.
