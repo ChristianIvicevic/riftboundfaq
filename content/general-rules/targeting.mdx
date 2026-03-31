@@ -1,34 +1,34 @@
 ---
 title: "Targeting"
 description: "Commonly asked questions about targeting and what constitutes a target in Riftbound"
-crdVersion: "1.2"
+crdVersion: "1.3"
 authors:
 - "Near"
 ---
 
 ## What makes something a target? [#what-is-a-target]
 
-Any game object, player, or zone that a spell or ability chooses to affect is a target (<Rule number="352.6" />), and must be declared when putting that spell or ability on the chain (<Rule number="352.7" />).
+Any game object, player, or zone that a spell or ability chooses to affect is a target (<Rule number="355.7" />), and must be declared when putting that spell or ability on the chain (<Rule number="355.8" />).
 
-Card text rarely uses the word "target" or "choose" explicitly - most of the time targeting is implied, as in "Kill a unit" or "Move a friendly unit."
+Card text rarely uses the word "target" or "choose" explicitly — most of the time targeting is implied, as in "Kill a unit" or "Move a friendly unit."
 Abilities that reference "when you choose" a game object, such as [Irelia, Fervent Blade](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-057-221)'s "When you choose or ready me, give me +1 Might this turn," are specifically triggered when being targeted.
 
-When in doubt, assume it is a target - the list below covers the only situations where it is not:
+When in doubt, assume it is a target — the list below covers the only situations where it is not:
 
-- **It is in a private zone** (hand, deck, etc.) (<Rule number="352.10.a" />). e.g., "You may play a unit from your hand" does not target a unit - it merely lets you play one.
-- **It is only a location requirement for another target** (<Rule number="352.10.b" />). Words like "at a battlefield" narrow down which objects are valid targets; the battlefield itself is not a target - unless the effect lets you choose *which* of several battlefields to affect, as in "Kill all units at a battlefield."
-- **It is part of a trigger condition, cost, or replacement effect** (<Rule number="352.10.c" />, <Rule number="352.10.c.1" />). Objects referenced in "when X happens" conditions, payment costs (see also [When do I pay costs within instructions using "may"?](/general-rules/abilities#costs-within-instructions)), or "instead" effects are not targets. e.g., the dying unit in "When a friendly unit dies, kill a gear" is not a target - only the gear is.
-- **There is no real choice involved** (<Rule number="352.10.d" />). If an effect applies to every object meeting a description rather than a specific one you pick, nothing is targeted. e.g., "Kill all units at battlefields" targets nothing because you are not choosing among individual units.
-- **Another player makes the choice** (<Rule number="352.10.e" />). Targeting requires that *you* make the choice. e.g., "Each player kills a unit they control" does not target - each player picks their own unit when the spell resolves.
-- **The instruction uses "must"** (<Rule number="352.10.f" />). This signals the choice is made on resolution rather than upfront. e.g., "You must recycle one of your runes" does not target, whereas "Recycle a rune you control" does.
+- **It is in a private zone** (hand, deck, etc.) (<Rule number="355.10.a" />). e.g., "You may play a unit from your hand" does not target a unit — it merely lets you play one.
+- **It is only a location requirement for another target** (<Rule number="355.10.b" />). Words like "at a battlefield" narrow down which objects are valid targets; the battlefield itself is not a target — unless the effect lets you choose *which* of several battlefields to affect, as in "Kill all units at a battlefield."
+- **It is part of a trigger condition, cost, or replacement effect** (<Rule number="355.10.c" />, <Rule number="355.10.c.1" />). Objects referenced in "when X happens" conditions, payment costs (see also [When do I pay costs within instructions using "may"?](/general-rules/abilities#costs-within-instructions)), or "instead" effects are not targets. e.g., the dying unit in "When a friendly unit dies, kill a gear" is not a target — only the gear is.
+- **There is no real choice involved** (<Rule number="355.10.d" />). If an effect applies to every object meeting a description rather than a specific one you pick, nothing is targeted. e.g., "Kill all units at battlefields" targets nothing because you are not choosing among individual units.
+- **Another player makes the choice** (<Rule number="355.10.e" />). Targeting requires that *you* make the choice. e.g., "Each player kills a unit they control" does not target — each player picks their own unit when the spell resolves.
+- **The instruction uses "must"** (<Rule number="355.10.f" />). This signals the choice is made on resolution rather than upfront. e.g., "You must recycle one of your runes" does not target, whereas "Recycle a rune you control" does.
 
 ## Does "you may" mean I choose the target at resolution? [#may-targets-at-resolution]
 
 No.
 
-Targets are always declared when putting a spell or ability on the chain (<Rule number="352.7" />), not at resolution.
+Targets are always declared when putting a spell or ability on the chain (<Rule number="355.8" />), not at resolution.
 If a "you may" effect involves choosing a game object, that choice is still a target and must be declared upfront.
-The "you may" means the effect is optional - you can decline to complete it on resolution - but it does not defer when the target is declared.
+The "you may" means the effect or ability is optional — you can decline to complete it on resolution — but it does not defer when the target is declared.
 
 <Callout type="idea" title="Example">
 	[Relentless Pursuit](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-184-221) reads "Move a friendly unit. You may attach an Equipment with the same controller to it. This turn, that unit has 'When I conquer, you may move me to my base.'"
@@ -36,5 +36,5 @@ The "you may" means the effect is optional - you can decline to complete it on r
 	When playing this spell, you must immediately declare both targets: the friendly unit to move and an Equipment to attach.
 	You cannot wait until resolution to decide which Equipment to name, and you cannot put the spell on the chain without a valid Equipment target at all.
 
-	The "you may" only means you can decline to complete the attach when the spell resolves - it does not make the Equipment target optional.
+	The "you may" only means you can decline to complete the attach when the spell resolves — it does not make the Equipment target optional.
 </Callout>
