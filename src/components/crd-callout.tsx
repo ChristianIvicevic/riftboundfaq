@@ -6,8 +6,8 @@ export function CrdCallout({ crdVersion }: { crdVersion: string }) {
 		<Callout type={crdVersion === CURRENT_CRD_VERSION ? 'success' : 'error'}>
 			{crdVersion === CURRENT_CRD_VERSION ? (
 				<>
-					<strong>Up-to-date:</strong> This page references the current core rules document version (
-					{CURRENT_CRD_VERSION}).
+					<strong>Up-to-date:</strong> This page has been reviewed against the current core rules document
+					(version {CURRENT_CRD_VERSION}).
 				</>
 			) : (
 				<>
