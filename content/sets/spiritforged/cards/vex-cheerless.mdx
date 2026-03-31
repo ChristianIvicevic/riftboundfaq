@@ -1,6 +1,6 @@
 ---
 title: "Vex, Cheerless"
-crdVersion: "1.2"
+crdVersion: "1.3"
 galleryLink: "https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-146-221"
 authors:
 - "Near"
@@ -11,12 +11,12 @@ authors:
 Yes.
 Cards played from Hidden by your opponents cost <Energy value={1} /><Power type="universal" /> when Vex is in combat.
 
-When a card with Hidden is played from its facedown state, it is played "ignoring its base cost" (<Rule number="737.1.b" />).
+When a card with Hidden is played from its facedown state, it is played "ignoring its base cost" (<Rule number="811.1.b" />).
 During step 3 of playing a card ("Determine Total Cost"), the following happens in order:
 
-1. Set base costs to zero (<Rule number="353.1" />): If an ability or instruction allows you to "ignore" costs, set the base cost(s) to zero. Hidden cards played from facedown have their base cost set to <Energy value={0} />.
-2. Apply cost increases (<Rule number="353.3" />): Vex's ability increases enemy spell costs by <Energy value={1} /><Power type="universal" />. This is applied to the total cost even though the base cost is zero
-3. Apply discounts (<Rule number="353.4" />): No discounts apply in this scenario
+1. Set base costs to zero (<Rule number="356.1" />): If an ability or instruction allows you to "ignore" costs, set the base cost(s) to zero. Hidden cards played from facedown have their base cost set to <Energy value={0} />.
+2. Apply cost increases (<Rule number="356.3" />): Vex's ability increases enemy spell costs by <Energy value={1} /><Power type="universal" />. This is applied to the total cost even though the base cost is zero
+3. Apply discounts (<Rule number="356.4" />): No discounts apply in this scenario
 
 The total cost ends up being <Energy value={1} /><Power type="universal" /> because cost increases are applied after base costs are set to zero.
 
@@ -25,8 +25,8 @@ The total cost ends up being <Energy value={1} /><Power type="universal" /> beca
 Yes.
 Vex's cost reduction applies to <Deflect /> costs when you target an opponent's permanent with this keyword while she's in combat.
 
-<Deflect /> is a mandatory additional cost (<Rule number="353.2.a.2" />, <Rule number="735.1.d" />).
-When you play a spell or ability that targets an opponent's permanent with it, the <Deflect /> value is added to your total cost during "Apply additional costs" (<Rule number="353.2" />) when determining total cost.
+<Deflect /> is a mandatory additional cost (<Rule number="356.2.a.2" />, <Rule number="809.1.d" />).
+When you play a spell or ability that targets an opponent's permanent with it, the <Deflect /> value is added to your total cost during "Apply additional costs" (<Rule number="356.2" />) when determining total cost.
 
-Vex's <Energy value={1} /><Power type="universal" /> discount is applied during "Apply discounts" (<Rule number="353.4" />), which comes after additional costs are applied.
-Discounts can reduce additional costs, including to 0 (<Rule number="353.4.d" />).
+Vex's <Energy value={1} /><Power type="universal" /> discount is applied during "Apply discounts" (<Rule number="356.4" />), which comes after additional costs are applied.
+Discounts can reduce additional costs, including to 0 (<Rule number="356.4.f" />).
