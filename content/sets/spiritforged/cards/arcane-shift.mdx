@@ -11,7 +11,7 @@ authors:
 Yes, as long as you control the battlefield.
 
 When Arcane Shift resolves, the replayed unit sits on the chain as a pending item throughout the cleanup that follows.
-Because a chain exists, the turn is in a Closed State, and cleanup step 4 — which would make the battlefield uncontrolled — only applies during an Open State (<Rule number="323.6" />).
+Because a chain exists, the turn is in a closed state, and cleanup step 4 — which would make the battlefield uncontrolled — only applies during an open state (<Rule number="323.6" />).
 The battlefield stays controlled, and when the pending unit is finalized you can choose to replay it there.
 Attackers cannot replay their unit to the attacking battlefield because they never control it in the first place.
 
@@ -23,5 +23,5 @@ When Arcane Shift resolves, the following happens:
 2. "then its owner plays it, ignoring its cost" — the unit is added to the chain as a pending item (<Rule number="354.2" />), but its play process pauses while Arcane Shift continues resolving (<Rule number="354.3" />)
 3. "Deal 3 to an enemy unit" and "Banish this" both resolve
 4. Arcane Shift finishes resolving, queuing one or more cleanups as Outstanding Tasks
-5. **HOT** — the cleanups run; the pending unit keeps the chain alive, so the turn remains in a Closed State (<Rule number="309.1" />) and cleanup step 4 (<Rule number="323.6" />) does not fire
+5. **HOT** — the cleanups run; the pending unit keeps the chain alive, so the turn remains in a closed state (<Rule number="309.1" />) and cleanup step 4 (<Rule number="323.6" />) does not fire
 6. **FEPR** — once all outstanding tasks are complete, the pending unit is finalized (<Rule number="335.2" />); you choose where to play it, and the battlefield is still under your control

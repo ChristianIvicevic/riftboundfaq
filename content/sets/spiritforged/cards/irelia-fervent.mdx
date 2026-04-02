@@ -6,7 +6,7 @@ authors:
 - "Near"
 ---
 
-## If I target Irelia with a spell and that spell gets countered, does she still get +1 Might? [#choosing-happens-before-counter]
+## If I target Irelia with a spell and that spell gets countered, does she still get +1 might? [#choosing-happens-before-counter]
 
 Yes.
 
@@ -20,7 +20,7 @@ Countering the spell (<Rule number="425.1.a" />) only prevents the spell from re
 	[Blade Dancer](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-195-221) works the same way — her triggered ability ("When you choose a friendly unit, you may exhaust me and pay <Power type="universal" /> to ready it.") ends up on the chain before the original spell can be countered.
 </Callout>
 
-## Does Blade Dancer's ability trigger Irelia's +1 Might? [#blade-dancer]
+## Does Blade Dancer's ability trigger Irelia's +1 might? [#blade-dancer]
 
 Not from choosing — but she can still trigger from being readied if she was exhausted.
 
@@ -28,7 +28,7 @@ Not from choosing — but she can still trigger from being readied if she was ex
 "It" in "ready it" deterministically refers back to the unit already identified as Blade Dancer's trigger condition, with no separate choice made by the player.
 Irelia's ability can only trigger from Blade Dancer if she was exhausted and is readied by it — and only through the readying half of her ability, not the choosing half (<Rule number="415.1" />).
 
-## Does Irelia get +1 Might when she readies during the Awaken Step? [#readying-during-awaken-step]
+## Does Irelia get +1 might when she readies during the Awaken Step? [#readying-during-awaken-step]
 
 Yes, but only if she was exhausted and actually transitions to the ready state.
 
@@ -38,7 +38,7 @@ If Irelia was exhausted, she transitions to ready and her trigger fires.
 
 If she is already ready at the start of your turn, she cannot be readied again (<Rule number="415.1.a" />, <Rule number="415.1.b" />) — no readying event occurs and the trigger does not fire.
 
-## Does a Repeat spell targeting Irelia for both instructions give her +1 Might twice? [#repeat-targeting-twice]
+## Does a Repeat spell targeting Irelia for both instructions give her +1 might twice? [#repeat-targeting-twice]
 
 Yes.
 
@@ -51,5 +51,5 @@ Choosing Irelia for the first instruction and choosing her for the second are tw
 	As you make your choices for the spell, Irelia's ability triggers twice — once per choosing event — and both triggers go on the chain.
 	When her triggers resolve, she receives +1 and +1 from her own ability.
 	When the spell resolves, Irelia receives +2 and +2 from the spell's two instructions.
-	That's +6 Might total this turn.
+	That's +6 might total this turn.
 </Callout>
