@@ -8,7 +8,7 @@ authors:
 
 ## When do triggered abilities trigger? [#triggered-ability-timing]
 
-When their condition is met, triggered abilities go on the chain immediately, regardless of whose turn it is (<Rule number="383.3" />, <Rule number="383.3.c" />).
+When their condition is met, triggered abilities go on the chain immediately, regardless of whose turn it is.<Rule number="383.3" /><Rule number="383.3.c" />
 
 The <Reaction /> keyword is not required for this to work on an opponent's turn.
 Unlike spells and activated abilities which require <Reaction /> to be played outside your turn, triggered abilities are automatic and will trigger whenever their condition is met, on any player's turn.
@@ -22,22 +22,22 @@ Unlike spells and activated abilities which require <Reaction /> to be played ou
 
 Yes, with one important exception: abilities that use the <Add /> keyword.
 
-All triggered and activated abilities are placed on the chain (<Rule number="377.3" />, <Rule number="383.3" />).
-However, abilities that add resources resolve immediately when finalized, which means players do not receive priority to react to them (<Rule number="337.1.c" />, <Rule number="429.2.a" />).
+All triggered and activated abilities are placed on the chain.<Rule number="377.3" /><Rule number="383.3" />
+However, abilities that add resources resolve immediately when finalized, which means players do not receive priority to react to them.<Rule number="337.1.c" /><Rule number="429.2.a" />
 
 ## How are additional conditions in triggered abilities evaluated? [#triggered-ability-if-conditions]
 
 It depends on where the condition appears in the ability's text.
 
-In Riftbound, the trigger condition is precisely the event that follows "When", "At", or "The [Nth] time" — including any qualifiers on that event, up to the first comma (<Rule number="383.2.a" />).
-Everything after that comma is the ability's effect (<Rule number="383.2.b" />).
+In Riftbound, the trigger condition is precisely the event that follows "When", "At", or "The [Nth] time" — including any qualifiers on that event, up to the first comma.<Rule number="383.2.a" />
+Everything after that comma is the ability's effect.<Rule number="383.2.b" />
 
 Conditions before the comma are part of the trigger condition and must be satisfied for the ability to be placed on the chain at all.
 For example, [Sunken Temple](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-218-221) reads "When you conquer here with one or more <Mighty /> units, you may pay <Energy value={1} /> to draw 1."
 The requirement that the conquering units be <Mighty /> is embedded in the trigger condition; if no <Mighty /> unit participated in the conquer, the ability does not trigger.
 
 "If" clauses that immediately follow the trigger condition — as the first thing after the comma — are checked at trigger time.
-This is the "intervening if rule" (<Rule number="383.3.e" />): if the condition is not satisfied at the moment the triggering event occurs, the ability is never placed on the chain at all.
+This is the "intervening if rule": if the condition is not satisfied at the moment the triggering event occurs, the ability is never placed on the chain at all.<Rule number="383.3.e" />
 
 However, "if" clauses embedded within the effect text — coming after an effect instruction rather than immediately after the comma — are only checked on resolution.
 The ability goes on the chain regardless, and the condition is only evaluated when it resolves.
@@ -64,7 +64,7 @@ The ability goes on the chain regardless, and the condition is only evaluated wh
 At finalization — when placing the triggered ability on the chain.
 
 In rules text phrased as "[do X] to [do Y]," the [do X] part is considered a cost within instructions.
-For triggered abilities, this cost is treated as the base cost of the ability and must be paid in order to finalize it to the chain (<Rule number="383.3.b" />, <Rule number="383.3.b.1" />, <Rule number="742.1.b" />, <Rule number="403.1.b.1" />).
+For triggered abilities, this cost is treated as the base cost of the ability and must be paid in order to finalize it to the chain.<Rule number="383.3.b" /><Rule number="383.3.b.1" /><Rule number="742.1.b" /><Rule number="403.1.b.1" />
 If the controller declines to pay, the ability is not placed on the chain at all.
 
 <Callout type="idea" title="Example">

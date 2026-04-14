@@ -7,18 +7,21 @@ export function Rule({ number }: { number: string }) {
 	const { crdVersion } = use(CrdVersionContext)
 
 	if (!crdVersion) {
-		return <span>CR {number}</span>
+		return <sup className="text-nowrap">[{number}]</sup>
 	}
 
 	const urlFormattedVersion = crdVersion.replaceAll('.', '-')
 
 	return (
-		<a
-			href={`https://jeff425.github.io/hyperlinked-rb-cr/ver${urlFormattedVersion}.html#rule_${number}`}
-			rel="noopener noreferrer"
-			target="_blank"
-		>
-			CR {number}
-		</a>
+		<sup>
+			<a
+				href={`https://jeff425.github.io/hyperlinked-rb-cr/ver${urlFormattedVersion}.html#rule_${number}`}
+				rel="noopener noreferrer"
+				target="_blank"
+				className="text-nowrap no-underline"
+			>
+				[{number}]
+			</a>
+		</sup>
 	)
 }

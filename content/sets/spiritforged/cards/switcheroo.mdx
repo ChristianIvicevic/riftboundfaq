@@ -10,7 +10,7 @@ authors:
 
 Switcheroo does not swap might values directly — it determines the difference in current might at resolution and applies +X/-X modifiers accordingly.
 
-Switcheroo uses the Swap action (<Rule number="433" />), which calculates the difference between the two units' current might, then applies a -X modifier to the higher might unit and a +X modifier to the lower might unit.
+Switcheroo uses the Swap action,<Rule number="433" /> which calculates the difference between the two units' current might, then applies a -X modifier to the higher might unit and a +X modifier to the lower might unit.
 Current might means the unit's total might at resolution time, including all active modifiers: equipment bonuses, battlefield passives, conditional abilities, and any other effects.
 The modifiers Switcheroo applies persist until end of turn.
 
@@ -63,8 +63,8 @@ Each modifier is independent: when equipment detaches or a passive deactivates, 
 Yes, but the unit treats its might as 0 for game purposes while calculations still use the actual negative value.
 
 Units can end up with negative might when modifiers included in their current might at resolution are later removed.
-Units with might less than 0 are treated as having 0 might when referenced by spells and abilities, and when summing might to be assigned as damage in the Combat Damage Step (<Rule number="143.2.b" />).
-Units with 0 or negative might do not automatically die — units are only killed during cleanup if they have non-zero damage equal to or exceeding their might (<Rule number="323.5" />).
+Units with might less than 0 are treated as having 0 might when referenced by spells and abilities, and when summing might to be assigned as damage in the Combat Damage Step.<Rule number="143.2.b" />
+Units with 0 or negative might do not automatically die — units are only killed during cleanup if they have non-zero damage equal to or exceeding their might.<Rule number="323.5" />
 
 If a unit later gains additional might modifiers, they add to the actual negative value.
 
