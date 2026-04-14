@@ -1,0 +1,26 @@
+---
+title: "Akshan, Mischievous"
+crdVersion: "1.3"
+galleryLink: "https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-109-221"
+authors:
+- "Near"
+---
+
+## Your opponent plays their own Akshan and steals back the gear you took with your Akshan. What happens when one or both Akshans die? [#dual-akshan-control]
+
+Whichever Akshan was played most recently determines control of the gear for as long as it remains on the board.
+
+Both Akshans generate a continuous effect that changes the gear's controller — an inherent trait of every game object (<Rule number="472.1" />, <Rule number="472.1.a" />).
+Since both effects operate in the same layer and neither depends on the other (<Rule number="473" />), they are ordered by timestamp: the earliest-established effect applies first, and the most recently established effect applies last, winning out (<Rule number="475" />, <Rule number="475.3" />).
+Your opponent's Akshan was played after yours, so it carries the later timestamp — its control effect is the final one applied, and your opponent controls the gear.
+
+When an Akshan leaves the board, its "until I leave the board" duration ends and its control effect ceases immediately.
+The remaining effects are then re-evaluated in timestamp order:
+
+- **Your opponent's Akshan dies**: their effect ceases.
+Only your Akshan's effect remains, giving you control of the gear.
+- **Your Akshan dies**: your effect ceases.
+Your opponent's Akshan's effect was already the deciding one — they continue to control the gear unchanged.
+- **Both Akshans die**: both effects cease.
+Control reverts to your opponent, since it was their gear to begin with.
+If the gear is unattached and now finds itself in a base it doesn't belong to, it will be recalled to your opponent's base during the next cleanup.
