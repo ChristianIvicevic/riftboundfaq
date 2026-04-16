@@ -65,30 +65,6 @@ function createKeywordComponent(name: KeywordName) {
 	}
 }
 
-const Accelerate = createKeywordComponent('Accelerate')
-const Action = createKeywordComponent('Action')
-const Add = createKeywordComponent('Add')
-const Assault = createKeywordComponent('Assault')
-const Deflect = createKeywordComponent('Deflect')
-const Equip = createKeywordComponent('Equip')
-const Mighty = createKeywordComponent('Mighty')
-const QuickDraw = createKeywordComponent('QuickDraw')
-const Reaction = createKeywordComponent('Reaction')
-const Repeat = createKeywordComponent('Repeat')
-const Shield = createKeywordComponent('Shield')
-const Weaponmaster = createKeywordComponent('Weaponmaster')
-
-export const KEYWORDS = {
-	Accelerate,
-	Action,
-	Add,
-	Assault,
-	Deflect,
-	Equip,
-	Mighty,
-	QuickDraw,
-	Reaction,
-	Repeat,
-	Shield,
-	Weaponmaster,
-}
+export const KEYWORDS = Object.fromEntries(
+	(Object.keys(KEYWORD_CONFIG) as KeywordName[]).map((name) => [name, createKeywordComponent(name)]),
+) as { [K in KeywordName]: ReturnType<typeof createKeywordComponent> }
