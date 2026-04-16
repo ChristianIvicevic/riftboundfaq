@@ -17,14 +17,17 @@ Beyond that, Bone Skewer never targets the chosen unit in the first place — ca
 
 Yes.
 
-Bone Skewer reduces all costs to 0, but the opponent may still declare their intention to pay an optional additional cost.
-Discounts can reduce additional costs all the way to 0,<Rule number="356.4.f" /> so when a game effect has already done so, that declaration is sufficient — an optional additional cost is considered paid based on the decision to pay, not the amount actually spent.<Rule number="356.4.f.1" />
-Any conditional effect tied to "if you paid the additional cost" is therefore satisfied.
+The phrase "any and all costs" in Bone Skewer's text is intentionally broader than the standard "ignoring its cost" wording.
+Standard cost-ignoring only zeroes out a card's base Energy and Power costs,<Rule number="356.1.b.1" /> but "any and all" extends that to additional costs as well.
+Despite this, the opponent may still declare their intention to pay an optional additional cost during step 2 of playing the card — the decision to pay is made before costs are determined.
+Once declared, that additional cost is itself subject to "any and all costs" and is therefore already 0 when it comes time to pay.<Rule number="356.4.f" />
+An optional additional cost is considered paid based on the decision to pay, not the amount actually spent,<Rule number="356.4.f.1" /> so the condition is fully satisfied.
+Any conditional effect tied to "if you paid the additional cost" therefore triggers normally.
 
 <Callout type="idea" title="Example">
 	You play Bone Skewer and choose [Nami, Headstrong](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--unl-052-219) from your opponent's hand.
-	Your opponent plays Nami to the chosen battlefield, ignoring all costs.
-	They declare their intention to pay the additional cost of <Power type="calm" />.
-	Bone Skewer has already reduced that cost to 0, so nothing is actually paid — but because they chose to pay it, the condition is met.
+	Your opponent is instructed to play Nami to the chosen battlefield, ignoring any and all costs.
+	As part of that process, they declare their intention to pay the optional additional cost of <Power type="calm" />.
+	That cost is already 0, so nothing is actually paid — but because they chose to pay it, the condition is met.
 	Nami's triggered ability fires, stunning an enemy unit.
 </Callout>
