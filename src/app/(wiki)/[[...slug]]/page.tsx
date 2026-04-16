@@ -10,7 +10,7 @@ import { CrdVersionProvider } from '@/components/crd-version'
 import { Feedback } from '@/components/feedback/client'
 import { KEYWORDS } from '@/components/keywords'
 import { LastUpdated } from '@/components/last-updated'
-import { Energy, Power } from '@/components/resources'
+import { Energy, RUNES, Universal } from '@/components/resources'
 import { Rule } from '@/components/rule'
 import { baseUrl } from '@/lib/metadata'
 import { getPageImage, source } from '@/lib/source'
@@ -45,7 +45,8 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 							a: createRelativeLink(source, page),
 							Rule,
 							Energy,
-							Power,
+							Universal,
+							...RUNES,
 							...KEYWORDS,
 						})}
 					/>
