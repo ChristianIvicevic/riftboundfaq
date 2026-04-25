@@ -35,6 +35,7 @@ const KEYWORD_CONFIG: Record<string, KeywordConfig> = {
 	Reaction: { label: 'Reaction', variant: 'primary' },
 	Repeat: { label: 'Repeat', variant: 'primary' },
 	Shield: { label: 'Shield', variant: 'accent', hasValue: true },
+	Stun: { label: 'Stun', variant: 'tertiary' },
 	Weaponmaster: { label: 'Weaponmaster', variant: 'tertiary' },
 }
 

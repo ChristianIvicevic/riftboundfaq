@@ -31,3 +31,14 @@ Any conditional effect tied to "if you paid the additional cost" therefore trigg
 	That cost is already 0, so nothing is actually paid — but because they chose to pay it, the condition is met.
 	Nami's triggered ability fires, stunning an enemy unit.
 </Callout>
+
+## Can targeting protection prevent the stun from Bone Skewer? [#stun-targeting]
+
+No, as the unit to be stunned is determined automatically, not chosen, so no targeting occurs.
+
+When Bone Skewer's triggered ability fires — "When they do, <Stun /> it" — the "it" refers unambiguously to the unit the opponent just played as a result of Bone Skewer's effect.
+No choice is ever made about which unit is stunned; it is always and only that unit.
+Because the unit is programmatically determined rather than chosen, it is not a target.<Rule number="355.10.d" />
+
+This means targeting protection — such as "I can't be chosen by enemy spells and abilities," as seen on [Ruin Runner](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-105-221) and [Baron Nashor](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--unl-147-219) — does not prevent the stun.
+<Deflect /> is similarly irrelevant, since <Deflect /> is only added as a cost when a spell or ability chooses an opponent's permanent,<Rule number="809.1.d" /> which is not the case here.
