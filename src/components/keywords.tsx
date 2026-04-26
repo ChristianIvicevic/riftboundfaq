@@ -28,6 +28,7 @@ const KEYWORD_CONFIG: Record<string, KeywordConfig> = {
 	Action: { label: 'Action', variant: 'primary' },
 	Add: { label: 'Add', variant: 'tertiary' },
 	Assault: { label: 'Assault', variant: 'accent', hasValue: true },
+	Deathknell: { label: 'Deathknell', variant: 'secondary' },
 	Deflect: { label: 'Deflect', variant: 'secondary', hasValue: true },
 	Equip: { label: 'Equip', variant: 'tertiary' },
 	Mighty: { label: 'Mighty', variant: 'tertiary' },
