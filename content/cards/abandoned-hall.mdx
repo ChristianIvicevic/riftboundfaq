@@ -21,3 +21,22 @@ No, as the unit is no longer at Abandoned Hall by the time the trigger fires.
 For the same reason as above, Abandoned Hall's trigger is evaluated after the spell has fully resolved.<Rule number="350.1" /><Rule number="383.2.c" />
 A unit that was moved away from Abandoned Hall as part of that spell's instructions is already gone when the condition is checked.
 It no longer qualifies as "a unit they control here" and cannot be chosen.
+
+## Can a unit replayed here by a spell be chosen by Abandoned Hall's triggered ability? [#flicker-replay]
+
+Yes.
+Spells like [Arcane Shift](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-200-221) and [Thrill of the Hunt](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--unl-184-219) add the unit to the chain as a pending item during their own resolution, pausing its play process while the spell continues.<Rule number="354.2" /><Rule number="354.3" />
+Abandoned Hall's triggered ability does not fire until the spell has been fully played,<Rule number="350.1" /> so it is appended to the chain after the unit.<Rule number="383.2.c" />
+Because pending items are finalized in the order they were appended,<Rule number="337.1.b" /> the unit is finalized and placed on the board first — resolving immediately on finalization<Rule number="337.1.c" /> — before the triggered ability's target is chosen.
+By that point the unit is already present at Abandoned Hall and is a valid choice for the buff.
+
+### Resolution Sequence [#flicker-replay-resolution]
+
+Taking [Arcane Shift](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-200-221) as an example:
+
+1. "Banish a friendly unit" — the unit leaves the board
+2. "then its owner plays it, ignoring its cost" — the unit is added to the chain as a pending item,<Rule number="354.2" /> but its play process pauses while Arcane Shift continues resolving<Rule number="354.3" />
+3. Arcane Shift finishes resolving and is banished; the spell is now fully played<Rule number="350.1" />
+4. **HOT** — cleanups run; Abandoned Hall's trigger condition is evaluated after the spell was processed<Rule number="383.2.c" /> and the triggered ability is appended to the chain as a pending item, after the unit
+5. **FEPR** — pending items are finalized in the order they were appended;<Rule number="337.1.b" /> the unit comes first, resolves immediately upon finalization,<Rule number="337.1.c" /> and is placed at Abandoned Hall
+6. Abandoned Hall's triggered ability is finalized next; you choose a target — the replayed unit is now present here and is a valid choice
