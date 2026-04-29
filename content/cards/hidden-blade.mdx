@@ -10,25 +10,27 @@ authors:
 
 Yes, as long as the target is still legal when Hidden Blade resolves.
 
-Hidden Blade's draw instruction checks "its controller" — information about the target.
-Because the target is still legal when Hidden Blade resolves, that information is accessible and the draw executes normally, regardless of whether the kill succeeded.<Rule number="359.3.e.12.a" />
+The phrase "its controller" is a referent — information drawn from the target, recognised by the word "its".<Rule number="359.3.f.1" />
+Referents are checked at the moment the instruction executes, not when the spell was played.<Rule number="359.3.f.2" />
+Because the target is still legal when Hidden Blade resolves, the referent is accessible and the draw executes, regardless of whether the kill succeeded.<Rule number="359.3.e.12.a" />
 
 <Callout type="idea" title="Example">
 	You play Hidden Blade targeting an opponent's unit.
 	They respond with [Zhonya's Hourglass](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--ogn-077-298), which replaces the unit's death.
-	The unit is not killed, but because it was still a legal target when Hidden Blade resolved, the opponent still draws 2.
+	The unit is not killed. Because it was still a legal target when Hidden Blade resolved, the opponent draws 2.
 </Callout>
 
 ## Does the controller draw if the target becomes illegal? [#draw-if-illegal]
 
-No, as an illegal target is entirely unaffected by the spell, and the draw is no exception.
+No.
+An illegal target is entirely unaffected by the spell, and the draw is no exception.
 
 An illegal target is unaffected by the spell as it resolves.<Rule number="359.3.e.5" />
-Hidden Blade's draw instruction checks "its controller" — information about the target — but because the target is now illegal, that check returns null and the draw is ignored as well.<Rule number="359.3.e.12" />
+The phrase "its controller" is a referent — information drawn from the target — and because the target is now illegal, that referent returns null and the draw is ignored.<Rule number="359.3.f.1" /><Rule number="359.3.f.2" /><Rule number="359.3.e.12" />
 
 <Callout type="idea" title="Example">
 	You play Hidden Blade targeting an opponent's unit at a battlefield.
 	They respond by moving it to their base using [Flash](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--ogs-011-024).
-	Hidden Blade resolves, but the unit is no longer at a battlefield, making it an illegal target.
+	Hidden Blade resolves. The unit is no longer at a battlefield, so it is an illegal target.
 	The unit is not killed and the opponent does not draw.
 </Callout>
