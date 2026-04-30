@@ -1,0 +1,56 @@
+---
+title: "Alpha Strike"
+crdVersion: "1.3"
+galleryLink: "https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--unl-192-219"
+authors:
+- "Near"
+---
+
+## How are targets chosen when playing Alpha Strike? [#targeting]
+
+When finalising Alpha Strike on the chain, you declare two groups of targets:
+
+1. The friendly unit — chosen explicitly as a standard target.
+2. Up to N enemy units at battlefields, where N equals the chosen friendly unit's current might at the moment of finalization.<Rule number="355.14.a" /><Rule number="355.14.b" /><Rule number="355.14.c" />
+Each chosen enemy unit is a target. You may choose fewer than N, including zero.<Rule number="355.13" />
+
+All choices are locked in at finalization and cannot be changed after this step.<Rule number="355.15" />
+
+<Callout type="idea" title="Example">
+	You play Alpha Strike and choose a friendly unit with 4 might.
+	You may then choose up to 4 enemy units at battlefields as the split targets.
+	You choose 3.
+	Those 3 units — and the friendly unit — are all locked in as targets.
+</Callout>
+
+## When is the damage distribution decided? [#split-distribution]
+
+The distribution of damage across the chosen enemy units is decided at resolution, not at finalization.<Rule number="355.14.e" />
+
+The total damage available equals the friendly unit's effective might when Alpha Strike resolves — meaning any <Reaction /> speed buffs or debuffs applied by either player between finalization and resolution will affect the damage pool.
+
+Each chosen target must receive at least 1 damage.<Rule number="355.14.f" /><Rule number="355.14.g" />
+Beyond that minimum, you are free to assign as much damage as you like to any target, as long as the total does not exceed the friendly unit's might and every target receives at least 1.
+
+<Callout type="idea" title="Example">
+	You chose 3 enemy units at finalization.
+	When Alpha Strike resolves, your friendly unit has 6 might.
+	You must assign at least 1 damage to each of the 3 targets.
+	The remaining 3 damage can go wherever you choose — 4/1/1, 2/2/2, 1/1/4, and so on.
+</Callout>
+
+## What if my unit's might is reduced before Alpha Strike resolves? [#might-reduction]
+
+If the friendly unit's might is reduced between finalization and resolution, the total damage pool shrinks accordingly.
+If the reduced might is now less than the number of chosen enemy unit targets, there is no longer enough damage to assign at least 1 to every target.
+In that case, you choose which targets to drop until the number of remaining targets is no greater than the friendly unit's current might.<Rule number="355.14.h" />
+
+Any effects that triggered as a result of those units being chosen as targets have already happened and are unaffected by the removal.<Rule number="355.14.i" />
+
+<Callout type="idea" title="Example">
+	You chose 5 enemy units, targeting your friendly unit with 5 might.
+	Before Alpha Strike resolves, your opponent plays a <Reaction /> spell that reduces your unit's might by 2, leaving it at 3 might.
+	You now have only 3 damage to distribute but 5 targets.
+	You must drop 2 targets of your choice.
+	The remaining 3 targets each receive at least 1 of the 3 available damage.
+</Callout>
