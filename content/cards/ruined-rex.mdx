@@ -1,0 +1,21 @@
+---
+title: "Ruined Rex"
+crdVersion: "1.3"
+galleryLink: "https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--unl-067-219"
+authors:
+- "Near"
+---
+
+## Does Ruined Rex's Deathknell deal damage before or after units are healed at the end of combat? [#heal-timing]
+
+After.
+The combat heal is part of the same cleanup that queues the trigger, and the trigger does not resolve until that cleanup has run to completion.
+
+When Ruined Rex dies with lethal damage during a combat cleanup, the steps run in this order:
+
+1. **Step 3a** — Ruined Rex's <Deathknell /> trigger is added to the chain as a pending item.<Rule number="323.4" /><Rule number="808.1.d.2" />
+2. **Step 3b** — Ruined Rex is moved to the trash.<Rule number="323.5" />
+3. **Step 3c** — All units are healed. This step is inserted by the combat special cleanup.<Rule number="461.1.a.1" />
+
+The pending trigger does not begin finalization until the cleanup task is complete.<Rule number="335" />
+Only then does it enter the FEPR process, get finalized (targets chosen), and resolve — dealing 4 damage to the chosen enemy unit.
