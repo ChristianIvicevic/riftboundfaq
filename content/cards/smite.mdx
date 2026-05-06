@@ -1,0 +1,23 @@
+---
+title: "Smite"
+crdVersion: "1.3"
+galleryLink: "https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--unl-007-219"
+authors:
+- "Christian I. (Near)"
+---
+
+## How does Smite interact with death-saving effects like Guardian Angel, Zhonya's Hourglass, or Tactical Retreat? [#death-saving-replacement-effects]
+
+Death-saving effects can prevent the banish, because the unit's owner decides which replacement effect applies first and can apply their protective effect before Smite's.
+
+Smite's "if it would die this turn, banish it instead" is a replacement effect.<Rule number="369.1" />
+So are each of the three protective effects, which all replace the event of a unit dying.
+When multiple replacement effects apply to the same event, the owner of the affected unit decides the order they apply.<Rule number="372" />
+
+If the unit's owner applies their protective effect first, the death event is fully replaced — the unit is healed, exhausted, and recalled, or an equipment dies in its place.
+A replacement effect can only be applied once to an event, and to any events that replace it;<Rule number="370.2" /> once the death event has been consumed, Smite's replacement effect has no qualifying event left to intercept, and the unit is not banished.
+
+Conversely, if Smite's effect is applied first, the unit is banished.
+The protective effects each replace a "die" event — since banishment is not a subset of dying,<Rule number="427.2.a" /> none of them can chain onto the resulting "banish" event.
+That said, a unit's owner would never choose this order if their intent is to save it, so Smite effectively cannot banish a unit that has a death-saving effect protecting it.
+
