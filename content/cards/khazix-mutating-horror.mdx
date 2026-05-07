@@ -1,0 +1,27 @@
+---
+title: "Kha'Zix, Mutating Horror"
+crdVersion: "1.3"
+galleryLink: "https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--unl-143-219"
+authors:
+- "Christian I. (Near)"
+---
+
+## Can an opponent play a unit in reaction to Kha'Zix's trigger to prevent the effect? [#reaction-unit]
+
+No.
+Once Kha'Zix's ability is on the chain, adding more units cannot prevent it from resolving.
+
+Kha'Zix's ability reads "When I attack or defend, if an enemy unit is alone here, give me +2 Might this turn and gain 2 XP."
+The "if" clause immediately follows the trigger condition, making it an intervening if.<Rule number="383.3.e" />
+This means the condition is evaluated exactly once — at the moment Kha'Zix gains the attacker or defender designation — and must be true at that moment for the ability to be placed on the chain at all.<Rule number="383.4.e.2.b" /><Rule number="383.4.f.2.b" />
+
+If the enemy unit is alone when that designation is gained, the ability goes on the chain immediately.
+The condition is not re-evaluated on resolution, so an opponent playing an additional unit as a reaction cannot remove the ability from the chain or prevent Kha'Zix from gaining the +2 Might and the 2 XP.
+
+Note also that the reverse is true: if a second enemy unit is already present when Kha'Zix gains its designation, the condition fails and the ability is never placed on the chain, even if that second unit is later removed before the combat damage step.
+
+<Callout type="info" title="Contrast: if the condition were at the end">
+	If Kha'Zix instead read "When I attack or defend, give me +2 Might this turn and gain 2 XP if an enemy unit is alone here," the "if" clause would come after the effect instruction rather than immediately after the trigger condition.
+	In that case it would not be an intervening if: the ability would go on the chain whenever Kha'Zix attacks or defends, regardless of whether an enemy unit is alone, and the condition would only be evaluated when it resolves.
+	An opponent could then play a unit at reaction speed to ensure two units are present at resolution, preventing the +2 Might and the 2 XP.
+</Callout>
