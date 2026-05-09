@@ -27,6 +27,7 @@ const KEYWORD_CONFIG: Record<string, KeywordConfig> = {
 	Accelerate: { label: 'Accelerate', variant: 'primary' },
 	Action: { label: 'Action', variant: 'primary' },
 	Add: { label: 'Add', variant: 'tertiary' },
+	Ambush: { label: 'Ambush', variant: 'primary' },
 	Assault: { label: 'Assault', variant: 'accent', hasValue: true },
 	Deathknell: { label: 'Deathknell', variant: 'secondary' },
 	Deflect: { label: 'Deflect', variant: 'secondary', hasValue: true },

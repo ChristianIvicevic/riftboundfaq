@@ -1,0 +1,36 @@
+---
+title: "Ambush"
+crdVersion: "1.3"
+authors:
+- "Christian I. (Near)"
+---
+
+## Can I use Ambush to play a unit to my base? [#ambush-base]
+
+No.
+<Ambush /> only permits playing a unit to a battlefield; it has no effect on your base.
+
+<Ambush /> is shorthand for "I may be played to a battlefield where you control units" and "I have <Reaction /> as long as I'm being played to a battlefield where you control units."<Rule number="822.1.b" />
+The permission <Ambush /> grants is strictly limited to battlefields — a base is not a battlefield, so <Ambush /> never makes it a valid destination.<Rule number="822.1.c" />
+Playing a unit to your base is already permitted by the default rules for valid locations<Rule number="355.2.a" /> and carries no timing restriction — the distinctive benefit <Ambush /> provides is <Reaction />, but that only applies when playing to a battlefield.
+
+## Can opponents react to a unit being played with Ambush? [#ambush-no-reaction-window]
+
+No.
+<Ambush /> grants the unit <Reaction /> speed, which determines when it can be played — it does not create a window for opponents to respond before the unit enters.
+
+Units resolve the moment they are finalized without entering the Execute step,<Rule number="337.1.c" /> and finalization does not pass priority.<Rule number="337.1.a" />
+The unit enters the board immediately, just as any unit played during an Open State would (see also [Can I react to units being played?](/general-rules/chain-and-priority#reacting-to-units)).
+
+This is a common point of confusion with cards like [Kha'Zix, Mutating Horror](/cards/khazix-mutating-horror), which has <Ambush /> and triggers if an enemy unit is alone when he attacks or defends.
+An opponent cannot play a unit in response to Kha'Zix being placed on the chain in an attempt to break the "alone" condition before he enters.
+
+## Who gets to act after I Ambush a unit during a showdown? [#ambush-showdown-focus]
+
+It depends on whether anything else remains on the chain once the unit enters.
+
+When played onto an empty chain, the unit enters immediately, the chain empties, and the turn returns to a Showdown Open State — focus passes to the next player in turn order.<Rule number="337.1.c.1.a" />
+This catches many players off guard — you move in to attack, <Ambush /> a unit, and expect to retain focus, but your opponent gets to act first.
+
+When played in response to something already on the chain — such as attack or defend triggers, or a spell — the turn does not return to an Open State after the unit resolves, so focus does not pass.<Rule number="346" />
+Priority instead passes to the controller of the newest remaining item on the chain.<Rule number="337.1.c.3" />
