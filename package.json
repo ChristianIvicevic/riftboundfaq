@@ -22,7 +22,7 @@
 		"@vercel/speed-insights": "2.0.0",
 		"class-variance-authority": "0.7.1",
 		"fumadocs-core": "16.8.8",
-		"fumadocs-mdx": "14.3.2",
+		"fumadocs-mdx": "15.0.0",
 		"fumadocs-ui": "16.8.8",
 		"lucide-react": "1.14.0",
 		"next": "16.2.6",
