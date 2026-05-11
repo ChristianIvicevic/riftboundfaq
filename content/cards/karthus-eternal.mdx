@@ -19,3 +19,12 @@ In the cleanup case this ordering is enforced explicitly: step 3a queues all <De
 	Your opponent plays [The Ruination](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--unl-180-219), which kills all units.
 	Both are sent to the trash, but not before Karthus's ability doubles the <Deathknell /> trigger.
 </Callout>
+
+## Does a single Not So Fast counter both Deathknell triggers when Karthus is on the board? [#not-so-fast]
+
+No — Karthus places two separate trigger instances on the chain, and [Not So Fast](https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-045-221) can only counter one of them at a time.
+
+When a friendly unit with <Deathknell /> dies while Karthus is on the board, his ability causes that <Deathknell /> to trigger an additional time.
+Each trigger is added to the chain as its own independent pending item.<Rule number="808.1.d.2" />
+Not So Fast counters a single spell or ability, so one copy intercepts only one of the two triggers; the other resolves normally.
+Stopping both requires two copies of Not So Fast.
