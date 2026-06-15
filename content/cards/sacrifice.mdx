@@ -1,0 +1,31 @@
+---
+title: "Sacrifice"
+crdVersion: "1.3"
+galleryLink: "https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--unl-173-219"
+authors:
+  - "Christian I. (Near)"
+---
+
+## Does the Deathknell of the unit killed as the cost resolve before Sacrifice draws and channels? [#deathknell]
+
+Yes.
+The kill is a non-standard additional cost, not a resolution instruction, so it happens during finalization.
+That puts the <Deathknell /> on top of Sacrifice on the chain, where it resolves first.
+
+The opening line of Sacrifice — "as an additional cost to play this, kill a friendly <Mighty /> unit" — is a cost, not a line of rules text that executes on resolution.<Rule number="356.6" />
+Costs are paid in step 4 of the play process, before Sacrifice has even finished being finalized.<Rule number="357.2" />
+
+When a unit with <Deathknell /> is killed to pay that cost in step 4, its <Deathknell /> ability is added to the chain as a pending item before the unit moves to the trash.<Rule number="428.1.a.1.b" /><Rule number="808.1.d.2" />
+At this point the chain holds two pending items: the <Deathknell /> above, and Sacrifice below, still mid-finalization.
+
+Sacrifice then continues through step 5 (legality check) and step 6, becoming a finalized chain item.<Rule number="359.3.a" />
+Because the <Deathknell /> is still a pending item at that point, it completes its own finalization steps before play proceeds.<Rule number="359.3.b" />
+
+Once both items are finalized, the chain resolves from the top down.
+The <Deathknell /> was added last, sits on top, and resolves first.
+Only after it fully resolves does Sacrifice resolve — drawing 2 and channeling 1 rune exhausted.
+
+<Callout type="idea" title="Example">
+  You kill <Card name="Rift Herald" />, whose <Deathknell /> reads "Play a unit from your hand to your base, ignoring its Energy cost," to pay Sacrifice's cost.
+  The <Deathknell /> resolves first — you play a free unit from your pre-draw hand — then Sacrifice resolves and you draw 2 and channel 1 rune exhausted.
+</Callout>
