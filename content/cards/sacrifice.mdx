@@ -15,6 +15,17 @@ A countered spell does nothing and is not considered to have been played.<Rule n
 Countering does not refund any costs paid to play a card, including additional costs.<Rule number="425.1.c" /><Rule number="425.1.c.1" />
 That cost is paid before the spell resolves, so the killed unit is not returned.
 
+## Can my opponent interact before the chosen Mighty unit is killed? [#interaction]
+
+No.
+The unit is not a target, and finalization does not pass priority, leaving no window to react to either the choice or the kill.
+
+The unit killed as a cost is not a target — objects referenced as part of a cost are explicitly excluded from targeting.<Rule number="355.10.c" />
+
+Costs are paid during step 4 of finalization, and finalization does not pass priority.<Rule number="357.2" /><Rule number="337.1.a" />
+An opponent cannot play a spell like <Card name="Stupefy" /> — which reads "Give a unit -1 Might this turn, to a minimum of 1 Might" — to reduce the unit's Might and make it no longer <Mighty /> before the cost is paid.
+The first opportunity for either player to act is after Sacrifice is fully finalized, by which point the cost has already been paid and the unit is already in the trash.
+
 ## Does the Deathknell of the unit killed as the cost resolve before Sacrifice draws and channels? [#deathknell]
 
 Yes.
