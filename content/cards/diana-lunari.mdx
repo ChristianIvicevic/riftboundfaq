@@ -31,16 +31,16 @@ Because the chain resolves newest-item-first, Diana's ability resolves last — 
 
 Diana's trigger begins with "you may," so when the showdown begins you decide whether to put the ability on the chain at all; if you decline, nothing happens.<Rule number="383.3.a" />
 There is no cost required to place it — "pay <Energy value={1} />" is not a cost within instructions, which the rules identify by the "[do X] to [do Y]" template.<Rule number="742.1" />
-Since Diana's ability does not use that template, everything in it — including the payment — is resolution-time effect text, and nothing is owed during finalization.
+Since Diana's ability does not use that template, everything in it — including the payment — is resolution-time effect text.
 
 When the ability resolves, the first instruction is "pay <Energy value={1} />."
 What happens depends on the state of your rune pool:
 
 - **If you have 1 or more Energy floating**, it is consumed automatically.
-You cannot prevent or decline this — the instruction is not optional for resources already in your pool.
+You cannot prevent or decline this.
 - **If you have no floating Energy**, you may activate <Add /> reactions (exhaust runes or use other <Add /> abilities) to generate it at this moment.<Rule number="429.3" /><Rule number="429.3.a" />
 However, the game cannot compel you to do so.
 You may choose not to activate any <Add /> abilities and leave the payment unpaid.
 
-The "If you do" conditional — <Predict />, then reveal the top card of your main deck — only applies if the Energy was actually paid, whether involuntarily from floating resources or voluntarily by generating it.
+The "If you do" conditional — <Predict />, then reveal the top card of your main deck — only applies if the Energy was paid, whether consumed from floating resources or generated via <Add /> reactions.
 If no Energy was paid, the remainder of the ability is skipped entirely.

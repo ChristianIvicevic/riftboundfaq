@@ -15,7 +15,7 @@ authors:
 
 Emperor's Dais follows the same payment template as <Card name="Diana, Lunari" />.
 The ability begins with "you may," so when you conquer here you decide whether to put it on the chain at all; if you decline, nothing happens.<Rule number="383.3.a" />
-"Pay <Energy value={1} />" is not a cost within instructions (which use the "[do X] to [do Y]" template),<Rule number="742.1" /> so nothing is owed to place the ability on the chain.
+"Pay <Energy value={1} />" is not a cost within instructions (which use the "[do X] to [do Y]" template),<Rule number="742.1" /> so nothing is owed during finalization.
 
 Unlike Diana's ability, "return a unit you control here to its owner's hand" requires you to choose a target unit during finalization.<Rule number="402.1" />
 This choice is mandatory — if a legal target exists, you must choose one and cannot decline this step.<Rule number="402.3.b" />
@@ -24,13 +24,13 @@ When the ability resolves, two instructions execute in sequence.
 First, "pay <Energy value={1} />." What happens depends on the state of your rune pool:
 
 - **If you have 1 or more Energy floating**, it is consumed automatically.
-You cannot prevent or decline this — the instruction is not optional for resources already in your pool.
+You cannot prevent or decline this.
 - **If you have no floating Energy**, you may activate <Add /> reactions (exhaust runes or use other <Add /> abilities) to generate it at this moment.<Rule number="429.3" /><Rule number="429.3.a" />
 However, the game cannot compel you to do so.
 You may choose not to activate any <Add /> abilities and leave the payment unpaid.
 
-Second, "return a unit you control here to its owner's hand": the targeted unit is returned regardless of whether the Energy was paid.
-If the unit is no longer at the battlefield at the legality check, it is not returned.<Rule number="405.1" />
+Second, "return a unit you control here to its owner's hand" — the targeted unit is returned regardless of whether the Energy was paid.
+If the unit has left the battlefield before the ability resolves, it is not returned.<Rule number="405.1" />
 
 The "If you do" conditional — play a 2 Might Sand Soldier unit token here — only applies if **both** the Energy was paid **and** the unit was successfully returned.
 If either fails, no Sand Soldier is played.
