@@ -22,19 +22,25 @@ Those triggers are then added to the combat chain, with the attacking player pla
 Diana's "when a showdown begins here" trigger is placed on the initial chain as the very first item, before any of those attack and defend triggers.
 Because the chain resolves newest-item-first, Diana's ability resolves last — after every attack and defend trigger from that same initial chain has already resolved.
 
-## When and how do I pay for Diana's ability? [#ability-payment]
+## How does Diana's ability work? [#how-it-works]
 
 <Callout type="warn" title="Rules citation needed">
 	The following is partially based on Riot confirming intent.
 	The core rules do not explicitly define how "pay" instructions in resolution text behave, and an official update will be needed.
 </Callout>
 
-Diana's trigger begins with "you may," so when the showdown begins you decide whether to put the ability on the chain at all; if you decline, nothing happens.<Rule number="383.3.a" />
-There is no cost required to place it — "pay <Energy value={1} />" is not a cost within instructions, which the rules identify by the "[do X] to [do Y]" template.<Rule number="742.1" />
-Since Diana's ability does not use that template, everything in it — including the payment — is resolution-time effect text.
+Diana's ability — "When a showdown begins here, you may pay <Energy value={1} />. If you do, <Predict />, then reveal the top card of your Main Deck. If it's a spell, draw it." — breaks into three distinct parts.
 
-When the ability resolves, the first instruction is "pay <Energy value={1} />."
-What happens depends on the state of your rune pool:
+**"When a showdown begins here"** is the trigger condition.
+It fires whenever a showdown begins at Diana's battlefield, whether that is a combat showdown or a non-combat showdown.
+
+**"you may"** appears as the first part of the effect, so the controller chooses whether to place the triggered ability on the chain at all when the condition is met.<Rule number="383.3.a" />
+If you decline, the ability never goes on the chain and nothing happens.
+
+**"pay <Energy value={1} />. If you do, …"** is resolution-time effect text.
+"Pay <Energy value={1} />" is not a cost within instructions — those are identified by the "[do X] to [do Y]" template — so the ability has no cost at finalization.<Rule number="742.1" />
+Everything here executes when the ability resolves.
+What happens with the payment depends on the state of your rune pool:
 
 - **If you have 1 or more Energy floating**, it is consumed automatically.
 You cannot prevent or decline this.
