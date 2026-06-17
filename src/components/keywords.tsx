@@ -33,6 +33,7 @@ const KEYWORD_CONFIG: Record<string, KeywordConfig> = {
 	Deflect: { label: 'Deflect', variant: 'secondary', hasValue: true },
 	Equip: { label: 'Equip', variant: 'tertiary' },
 	Mighty: { label: 'Mighty', variant: 'tertiary' },
+	Predict: { label: 'Predict', variant: 'tertiary' },
 	QuickDraw: { label: 'Quick-Draw', variant: 'primary' },
 	Reaction: { label: 'Reaction', variant: 'primary' },
 	Repeat: { label: 'Repeat', variant: 'primary' },
