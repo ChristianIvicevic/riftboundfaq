@@ -6,21 +6,27 @@ authors:
 - "Christian I. (Near)"
 ---
 
-## When and how do I pay for Emperor's Dais's ability? [#ability-payment]
+## How does Emperor's Dais's ability work? [#how-it-works]
 
 <Callout type="warn" title="Rules citation needed">
 	The following is partially based on Riot confirming intent.
 	The core rules do not explicitly define how "pay" instructions in resolution text behave, and an official update will be needed.
 </Callout>
 
-Emperor's Dais follows the same payment template as <Card name="Diana, Lunari" />.
-The ability begins with "you may," so when you conquer here you decide whether to put it on the chain at all; if you decline, nothing happens.<Rule number="383.3.a" />
-"Pay <Energy value={1} />" is not a cost within instructions (which use the "[do X] to [do Y]" template),<Rule number="742.1" /> so nothing is owed during finalization.
+Emperor's Dais's ability — "When you conquer here, you may pay <Energy value={1} /> and return a unit you control here to its owner's hand. If you do, play a 2 Might Sand Soldier unit token here." — breaks into three distinct parts.
 
-Unlike Diana's ability, "return a unit you control here to its owner's hand" requires you to choose a target unit during finalization.<Rule number="402.1" />
+**"When you conquer here"** is the trigger condition.
+It fires when you establish control over Emperor's Dais at the end of a showdown.
+
+**"you may"** appears as the first part of the effect, so you decide whether to place the triggered ability on the chain at all when the condition is met.<Rule number="383.3.a" />
+If you decline, nothing happens.
+
+**"pay <Energy value={1} /> and return a unit you control here to its owner's hand. If you do, …"** is resolution-time effect text.
+"Pay <Energy value={1} />" is not a cost within instructions — those are identified by the "[do X] to [do Y]" template — so the ability has no cost at finalization.<Rule number="742.1" />
+However, "return a unit you control here" requires you to choose a target unit during finalization.<Rule number="402.1" />
 This choice is mandatory — if a legal target exists, you must choose one and cannot decline this step.<Rule number="402.3.b" />
 
-When the ability resolves, two instructions execute in sequence.
+When the ability resolves, both instructions execute in sequence.
 First, "pay <Energy value={1} />." What happens depends on the state of your rune pool:
 
 - **If you have 1 or more Energy floating**, it is consumed automatically.
