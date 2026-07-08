@@ -23,3 +23,17 @@ No — playing a unit to a battlefield is not a move, so the ability does not tr
 A move is defined as a permanent changing its position from one location on the board to another.<Rule number="441.1" />
 Playing a card involves it entering the board from a non-board zone (such as your hand), which is a zone change, not a move.<Rule number="441.2" />
 Because Irresistible Faefolk's ability specifically triggers when it *moves* to a battlefield, playing it directly there does not satisfy that trigger condition.
+
+## If an opponent responds to my move trigger by removing Irresistible Faefolk from the battlefield, does the enemy unit still move? [#removed-in-response]
+
+Yes — the enemy unit still moves to that battlefield.
+
+Irresistible Faefolk's trigger condition is moving to a battlefield, and "that battlefield" in the effect is a referent to the battlefield named in that trigger condition.
+Information referenced from a trigger condition is checked when the trigger condition is fulfilled, not when the ability resolves.<Rule number="359.3.f.3" />
+That means "that battlefield" was already fixed the moment Irresistible Faefolk moved there and placed the ability on the chain.
+
+Suppose an opponent responds to the triggered ability by playing <Card name="Gust" /> (or similarly, <Card name="Star-Crossed" />), targeting Irresistible Faefolk itself to return it to your hand.
+Irresistible Faefolk returns to your hand, but the triggered ability is unaffected — it's already an independent item on the chain, and the battlefield it references was fixed at trigger time.
+When it resolves, it moves an enemy unit to that battlefield, even though Irresistible Faefolk is no longer there.
+
+This is different from referents like "here," "my," or "its," which are checked when the instruction resolves rather than when the trigger condition is met — those can mistarget if the relevant game object or location is no longer valid at that time.<Rule number="359.3.f.2" />
