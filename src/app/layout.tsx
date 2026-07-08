@@ -1,6 +1,7 @@
 import './global.css'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { Banner } from 'fumadocs-ui/components/banner'
 import { RootProvider } from 'fumadocs-ui/provider/next'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
@@ -22,6 +23,9 @@ export default function Layout({ children }: LayoutProps<'/'>) {
 	return (
 		<html lang="en" className={inter.className} suppressHydrationWarning>
 			<body className="flex min-h-screen flex-col">
+				<Banner id="crd-14-update-disclaimer" variant="rainbow" changeLayout={true}>
+					Core rules update releases 16 July
+				</Banner>
 				<RootProvider>{children}</RootProvider>
 				<Analytics />
 				<SpeedInsights />
