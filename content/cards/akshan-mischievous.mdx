@@ -6,6 +6,20 @@ authors:
 - "Christian I. (Near)"
 ---
 
+## Does the enemy Dazzling Aurora I take control of with Akshan also trigger at the end of this turn? [#aurora-timing]
+
+No — you gain control of it too late in the turn for its trigger to fire.
+
+<Card name="Dazzling Aurora" />'s trigger condition is "At the end of your turn."
+"At" identifies a triggered ability keyed to a specific point in time during the turn sequence<Rule number="383.1" /> — here, the Ending Step, when end-of-turn game effects take place.<Rule number="317.1" /><Rule number="317.1.a" />
+A trigger's condition is evaluated once, immediately after that point in time is reached<Rule number="383.2.c" /> — it is not re-checked continuously for as long as the game remains in the Ending Phase.
+
+Akshan's own play effect only triggers once he is finalized on the board — a separate, later event<Rule number="383.4.a" /><Rule number="383.4.a.2" /> — and that is when you gain control of the enemy's Dazzling Aurora.
+
+By the time that happens, your Ending Step's "at the end of your turn" condition has already been evaluated — once, for whatever you controlled at that instant.
+The enemy Dazzling Aurora wasn't yours yet then, so it never gets checked this turn; there's no second check waiting for it later in the phase.
+It will trigger normally at the end of your future turns, for as long as you continue to control it.
+
 ## Your opponent plays their own Akshan and takes control of the gear your Akshan already controls. What happens when one or both Akshans die? [#dual-akshan-control]
 
 Whichever Akshan was played most recently determines control of the gear for as long as it remains on the board.
@@ -24,17 +38,3 @@ Your opponent's Akshan's effect was already the deciding one — they continue t
 - **Both Akshans die**: both effects cease.
 Control reverts to your opponent, since it was their gear to begin with.
 If the gear is unattached and now finds itself in a base it doesn't belong to, it will be recalled to your opponent's base during the next cleanup.
-
-## Does the enemy Dazzling Aurora I take control of with Akshan also trigger at the end of this turn? [#aurora-timing]
-
-No — you gain control of it too late in the turn for its trigger to fire.
-
-<Card name="Dazzling Aurora" />'s trigger condition is "At the end of your turn."
-"At" identifies a triggered ability keyed to a specific point in time during the turn sequence<Rule number="383.1" /> — here, the Ending Step, when end-of-turn game effects take place.<Rule number="317.1" /><Rule number="317.1.a" />
-A trigger's condition is evaluated once, immediately after that point in time is reached<Rule number="383.2.c" /> — it is not re-checked continuously for as long as the game remains in the Ending Phase.
-
-Akshan's own play effect only triggers once he is finalized on the board — a separate, later event<Rule number="383.4.a" /><Rule number="383.4.a.2" /> — and that is when you gain control of the enemy's Dazzling Aurora.
-
-By the time that happens, your Ending Step's "at the end of your turn" condition has already been evaluated — once, for whatever you controlled at that instant.
-The enemy Dazzling Aurora wasn't yours yet then, so it never gets checked this turn; there's no second check waiting for it later in the phase.
-It will trigger normally at the end of your future turns, for as long as you continue to control it.
