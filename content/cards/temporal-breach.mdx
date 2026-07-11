@@ -1,0 +1,56 @@
+---
+title: "Temporal Breach"
+crdVersion: "1.3"
+galleryLink: "https://playriftbound.com/en-us/card-gallery/#card-gallery--ven-066-166"
+authors:
+- "Christian I. (Near)"
+---
+
+## Can Temporal Breach banish a unit at a different battlefield if played from Hidden? [#hidden-targeting-restriction]
+
+No, when Temporal Breach is played from Hidden, the unit it banishes must be chosen from among units at the battlefield where it was hidden.
+
+"Banish a unit" chooses a specific game object to affect, making it a target, declared as Temporal Breach is put on the chain.<Rule number="355.5" /><Rule number="355.7" /><Rule number="355.8" />
+Choices made while playing a card from Hidden are restricted to the battlefield where it was hidden.<Rule number="811.1.d" />
+Specifically, if a Hidden spell chooses any targets, those targets must be chosen from among options at that battlefield, unless the ability explicitly restricts targeting in a way that makes this impossible.<Rule number="811.1.d.2" />
+Temporal Breach's own wording doesn't restrict its target to a location, so this Hidden restriction applies in full — a unit at another battlefield, or in base, isn't a legal target when it's played from Hidden.
+
+If Temporal Breach is instead played normally — paying its cost rather than from its facedown state — none of this applies, and it can target any unit anywhere with no restrictions on targeting.<Rule number="811.3" />
+
+## Can I banish my only unit at a battlefield I control and replay it there without losing control in between? [#control-retained]
+
+Yes, control of the battlefield is never lost during this sequence.
+
+When Temporal Breach resolves, the replayed unit is added to the chain as a pending item,<Rule number="354.2" /> with its play process held until the spell has fully resolved.<Rule number="354.3" />
+Once the spell finishes resolving, a cleanup runs — but the pending unit keeps the chain alive throughout it.
+Because the chain is not empty, the turn remains in a closed state, and cleanup step 4 — which would make the battlefield uncontrolled — only applies during an open state.<Rule number="323.6" />
+Control is never lost, so any effects that care about gaining or losing control of that battlefield don't trigger.
+When all outstanding tasks are complete, the pending unit is finalized<Rule number="335.2" /> and replayed to the same battlefield you still control, as dictated by Temporal Breach's own text.
+
+## What happens if Temporal Breach banishes a unit at Rockfall Path? [#rockfall-path]
+
+Temporal Breach still resolves fully, but the unit is never actually replayed — it stays in its owner's banishment for the rest of the game, since <Card name="Rockfall Path" /> reads "Units can't be played here" and Temporal Breach forces the unit back to that exact battlefield with no alternative.
+
+"Then its owner plays it to the same location" only adds the unit to the chain as a pending item — it doesn't check whether the destination is legal, so Temporal Breach's own resolution is unaffected by Rockfall Path's restriction.<Rule number="354.2" />
+The unit only runs into trouble once it's finalized on its own, since checking legality at that point catches units being played to a battlefield where that's forbidden.<Rule number="358.2" />
+Because Temporal Breach fixes the destination with no alternative, that check can never pass, so the finalization attempt is undone and the unit returns to the banishment it was played from<Rule number="358.4" /> — for good.
+
+The step-by-step below spells this out.
+
+### Resolution Sequence [#rockfall-path-resolution-sequence]
+
+1. Temporal Breach resolves. "Banish a unit" banishes the targeted unit, which was at Rockfall Path.
+2. "Then its owner plays it to the same location, ignoring its cost" removes the unit from banishment and adds it to the chain as a pending item.<Rule number="354.2" />
+3. Temporal Breach finishes resolving.
+4. Once all outstanding tasks are complete, the unit is ready to be finalized and goes through steps 2 through 5 of playing a card on its own.<Rule number="359.3.b" /> Its location is fixed as Rockfall Path by Temporal Breach's own text.
+5. At step 5 ("Check Legality"), playing the unit to Rockfall Path would create an illegal state, since Rockfall Path prevents units from being played there.<Rule number="358.2" />
+6. The actions taken while playing the unit are undone and the action is cancelled.<Rule number="358.4" /> That undoes step 2's removal of the unit from banishment,<Rule number="354" /> so the unit returns there — and stays there for the rest of the game.
+
+## Can I pay optional additional costs, like Accelerate, when replaying the banished unit? [#optional-additional-costs]
+
+Yes, optional additional costs can still be paid, since Temporal Breach only sets the unit's base cost to zero.
+
+"Its owner plays it" instructs the normal process of playing a card — the unit is removed from banishment and put onto the chain as a pending item,<Rule number="354" /><Rule number="354.2" /> it isn't placed directly onto the board.
+That pending item goes through the full finalization process once it's ready to be finalized, including making relevant choices<Rule number="355" /> and determining total cost.<Rule number="356" />
+Playing a card "ignoring its cost" only sets its base Energy and base Power cost to zero;<Rule number="356.1.b.1" /> further additional costs applied in later steps can still raise the total cost back above zero.<Rule number="356.1.b.3" />
+<Accelerate /> is one such optional additional cost, paid as a player plays the unit with the ability,<Rule number="805.2" /> so its owner may still declare their intent to pay it during finalization<Rule number="356.2.b.1" /> and pay it as usual, unaffected by Temporal Breach ignoring the unit's base cost.
