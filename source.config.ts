@@ -10,6 +10,7 @@ export const docs = defineDocs({
 			crdVersion: z.string().optional(),
 			galleryLink: z.url().optional(),
 			authors: z.array(z.string()).optional(),
+			isNew: z.boolean().optional(),
 		}),
 	},
 	meta: { schema: metaSchema },
