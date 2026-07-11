@@ -1,12 +1,13 @@
 import { remarkFeedbackBlock, RemarkFeedbackBlockOptions } from 'fumadocs-core/mdx-plugins'
-import { defineConfig, defineDocs, frontmatterSchema, metaSchema } from 'fumadocs-mdx/config'
+import { pageSchema, metaSchema } from 'fumadocs-core/source/schema'
+import { defineConfig, defineDocs } from 'fumadocs-mdx/config'
 import lastModified from 'fumadocs-mdx/plugins/last-modified'
 import { z } from 'zod'
 
 export const docs = defineDocs({
 	dir: 'content',
 	docs: {
-		schema: frontmatterSchema.extend({
+		schema: pageSchema.extend({
 			crdVersion: z.string().optional(),
 			galleryLink: z.url().optional(),
 			authors: z.array(z.string()).optional(),
