@@ -15,9 +15,10 @@ export const source = loader({
 					const content = this.storage.read(file)
 					if (content && content.format === 'page' && content.data.isNew)
 						node.name = (
-							<>
-								<Badge>New</Badge> {node.name}
-							</>
+							<div key={content.path} className="flex w-full items-center gap-2">
+								<span className="flex-1">{node.name}</span>
+								<Badge>New</Badge>
+							</div>
 						)
 					return node
 				},
