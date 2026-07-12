@@ -47,6 +47,14 @@ The step-by-step below spells this out.
 5. At step 5 ("Check Legality"), playing the unit to Rockfall Path would create an illegal state, since Rockfall Path prevents units from being played there.<Rule number="358.2" />
 6. The actions taken while playing the unit are undone and the action is cancelled.<Rule number="358.4" /> That undoes step 2's removal of the unit from banishment,<Rule number="354" /> so the unit returns there — and stays there for the rest of the game.
 
+## What happens if Temporal Breach banishes a token unit? [#token-unit]
+
+The token stops existing the moment it's banished, so there's nothing left for its owner to replay.
+
+Banishing places the token directly into its owner's banishment,<Rule number="427.2" /> which is a non-board zone.<Rule number="056.1" />
+Tokens can only exist on the board or the chain — if a token ends up in any other zone, it ceases to exist immediately upon arriving there.<Rule number="183" /><Rule number="183.1" />
+So by the time Temporal Breach's "then its owner plays it to the same location" instruction would apply, the token is already gone, and that part of the spell does nothing for it.<Rule number="055" />
+
 ## Can I pay optional additional costs, like Accelerate, when replaying the banished unit? [#optional-additional-costs]
 
 Yes, since the replayed unit still goes through the complete, normal process of playing a card, and "ignoring its cost" only narrows one part of that process — the base cost — leaving everything else, including optional additional costs, unaffected.
