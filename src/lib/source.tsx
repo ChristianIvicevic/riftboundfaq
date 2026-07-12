@@ -12,8 +12,8 @@ export const source = loader({
 			transformPageTree: {
 				file(node, file) {
 					if (!file) return node
-					const content = this.storage.read(file) as { data?: { isNew?: boolean } }
-					if (content?.data?.isNew)
+					const content = this.storage.read(file)
+					if (content && content.format === 'page' && content.data.isNew)
 						node.name = (
 							<>
 								<Badge>New</Badge> {node.name}
