@@ -15,18 +15,18 @@
 		"lint:github": "oxlint --format=github --deny-warnings"
 	},
 	"dependencies": {
-		"@radix-ui/react-collapsible": "1.1.15",
-		"@radix-ui/react-popover": "1.1.18",
+		"@radix-ui/react-collapsible": "1.1.16",
+		"@radix-ui/react-popover": "1.1.19",
 		"@t3-oss/env-nextjs": "0.13.11",
 		"@vercel/analytics": "2.0.1",
 		"@vercel/speed-insights": "2.0.0",
 		"class-variance-authority": "0.7.1",
-		"fumadocs-core": "16.10.7",
-		"fumadocs-mdx": "15.0.13",
-		"fumadocs-ui": "16.10.7",
-		"lucide-react": "1.23.0",
+		"fumadocs-core": "16.11.1",
+		"fumadocs-mdx": "15.1.0",
+		"fumadocs-ui": "16.11.1",
+		"lucide-react": "1.24.0",
 		"next": "16.2.10",
-		"posthog-node": "5.39.4",
+		"posthog-node": "5.40.0",
 		"react": "19.2.7",
 		"react-dom": "19.2.7",
 		"tailwind-merge": "3.6.0",
@@ -35,14 +35,14 @@
 	"devDependencies": {
 		"@tailwindcss/postcss": "4.3.2",
 		"@types/mdx": "2.0.14",
-		"@types/node": "25.9.4",
+		"@types/node": "25.9.5",
 		"@types/react": "19.2.17",
 		"@types/react-dom": "19.2.3",
-		"oxfmt": "0.57.0",
-		"oxlint": "1.72.0",
+		"oxfmt": "0.58.0",
+		"oxlint": "1.73.0",
 		"postcss": "8.5.16",
 		"tailwindcss": "4.3.2",
 		"typescript": "6.0.3"
 	},
-	"packageManager": "pnpm@11.10.0"
+	"packageManager": "pnpm@11.11.0"
 }
