@@ -40,10 +40,9 @@ pnpm types:check  # Run TypeScript type checking
 ```
 riftboundfaq/
 ├── content/              # Wiki content (MDX files)
-│   ├── general-rules/    # General game rules
-│   ├── sets/
-│   │   ├── origins/      # Origins card set
-│   │   └── spiritforged/ # Spiritforged card set
+│   ├── cards/            # Per-card FAQ pages
+│   ├── mechanics/        # Per-keyword/mechanic pages
+│   ├── general-rules/    # Cross-cutting rules topics
 │   └── meta.json         # Navigation structure
 ├── src/
 │   └── ...               # Application source code

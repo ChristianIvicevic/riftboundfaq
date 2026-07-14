@@ -38,12 +38,9 @@ Found an error or have a suggestion?
 
 ```
 content/
-├── general-rules/        # General game rules
-├── sets/
-│   ├── origins/
-│   │   └── cards/        # Origins card set
-│   └── spiritforged/
-│       └── ...           # Spiritforged content
+├── cards/                # Per-card FAQ pages
+├── mechanics/            # Per-keyword/mechanic pages
+├── general-rules/        # Cross-cutting rules topics
 └── meta.json             # Navigation structure
 ```
 
