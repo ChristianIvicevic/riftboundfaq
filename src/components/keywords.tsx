@@ -29,6 +29,7 @@ const KEYWORD_CONFIG: Record<string, KeywordConfig> = {
 	Add: { label: 'Add', variant: 'tertiary' },
 	Ambush: { label: 'Ambush', variant: 'primary' },
 	Assault: { label: 'Assault', variant: 'accent', hasValue: true },
+	Burn: { label: 'Burn', variant: 'tertiary', hasValue: true },
 	Deathknell: { label: 'Deathknell', variant: 'secondary' },
 	Deflect: { label: 'Deflect', variant: 'secondary', hasValue: true },
 	Equip: { label: 'Equip', variant: 'tertiary' },
@@ -57,7 +58,7 @@ function createKeywordComponent(name: KeywordName) {
 	const config = KEYWORD_CONFIG[name]
 
 	if (config.hasValue) {
-		return function KeywordWithValue({ value }: { value?: number }) {
+		return function KeywordWithValue({ value }: { value?: number | string }) {
 			return (
 				<Keyword variant={config.variant}>
 					{config.label} {value}
