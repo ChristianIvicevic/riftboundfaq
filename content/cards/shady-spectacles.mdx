@@ -1,0 +1,16 @@
+---
+title: "Shady Spectacles"
+crdVersion: "1.3"
+galleryLink: "https://playriftbound.com/en-us/card-gallery/#card-gallery--ven-137-166"
+authors:
+- "Christian I. (Near)"
+isNew: true
+---
+
+## Does a Reflection token with Temporary lose Temporary after Shady Spectacles makes it a copy of a unit that doesn't have Temporary? [#temporary]
+
+No — it keeps <Temporary />, no matter what it becomes a copy of.
+
+Shady Spectacles' "becomes a copy of that unit" is a copy effect, and copy effects apply in the trait-altering layer — the first of the layers used to resolve continuous effects.<Rule number="472" /><Rule number="472.1" /><Rule number="472.1.b" /> This layer replaces the equipped unit's traits and rules text with the chosen unit's.<Rule number="472.1.b.1" />
+
+The copied unit not having <Temporary /> doesn't matter — copying it doesn't strip <Temporary /> from the token, because the two effects operate in different layers. Granting a keyword like <Temporary /> happens in the ability-altering layer, applied right after the trait-altering layer.<Rule number="472.2" /><Rule number="472.2.a" /> A Reflection token's <Temporary /> comes from a separate effect — <Card name="Deceiver" />'s conquer-or-hold ability or <Card name="Mirror Image" />'s effect — that already applied when the token was created, before Shady Spectacles ever attaches. Since that grant sits in a different layer, Shady Spectacles' copy effect has no say over it, and it keeps applying no matter what the token becomes a copy of.

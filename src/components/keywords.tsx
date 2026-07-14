@@ -42,6 +42,7 @@ const KEYWORD_CONFIG: Record<string, KeywordConfig> = {
 	Repeat: { label: 'Repeat', variant: 'primary' },
 	Shield: { label: 'Shield', variant: 'accent', hasValue: true },
 	Stun: { label: 'Stun', variant: 'tertiary' },
+	Temporary: { label: 'Temporary', variant: 'secondary' },
 	Weaponmaster: { label: 'Weaponmaster', variant: 'tertiary' },
 }
 
