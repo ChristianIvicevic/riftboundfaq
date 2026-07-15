@@ -30,11 +30,11 @@ When all outstanding tasks are complete, the pending unit is finalized<Rule numb
 
 ## What happens if Temporal Breach banishes a unit at Rockfall Path? [#rockfall-path]
 
-Temporal Breach still resolves fully, but the unit is never actually replayed — it stays in its owner's banishment for the rest of the game, since <Card name="Rockfall Path" /> reads "Units can't be played here" and Temporal Breach forces the unit back to that exact battlefield with no alternative.
+Temporal Breach still resolves fully — the banish itself happens normally — but the replayed unit never actually makes it back onto the board. Temporal Breach's own text sends the unit back to that same battlefield with no alternative, and since <Card name="Rockfall Path" /> reads "Units can't be played here," that replay attempt is illegal; it gets undone during its own finalization, and the unit simply remains in its owner's banishment for the rest of the game.
 
 "Then its owner plays it to the same location" only adds the unit to the chain as a pending item — it doesn't check whether the destination is legal, so Temporal Breach's own resolution is unaffected by Rockfall Path's restriction.<Rule number="354.2" />
 The unit only runs into trouble once it's finalized on its own, since checking legality at that point catches units being played to a battlefield where that's forbidden.<Rule number="358.2" />
-Because Temporal Breach fixes the destination with no alternative, that check can never pass, so the finalization attempt is undone and the unit returns to the banishment it was played from<Rule number="358.4" /> — for good.
+Because Temporal Breach doesn't offer any alternative destination, that check can never pass, so the finalization attempt is undone and the unit returns to the banishment it was played from<Rule number="358.4" /> — for good.
 
 The step-by-step below spells this out.
 
@@ -43,7 +43,7 @@ The step-by-step below spells this out.
 1. Temporal Breach resolves. "Banish a unit" banishes the targeted unit, which was at Rockfall Path.
 2. "Then its owner plays it to the same location, ignoring its cost" removes the unit from banishment and adds it to the chain as a pending item.<Rule number="354.2" />
 3. Temporal Breach finishes resolving.
-4. Once all outstanding tasks are complete, the unit is ready to be finalized and goes through steps 2 through 5 of playing a card on its own.<Rule number="359.3.b" /> Its location is fixed as Rockfall Path by Temporal Breach's own text.
+4. Once all outstanding tasks are complete, the unit is ready to be finalized and goes through steps 2 through 5 of playing a card on its own.<Rule number="359.3.b" /> Its location is set to Rockfall Path by Temporal Breach's own text, with no alternative.
 5. At step 5 ("Check Legality"), playing the unit to Rockfall Path would create an illegal state, since Rockfall Path prevents units from being played there.<Rule number="358.2" />
 6. The actions taken while playing the unit are undone and the action is cancelled.<Rule number="358.4" /> That undoes step 2's removal of the unit from banishment,<Rule number="354" /> so the unit returns there — and stays there for the rest of the game.
 
