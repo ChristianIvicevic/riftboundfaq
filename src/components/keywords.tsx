@@ -35,6 +35,7 @@ const KEYWORD_CONFIG: Record<string, KeywordConfig> = {
 	Equip: { label: 'Equip', variant: 'tertiary' },
 	Empower: { label: 'Empower', variant: 'tertiary' },
 	Empowered: { label: 'Empowered', variant: 'secondary' },
+	Legion: { label: 'Legion', variant: 'primary' },
 	Mighty: { label: 'Mighty', variant: 'tertiary' },
 	Predict: { label: 'Predict', variant: 'tertiary' },
 	QuickDraw: { label: 'Quick-Draw', variant: 'primary' },
