@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import { submitPageFeedback } from '@/actions/feedback'
 import { Authors } from '@/components/authors'
 import { CardGalleryLink, EditThisPageLink } from '@/components/buttons'
+import { CoreRulesTable } from '@/components/core-rules/table'
 import { CrdCallout } from '@/components/crd-callout'
 import { CrdVersionProvider } from '@/components/crd-version'
 import { Feedback } from '@/components/feedback/client'
@@ -44,6 +45,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 						components={getMDXComponents({
 							a: createRelativeLink(source, page),
 							Rule,
+							CoreRulesTable,
 							Energy,
 							Universal,
 							...RUNES,

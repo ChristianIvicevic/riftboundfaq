@@ -1,19 +1,19 @@
 ---
 title: "Lotus Trap"
-crdVersion: "1.3"
-galleryLink: "https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--unl-013-219"
+crdVersion: "1.4"
+galleryLink: "https://playriftbound.com/en-us/card-gallery/#card-gallery--unl-013-219"
 authors:
 - "Christian I. (Near)"
 ---
 
 ## Does Lotus Trap affect how much damage needs to be assigned in combat? [#combat-assignment]
 
-No.
-Assignment and dealing are separate steps in the combat sequence, and Lotus Trap only applies at the dealing step.
+Yes.
+When damage is assigned in the combat damage step, a replacement effect that would apply to the resulting damage is considered to apply to the assignment instead, so Lotus Trap's doubling takes effect as damage is assigned — not only when it is dealt.
 
-Lotus Trap is a replacement effect that applies when damage is *dealt*, not when it is *assigned*.
-The combat damage sequence treats these as two separate and distinct steps.<Rule number="460.2.c.1" /><Rule number="460.2.c.1.a" />
+Assigning damage and dealing damage are still distinct steps.<Rule number="465.2.c.1" /><Rule number="465.2.c.1.a" />
+But the rules fold damage replacement effects into the assignment step: any replacement effect that would apply to the resulting damage is applied to the assignment.<Rule number="465.2.c.5" />
 
-The assignment step requires lethal damage to be assigned to a unit in full before any remaining damage may be assigned to a different unit.<Rule number="460.2.c.3" />
-Lethal damage is defined as non-zero damage equalling or exceeding a unit's might — this definition makes no reference to replacement effects that apply at the time of dealing.
-Lotus Trap's doubling only becomes relevant later, when damage is actually dealt.<Rule number="460.2.d" />
+A unit must have lethal damage assigned to it in full before any remaining damage may be assigned elsewhere,<Rule number="465.2.c.3" /> so the doubling changes how much of the attacker's damage the unit ties up. The assigning player picks the smallest raw amount that, once doubled, reaches lethal damage — for a 3 might unit under Lotus Trap, assigning 2 raw damage doubles to 4, so only 2 need be committed to kill it.<Rule number="465.2.c.4.a" /> When damage is finally dealt it is not doubled again, since the doubling already happened during assignment.<Rule number="465.2.d" />
+
+If more than one replacement effect applies to the unit — for example a prevent effect alongside Lotus Trap — the unit's controller chooses the order they apply during assignment, which can change the final assigned and dealt amounts.<Rule number="465.2.c.5" />

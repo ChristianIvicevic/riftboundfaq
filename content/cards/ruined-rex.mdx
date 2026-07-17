@@ -1,7 +1,7 @@
 ---
 title: "Ruined Rex"
-crdVersion: "1.3"
-galleryLink: "https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--unl-067-219"
+crdVersion: "1.4"
+galleryLink: "https://playriftbound.com/en-us/card-gallery/#card-gallery--unl-067-219"
 authors:
 - "Christian I. (Near)"
 ---
@@ -15,9 +15,9 @@ When Ruined Rex dies with lethal damage during a combat cleanup, the steps run i
 
 1. **Step 3a** — Ruined Rex's <Deathknell /> trigger is added to the chain as a pending item.<Rule number="323.4" /><Rule number="808.1.d.2" />
 2. **Step 3b** — Ruined Rex is moved to the trash.<Rule number="323.5" />
-3. **Step 3c** — All units are healed. This step is inserted by the combat special cleanup.<Rule number="461.1.a.1" />
+3. **Step 3c** — All units are healed. This step is inserted by the combat special cleanup.<Rule number="466.1.a.1" />
 
-The pending trigger does not begin finalization until the cleanup task is complete.<Rule number="335" />
+The pending trigger does not begin finalization until the cleanup task is complete.<Rule number="334" />
 Only then does it enter the FEPR process, get finalized (targets chosen), and resolve — dealing 4 damage to the chosen enemy unit.
 
 ## Can Ruined Rex's Deathknell target the Mech tokens created by Ferrous Forerunner's Deathknell, if both die at the same time? [#ferrous-forerunner-mechs]
@@ -26,7 +26,7 @@ No.
 Targets are chosen during finalization, and <Card name="Ferrous Forerunner" />'s Mech tokens are not created until its <Deathknell /> resolves — which only happens after all pending items have been finalized.
 
 When both units die in the same cleanup, their <Deathknell /> triggers are queued as pending items simultaneously in turn order,<Rule number="323.4" /><Rule number="383.3.d.1" /> and items finalize in the order they were appended.<Rule number="337.1.b" />
-No item resolves until all pending items have been finalized.<Rule number="337.1.c.3" />
+No item resolves until all pending items have been finalized.<Rule number="337.1" />
 
 **If Ferrous Forerunner's controller is the turn player**, their trigger is queued first and finalizes first.
 The ability does not resolve yet and no Mech tokens are created.
