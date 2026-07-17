@@ -1,7 +1,7 @@
 ---
 title: "Diana, Lunari"
-crdVersion: "1.3"
-galleryLink: "https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--unl-079-219"
+crdVersion: "1.4"
+galleryLink: "https://playriftbound.com/en-us/card-gallery/#card-gallery--unl-079-219"
 authors:
 - "Christian I. (Near)"
 isNew: true
@@ -9,45 +9,28 @@ isNew: true
 
 ## When does Diana's ability trigger relative to attack and defend triggers? [#showdown-trigger-timing]
 
-<Callout type="warn" title="Rules citation needed">
-	The following is based solely on Riot confirming intent.
-	The core rules do not explicitly address this, and an official update will be needed.
-</Callout>
+Diana's ability resolves last in the combat chain, after all attack and defend triggers.
 
-Diana's ability resolves last in the initial chain, after all attack and defend triggers.
-
-When combat opens with a combat showdown, the attacker and defender designations are assigned to units.<Rule number="459.2.b" />
+When combat opens with a combat showdown, the attacker and defender designations are assigned to units.<Rule number="464.2.c.3" />
 Attack triggers fire when a unit gains the attacker designation, and defend triggers fire when a unit gains the defender designation.<Rule number="383.4.e" /><Rule number="383.4.f" />
-Those triggers are then added to the combat chain, with the attacking player placing theirs first, followed by others in turn order, and the defending player last.<Rule number="459.2.d" /><Rule number="459.2.d.1" />
+Those triggers are then added to the combat chain, with the attacking player placing theirs first, followed by others in turn order, and the defending player last.<Rule number="464.2.e" /><Rule number="464.2.e.1" />
 
-Diana's "when a showdown begins here" trigger is placed on the initial chain as the very first item, before any of those attack and defend triggers.
-Because the chain resolves newest-item-first, Diana's ability resolves last — after every attack and defend trigger from that same initial chain has already resolved.
+Diana's "when a showdown begins here" trigger is a start-of-showdown effect, which the combat-opening sequence processes as its very first step — before designations are established and their attack and defend triggers are added to the chain.<Rule number="464.2.b" />
+Because the chain resolves newest-item-first, Diana's ability resolves last — after every attack and defend trigger from that same combat chain has already resolved.
 
 ## How does Diana's ability work? [#ability]
 
-<Callout type="warn" title="Rules citation needed">
-	The following is partially based on Riot confirming intent.
-	The core rules do not explicitly define how "pay" instructions in resolution text behave, and an official update will be needed.
+When a showdown begins at Diana's battlefield, you may pay <Energy value={1} /> to finalize her triggered ability onto the chain.
+
+<Callout type="info" title="Core Rules 1.4 errata">
+	Diana received a functional errata alongside the Core Rules 1.4 update.
+	Older printings say "you may pay <Energy value={1} />. If you do, ..."; her updated text says "you may pay <Energy value={1} /> to ..." instead.
+	This changes the Energy payment from an instruction performed during resolution into a cost paid while finalizing the ability.
 </Callout>
 
-Diana's ability — "When a showdown begins here, you may pay <Energy value={1} />. If you do, <Predict />, then reveal the top card of your Main Deck. If it's a spell, draw it." — breaks into three distinct parts.
+Because "you may" is the first part of the effect, you choose whether to perform the ability during finalization.<Rule number="383.3.a" />
+The immediately following "pay <Energy value={1} /> to <Predict />" is a cost within instructions, so the payment is treated as the triggered ability's base cost and must be paid for the ability to finalize.<Rule number="383.3.b" /><Rule number="383.3.b.1" />
+You may activate <Add /> reactions while paying this cost.<Rule number="444.2.c" />
 
-**"When a showdown begins here"** is the trigger condition.
-It fires whenever a showdown begins at Diana's battlefield, whether that is a combat showdown or a non-combat showdown.
-
-**"you may"** appears as the first part of the effect, so the controller chooses whether to place the triggered ability on the chain at all when the condition is met.<Rule number="383.3.a" />
-If you decline, the ability never goes on the chain and nothing happens.
-
-**"pay <Energy value={1} />. If you do, …"** is resolution-time effect text.
-"Pay <Energy value={1} />" is not a cost within instructions — those are identified by the "[do X] to [do Y]" template — so the ability has no cost at finalization.<Rule number="742.1" />
-Everything here executes when the ability resolves.
-What happens with the payment depends on the state of your rune pool:
-
-- **If you have 1 or more Energy floating**, it is consumed automatically.
-You cannot prevent or decline this.
-- **If you have no floating Energy**, you may activate <Add /> reactions (exhaust runes or use other <Add /> abilities) to generate it at this moment.<Rule number="429.3" /><Rule number="429.3.a" />
-However, the game cannot compel you to do so.
-You may choose not to activate any <Add /> abilities and leave the payment unpaid.
-
-The "If you do" conditional — <Predict />, then reveal the top card of your main deck — only applies if the Energy was paid, whether consumed from floating resources or generated via <Add /> reactions.
-If no Energy was paid, the remainder of the ability is skipped entirely.
+If you do not pay, the ability does not finalize and none of its effects occur.
+If you pay, the ability is placed on the chain; when it resolves, you <Predict />, reveal the top card of your main deck, and draw that card if it is a spell.

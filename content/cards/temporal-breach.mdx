@@ -1,6 +1,6 @@
 ---
 title: "Temporal Breach"
-crdVersion: "1.3"
+crdVersion: "1.4"
 galleryLink: "https://playriftbound.com/en-us/card-gallery/#card-gallery--ven-066-166"
 authors:
 - "Christian I. (Near)"
@@ -26,15 +26,15 @@ When Temporal Breach resolves, the replayed unit is added to the chain as a pend
 Once the spell finishes resolving, a cleanup runs — but the pending unit keeps the chain alive throughout it.
 Because the chain is not empty, the turn remains in a closed state, and cleanup step 4 — which would make the battlefield uncontrolled — only applies during an open state.<Rule number="323.6" />
 Control is never lost, so any effects that care about gaining or losing control of that battlefield don't trigger.
-When all outstanding tasks are complete, the pending unit is finalized<Rule number="335.2" /> and replayed to the same battlefield you still control, as dictated by Temporal Breach's own text.
+When all outstanding tasks are complete, the pending unit is finalized<Rule number="334.2" /> and replayed to the same battlefield you still control, as dictated by Temporal Breach's own text.
 
 ## What happens if Temporal Breach banishes a unit at Rockfall Path? [#rockfall-path]
 
 Temporal Breach still resolves fully — the banish itself happens normally — but the replayed unit never actually makes it back onto the board. Temporal Breach's own text sends the unit back to that same battlefield with no alternative, and since <Card name="Rockfall Path" /> reads "Units can't be played here," that replay attempt is illegal; it gets undone during its own finalization, and the unit simply remains in its owner's banishment for the rest of the game.
 
 "Then its owner plays it to the same location" only adds the unit to the chain as a pending item — it doesn't check whether the destination is legal, so Temporal Breach's own resolution is unaffected by Rockfall Path's restriction.<Rule number="354.2" />
-The unit only runs into trouble once it's finalized on its own, since checking legality at that point catches units being played to a battlefield where that's forbidden.<Rule number="358.2" />
-Because Temporal Breach doesn't offer any alternative destination, that check can never pass, so the finalization attempt is undone and the unit returns to the banishment it was played from<Rule number="358.4" /> — for good.
+The unit only runs into trouble once it's finalized on its own, since checking legality at that point catches units being played to a battlefield where that's forbidden.<Rule number="358.3" />
+Because Temporal Breach doesn't offer any alternative destination, that check can never pass, so the finalization attempt is undone and the unit returns to the banishment it was played from<Rule number="358.5" /> — for good.
 
 The step-by-step below spells this out.
 
@@ -44,15 +44,15 @@ The step-by-step below spells this out.
 2. "Then its owner plays it to the same location, ignoring its cost" removes the unit from banishment and adds it to the chain as a pending item.<Rule number="354.2" />
 3. Temporal Breach finishes resolving.
 4. Once all outstanding tasks are complete, the unit is ready to be finalized and goes through steps 2 through 5 of playing a card on its own.<Rule number="359.3.b" /> Its location is set to Rockfall Path by Temporal Breach's own text, with no alternative.
-5. At step 5 ("Check Legality"), playing the unit to Rockfall Path would create an illegal state, since Rockfall Path prevents units from being played there.<Rule number="358.2" />
-6. The actions taken while playing the unit are undone and the action is cancelled.<Rule number="358.4" /> That undoes step 2's removal of the unit from banishment,<Rule number="354" /> so the unit returns there — and stays there for the rest of the game.
+5. At step 5 ("Check Legality"), playing the unit to Rockfall Path would create an illegal state, since Rockfall Path prevents units from being played there.<Rule number="358.3" />
+6. The actions taken while playing the unit are undone and the action is cancelled.<Rule number="358.5" /> That undoes step 2's removal of the unit from banishment,<Rule number="354" /> so the unit returns there — and stays there for the rest of the game.
 
 ## What happens if Temporal Breach banishes a token unit? [#token-unit]
 
 The token stops existing the moment it's banished, so there's nothing left for its owner to replay.
 
 Banishing places the token directly into its owner's banishment,<Rule number="427.2" /> which is a non-board zone.<Rule number="056.1" />
-Tokens can only exist on the board or the chain — if a token ends up in any other zone, it ceases to exist immediately upon arriving there.<Rule number="183" /><Rule number="183.1" />
+Tokens can only exist on the board or the chain — if a token ends up in any other zone, it ceases to exist immediately upon arriving there.<Rule number="186" /><Rule number="186.1" />
 So by the time Temporal Breach's "then its owner plays it to the same location" instruction would apply, the token is already gone, and that part of the spell does nothing for it.<Rule number="055" />
 
 ## Can I pay optional additional costs, like Accelerate, when replaying the banished unit? [#optional-additional-costs]

@@ -1,7 +1,7 @@
 ---
 title: "Emperor's Dais"
-crdVersion: "1.3"
-galleryLink: "https://riftbound.leagueoflegends.com/en-us/card-gallery/#card-gallery--sfd-207-221"
+crdVersion: "1.4"
+galleryLink: "https://playriftbound.com/en-us/card-gallery/#card-gallery--sfd-207-221"
 authors:
 - "Christian I. (Near)"
 isNew: true
@@ -9,42 +9,18 @@ isNew: true
 
 ## How does Emperor's Dais's ability work? [#ability]
 
-<Callout type="warn" title="Rules citation needed">
-	The following is partially based on Riot confirming intent.
-	The core rules do not explicitly define how "pay" instructions in resolution text behave, and an official update will be needed.
+When you conquer Emperor's Dais, you may pay <Energy value={1} /> and return a unit you control there to its owner's hand to finalize the triggered ability onto the chain.
+
+<Callout type="info" title="Core Rules 1.4 errata">
+	Emperor's Dais received a functional errata alongside the Core Rules 1.4 update.
+	Older printings separate "pay <Energy value={1} /> and return a unit" from "If you do, play a 2 Might Sand Soldier unit token"; its updated text joins them using "to" instead.
+	This makes the Energy payment and unit return parts of a single cost performed while finalizing the ability, so the unit can no longer be returned without also paying the Energy.
 </Callout>
 
-Emperor's Dais's ability — "When you conquer here, you may pay <Energy value={1} /> and return a unit you control here to its owner's hand. If you do, play a 2 Might Sand Soldier unit token here." — breaks into three distinct parts.
+Because "you may" is the first part of the effect, you choose whether to perform the ability during finalization.<Rule number="383.3.a" />
+The immediately following "pay <Energy value={1} /> and return a unit ... to play" is a cost within instructions, so both actions form the triggered ability's base cost and must be completed for the ability to finalize.<Rule number="383.3.b" /><Rule number="383.3.b.1" />
+You may activate <Add /> reactions while paying the Energy portion of this cost.<Rule number="444.2.c" />
 
-**"When you conquer here"** is the trigger condition.
-It fires when you establish control over Emperor's Dais at the end of a showdown.
-
-**"you may"** appears as the first part of the effect, so you decide whether to place the triggered ability on the chain at all when the condition is met.<Rule number="383.3.a" />
-If you decline, nothing happens.
-
-**"pay <Energy value={1} /> and return a unit you control here to its owner's hand. If you do, …"** is resolution-time effect text.
-"Pay <Energy value={1} />" is not a cost within instructions — those are identified by the "[do X] to [do Y]" template — so the ability has no cost at finalization.<Rule number="742.1" />
-However, "return a unit you control here" requires you to choose a target unit during finalization.<Rule number="402.1" />
-This choice is mandatory — if a legal target exists, you must choose one and cannot decline this step.<Rule number="402.3.b" />
-
-When the ability resolves, both instructions execute in sequence.
-First, "pay <Energy value={1} />." What happens depends on the state of your rune pool:
-
-- **If you have 1 or more Energy floating**, it is consumed automatically.
-You cannot prevent or decline this.
-- **If you have no floating Energy**, you may activate <Add /> reactions (exhaust runes or use other <Add /> abilities) to generate it at this moment.<Rule number="429.3" /><Rule number="429.3.a" />
-However, the game cannot compel you to do so.
-You may choose not to activate any <Add /> abilities and leave the payment unpaid.
-
-Second, "return a unit you control here to its owner's hand" — the targeted unit is returned regardless of whether the Energy was paid.<Rule number="055" />
-If the unit has left the battlefield before the ability resolves, it is not returned.<Rule number="405.1" />
-
-The "If you do" conditional — play a 2 Might Sand Soldier unit token here — only applies if **both** the Energy was paid **and** the unit was successfully returned.
-If either fails, no Sand Soldier is played.
-
-<Callout type="idea" title="Example">
-	You conquer Emperor's Dais and place the ability on the chain, targeting a friendly <Card name="Bewitching Spirit" />.
-	At resolution, you have no floating Energy and choose not to activate any <Add /> abilities.
-	Bewitching Spirit is still returned to hand — no Energy was paid, so no Sand Soldier is created, but the bounce happens regardless.
-	Declining the Energy payment is a valid strategic choice to bounce a unit for free.
-</Callout>
+Returning the unit is part of the cost, so that unit is not a target and returns to its owner's hand during finalization rather than resolution.<Rule number="355.10.c.1" />
+If you cannot or choose not to pay the entire cost, the ability does not finalize; you cannot return the unit without also paying the Energy.
+If you complete the cost, the ability is placed on the chain; when it resolves, you play a 2 Might Sand Soldier unit token at Emperor's Dais.

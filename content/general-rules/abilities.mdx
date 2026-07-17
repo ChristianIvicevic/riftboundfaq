@@ -1,7 +1,7 @@
 ---
 title: "Abilities"
 description: "Commonly asked questions about Abilities in Riftbound"
-crdVersion: "1.3"
+crdVersion: "1.4"
 authors:
 - "Christian I. (Near)"
 ---
@@ -23,7 +23,7 @@ Unlike spells and activated abilities which require <Reaction /> to be played ou
 Yes, with one important exception: abilities that use the <Add /> keyword.
 
 All triggered and activated abilities are placed on the chain.<Rule number="377.3" /><Rule number="383.3" />
-However, abilities that add resources resolve immediately when finalized, which means players do not receive priority to react to them.<Rule number="337.1.c" /><Rule number="429.2.a" />
+However, abilities that add resources resolve immediately when finalized, which means players do not receive priority to react to them.<Rule number="337.2" /><Rule number="429.2" /><Rule number="429.2.a" />
 
 ## How are additional conditions in triggered abilities evaluated? [#triggered-ability-if-conditions]
 
@@ -37,7 +37,7 @@ For example, <Card name="Sunken Temple" /> reads "When you conquer here with one
 The requirement that the conquering units be <Mighty /> is embedded in the trigger condition; if no <Mighty /> unit participated in the conquer, the ability does not trigger.
 
 "If" clauses that immediately follow the trigger condition — as the first thing after the comma — are checked at trigger time.
-This is the "intervening if rule": if the condition is not satisfied at the moment the triggering event occurs, the ability is never placed on the chain at all.<Rule number="383.3.e" />
+This is the "intervening if rule": if the condition is not satisfied at the moment the triggering event occurs, the ability is never placed on the chain at all.<Rule number="383.2.a.1" />
 
 However, "if" clauses embedded within the effect text — coming after an effect instruction rather than immediately after the comma — are only checked on resolution.
 The ability goes on the chain regardless, and the condition is only evaluated when it resolves.
@@ -64,7 +64,7 @@ The ability goes on the chain regardless, and the condition is only evaluated wh
 At finalization — when placing the triggered ability on the chain.
 
 In rules text phrased as "[do X] to [do Y]," the [do X] part is considered a cost within instructions.
-For triggered abilities, this cost is treated as the base cost of the ability and must be paid in order to finalize it to the chain.<Rule number="383.3.b" /><Rule number="383.3.b.1" /><Rule number="742.1.b" /><Rule number="403.1.b.1" />
+For triggered abilities, this cost is treated as the base cost of the ability and must be paid in order to finalize it to the chain.<Rule number="383.3.b" /><Rule number="383.3.b.1" /><Rule number="740.4.a.2" /><Rule number="403.1.b.1" />
 If the controller declines to pay, the ability is not placed on the chain at all.
 
 <Callout type="idea" title="Example">
