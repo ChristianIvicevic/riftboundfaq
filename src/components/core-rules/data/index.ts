@@ -18,3 +18,12 @@ export const CRD_VERSIONS: Record<string, CrdVersion> = {
 	'1.3': { version: '1.3', name: 'Unleashed', lastUpdated: '2026-03-30', rules: RULES_1_3 },
 	'1.4': { version: '1.4', name: 'Vendetta', lastUpdated: '2026-06-18', rules: RULES_1_4 },
 }
+
+// Per-version id -> lines lookup, derived once. A Map (not a plain object) keeps the
+// array as the ordered source of truth while giving O(1) access by rule id.
+export const RULES_BY_ID: Record<string, Map<string, string[]>> = Object.fromEntries(
+	Object.entries(CRD_VERSIONS).map(([version, crd]) => [
+		version,
+		new Map(crd.rules.map((rule) => [rule.id, rule.lines])),
+	]),
+)

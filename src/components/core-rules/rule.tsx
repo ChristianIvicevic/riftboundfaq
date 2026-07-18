@@ -1,7 +1,7 @@
 'use client'
 
 import { use } from 'react'
-import { CRD_VERSIONS } from '@/components/core-rules/data'
+import { RULES_BY_ID } from '@/components/core-rules/data'
 import { CrdVersionContext } from '@/components/core-rules/version'
 import { ruleHref } from '@/lib/constants'
 
@@ -12,7 +12,7 @@ export function Rule({ number }: { number: string }) {
 		return <sup className="text-nowrap text-fd-muted-foreground">[{number}]</sup>
 	}
 
-	const rulesText = CRD_VERSIONS[crdVersion]?.rules.find((it) => it.id === number)?.lines.join(' ')
+	const rulesText = RULES_BY_ID[crdVersion]?.get(number)?.join(' ')
 
 	return (
 		<sup>
