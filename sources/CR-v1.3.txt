@@ -1593,7 +1593,7 @@ reaction to the triggered ability on the chain, it will not affect where the
 Sprite token will be played when the triggered ability resolves.
 359.3.f.3.a. In the case of a delayed triggered ability, the information is referenced
 when the triggered ability is created unless specified otherwise.
-359.3.f.3.a.1 In the case of a linked ability that references information from a linked
+359.3.f.3.a.1. In the case of a linked ability that references information from a linked
 triggered ability, that information may be referenced from the trigger
 condition of the linked triggered ability if specified.
 359.3.f.4. Some information used by the effect of a triggered ability is referenced from the

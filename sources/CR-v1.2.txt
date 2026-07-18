@@ -3105,7 +3105,7 @@ is Attached to it.
 separately by paying the corresponding costs.
 744.5. Equip, and whether or not a Gear has Equip, is a characteristic of the Gear and may be checked or
 referenced by other Game Effects.
-744.5. Whether or not a Gear has Equip may be referenced even if the Rules Text of the Gear is
+744.6. Whether or not a Gear has Equip may be referenced even if the Rules Text of the Gear is
 Inactive.
 See rule 716 Attachment for more information.
 745. Quick-Draw

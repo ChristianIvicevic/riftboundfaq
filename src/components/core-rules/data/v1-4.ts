@@ -1,7 +1,7 @@
-export type CoreRule = { id: string; level: number; lines: string[] }
+import type { CoreRule } from './index'
 
 // oxfmt-ignore
-export const CORE_RULES: CoreRule[] = [
+export const RULES_1_4: CoreRule[] = [
 	{"id": "000", "level": 0, "lines": ["Golden and Silver Rules"]},
 	{"id": "001", "level": 0, "lines": ["Golden Rule"]},
 	{"id": "002", "level": 0, "lines": ["Card text supersedes rules text. Whenever a card fundamentally contradicts the rules, the card's indication is what is true."]},

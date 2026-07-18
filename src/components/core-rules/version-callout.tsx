@@ -1,7 +1,7 @@
 import { Callout } from 'fumadocs-ui/components/callout'
 import { CURRENT_CRD_VERSION } from '@/lib/constants'
 
-export function CrdCallout({ crdVersion }: { crdVersion: string }) {
+export function CrdVersionCallout({ crdVersion }: { crdVersion: string }) {
 	return (
 		<Callout type={crdVersion === CURRENT_CRD_VERSION ? 'success' : 'error'}>
 			{crdVersion === CURRENT_CRD_VERSION ? (

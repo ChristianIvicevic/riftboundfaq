@@ -1,7 +1,8 @@
 'use client'
 
 import { use } from 'react'
-import { CrdVersionContext } from '@/components/crd-version'
+import { CrdVersionContext } from '@/components/core-rules/version'
+import { ruleHref } from '@/lib/constants'
 
 export function Rule({ number }: { number: string }) {
 	const { crdVersion } = use(CrdVersionContext)
@@ -13,7 +14,7 @@ export function Rule({ number }: { number: string }) {
 	return (
 		<sup>
 			<a
-				href={`/core-rules#${number}`}
+				href={ruleHref(number, crdVersion)}
 				rel="noopener noreferrer"
 				target="_blank"
 				className="text-nowrap no-underline"

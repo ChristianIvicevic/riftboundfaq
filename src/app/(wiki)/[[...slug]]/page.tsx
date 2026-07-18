@@ -5,14 +5,15 @@ import { notFound } from 'next/navigation'
 import { submitPageFeedback } from '@/actions/feedback'
 import { Authors } from '@/components/authors'
 import { CardGalleryLink, EditThisPageLink } from '@/components/buttons'
+import { CoreRulesDiff } from '@/components/core-rules/diff-view'
+import { Rule } from '@/components/core-rules/rule'
 import { CoreRulesTable } from '@/components/core-rules/table'
-import { CrdCallout } from '@/components/crd-callout'
-import { CrdVersionProvider } from '@/components/crd-version'
+import { CrdVersionProvider } from '@/components/core-rules/version'
+import { CrdVersionCallout } from '@/components/core-rules/version-callout'
 import { Feedback } from '@/components/feedback/client'
 import { KEYWORDS } from '@/components/keywords'
 import { LastUpdated } from '@/components/last-updated'
 import { Energy, RUNES, Universal } from '@/components/resources'
-import { Rule } from '@/components/rule'
 import { baseUrl } from '@/lib/metadata'
 import { getPageImage, source } from '@/lib/source'
 import { getMDXComponents } from '@/mdx-components'
@@ -38,7 +39,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 				{page.data.galleryLink && <CardGalleryLink href={page.data.galleryLink} />}
 				<EditThisPageLink filePath={page.path} />
 			</div>
-			{page.data.crdVersion && <CrdCallout crdVersion={page.data.crdVersion} />}
+			{page.data.crdVersion && <CrdVersionCallout crdVersion={page.data.crdVersion} />}
 			<DocsBody>
 				<CrdVersionProvider crdVersion={page.data.crdVersion}>
 					<MDX
@@ -46,6 +47,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 							a: createRelativeLink(source, page),
 							Rule,
 							CoreRulesTable,
+							CoreRulesDiff,
 							Energy,
 							Universal,
 							...RUNES,
@@ -83,6 +85,7 @@ export async function generateMetadata(props: PageProps<'/[[...slug]]'>): Promis
 	return {
 		title: page.data.title,
 		description,
+		robots: page.data.noindex ? { index: false, follow: true } : undefined,
 		alternates: { canonical: url },
 		openGraph: {
 			type: 'website',
