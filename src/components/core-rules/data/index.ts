@@ -3,7 +3,7 @@ import { RULES_1_2 } from '@/components/core-rules/data/v1-2'
 import { RULES_1_3 } from '@/components/core-rules/data/v1-3'
 import { RULES_1_4 } from '@/components/core-rules/data/v1-4'
 
-export type CoreRule = { id: string; level: number; lines: string[] }
+export type CoreRule = { id: string; lines: string[] }
 
 export type CrdVersion = {
 	version: string

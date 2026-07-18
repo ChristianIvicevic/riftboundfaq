@@ -27,7 +27,7 @@ function normalize(text) {
 	)
 }
 
-/** @returns {{ lastUpdated: string, rules: {id:string, level:number, lines:string[]}[] }} */
+/** @returns {{ lastUpdated: string, rules: {id:string, lines:string[]}[] }} */
 export function parseCr(text) {
 	const rawLines = text.split('\n').map((l) => l.replace(/\r$/u, ''))
 
@@ -52,7 +52,7 @@ export function parseCr(text) {
 			if (current) rules.push(current)
 			const id = ruleMatch[1]
 			const rest = ruleMatch[2] ?? ''
-			current = { id, level: id.split('.').length - 1, lines: [] }
+			current = { id, lines: [] }
 			startElement(rest)
 			continue
 		}
@@ -82,12 +82,12 @@ export function parseCr(text) {
 export function serialize(rules, exportName, header = 'import') {
 	const preamble =
 		header === 'inline'
-			? 'export type CoreRule = { id: string; level: number; lines: string[] }\n\n'
+			? 'export type CoreRule = { id: string; lines: string[] }\n\n'
 			: "import type { CoreRule } from './index'\n\n"
 	const body = rules
 		.map((r) => {
 			const lines = r.lines.map((l) => JSON.stringify(l)).join(', ')
-			return `\t{"id": ${JSON.stringify(r.id)}, "level": ${r.level}, "lines": [${lines}]},`
+			return `\t{"id": ${JSON.stringify(r.id)}, "lines": [${lines}]},`
 		})
 		.join('\n')
 	return `${preamble}// oxfmt-ignore\nexport const ${exportName}: CoreRule[] = [\n${body}\n]\n`

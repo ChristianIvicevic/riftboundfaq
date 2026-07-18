@@ -58,22 +58,25 @@ export function CoreRulesTable({ version = CURRENT_CRD_VERSION }: { version?: st
 					</tr>
 				</thead>
 				<tbody>
-					{crd.rules.map((rule) => (
-						<tr key={rule.id}>
-							<td className="align-top whitespace-nowrap">
-								<RuleAnchor id={`R${rule.id}`}>{rule.id}</RuleAnchor>
-							</td>
-							<td>
-								{rule.level > 0 ? (
-									<Indent level={rule.level}>
+					{crd.rules.map((rule) => {
+						const level = rule.id.split('.').length - 1
+						return (
+							<tr key={rule.id}>
+								<td className="align-top whitespace-nowrap">
+									<RuleAnchor id={`R${rule.id}`}>{rule.id}</RuleAnchor>
+								</td>
+								<td>
+									{level > 0 ? (
+										<Indent level={level}>
+											<RuleLines lines={rule.lines} ruleIds={ruleIds} />
+										</Indent>
+									) : (
 										<RuleLines lines={rule.lines} ruleIds={ruleIds} />
-									</Indent>
-								) : (
-									<RuleLines lines={rule.lines} ruleIds={ruleIds} />
-								)}
-							</td>
-						</tr>
-					))}
+									)}
+								</td>
+							</tr>
+						)
+					})}
 				</tbody>
 			</table>
 		</div>
