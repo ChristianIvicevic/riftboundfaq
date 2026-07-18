@@ -2857,7 +2857,7 @@ step.
 player has units present during this step.
 461.3.d.1. If “No Result” was reached, and both players have units remaining, stage a Combat
 at this battlefield.
-461.4 The following Task becomes Outstanding:
+461.4. The following Task becomes Outstanding:
 461.5. 1. If no Showdown or Combat is staged at this location, the player with Units remaining here
 Establishes Control.
 461.5.a. Clear the Contested Status.
@@ -2873,7 +2873,7 @@ See rule 464.1. for more information on Conquering.
 461.6. The following Task becomes Outstanding:
 461.7. 1. Combat ends.
 461.7.a. Remove Attacker and Defender Designation from all Units and Players.
-461.7.b All “this combat” effects expire simultaneously.
+461.7.b. All “this combat” effects expire simultaneously.
 462. Scoring
 463. Scoring is the act of a Player gaining a point through the process of seizing or maintaining control over
 Battlefields.

@@ -262,7 +262,7 @@ See rule 161. Rune Pools for more information.
 130.3. Power cost
 130.3.a. The symbols, listed vertically, in the Cost element in the upper left corner of the card.
 130.3.b. This section may not be present on every card.
-130.4 Effects that need to determine a card’s cost for any purpose always use its base cost, even if that cost
+130.4. Effects that need to determine a card’s cost for any purpose always use its base cost, even if that cost
 is altered or ignored as the card is played.
 Example: Sky Splitter is a spell that costs 8 Energy and says in part “This spell's Energy cost is
 reduced by the highest Might among units you control.” Lux, Illuminated is a unit that says
@@ -276,7 +276,7 @@ Sky Splitter.
 same name for the purposes of deckbuilding and gameplay.
 Example: Chemtech Enforcer in English and its counterpart in Chinese are considered the
 same card, despite the Name element on the card reading differently.
-131.4 Some cards have both a short name and a subtitle. For all purposes, including rules and deckbuilding,
+131.4. Some cards have both a short name and a subtitle. For all purposes, including rules and deckbuilding,
 such a card’s name is “[Short Name], [Subtitle]”. Example: Kai’Sa, Evolutionary and Kai’Sa, Survivor
 both have the short name Kai’Sa, but they have different names. You can include 3 of each in your
 deck under normal deckbuilding rules. If one of them is your Chosen Champion, the other is not.
@@ -393,23 +393,23 @@ See rule 720 Inactive for more information.
 134.4.a. The presence of text, rules, Keywords, and other effects can still be referenced and detected
 by other game effects, even while Rules Text is Inactive.
 135. Effect Text
-135.1 Some cards have a separate section of text below the Rules Text. This is referred to as the Effect Text.
-135.2 Effect Text can contain additional Abilities.
-135.2.a Effect Text can be blank.
-135.2.b Effect Text is inactive unless the card with the Effect Text is Attached to another card.
+135.1. Some cards have a separate section of text below the Rules Text. This is referred to as the Effect Text.
+135.2. Effect Text can contain additional Abilities.
+135.2.a. Effect Text can be blank.
+135.2.b. Effect Text is inactive unless the card with the Effect Text is Attached to another card.
 See rule 716 Attachment for more information.
 See rule 720 Inactive for more information.
-135.2.c The abilities in the Effect Text section of a card are appended to the Rules Text of the card
+135.2.c. The abilities in the Effect Text section of a card are appended to the Rules Text of the card
 to which the card with the Effect Text is Attached.
 136. Might Bonus
-136.1 Some cards have a Might Bonus in their lower right corner, expressed as an operator plus an integer.
-136.2 A card’s Might Bonus can be +0.
-136.3 A card’s Might Bonus modulates the Might of the card to which the card that has the Might Bonus
+136.1. Some cards have a Might Bonus in their lower right corner, expressed as an operator plus an integer.
+136.2. A card’s Might Bonus can be +0.
+136.3. A card’s Might Bonus modulates the Might of the card to which the card that has the Might Bonus
 is Attached.
 See rule 716 Attachment for more information.
-136.3.a The Might Bonus is applied while Attached and stops applying as soon as the card with the
+136.3.a. The Might Bonus is applied while Attached and stops applying as soon as the card with the
 Might Bonus is no longer Attached.
-136.3.b If the card to which a card with a Might Bonus is Attached has no Might value, the Might
+136.3.b. If the card to which a card with a Might Bonus is Attached has no Might value, the Might
 Bonus is ignored.
 137. Flavor Text
 137.1. Flavor text is text that appears at the bottom of some cards to provide aesthetic enjoyment. It conveys
@@ -794,7 +794,7 @@ regardless of Priority.
 312.2.c. When the turn is in a Closed State and they control the next item on the Chain.
 312.2.d. When the turn is in a Closed State, they are the next Player in Turn Order, and the player
 with Priority passes.
-312.3 When a player is granted Priority, it is either created if no player has it or taken from the player with
+312.3. When a player is granted Priority, it is either created if no player has it or taken from the player with
 Priority.
 313. At any given time, up to one player has Focus.
 313.1. Focus is the permission to take appropriately timed Discretionary Actions when the turn is in a
@@ -806,7 +806,7 @@ Example: A player with Focus may not play spells or activate abilities that don'
 have the Action or Reaction keywords.
 313.2. A player who gains Focus also gains Priority.
 313.3. A player who passes Priority retains Focus.
-313.4 A player may not make discretionary actions with Focus unless they also possess Priority.
+313.4. A player may not make discretionary actions with Focus unless they also possess Priority.
 313.5. If the turn is in a Neutral State, no player has Focus.
 314. Phases of the Turn
 315. Start of Turn
@@ -906,8 +906,8 @@ not passed or awarded.
 the first completes, repeating until a Cleanup occurs with no new change in the game’s state.
 322. When a Cleanup occurs, the following steps occur in order:
 322.1. 1. If a player has as many points as the Victory Score, that player wins.
-322.2 2. Handle outstanding board state
-322.3 2a. All Units that have non-zero Damage marked on them equalling or exceeding their Might that
+322.2. 2. Handle outstanding board state
+322.3. 2a. All Units that have non-zero Damage marked on them equalling or exceeding their Might that
 have Deathknell abilities will trigger their Deathknell ability now, making note of their current
 location, attributes, and other information relevant to add the trigger as a Pending Item
 See rule 734 Deathknell for more information.
@@ -927,15 +927,15 @@ but have either Attacker or Defender designations, they lose those designations 
 by the same player and place them in their owner's Trash.
 322.8. 6. Mark a Showdown as Staged at each Battlefield that Contested was applied to that is
 Uncontrolled.
-322.8.a The Showdown remains Staged at each Battlefield that is Contested and has only units
+322.8.a. The Showdown remains Staged at each Battlefield that is Contested and has only units
 present controlled by the player that applied Contested
-322.9 6a. If Units of an opposing player are present at a Battlefield that has a Showdown staged before it
+322.9. 6a. If Units of an opposing player are present at a Battlefield that has a Showdown staged before it
 can be Opened, the Showdown will cease being Staged
 322.10. 7. Mark a Combat as Staged at each Battlefield that Contested was applied to that have Units
 present controlled by opposing players.
 322.10.a. The Combat remains Staged at that Battlefield as long as there are Units present from two
 opposing players there.
-322.11 7a. If Units of two opposing players are no longer present at a Battlefield that has a Combat Staged
+322.11. 7a. If Units of two opposing players are no longer present at a Battlefield that has a Combat Staged
 before it has opened, the Combat will cease being Staged
 322.12. 8. Finalize any Pending Items on the Chain
 322.13. 9. If the current state is a Neutral Open State and one or more Showdowns are Staged, the Turn
@@ -1098,9 +1098,9 @@ further steps of this process.
 352.1. If the card is a spell, or has an effect that specifies a choice "As I am played," those choices are made
 now.
 352.2. For Units, choose a valid Location where that Unit will be placed upon being Played.
-352.2.a By default, Valid locations include the controller’s Base or a Battlefield the controller
+352.2.a. By default, Valid locations include the controller’s Base or a Battlefield the controller
 controls.
-352.2.b Some Game Effects may grant players permission to play Units to locations that are not
+352.2.b. Some Game Effects may grant players permission to play Units to locations that are not
 normally Valid. Such locations become Valid for the purposes of Playing the Unit..
 352.3. For Spells and Abilities that Move one or more Units, choose a valid Location as the Move
 Destination for each Move that will be performed.
@@ -2118,7 +2118,7 @@ Stand, a spell that reads in part “Double a friendly unit's Might this turn.�
 current Might is 5, so it gets +5 Might this turn, for a current Might of 10. After
 combat, Shield no longer applies, but the +5 Might from Last Stand does, so the
 unit’s Might is 8.
-419.2 Doubling is a Limited Action.
+419.2. Doubling is a Limited Action.
 419.2.a. Players may only Double when Game Effects direct them to do so.
 420. Swap
 420.1. Swapping is the act of increasing one numeric value and decreasing another numeric value on some
@@ -2128,9 +2128,9 @@ value and one that Decreases the other.
 420.1.b. To accomplish this, determine the difference between these values and then apply an
 Increase for that amount to the lower value of the two attributes, and a Decrease of that
 amount to the higher value of the two attributes.
-420.1.c If both attributes are the same numeric value, Swapping has no effect.
+420.1.c. If both attributes are the same numeric value, Swapping has no effect.
 420.2. Swapping is a Limited Action.
-420.2.a Players may only swap when Game Effects direct them to do so.
+420.2.a. Players may only swap when Game Effects direct them to do so.
 421. Attach
 421.1. Attaching is the act of linking two cards on the board together to combine their effects in some way.
 This causes one or more cards to become Attached and at least one card to become a Top-Most
@@ -2481,7 +2481,7 @@ unit with 2 [M], then the effect will generate -1 [M] until end of turn.
 454.3.d. This layer applies arithmetic in the following way.
 454.3.d.1. 1. Increases
 454.3.d.1.a. Positive values, or increases, to Might are applied first.
-454.3.d.1.b If there is a restriction or limitation to this increase, the limitation is
+454.3.d.1.b. If there is a restriction or limitation to this increase, the limitation is
 “snapshotted” for the duration of the effect.
 454.3.d.2. 2. Decreases
 454.3.d.2.a. Negative values, or decreases, to Might are applied last.
@@ -3184,5 +3184,5 @@ ability is not chosen.
 747.2.a. If you choose the same target with multiple instances of Weaponmaster, each will resolve
 separately.
 747.3. Weaponmaster has no function while on the board.
-747.4 Weaponmaster, and whether or not a unit has Weaponmaster, is a characteristic of the Unit and
+747.4. Weaponmaster, and whether or not a unit has Weaponmaster, is a characteristic of the Unit and
 may be checked or referenced by other Game Effects.
