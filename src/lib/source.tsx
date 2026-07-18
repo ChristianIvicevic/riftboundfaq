@@ -6,6 +6,10 @@ import { Badge } from '@/components/ui/badge'
 export const source = loader({
 	baseUrl: '/',
 	source: docs.toFumadocsSource(),
+	// Nav is curated explicitly via meta.json, so don't auto-append unreferenced
+	// pages. This keeps archived core-rules snapshots (e.g. /reference/core-rules/1.4)
+	// routable but out of the sidebar.
+	pageTree: { generateFallback: false },
 	plugins: ({ typedPlugin }) => [
 		lucideIconsPlugin(),
 		typedPlugin({

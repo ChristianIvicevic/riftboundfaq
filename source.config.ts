@@ -12,6 +12,7 @@ export const docs = defineDocs({
 			galleryLink: z.url().optional(),
 			authors: z.array(z.string()).optional(),
 			isNew: z.boolean().optional(),
+			noindex: z.boolean().optional(),
 		}),
 	},
 	meta: { schema: metaSchema },

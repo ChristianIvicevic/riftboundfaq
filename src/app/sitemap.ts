@@ -7,10 +7,13 @@ function buildUrl(path: string): string {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-	return source.getPages().map((page): MetadataRoute.Sitemap[number] => ({
-		url: buildUrl(page.url),
-		lastModified: page.data.lastModified,
-		changeFrequency: 'weekly',
-		priority: page.url === '/' ? 1 : 0.8,
-	}))
+	return source
+		.getPages()
+		.filter((page) => !page.data.noindex)
+		.map((page): MetadataRoute.Sitemap[number] => ({
+			url: buildUrl(page.url),
+			lastModified: page.data.lastModified,
+			changeFrequency: 'weekly',
+			priority: page.url === '/' ? 1 : 0.8,
+		}))
 }
