@@ -36,8 +36,8 @@ Conditions before the comma are part of the trigger condition and must be satisf
 For example, <Card name="Sunken Temple" /> reads "When you conquer here with one or more <Mighty /> units, you may pay <Energy value={1} /> to draw 1."
 The requirement that the conquering units be <Mighty /> is embedded in the trigger condition; if no <Mighty /> unit participated in the conquer, the ability does not trigger.
 
-"If" clauses that immediately follow the trigger condition — as the first thing after the comma — are checked at trigger time.
-This is the "intervening if rule": if the condition is not satisfied at the moment the triggering event occurs, the ability is never placed on the chain at all.<Rule number="383.2.a.1" />
+"If" clauses that immediately follow the trigger condition — as the first thing after the comma — are checked at trigger time; these are trigger-time conditions.
+If the condition is not satisfied at the moment the triggering event occurs, the ability is never placed on the chain at all.<Rule number="383.2.a.1" />
 
 However, "if" clauses embedded within the effect text — coming after an effect instruction rather than immediately after the comma — are only checked on resolution.
 The ability goes on the chain regardless, and the condition is only evaluated when it resolves.
@@ -45,7 +45,7 @@ The ability goes on the chain regardless, and the condition is only evaluated wh
 <Callout type="idea" title="Example">
 	<Card name="Gutter Palace" /> reads "At the start of your Beginning Phase, if you have exactly 4 cards in hand and exactly 4 units at battlefields, you win the game."
 
-	The "if" clause comes immediately after the comma, so it is an intervening if.
+	The "if" clause comes immediately after the comma, so it is a trigger-time condition.
 	This ability is only placed on the chain if you already have exactly 4 cards in hand and exactly 4 units at battlefields at the start of your Beginning Phase.
 	If the condition is not satisfied at that moment, the ability does not trigger at all.
 </Callout>
@@ -54,7 +54,7 @@ The ability goes on the chain regardless, and the condition is only evaluated wh
 	<Card name="Loose Cannon" /> reads "At start of your Beginning Phase, draw 1 if you have one or fewer cards in your hand."
 
 	Here the "if" clause does not immediately follow the comma — it comes after the effect instruction "draw 1".
-	This means it is not an intervening if.
+	This means it is not a trigger-time condition.
 	The ability goes on the chain at the start of every one of your Beginning Phases, regardless of how many cards are in your hand.
 	Only when the ability resolves is the hand size checked; if you have more than one card at that point, the draw does not happen.
 </Callout>
