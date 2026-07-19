@@ -10,17 +10,20 @@ authors:
 
 Yes, as the untargetability is inactive in hand and hand cards cannot be targeted in any case.
 
-A unit is made untargetable by a passive ability declaring it can't be chosen by some category of spells and abilities — as seen on <Card name="Ruin Runner" /> and <Card name="Baron Nashor" />.<Rule number="757" /><Rule number="757.1" />
-Passive abilities of permanents are only active while on the board,<Rule number="365.1" /> so this untargetability has no effect while the unit is in the opponent's hand.
+<Card name="Ruin Runner" /> and <Card name="Baron Nashor" /> are made untargetable by passive abilities declaring that they can't be chosen by some category of spells and abilities.<Rule number="757" /><Rule number="757.1" />
+Passive abilities of permanents are typically active only while on the board.<Rule number="365.1" />
+Abilities that function in another zone self-describe that context,<Rule number="366.1" /> which these untargetability abilities do not.
+They therefore have no effect while the unit is in hand.
 Beyond that, Bone Skewer never targets the chosen unit in the first place — cards in hand are never targets because the hand is not a public zone,<Rule number="355.10.a" /> so there is no finalization step at which a unit there could be declared as a target.<Rule number="355.5" />
 
 ## Can targeting protection prevent the stun from Bone Skewer? [#stun-targeting]
 
-No, as the unit to be stunned is determined automatically, not chosen, so no targeting occurs.
+No, because the reflexive trigger that stuns the unit does not ask its controller to choose anything.
 
-As Bone Skewer resolves, its "If they do, then do this: <Stun /> it" instruction applies the stun — the "it" refers unambiguously to the unit the opponent just played as a result of Bone Skewer's effect.
-No choice is ever made about which unit is stunned; it is always and only that unit.
-Because the unit is programmatically determined rather than chosen, it is not a target.<Rule number="355.10.d" />
+If the opponent plays the unit, Bone Skewer's "then do this" wording creates a reflexive trigger as a pending item on the chain.<Rule number="387.1" /><Rule number="387.2" /><Rule number="388.1" />
+The trigger is linked to the preceding ability, and "it" can only refer to the unit played by that ability.<Rule number="394.1" /><Rule number="397" />
+When the trigger is finalized, no choice is made about which unit will be stunned; it is always and only that unit.
+Because the unit is programmatically determined rather than chosen, it is not a target.<Rule number="355.10.d" /><Rule number="355.10.d.1" />
 
 This means untargetability — the "can't be chosen by enemy spells and abilities" passive on units like <Card name="Ruin Runner" /> and <Card name="Baron Nashor" /> — does not prevent the stun, since it only stops a unit from being chosen as a target and the stun targets nothing.<Rule number="758" />
 <Deflect /> is similarly irrelevant, since <Deflect /> is only added as a cost when a spell or ability chooses an opponent's permanent,<Rule number="809.1.d" /> which is not the case here.
@@ -30,7 +33,7 @@ This means untargetability — the "can't be chosen by enemy spells and abilitie
 Yes, as declaring the intent to pay is what satisfies the condition, not the amount actually spent.
 
 The phrase "any and all costs" in Bone Skewer's text is intentionally broader than the standard "ignoring its cost" wording.
-Standard cost-ignoring only zeroes out a card's base Energy and Power costs,<Rule number="356.1.b.1" /> whereas "any and all costs" sets the card's total cost to zero, including non-standard costs like additional costs.<Rule number="356.5.a" />
+Standard cost-ignoring only zeroes out a card's base energy and power costs,<Rule number="356.1.b.1" /> whereas "any and all costs" sets the card's total cost to zero, including non-standard costs like additional costs.<Rule number="356.5.a" />
 Despite this, the opponent may still declare their intention to pay an optional additional cost during step 2 of playing the card — the decision to pay is made before costs are determined.
 Once declared, that additional cost is folded into the total cost, which "any and all costs" then sets to zero, so it's already 0 when it comes time to pay.<Rule number="356.5.a" />
 An optional additional cost is considered paid based on the decision to pay, not the amount actually spent,<Rule number="356.4.f.1" /> so the condition is fully satisfied.

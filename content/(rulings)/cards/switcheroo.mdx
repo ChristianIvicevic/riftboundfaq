@@ -6,7 +6,7 @@ authors:
 - "Christian I. (Near)"
 ---
 
-## How does Switcheroo work? [#how-it-works]
+## How does Switcheroo work? [#might-swap]
 
 Switcheroo does not swap might values directly — it determines the difference in current might at resolution and applies +X/-X modifiers accordingly.
 
@@ -14,10 +14,11 @@ Switcheroo uses the Swap action,<Rule number="433" /> which calculates the diffe
 Current might means the unit's total might at resolution time, including all active modifiers: equipment bonuses, battlefield passives, conditional abilities, and any other effects.
 The modifiers Switcheroo applies persist until end of turn.
 
-## Can I apply equipment bonuses or passive effects after Switcheroo resolves? [#no-double-dipping]
+## Are existing equipment bonuses or passive effects counted again after Switcheroo resolves? [#existing-modifiers]
 
 No.
 Equipment bonuses, battlefield passives, and conditional abilities are already factored into current might when Switcheroo resolves.
+New modifiers that begin applying after Switcheroo resolves still apply normally, but they do not change the modifiers Switcheroo already created.
 
 <Callout type="idea" title="Example">
 	You have a unit with 2 base might and attached equipment granting +3 might, giving it 5 current might.
@@ -27,7 +28,7 @@ Equipment bonuses, battlefield passives, and conditional abilities are already f
 	The equipment bonus was already included in the calculation — you cannot reapply the +3 afterwards.
 </Callout>
 
-## What happens when equipment detaches or passives stop applying after Switcheroo? [#modifiers-changing]
+## What happens when equipment detaches or passives stop applying after Switcheroo? [#later-modifier-changes]
 
 The Switcheroo modifier persists until end of turn, but the equipment or passive bonus is removed independently — which can result in very low or negative might.
 
@@ -41,7 +42,7 @@ Each modifier is independent: when equipment detaches or a passive deactivates, 
 	If the equipment later detaches, your unit loses the +3 bonus but keeps the -4 from Switcheroo, leaving it at -2 might.
 </Callout>
 
-### Passives [#passives]
+### Passives [#passive-effects-ending]
 
 <Callout type="idea" title="Example">
 	<Card name="Trifarian War Camp" /> grants units +1 might while they're present.
@@ -52,15 +53,15 @@ Each modifier is independent: when equipment detaches or a passive deactivates, 
 
 <Callout type="idea" title="Example">
 	<Card name="Wuju Bladesman" /> grants a friendly unit +2 might while it defends alone.
-	Your 3 might unit is defending alone, making its current might 5 with Wuju's bonus.
+	Your 3 might unit is defending alone, making its current might 5 with Wuju's bonus, while your opponent's attacking unit has 1 might.
 	Your opponent plays Switcheroo targeting both units.
-	Switcheroo applies -4 to your defender and +4 to the attacker, leaving your defender at 1 might (3 base - 4 from Switcheroo + 2 from Wuju) while it still defends alone.
+	Switcheroo applies -4 to your defender and +4 to the attacker, leaving your defender at 1 might (3 base - 4 from Switcheroo + 2 from Wuju) and the attacker at 5 might (1 base + 4 from Switcheroo).
 	Once Wuju's passive deactivates — when combat ends or another friendly unit joins the defense — your unit drops to -1 might.
 </Callout>
 
 ## Can Switcheroo result in negative might? [#negative-might]
 
-Yes, but the unit treats its might as 0 for game purposes while calculations still use the actual negative value.
+Yes. When referenced by spells or abilities and when summing combat damage, negative might is treated as 0, but might increases and decreases use the actual negative value.
 
 Units can end up with negative might when modifiers included in their current might at resolution are later removed.
 Units with might less than 0 are treated as having 0 might when referenced by spells and abilities, and when summing might to be assigned as damage in the Combat Damage Step.<Rule number="143.2.b" />

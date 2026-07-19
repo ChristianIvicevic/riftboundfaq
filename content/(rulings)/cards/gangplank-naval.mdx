@@ -10,29 +10,32 @@ isNew: true
 ## Does Gangplank's replacement effect stop the rest of a spell or ability from resolving? [#partial-resolution]
 
 No.
-A replacement effect only replaces the specific event or instruction that qualifies for it — everything else a spell or ability does still happens as written, whether it would stun Gangplank, decrease his might, or return him to hand.<Rule number="370.1" />
+A replacement effect only replaces the specific event or instruction that qualifies for it.<Rule number="370.1" />
+For Gangplank, that means a stun, might decrease, or return to hand caused by a spell or ability that chose him.
 
 <Callout type="idea" title="Example">
 	A player plays <Card name="Star-Crossed" />, targeting their own <Empowered /> Gangplank as the friendly unit and an opponent's <Card name="Elder Dragon" /> as the enemy unit.
 
 	Returning Elder Dragon doesn't choose Gangplank, so his replacement effect has nothing to apply to there — it's returned to hand as normal.
 	Returning Gangplank is the qualifying event: instead of going to hand, he gets +3 might.
-	Star-Crossed still resolves in full; it simply produces a different result for the one instruction that involves Gangplank.
+	The rest of Star-Crossed resolves normally; it simply produces a different result for the one instruction that involves Gangplank.
 </Callout>
 
 ## How does Gangplank's replacement effect interact with Switcheroo? [#switcheroo-interaction]
 
 Only the modifier applied to Gangplank is a candidate for replacement — whatever happens to the other unit is untouched.
-See [How does Switcheroo work?](/cards/switcheroo#how-it-works) for why Swapping creates two separate modifiers from a single calculated difference.<Rule number="433.1.a" /><Rule number="433.1.b" />
-Whichever of the two modifiers chooses Gangplank is the only one his replacement effect can apply to — if it's a decrease, it's replaced with +3 might instead; if it's an increase, it isn't one of the events his ability replaces, so it applies normally.
-Either way, the other unit's modifier resolves untouched, and the difference itself isn't recalculated afterward.
+See [How does Switcheroo work?](/cards/switcheroo#might-swap) for why swapping creates two separate modifiers from a single calculated difference.<Rule number="433.1.a" /><Rule number="433.1.b" />
+Switcheroo chooses Gangplank when the spell is finalized, then creates one modifier for each unit when it resolves.
+If the modifier affecting Gangplank would decrease his might, that event is replaced with +3 might because it comes from a spell that chose him.
+If it would increase his might, it does not match the events his ability replaces and applies normally.
+The modifier affecting the other unit is unchanged, and the difference is not recalculated.
 
 <Callout type="idea" title="Example">
 	An <Empowered /> Gangplank at 6 might is swapped with a 1 might <Card name="Determined Sentry" /> at the same battlefield via <Card name="Switcheroo" />.
 
-	The Swap action calculates a difference of 5, then creates two modifiers: -5 might for Gangplank and +5 might for Determined Sentry.
+	The swap action calculates a difference of 5, then creates two modifiers: -5 might for Gangplank and +5 might for Determined Sentry.
 	Gangplank's replacement effect intercedes on his -5 might modifier — decreasing his might is one of the events it replaces — and turns it into +3 might instead.
-	Determined Sentry's +5 might modifier never chose Gangplank, so it's unaffected.
+	The +5 might modifier applies only to Determined Sentry, so Gangplank's replacement effect does not affect it.
 
 	Gangplank ends at 9 might (6 base + 3); Determined Sentry ends at 6 might (1 base + 5).
 </Callout>

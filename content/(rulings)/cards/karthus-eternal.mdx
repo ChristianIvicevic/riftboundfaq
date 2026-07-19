@@ -6,12 +6,13 @@ authors:
 - "Christian I. (Near)"
 ---
 
-## Does Karthus's ability apply if he dies from the same effect as the unit with Deathknell? [#dies-same-effect]
+## Does Karthus's ability apply if he dies from the same effect as the unit with Deathknell? [#simultaneous-deathknell]
 
 Yes, because <Deathknell /> triggers are always queued as pending items before the dying unit leaves the board.
 
-Whenever a unit with <Deathknell /> is killed — whether by a Kill effect or by damage during a cleanup — its trigger is added to the chain before the card is moved to the trash.<Rule number="808.1.d.2" />
-Karthus's passive is only active while he is on the board,<Rule number="365.1" /> but because the trigger is queued first, he is still present when it is added — even if he is dying from the same effect.
+Whenever a unit with <Deathknell /> is killed — whether by a kill effect or by lethal damage during cleanup — its trigger is added to the chain before the card is moved to the trash.<Rule number="808.1.d.2" />
+Karthus's passive is only active while he is on the board.<Rule number="365.1" />
+When one kill action kills Karthus and another unit simultaneously, as with <Card name="The Ruination" />, Karthus is still present when that unit's <Deathknell /> triggers.<Rule number="370.1.a.2" />
 In the cleanup case this ordering is enforced explicitly: step 3a queues all <Deathknell /> triggers<Rule number="323.4" /> before step 3b moves any of those units to the trash.<Rule number="323.5" />
 
 <Callout type="idea" title="Example">
@@ -20,11 +21,13 @@ In the cleanup case this ordering is enforced explicitly: step 3a queues all <De
 	Both are sent to the trash, but not before Karthus's ability doubles the <Deathknell /> trigger.
 </Callout>
 
-## Does a single Not So Fast counter both Deathknell triggers when Karthus is on the board? [#not-so-fast]
+## Does a single Not So Fast counter both Deathknell triggers when Karthus is on the board? [#countering-dual-deathknells]
 
-No — Karthus places two separate trigger instances on the chain, and <Card name="Not So Fast" /> can only counter one of them at a time.
+No. If both <Deathknell /> triggers are legal targets for <Card name="Not So Fast" />, one copy can counter only one of them.
 
 When a friendly unit with <Deathknell /> dies while Karthus is on the board, his ability causes that <Deathknell /> to trigger an additional time.
 Each trigger is added to the chain as its own independent pending item.<Rule number="808.1.d.2" />
-Not So Fast counters a single spell or ability, so one copy intercepts only one of the two triggers; the other resolves normally.
-Stopping both requires two copies of Not So Fast.
+Not So Fast targets a single spell or ability, so each copy can counter only one trigger.
+
+This applies only when the <Deathknell /> ability chooses one of your friendly units or gear.
+Otherwise, Not So Fast cannot target either trigger.

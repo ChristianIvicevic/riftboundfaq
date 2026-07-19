@@ -14,27 +14,29 @@ No — you gain control of it too late in the turn for its trigger to fire.
 "At" identifies a triggered ability keyed to a specific point in time during the turn sequence<Rule number="383.1" /> — here, the Ending Step, when end-of-turn game effects take place.<Rule number="317.1" /><Rule number="317.1.a" />
 A trigger's condition is evaluated once, immediately after that point in time is reached<Rule number="383.2.c" /> — it is not re-checked continuously for as long as the game remains in the Ending Phase.
 
-Akshan's own play effect only triggers once he is finalized on the board — a separate, later event<Rule number="383.4.a" /><Rule number="383.4.a.2" /> — and that is when you gain control of the enemy's Dazzling Aurora.
+After Akshan enters the board, his play effect is added to the chain as a pending item.<Rule number="383.4.a" /><Rule number="383.4.a.2" />
+You gain control of the enemy Dazzling Aurora only when that play effect later resolves.
 
-By the time that happens, your Ending Step's "at the end of your turn" condition has already been evaluated — once, for whatever you controlled at that instant.
-The enemy Dazzling Aurora wasn't yours yet then, so it never gets checked this turn; there's no second check waiting for it later in the phase.
+At the end of your turn, Dazzling Aurora was still controlled by your opponent, so its controller-relative "your turn" condition did not refer to your turn.
+By the time you gain control of it, that point in the turn has passed; there's no second check waiting for it later in the phase.
 It will trigger normally at the end of your future turns, for as long as you continue to control it.
 
 ## Your opponent plays their own Akshan and takes control of the gear your Akshan already controls. What happens when one or both Akshans die? [#dual-akshan-control]
 
-Whichever Akshan was played most recently determines control of the gear for as long as it remains on the board.
+Whichever control effect was established most recently determines control of the gear while both effects remain active.
 
-Both Akshans generate a continuous effect that changes the gear's controller — an inherent trait of every game object.<Rule number="477.1" /><Rule number="477.1.a" />
-Since both effects operate in the same layer and neither depends on the other,<Rule number="478" /> they are ordered by timestamp: the earliest-established effect applies first, and the most recently established effect applies last, winning out.<Rule number="480" /><Rule number="480.3" />
+Each Akshan's play effect creates a delayed passive ability: "You control it until I leave the board."<Rule number="390.4" /><Rule number="391" />
+These abilities generate continuous effects that change the gear's controller — an inherent trait of every game object.<Rule number="477.1" /><Rule number="477.1.a" />
+Since both effects operate in the same layer and neither depends on the other,<Rule number="478" /> they are ordered by timestamp: the earliest-established effect applies first, and the most recently established effect applies last, winning out.<Rule number="480" /><Rule number="480.1" /><Rule number="480.3" />
 Your opponent's Akshan was played after yours, so it carries the later timestamp — its control effect is the final one applied, and your opponent controls the gear.
 
 When an Akshan leaves the board, its "until I leave the board" duration ends and its control effect ceases immediately.
 The remaining effects are then re-evaluated in timestamp order:
 
 - **Your opponent's Akshan dies**: their effect ceases.
-Only your Akshan's effect remains, giving you control of the gear.
+	Only your Akshan's effect remains, giving you control of the gear.
 - **Your Akshan dies**: your effect ceases.
-Your opponent's Akshan's effect was already the deciding one — they continue to control the gear unchanged.
+	Your opponent's Akshan's effect was already the deciding one — they continue to control the gear unchanged.
 - **Both Akshans die**: both effects cease.
-Control reverts to your opponent, since it was their gear to begin with.
-If the gear is unattached and now finds itself in a base it doesn't belong to, it will be recalled to your opponent's base during the next cleanup.
+	Control reverts to your opponent, since it was their gear to begin with.
+If the gear is unattached and now finds itself in a base it doesn't belong to, it will be recalled to your opponent's base during the next cleanup.<Rule number="323.7" />

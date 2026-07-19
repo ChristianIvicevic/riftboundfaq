@@ -7,20 +7,20 @@ authors:
 isNew: true
 ---
 
-## How does Emperor's Dais's ability work? [#ability]
+## How does Emperor's Dais's ability work? [#ability-finalization-cost]
 
 When you conquer Emperor's Dais, you may pay <Energy value={1} /> and return a unit you control there to its owner's hand to finalize the triggered ability onto the chain.
 
 <Callout type="info" title="Core Rules 1.4 errata">
 	Emperor's Dais received a functional errata alongside the Core Rules 1.4 update.
 	Older printings separate "pay <Energy value={1} /> and return a unit" from "If you do, play a 2 Might Sand Soldier unit token"; its updated text joins them using "to" instead.
-	This makes the Energy payment and unit return parts of a single cost performed while finalizing the ability, so the unit can no longer be returned without also paying the Energy.
+	This makes the energy payment and unit return parts of a single cost performed while finalizing the ability, so the unit can no longer be returned without also paying the energy.
 </Callout>
 
 Because "you may" is the first part of the effect, you choose whether to perform the ability during finalization.<Rule number="383.3.a" />
-The immediately following "pay <Energy value={1} /> and return a unit ... to play" is a cost within instructions, so both actions form the triggered ability's base cost and must be completed for the ability to finalize.<Rule number="383.3.b" /><Rule number="383.3.b.1" />
-You may activate <Add /> reactions while paying the Energy portion of this cost.<Rule number="444.2.c" />
+The immediately following "pay <Energy value={1} /> and return a unit ... to play" is a cost within instructions, so both actions form the triggered ability's base cost and must be completed for the ability to finalize.<Rule number="383.3.b" /><Rule number="383.3.b.1" /><Rule number="404.1" />
+You may activate <Add /> reactions while paying the energy portion of this cost.<Rule number="444.2.c" />
 
 Returning the unit is part of the cost, so that unit is not a target and returns to its owner's hand during finalization rather than resolution.<Rule number="355.10.c.1" />
-If you cannot or choose not to pay the entire cost, the ability does not finalize; you cannot return the unit without also paying the Energy.
+If you cannot or choose not to pay the entire cost, the ability does not finalize; you cannot return the unit without also paying the energy.<Rule number="404.2" />
 If you complete the cost, the ability is placed on the chain; when it resolves, you play a 2 Might Sand Soldier unit token at Emperor's Dais.

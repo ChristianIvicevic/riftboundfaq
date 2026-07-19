@@ -7,24 +7,21 @@ authors:
 isNew: true
 ---
 
-## Does Burn or Minefield trigger Nocturne's ability? [#burn-and-minefield]
+## Does Nocturne's ability apply when Burn or Minefield puts it into the trash? [#burn-and-minefield]
+
+No. Neither <Burn /> nor <Card name="Minefield" /> instructs you to look at or reveal Nocturne.
 
 <Callout type="warn" title="Rules citation needed">
 	"Look" is not yet defined as its own numbered action the way "reveal" is.
 	The core rules consistently treat it as a parallel, explicitly-instructed action alongside reveal wherever both are mentioned, and this ruling relies on that pattern — an official update giving "look" its own definition would let this be cited directly.
 </Callout>
 
-No — <Burn /> only puts cards into your trash; it never looks at or reveals anything, and Nocturne's ability only cares about those two specific actions.
-<Card name="Minefield" />'s printed ability works the same way, and this won't change even if its wording is later updated to explicitly read <Burn value={2} />.
-
 Nocturne's ability reads "As you look at or reveal me from the top of your deck, you may banish me. If you do, you may play me for <Universal />."
-That phrasing ties the permission to the specific action of looking at or revealing Nocturne — the same construction the rules use elsewhere to key an effect to one exact moment rather than a general state, such as choices made "As I am played."<Rule number="355.1" />
+The word "as" identifies this as a replacement effect that can apply only while the qualifying look or reveal event is being processed.<Rule number="369.1" /><Rule number="370.1" />
 
 Reveal is a defined action, and a player may only reveal cards when a game effect specifically instructs them to.<Rule number="424.1" /><Rule number="424.2" /><Rule number="424.2.a" />
-"Look" doesn't have its own numbered definition yet; as the note above explains, treating it as an instructed-only action alongside reveal rests on intent rather than an explicit rule. What the rules do establish is that the main deck's order is secret information.<Rule number="108.4.d" />
+"Look" does not have its own numbered definition yet; as the note above explains, treating it as an instructed-only action alongside reveal rests on intent rather than an explicit rule.
 
 <Burn /> does neither of these — it puts cards from the top of your main deck directly into your trash, with no instruction to look at or reveal them.<Rule number="440.1" />
-<Card name="Minefield" />'s printed ability, "When you conquer here, put the top 2 cards of your Main Deck into your trash," does exactly the same thing — it's already functionally identical to <Burn value={2} />, so an errata formalizing it as such wouldn't add a look or reveal instruction that isn't already there.
-Either way, those cards only become visible because they land in the trash, a public zone by default,<Rule number="108.2.d" /> not because anyone looked at or revealed them first.
-
-Since neither instructs anyone to look at or reveal Nocturne, its ability is never triggered by <Burn /> or by <Card name="Minefield" />.
+Minefield's printed ability, "When you conquer here, put the top 2 cards of your Main Deck into your trash," likewise contains no look or reveal instruction.
+In either case, Nocturne becomes visible only after it reaches the trash, a public zone.<Rule number="108.2.d" />

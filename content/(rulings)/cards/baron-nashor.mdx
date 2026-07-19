@@ -6,7 +6,7 @@ authors:
 - "Christian I. (Near)"
 ---
 
-## Does Baron Nashor move to the Baron Pit when it's created as part of playing him? [#baron-move]
+## Does Baron Nashor move to the Baron Pit when it's created as part of playing him? [#creation-movement]
 
 No.
 Baron Nashor enters the <Card name="Baron Pit" /> directly — his entry location is replaced, not his position on the board.
@@ -15,12 +15,16 @@ Baron Nashor is entering the board for the first time (a zone change), which is 
 
 ## What happens after Baron Nashor enters the Baron Pit? [#baron-pit-showdown]
 
-A non-combat showdown begins.
-The <Card name="Baron Pit" /> is newly created and has no controller when Baron Nashor enters it.
-Being played to a battlefield applies contested status to it, provided the entering unit's controller does not already control that battlefield.<Rule number="190.3.a.1" />
-Because the Baron Pit is uncontrolled at that moment, a non-combat showdown is staged during the resulting cleanup — the same mechanism that triggers when <Card name="Sneaky Deckhand" /> is played to an open battlefield.<Rule number="316.8.b" /><Rule number="323.8" /><Rule number="344.2" />
+A non-combat showdown opens during the resulting cleanup.
 
-If an opposing unit arrives at the Baron Pit during the showdown the non-combat showdown becomes a combat showdown.<Rule number="316.8.b.1.a" />
+### Resolution Sequence [#baron-pit-showdown-sequence]
+
+1. The <Card name="Baron Pit" /> is newly created and has no controller when Baron Nashor enters it.<Rule number="439.4.b" />
+2. Baron Nashor entering the uncontrolled battlefield applies contested status to it.<Rule number="190.3.a.1" />
+3. During the resulting cleanup, a non-combat showdown is marked as staged at the Baron Pit.<Rule number="316.8.b" /><Rule number="323.8" />
+4. Later in that cleanup, the staged showdown opens.<Rule number="323.12" /><Rule number="344.2" />
+
+If an opposing unit arrives at the Baron Pit during the showdown, a combat is staged and the non-combat showdown becomes a combat showdown during the following cleanup.<Rule number="316.8.b.1.a" /><Rule number="323.9" /><Rule number="323.14" />
 
 If the showdown closes with only Baron Nashor's controller's units present at the Baron Pit, and they have not yet scored it this turn, they conquer it and score.<Rule number="348.2.a" /><Rule number="348.2.a.1" />
 
@@ -32,7 +36,7 @@ If it hasn't been scored, the winning conquer draws a card instead.
 
 Winning by hold is unaffected, as it has no such requirement.<Rule number="471.1.a.1" />
 
-## Can I play Baron Nashor while an opponent's Mageseeker Warden is at a battlefield? [#mageseeker-warden]
+## Can I play Baron Nashor while an opponent's Mageseeker Warden is at a battlefield? [#warden-play-lock]
 
 It depends on whether the <Card name="Baron Pit" /> is already on the board.
 

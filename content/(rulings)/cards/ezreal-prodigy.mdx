@@ -6,7 +6,7 @@ authors:
 - "Christian I. (Near)"
 ---
 
-## What are "optional additional costs"? [#what-are-optional-additional-costs]
+## What are "optional additional costs"? [#optional-additional-costs]
 
 Optional additional costs are costs that:<Rule number="356.2.b.1" />
 
@@ -21,7 +21,7 @@ Ezreal's discount is a component discount — it applies to a specific component
 
 <Callout type="idea" title="Example">
 	<Card name="Blast Corps Cadet" />'s ability reads "You may pay <Energy value={1} /><Fury /> as an additional cost to play me."
-	This is an optional additional cost because it uses both "as an additional cost" AND "may."
+	This is an optional additional cost because it uses both "as an additional cost" and "may."
 	Ezreal's ability would reduce this cost to <Energy value={1} /> or <Fury />.
 </Callout>
 
@@ -30,21 +30,22 @@ Ezreal's discount is a component discount — it applies to a specific component
 	With Ezreal's ability, you can choose to reduce this to either <Energy value={1} /> or <Chaos />.
 </Callout>
 
-## What doesn't count as an optional additional cost? [#not-optional-additional-costs]
+## What doesn't count as an optional additional cost? [#excluded-additional-costs]
 
-Several similar-looking costs are NOT optional additional costs and are not reduced by Ezreal's ability.
+Several similar-looking costs are not optional additional costs and are not reduced by Ezreal's ability.
 
 ### Mandatory additional costs [#mandatory-additional-costs]
 
 <Callout type="idea" title="Example">
 	<Card name="Cruel Patron" /> reads "As an additional cost to play me, kill a friendly unit."
-	This is NOT an optional additional cost - it uses "as an additional cost" but not "may," making it a mandatory additional cost.<Rule number="356.2.a.1" />
+	This is not an optional additional cost: it uses "as an additional cost" but not "may," making it a mandatory additional cost.<Rule number="356.2.a.1" />
 </Callout>
 
 ### Costs in effects [#costs-in-effects]
 
 <Callout type="idea" title="Example">
-	<Card name="Hard Bargain" /> reads "Counter a spell unless its controller pays <Energy value={2} />."
-	This is NOT an optional additional cost.
-	The <Energy value={2} /> appears in the spell's effect text, not as an additional cost to play Hard Bargain.
+	<Card name="Hard Bargain" />'s effect reads "Counter a spell unless its controller pays <Energy value={2} />."
+	The controller's <Energy value={2} /> payment is not an optional additional cost.
+	It appears inside Hard Bargain's effect rather than being paid to play the spell, so Ezreal does not reduce it.
+	Hard Bargain's separate <Repeat /> cost is an optional additional cost and is reduced by Ezreal.
 </Callout>

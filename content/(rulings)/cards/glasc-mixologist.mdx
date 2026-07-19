@@ -12,7 +12,10 @@ Yes, because targets are not chosen until the ability is finalized — by which 
 
 Whenever a unit with <Deathknell /> dies, its trigger is placed on the chain as a pending item.<Rule number="808.1.d.2" />
 During a cleanup, this ordering is enforced system-wide: step 3a queues all <Deathknell /> triggers from every unit with lethal damage<Rule number="323.4" /> and only then does step 3b move those units to the trash.<Rule number="323.5" />
-Finalization of pending items does not begin until the cleanup task has run to completion.
+
+The same result applies when one kill instruction kills multiple units. Their deaths are simultaneous because they result from the same game action,<Rule number="370.1.a.2" /> and each relevant <Deathknell /> becomes pending before its unit moves to the trash.<Rule number="428.1.a.1.b" /><Rule number="808.1.d.2" />
+
+In either case, all units that died from that event are in the trash before the pending ability is finalized and its target is chosen.<Rule number="334.2" /><Rule number="355.8" />
 
 ## Can Glasc Mixologist's Deathknell play a unit to the battlefield where he died? [#play-to-same-battlefield]
 
@@ -24,11 +27,12 @@ The battlefield stays under your control, so when the unit is finalized you can 
 
 **During a showdown**, control of the battlefield cannot change until instructed by the steps of the combat or showdown,<Rule number="190.4.b" /> so the question does not arise.
 
-## What happens when Glasc Mixologist's Deathknell plays a unit to the battlefield where he died in combat? [#deathknell-combat-result]
+## What happens when Glasc Mixologist is my only defender and his Deathknell plays a unit where he died? [#deathknell-combat-result]
 
 Several things here commonly catch players off guard: surviving enemy units heal to full before the new unit arrives, neither player wins the original combat, and a second combat immediately follows.
 
 The combat cleanup heals all units before any pending trigger can resolve,<Rule number="466.1.a.1" /><Rule number="334" /> so by the time Glasc's <Deathknell /> finalizes and the new unit reaches the battlefield, the enemy is already back to full health.
+Because Glasc was your only defender, no defenders remain during cleanup step 3d, so the surviving attackers are not recalled.<Rule number="466.1.a.2" />
 
 With units from both players now present, combat result is determined. Because both players have units there, the result is "No Result."<Rule number="466.3.d" />
 A fresh combat is immediately staged at that battlefield.<Rule number="466.3.d.1" />

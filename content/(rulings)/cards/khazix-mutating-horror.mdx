@@ -6,30 +6,25 @@ authors:
 - "Christian I. (Near)"
 ---
 
-## Can an opponent play a unit in reaction to Kha'Zix's trigger to prevent the effect? [#reaction-unit]
+## Can an opponent play a unit in reaction to Kha'Zix's trigger to prevent the effect? [#unit-play-in-response]
 
 No.
 Once Kha'Zix's ability is on the chain, adding more units cannot prevent it from resolving.
 
 Kha'Zix's ability reads "When I attack or defend, if an enemy unit is alone here, give me +2 Might this turn and gain 2 XP."
-The "if" clause immediately follows the trigger condition, making it a trigger-time condition.<Rule number="383.2.a.1" />
-This means the condition is evaluated exactly once — at the moment Kha'Zix gains the attacker or defender designation — and must be true at that moment for the ability to be placed on the chain at all.<Rule number="383.4.e.2.b" /><Rule number="383.4.f.2.b" />
-
-If the enemy unit is alone when that designation is gained, the ability goes on the chain immediately.
-The condition is not re-evaluated on resolution, so an opponent playing an additional unit as a reaction cannot remove the ability from the chain or prevent Kha'Zix from gaining the +2 Might and the 2 XP.
-
-Note also that the reverse is true: if a second enemy unit is already present when Kha'Zix gains its designation, the condition fails and the ability is never placed on the chain, even if that second unit is later removed.
+The "if" clause immediately follows the initial trigger clause, so it is part of the trigger condition.<Rule number="383.2.a.1" />
+The condition is evaluated once, when Kha'Zix gains the attacker or defender designation.<Rule number="383.4.e.2.b" /><Rule number="383.4.f.2.b" /> If the enemy unit is alone then, the ability is placed on the chain and a later arrival cannot undo it. If the enemy unit is not alone then, the ability does not trigger even if another enemy unit is later removed.
 
 <Callout type="info" title="Contrast: if the condition were at the end">
 	If Kha'Zix instead read "When I attack or defend, give me +2 Might this turn and gain 2 XP if an enemy unit is alone here," the "if" clause would come after the effect instruction rather than immediately after the trigger condition.
-	In that case the "if" would be part of the effect rather than the trigger condition, so it would not be a trigger-time condition: the ability would go on the chain whenever Kha'Zix attacks or defends, regardless of whether an enemy unit is alone, and the condition would only be evaluated when it resolves.
+	In that case the "if" would be part of the effect rather than the trigger condition: the ability would go on the chain whenever Kha'Zix attacks or defends, regardless of whether an enemy unit is alone, and the condition would only be evaluated when it resolves.
 	An opponent could then play a unit at reaction speed to ensure two units are present at resolution, preventing the +2 Might and the 2 XP.
 </Callout>
 
 ## Can Kha'Zix trigger multiple times in the same turn? [#trigger-per-combat]
 
 Yes.
-The once-per-combat limit on attack and defend triggers applies to each combat individually, not to the entire turn, so Kha'Zix can gain +2 Might and 2 XP once in each separate combat it participates in.<Rule number="383.4.e.2.a" /><Rule number="383.4.f.2.a" />
+The once-per-combat limit on attack and defend triggers applies to each combat individually, not to the entire turn, so Kha'Zix can gain +2 might and 2 XP once in each separate combat it participates in.<Rule number="383.4.e.2.a" /><Rule number="383.4.f.2.a" />
 
 Each time Kha'Zix enters a new combat it gains its attacker or defender designation for the first time in that combat, which is what triggers the ability.
 There is no rule preventing a unit from participating in multiple combats per turn, and each combat is an independent instance with its own once-per-combat tracking.
@@ -38,7 +33,7 @@ There is no rule preventing a unit from participating in multiple combats per tu
 	After Kha'Zix wins a combat and the state returns to neutral open, you can play <Card name="Charm" /> to pull a different enemy unit onto Kha'Zix's battlefield.
 	That unit becoming present at a battlefield Kha'Zix's controller already controls applies contested status, staging a new, distinct combat.
 	When that combat opens, Kha'Zix gains the defender designation for the first time in that combat.
-	If the pulled unit is alone, the trigger-time condition is satisfied and Kha'Zix triggers again.
+	If the pulled unit is alone, the additional requirement in the trigger condition is satisfied and Kha'Zix triggers again.
 	Playing additional Charms repeats this cycle for as long as enemy units and Charms are available.
 </Callout>
 

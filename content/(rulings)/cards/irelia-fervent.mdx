@@ -6,13 +6,14 @@ authors:
 - "Christian I. (Near)"
 ---
 
-## If I target Irelia with a spell or ability and it gets countered, does she still get +1 might? [#choosing-happens-before-counter]
+## If I target Irelia with a spell or ability and it gets countered, does she still get +1 might? [#targeting-before-counter]
 
 Yes.
 
-Irelia is chosen as a target during step 2 of playing the spell or ability — the "Make relevant choices" step.<Rule number="355" /><Rule number="355.5" /><Rule number="355.7" /><Rule number="398" /><Rule number="399" />
+Irelia is chosen as a target during step 2 of playing the spell or ability — the "Make relevant choices" step.<Rule number="355.5" /><Rule number="355.7" />
 This happens before the spell or ability is finalized on the chain and before opponents have any opportunity to react.
-Her triggered ability fires the moment she is chosen, because a trigger's condition is evaluated as soon as the inciting event has been processed.<Rule number="383.2.c" />
+After the spell or ability finishes finalizing, her targeting effect is added to the chain as a pending item.<Rule number="383.4.b.2" /><Rule number="383.4.b.3" />
+That trigger is finalized before opponents receive an opportunity to react.<Rule number="337.3" /><Rule number="337.4" />
 The trigger is not contingent on the spell or ability that caused it successfully resolving.
 Countering the spell or ability only prevents it from resolving<Rule number="425.1.a" /> — it has no bearing on Irelia's already-triggered ability.
 
@@ -28,7 +29,7 @@ Not from choosing — but she can still trigger from being readied if she was ex
 "It" in "ready it" deterministically refers back to the unit already identified as Blade Dancer's trigger condition, with no separate choice made by the player.
 Irelia's ability can only trigger from Blade Dancer if she was exhausted and is readied by it — and only through the readying half of her ability, not the choosing half.<Rule number="415.1" />
 
-## Does Irelia get +1 might when she readies during the Awaken Step? [#readying-during-awaken-step]
+## Does Irelia get +1 might when she readies during the Awaken Phase? [#awaken-phase-readying]
 
 Yes, but only if she was exhausted and actually transitions to the ready state.
 
@@ -44,11 +45,12 @@ Yes, as choosing her for each instruction is a separate triggering event.
 
 <Repeat /> is functionally "execute the spell's instructions one additional time".<Rule number="820.1.d" />
 When the Repeat cost is paid, choices for both executions are made during the same "Make relevant choices" step of playing the card.<Rule number="820.2" /><Rule number="820.2.a" />
-Choosing Irelia for the first instruction and choosing her for the second are two separate choosing events — her triggered ability fires once for each.
+Choosing Irelia for the first instruction and choosing her for the second target her twice.
+After the spell finalizes, her targeting effect is added to the chain as a pending item once for each targeting event.<Rule number="383.4.b.2" /><Rule number="383.4.b.3" />
 
 <Callout type="idea" title="Example">
 	You play <Card name="Feral Strength" /> and pay its <Repeat /> cost, choosing Irelia for both instructions.
-	As you make your choices for the spell, Irelia's ability triggers twice — once per choosing event — and both triggers go on the chain.
+	After Feral Strength finalizes, Irelia's ability triggers twice — once per targeting event — and both triggers are added to the chain.
 	When her triggers resolve, she receives +1 and +1 from her own ability.
 	When the spell resolves, Irelia receives +2 and +2 from the spell's two instructions.
 	That's +6 might total this turn.

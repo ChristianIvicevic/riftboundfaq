@@ -1,6 +1,6 @@
 ---
 title: "Abilities"
-description: "Commonly asked questions about Abilities in Riftbound"
+description: "Commonly asked questions about abilities in Riftbound"
 crdVersion: "1.4"
 authors:
 - "Christian I. (Near)"
@@ -8,44 +8,46 @@ authors:
 
 ## When do triggered abilities trigger? [#triggered-ability-timing]
 
-When their condition is met, triggered abilities go on the chain immediately, regardless of whose turn it is.<Rule number="383.3" /><Rule number="383.3.c" />
+When their condition is met, triggered abilities are added to the chain as pending items, regardless of whose turn it is.<Rule number="383.3" /><Rule number="383.3.c" />
 
 The <Reaction /> keyword is not required for this to work on an opponent's turn.
-Unlike spells and activated abilities which require <Reaction /> to be played outside your turn, triggered abilities are automatic and will trigger whenever their condition is met, on any player's turn.
+Unlike spells and activated abilities which require <Reaction /> to be played outside your turn, satisfying a trigger condition automatically creates the pending ability.
+That ability must still finalize: it may be removed if its controller declines an initial "you may," if legal choices are unavailable, or if a required trigger cost is not paid.<Rule number="383.3.a.2" /><Rule number="402.4" /><Rule number="404.2" />
 
 <Callout type="idea" title="Example">
 	<Card name="Blade Dancer" /> triggers when you choose a friendly unit.
 	This can happen on your opponent's turn, for example when you play a <Reaction /> spell that targets one of your own units.
 </Callout>
 
-## Can I react to triggered and activated abilities? [#reacting-to-abilities]
+## Can I react to triggered and activated abilities? [#ability-reactions]
 
 Yes, with one important exception: abilities that use the <Add /> keyword.
 
 All triggered and activated abilities are placed on the chain.<Rule number="377.3" /><Rule number="383.3" />
 However, abilities that add resources resolve immediately when finalized, which means players do not receive priority to react to them.<Rule number="337.2" /><Rule number="429.2" /><Rule number="429.2.a" />
 
-## How are additional conditions in triggered abilities evaluated? [#triggered-ability-if-conditions]
+## How are additional conditions in triggered abilities evaluated? [#trigger-time-conditions]
 
 It depends on where the condition appears in the ability's text.
 
-In Riftbound, the trigger condition is precisely the event that follows "When", "At", or "The [Nth] time" — including any qualifiers on that event, up to the first comma.<Rule number="383.2.a" />
-Everything after that comma is the ability's effect.<Rule number="383.2.b" />
+The trigger condition begins with "When," "At," or "The [Nth] time" and includes the event and any qualifiers attached to it.<Rule number="383.2.a" />
+An additional conditional statement immediately following that condition is also part of the trigger condition, even if it appears after a comma.<Rule number="383.2.a.1" />
+The remaining instructions form the ability's effect.<Rule number="383.2.b" />
 
-Conditions before the comma are part of the trigger condition and must be satisfied for the ability to be placed on the chain at all.
+Every requirement in the trigger condition must be satisfied for the ability to be placed on the chain.
 For example, <Card name="Sunken Temple" /> reads "When you conquer here with one or more <Mighty /> units, you may pay <Energy value={1} /> to draw 1."
 The requirement that the conquering units be <Mighty /> is embedded in the trigger condition; if no <Mighty /> unit participated in the conquer, the ability does not trigger.
 
-"If" clauses that immediately follow the trigger condition — as the first thing after the comma — are checked at trigger time; these are trigger-time conditions.
+An "if" clause that immediately follows the trigger condition is therefore part of that condition and checked when the triggering event occurs.
 If the condition is not satisfied at the moment the triggering event occurs, the ability is never placed on the chain at all.<Rule number="383.2.a.1" />
 
-However, "if" clauses embedded within the effect text — coming after an effect instruction rather than immediately after the comma — are only checked on resolution.
+However, "if" clauses embedded within the effect text — coming after an effect instruction rather than immediately following the trigger condition — are only checked on resolution.
 The ability goes on the chain regardless, and the condition is only evaluated when it resolves.
 
 <Callout type="idea" title="Example">
 	<Card name="Gutter Palace" /> reads "At the start of your Beginning Phase, if you have exactly 4 cards in hand and exactly 4 units at battlefields, you win the game."
 
-	The "if" clause comes immediately after the comma, so it is a trigger-time condition.
+	The "if" clause immediately follows the trigger condition, so it is part of that condition and checked when the triggering event occurs.
 	This ability is only placed on the chain if you already have exactly 4 cards in hand and exactly 4 units at battlefields at the start of your Beginning Phase.
 	If the condition is not satisfied at that moment, the ability does not trigger at all.
 </Callout>
@@ -53,24 +55,35 @@ The ability goes on the chain regardless, and the condition is only evaluated wh
 <Callout type="idea" title="Example">
 	<Card name="Loose Cannon" /> reads "At start of your Beginning Phase, draw 1 if you have one or fewer cards in your hand."
 
-	Here the "if" clause does not immediately follow the comma — it comes after the effect instruction "draw 1".
-	This means it is not a trigger-time condition.
+	Here the "if" clause does not immediately follow the trigger condition — it comes after the effect instruction "draw 1".
+	This means it is part of the effect and is checked on resolution.
 	The ability goes on the chain at the start of every one of your Beginning Phases, regardless of how many cards are in your hand.
 	Only when the ability resolves is the hand size checked; if you have more than one card at that point, the draw does not happen.
 </Callout>
 
+## When do I decide whether to perform a triggered ability that says "you may"? [#optional-trigger-decision]
+
+It depends on where "you may" appears in the ability's effect.
+
+If "you may" is the first part of the effect, you decide whether to perform the ability during finalization.<Rule number="383.3.a" /><Rule number="402.1" />
+If you decline, the pending ability is removed from the chain and considered not to have triggered.<Rule number="383.3.a.2" /><Rule number="402.1.a" />
+If you accept, you make all choices required for finalization and pay any costs incurred during finalization before the ability can finalize.<Rule number="402.2" /><Rule number="404" />
+
+If "you may" appears later in the effect, you decide whether to perform that instruction when the ability resolves.<Rule number="383.3.a.3" />
+
 ## When do I pay costs within instructions using "may"? [#costs-within-instructions]
 
-At finalization — when placing the triggered ability on the chain.
+It depends on where the cost appears in the triggered ability's effect.
 
 In rules text phrased as "[do X] to [do Y]," the [do X] part is considered a cost within instructions.
-For triggered abilities, this cost is treated as the base cost of the ability and must be paid in order to finalize it to the chain.<Rule number="383.3.b" /><Rule number="383.3.b.1" /><Rule number="740.4.a.2" /><Rule number="403.1.b.1" />
-If the controller declines to pay, the ability is not placed on the chain at all.
+If that cost appears at the beginning of a triggered effect or immediately after an initial "you may," it becomes the ability's base cost and must be paid during finalization.<Rule number="383.3.b" /><Rule number="383.3.b.1" /><Rule number="740.4.a.2" /><Rule number="403.1.b.1" />
+If you decline to pay, the pending ability is removed from the chain without finalizing.<Rule number="404.2" />
+
+If the cost appears later in the triggered effect, you pay it when the ability resolves.<Rule number="740.4.a.2.a" />
 
 <Callout type="idea" title="Example">
 	<Card name="Vayne, Hunter" />'s "When I conquer, you may pay <Energy value={1} /> to return me to my owner's hand." will trigger when you conquer.
-	At finalization, the controller must decide whether to pay the <Energy value={1} /> cost.
-	If they decline, the ability is not placed on the chain.
-	If they pay, the ability goes on the chain and opponents have the opportunity to react before it resolves.
+	At finalization, you must decide whether to pay the <Energy value={1} /> cost.
+	If you decline, the pending ability is removed from the chain.
+	If you pay, the ability finalizes and opponents have the opportunity to react before it resolves.
 </Callout>
-

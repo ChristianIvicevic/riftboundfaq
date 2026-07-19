@@ -9,23 +9,24 @@ isNew: true
 
 ## When does Diana's ability trigger relative to attack and defend triggers? [#showdown-trigger-timing]
 
-Diana's ability resolves last in the combat chain, after all attack and defend triggers.
+Diana's ability resolves after all attack and defend triggers generated as that combat opens.
 
 When combat opens with a combat showdown, the attacker and defender designations are assigned to units.<Rule number="464.2.c.3" />
 Attack triggers fire when a unit gains the attacker designation, and defend triggers fire when a unit gains the defender designation.<Rule number="383.4.e" /><Rule number="383.4.f" />
 Those triggers are then added to the combat chain, with the attacking player placing theirs first, followed by others in turn order, and the defending player last.<Rule number="464.2.e" /><Rule number="464.2.e.1" />
 
 Diana's "when a showdown begins here" trigger is a start-of-showdown effect, which the combat-opening sequence processes as its very first step — before designations are established and their attack and defend triggers are added to the chain.<Rule number="464.2.b" />
-Because the chain resolves newest-item-first, Diana's ability resolves last — after every attack and defend trigger from that same combat chain has already resolved.
+Because the chain resolves newest-item-first, Diana's ability resolves last — after every attack and defend trigger from that same combat chain has already resolved.<Rule number="340.1" />
 
-## How does Diana's ability work? [#ability]
+## How does Diana's ability work? [#ability-finalization-cost]
 
 When a showdown begins at Diana's battlefield, you may pay <Energy value={1} /> to finalize her triggered ability onto the chain.
 
-<Callout type="info" title="Core Rules 1.4 errata">
+<Callout type="warn" title="Outdated CR example">
 	Diana received a functional errata alongside the Core Rules 1.4 update.
 	Older printings say "you may pay <Energy value={1} />. If you do, ..."; her updated text says "you may pay <Energy value={1} /> to ..." instead.
-	This changes the Energy payment from an instruction performed during resolution into a cost paid while finalizing the ability.
+	This changes the energy payment from an instruction performed during resolution into a cost paid while finalizing the ability.
+	CR 444.2 still describes Diana using her pre-errata behavior and incorrectly places the payment on resolution.<Rule number="444.2" />
 </Callout>
 
 Because "you may" is the first part of the effect, you choose whether to perform the ability during finalization.<Rule number="383.3.a" />

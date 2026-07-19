@@ -6,35 +6,19 @@ authors:
 - "Christian I. (Near)"
 ---
 
-## What makes something a target? [#what-is-a-target]
+## What makes something a target? [#target-definition]
 
-Any game object, player, or zone that a spell or ability chooses to affect is a target,<Rule number="355.7" /> and must be declared when putting that spell or ability on the chain.<Rule number="355.8" />
+Unless one of the exceptions below applies, a game object, player, or zone mentioned by a spell or ability is a target.<Rule number="355.7" /><Rule number="355.10" />
+All targets are declared during finalization.<Rule number="355.8" />
 
-Card text rarely uses the word "target" or "choose" explicitly — most of the time targeting is implied, as in "Kill a unit" or "Move a friendly unit."
-Abilities that reference "when you choose" a game object, such as <Card name="Irelia, Fervent" />'s "When you choose or ready me, give me +1 Might this turn," are specifically triggered when being targeted.
+Card text does not need to use the word "target" or "choose" explicitly — targeting can be implied, as in "Kill a unit" or "Move a friendly unit."
+Abilities that reference "when you choose" a game object, such as <Card name="Irelia, Fervent" />'s "When you choose or ready me, give me +1 Might this turn," are specifically triggered when being targeted.<Rule number="383.4.b.3" />
 
 When in doubt, assume it is a target — the list below covers the only situations where it is not:
 
-- **It is in a private zone** (hand, deck, etc.)<Rule number="355.10.a" /> e.g., "You may play a unit from your hand" does not target a unit — it merely lets you play one.
+- **It is in a non-public zone** (hand, main deck, etc.)<Rule number="355.10.a" /> e.g., "You may play a unit from your hand" does not target a unit — it merely lets you play one.
 - **It is only a location requirement for another target**.<Rule number="355.10.b" /> Words like "at a battlefield" narrow down which objects are valid targets; the battlefield itself is not a target — unless the effect lets you choose *which* of several battlefields to affect, as in "Kill all units at a battlefield."
 - **It is part of a trigger condition, cost, or replacement effect**.<Rule number="355.10.c" /><Rule number="355.10.c.1" /> Objects referenced in "when X happens" conditions, payment costs (see also [When do I pay costs within instructions using "may"?](/general-rules/abilities#costs-within-instructions)), or "instead" effects are not targets. e.g., the dying unit in "When a friendly unit dies, kill a gear" is not a target — only the gear is.
 - **There is no real choice involved**.<Rule number="355.10.d" /> If an effect applies to every object meeting a description rather than a specific one you pick, nothing is targeted. e.g., "Kill all units at battlefields" targets nothing because you are not choosing among individual units. This applies only when a choice is *never* possible — not when an object merely happens to be the only valid choice right now: "Kill a unit at a battlefield" still targets a unit even if only one unit is there.<Rule number="355.10.d.1" /><Rule number="355.10.d.2" />
-- **Another player makes the choice**.<Rule number="355.10.e" /> Targeting requires that *you* make the choice. e.g., "Each player kills a unit they control" does not target — each player picks their own unit when the spell resolves.
+- **It is part of a set chosen wholly or partly by other players**.<Rule number="355.10.e" /> Objects chosen this way are not targets, even if the spell or ability's controller also chooses part of the set. e.g., "Each player kills a unit they control" targets nothing — each player chooses their unit as the effect resolves.
 - **The instruction uses "must"**.<Rule number="355.10.f" /> This signals the choice is made on resolution rather than upfront. e.g., "You must recycle one of your runes" does not target, whereas "Recycle a rune you control" does.
-
-## Does "you may" mean I choose the target at resolution? [#may-targets-at-resolution]
-
-No, as targets must always be declared when putting a spell or ability on the chain, not at resolution.
-
-Targets are always declared when putting a spell or ability on the chain,<Rule number="355.8" /> not at resolution.
-If a "you may" effect involves choosing a game object, that choice is still a target and must be declared upfront.
-The "you may" means the effect or ability is optional — you can decline to complete it on resolution — but it does not defer when the target is declared.
-
-<Callout type="idea" title="Example">
-	<Card name="Disarming Rake" /> reads "When you play me, you may kill a gear."
-
-	When this triggered ability is put on the chain, you must immediately declare the gear to kill as a target.
-	You cannot wait until resolution to decide which gear to name, and you cannot put the ability on the chain without a valid gear target at all.
-
-	The "you may" only means you can decline to complete the kill when the ability resolves — it does not make the gear target optional.
-</Callout>

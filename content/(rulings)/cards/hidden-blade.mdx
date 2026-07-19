@@ -6,13 +6,13 @@ authors:
 - "Christian I. (Near)"
 ---
 
-## Does the target's controller draw if the unit isn't killed? [#draw-if-not-killed]
+## Does the target's controller draw if the kill is replaced? [#draw-if-not-killed]
 
-Yes, as long as the target is still legal when Hidden Blade resolves.
+Yes. Replacing Hidden Blade's kill does not prevent its linked draw instruction from executing.
 
-The phrase "its controller" is a referent — information drawn from the target, recognised by the word "its".<Rule number="359.3.f.1" />
-Referents are checked at the moment the instruction executes, not when the spell was played.<Rule number="359.3.f.2" />
-Because the target is still legal when Hidden Blade resolves, the referent is accessible and the draw executes, regardless of whether the kill succeeded.<Rule number="359.3.e.12.a" />
+The phrase "its controller" links the draw to the unit affected by the preceding kill instruction.<Rule number="359.3.e.14" />
+Replacing that kill action does not stop the later linked instruction unless it directly references the action itself.<Rule number="359.3.e.14.b" />
+Hidden Blade's draw references the targeted unit's controller, not whether the unit was killed, so the draw still executes.
 
 <Callout type="idea" title="Example">
 	You play Hidden Blade targeting an opponent's unit.
@@ -25,8 +25,8 @@ Because the target is still legal when Hidden Blade resolves, the referent is ac
 No.
 An illegal target is entirely unaffected by the spell, and the draw is no exception.
 
-An illegal target is unaffected by the spell as it resolves.<Rule number="359.3.e.5" />
-The phrase "its controller" is a referent — information drawn from the target — and because the target is now illegal, that referent returns null and the draw is ignored.<Rule number="359.3.f.1" /><Rule number="359.3.f.2" /><Rule number="359.3.e.12" />
+An illegal target is unaffected by the spell, so Hidden Blade's kill instruction is ignored.<Rule number="359.3.e.5" />
+When an earlier linked instruction is ignored, its later linked instructions are also ignored, so the controller does not draw.<Rule number="359.3.e.14.a" />
 
 <Callout type="idea" title="Example">
 	You play Hidden Blade targeting an opponent's unit at a battlefield.

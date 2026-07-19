@@ -9,23 +9,19 @@ authors:
 ## If Azir is killed or returned to his base before his attack trigger resolves, do token units still move? [#attack-trigger-without-azir]
 
 No.
-"This battlefield" refers to the battlefield Azir currently occupies — that information is checked when the instruction executes.
-If Azir is no longer at a battlefield at that point, the instruction is impossible and is ignored.
-
-"This battlefield" in Azir's ability is not a target.
-It is programmatically determined from Azir's current location, since he can only ever be at one battlefield at a time — no choice is ever made.<Rule number="355.10.d" /><Rule number="355.10.d.1" />
-It is instead a referent: information drawn from the source of the ability itself.<Rule number="359.3.f.1" />
+"This battlefield" is a referent: information drawn from the source of the ability itself.<Rule number="359.3.f.1" />
 Referents are checked at the moment the instruction executes, not when the trigger was placed on the chain.<Rule number="359.3.f.2" />
 
 If Azir has been moved to his base or killed before the trigger resolves, there is no "this battlefield" to move token units to.
 The instruction cannot be followed and is ignored.<Rule number="359.3.e.6" />
 
+"This battlefield" is not a target.
+It is programmatically determined from Azir's current location, since he can only ever be at one battlefield at a time — no choice is ever made.<Rule number="355.10.d" /><Rule number="355.10.d.1" />
+
 <Callout type="info">
 Two common plays that produce this outcome:
 
-- <Card name="Hidden Blade" />, when played from Hidden, can be used in response to Azir's attack trigger to kill him at <Reaction /> speed.
+- <Card name="Hidden Blade" />, when played from its facedown zone, can be used in response to Azir's attack trigger to kill him at <Reaction /> speed.
 - <Card name="Overzealous Fan" />'s defend trigger fires simultaneously with Azir's attack trigger when combat designations are assigned.
-	Because Azir's controller places their trigger first, Overzealous Fan's trigger sits above it on the chain and resolves first, potentially moving Azir to his base before his own trigger resolves.
-
-In either case, "this battlefield" has no valid referent when Azir's trigger resolves and nothing happens.
+	Because Azir's controller places their trigger first, Overzealous Fan's trigger sits above it on the chain and resolves first, potentially moving Azir to his base before his own trigger resolves.<Rule number="464.2.e.1" />
 </Callout>

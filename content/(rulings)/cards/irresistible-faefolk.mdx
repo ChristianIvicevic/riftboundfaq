@@ -6,12 +6,13 @@ authors:
 - "Christian I. (Near)"
 ---
 
-## If I move Irresistible Faefolk to an open battlefield and pull an enemy unit there, who is the attacker? [#who-attacks]
+## If I move Irresistible Faefolk to an open battlefield and pull an enemy unit there, who is the attacker? [#combat-attacker]
 
 You — the Irresistible Faefolk player — are the attacker.
 
 When Irresistible Faefolk moves to an open (uncontrolled) battlefield, that move applies the contested status to the battlefield.<Rule number="450" /><Rule number="190.3.a" />
-During the cleanup that follows the move, a combat is staged because units from opposing players are now present at the contested battlefield.<Rule number="323.9" />
+Irresistible Faefolk's trigger resolves after the cleanup caused by its own move, moving the enemy unit to that battlefield.
+During the cleanup following the enemy unit's move, combat is staged because opposing units are now present at the contested battlefield.<Rule number="319.8" /><Rule number="323.9" />
 When combat opens, the attacker is defined as the player whose unit(s) applied the contested status.<Rule number="464.2.c.1" />
 That is you — the player who moved Irresistible Faefolk.
 The opponent whose unit was pulled in is the defender.<Rule number="464.2.c.2" />
@@ -36,4 +37,4 @@ Suppose an opponent responds to the triggered ability by playing <Card name="Gus
 Irresistible Faefolk returns to your hand, but the triggered ability is unaffected — it's already an independent item on the chain, and the battlefield it references was fixed at trigger time.
 When it resolves, it moves an enemy unit to that battlefield, even though Irresistible Faefolk is no longer there.
 
-This is different from referents like "here," "my," or "its," which are checked when the instruction resolves rather than when the trigger condition is met — those can mistarget if the relevant game object or location is no longer valid at that time.<Rule number="359.3.f.2" />
+This differs from information derived from an ability's source or targets, which is generally checked when the referencing instruction executes and may become unavailable before resolution.<Rule number="359.3.f.1" /><Rule number="359.3.f.2" />

@@ -11,34 +11,31 @@ isNew: true
 
 Yes — assuming it's played to a battlefield.
 
-Play, in a trigger condition, refers to a card resolving, not merely being placed on the chain.<Rule number="350.1" /><Rule number="359" /><Rule number="359.2" />
-Units resolve the moment they finalize: becoming a game object, gaining their active abilities, and entering the board at the chosen location, all in that same moment.<Rule number="359.2.a" /><Rule number="359.2.c" />
+Play, in a trigger condition, refers to a card resolving, not merely being placed on the chain.<Rule number="350.1" /><Rule number="419.4.a" />
+Units resolve immediately after they finalize.<Rule number="337.2" />
+During that resolution, the unit becomes a game object, its passive abilities become active, and it enters the board at its chosen location.<Rule number="359.2" /><Rule number="359.2.a" /><Rule number="359.2.c" />
 
 A trigger's condition is evaluated after a potentially inciting event has been processed, and nothing requires that event to have been caused by a *different* card.<Rule number="383.2.c" /><Rule number="383.2.c.1" />
-The ability's text splits into two parts: "When you play your first card each turn" is the trigger condition, running up to the first comma,<Rule number="383.2.a" /> and "if I'm at a battlefield" is the first thing after that comma, making it a trigger-time condition — checked at trigger time, not on resolution.<Rule number="383.2.a.1" />
-Astral Heron's own resolution satisfies both parts at once: it's simultaneously an instance of "you play a card" and the moment it arrives at a battlefield.
-If it's the first card played this turn and it's played to a battlefield, both are satisfied at that same moment and the ability is placed on the chain.
+"When you play your first card each turn" begins the trigger condition,<Rule number="383.2.a" /> and "if I'm at a battlefield" immediately follows it, so that additional requirement is also part of the trigger condition and is checked when the condition is fulfilled.<Rule number="383.2.a.1" />
+After Astral Heron finishes resolving, play-trigger conditions are evaluated.<Rule number="419.4.a" />
+If it's the first card played this turn, Astral Heron is already at the battlefield when its condition is checked, so its ability is placed on the chain.
 
 ## If Astral Heron is killed or moved away in response to its own trigger, does the cost reduction still apply? [#removed-in-response]
 
 Yes — the discount still applies to your next card.
 
-Once Astral Heron's triggered ability is already a chain item, waiting to resolve, killing or moving Astral Heron in response to it changes nothing about how it resolves.
+"If I'm at a battlefield" is part of the trigger condition, so it's only checked when the triggering event occurs to decide whether the ability is placed on the chain — it is not re-checked when the ability later resolves.<Rule number="383.2.a.1" />
+Nothing in the effect references Astral Heron's location or continued presence, so removing it does not stop the trigger from creating the discount.
+Once created, that discount is a delayed ability and executes at its specified time regardless of whether Astral Heron remains on the board.<Rule number="392" />
 
-"If I'm at a battlefield" is a trigger-time condition, so it's only checked once, at the moment the triggering event occurs, to decide whether the ability is placed on the chain at all — it is not re-checked when the ability later resolves.<Rule number="383.2.a.1" />
-Once triggered, the ability is an independent item on the chain, and nothing in its effect references Astral Heron's location or continued presence, so there's no referent left for a later removal to invalidate.
-
-So an opponent reacting to the trigger by killing, bouncing, or moving Astral Heron before it resolves doesn't stop the reduction: the trigger and its trigger-time condition were already satisfied the moment the ability went on the chain, and it resolves exactly as if nothing had happened.
-
-## If the spell that receives Astral Heron's discount is later countered, is the discount granted to a different card instead? [#countered-spell]
+## If the spell that receives Astral Heron's discount is later countered, is the discount granted to a different card instead? [#discount-after-counter]
 
 No — the discount is spent the moment it reduces that spell's cost.
 
-Astral Heron's triggered ability resolves into a delayed passive ability, active only for "your next card" — a single specified window, not a standing effect.<Rule number="391" />
+Astral Heron's triggered ability resolves into a delayed passive ability, active only for "your next card" — a single specified window, not a standing effect.<Rule number="390.4" /><Rule number="391" />
 That window belongs to finalizing the next card, not to that card resolving successfully — it doesn't linger to see whether the spell goes on to succeed.
 Discounts are applied while determining a card's total cost, in step 3 of the play process, and the reduced cost is paid in step 4 — both steps happen well before the card is even finalized, let alone placed on the chain where it could be countered.<Rule number="356.4" /><Rule number="356.4.a" /><Rule number="357" />
 Whichever card is played next consumes that window the moment its cost is reduced; nothing that happens to that card afterward can reopen it.
 
 A countered card does nothing and is not considered to have been played,<Rule number="425.1.a" /><Rule number="425.1.b" /> and countering does not refund any costs paid to play it, additional costs included.<Rule number="425.1.c" /><Rule number="425.1.c.1" />
 That confirms the reduced cost itself stays spent — but Astral Heron's discount was already used up before the spell was even vulnerable to being countered, so there was never anything left to give to a different card.
-

@@ -7,15 +7,15 @@ authors:
 isNew: true
 ---
 
-## Can my opponent interact before the friendly unit is killed? [#interaction]
+## Can my opponent interact before the friendly unit is killed? [#kill-reaction-window]
 
-Yes, as killing the unit is part of the effect, not a cost, so it's a target declared when the ability is put on the chain.
+Yes. The friendly unit is selected as a target when the ability is finalized, then killed when the ability resolves.
 
 "Kill a friendly unit" comes after the ":" in Baited Hook's activated ability, so it's the first instruction of the effect rather than part of the cost — an activated ability's cost is everything before the ":", and its effect is everything after.<Rule number="377.1" />
-Because it isn't a cost, the friendly unit is a normal target, chosen and declared as the ability is put on the chain.<Rule number="355.7" /><Rule number="355.8" />
+Separately, that instruction selects a friendly unit and does not fall under a targeting exception, so the unit is a target chosen and declared during finalization.<Rule number="355.7" /><Rule number="355.8" /><Rule number="355.10" />
 This is the opposite of cards like <Card name="Sacrifice" />, where "kill a friendly unit" is stated as an additional cost and is therefore excluded from targeting entirely.<Rule number="355.10.c" /><Rule number="355.10.c.1" />
 
-Since the unit is targeted rather than paid as a cost, opponents get a normal opportunity to react before Baited Hook's ability resolves, just like with any other targeted ability.<Rule number="359.3.c" />
+After Baited Hook's ability is finalized, opponents have a normal opportunity to play Reactions before it resolves.<Rule number="377.3.b.2" /><Rule number="406.4" />
 Later in the same ability, "up to 1 more than the killed unit" references the unit affected by the earlier "kill" instruction, making the two linked instructions.<Rule number="359.3.e.14" />
 Because the unit has already moved to the trash by the time this later instruction checks it, the ability looks back at the unit's characteristics as they were immediately before it changed zones.<Rule number="359.3.e.13" />
 
@@ -40,10 +40,10 @@ Because the unit was never killed, any information the ability checks about it, 
 After, even though it's finalized first — finalization proceeds in the order items were appended to the chain, but resolution proceeds in the opposite order, newest item first.
 
 Baited Hook's ability resolves in its entirety without interruption,<Rule number="354.3" /> so both the killed unit's <Deathknell /> trigger and the unit it later banishes and plays get appended to the chain as pending items during that same resolution, with the <Deathknell /> appended first.
-Once Baited Hook's ability finishes, those pending items are finalized in that same order — <Deathknell /> first — but the chain then resolves newest-first, so anything appended after the <Deathknell />, including the banished unit's own triggers, resolves before it does.
+Once Baited Hook's ability finishes, those pending items are finalized in that same order — <Deathknell /> first — but the chain then resolves newest-first, so anything appended after the <Deathknell />, including the played unit's play effect and any abilities triggered by it being played, resolves before it does.
 The step-by-step below spells this out.
 
-### Resolution Sequence [#deathknell-resolution-sequence]
+### Resolution Sequence [#deathknell-order-sequence]
 
 Killing <Card name="Ruined Rex" /> — whose <Deathknell /> reads "Deal 4 to an enemy unit" — as an example:
 
@@ -53,5 +53,5 @@ Killing <Card name="Ruined Rex" /> — whose <Deathknell /> reads "Deal 4 to an 
 4. "Then recycle the rest" executes, and Baited Hook's ability finishes resolving.
 5. Two pending items remain: the <Deathknell /> and the banished unit. They must be finalized before anything can resolve, in the order they were appended — the <Deathknell /> first.<Rule number="337.1" /><Rule number="337.1.b" /> Its target — the enemy unit to deal 4 to — is chosen now.<Rule number="355.5" />
 6. The banished unit finalizes next, choosing its location, then resolves immediately by entering the board.<Rule number="337.2" />
-7. If the banished unit has a triggered ability that fires when it's played, that ability is added to the chain now, above the <Deathknell />, since it was appended later.<Rule number="340.3" />
+7. If the banished unit has a triggered ability that fires when it's played, that ability is added to the chain now, above the <Deathknell />, since it was appended later.<Rule number="383.4.a.2" /><Rule number="340.3" />
 8. Once no pending items remain, the chain resolves top-down:<Rule number="340.4" /> the banished unit's own trigger resolves first, and Ruined Rex's <Deathknell /> — appended before any of this — resolves last, dealing its 4 damage.<Rule number="340.1" />

@@ -5,7 +5,7 @@ authors:
 - "Christian I. (Near)"
 ---
 
-## What happens to attached equipment when a unit dies? [#when-unit-dies]
+## What happens to attached equipment when a unit dies? [#equipment-after-death]
 
 The equipment detaches and remains at the unit's last location, recalling if at a battlefield.
 
@@ -14,29 +14,30 @@ When a unit with attached equipment dies, the equipment detaches and remains at 
 If that location is a battlefield, the detached equipment will be recalled to its controller's base during the next cleanup.<Rule number="435.4.a" />
 If that location is the controller's base, the equipment simply remains there.
 
-## What happens to attached equipment when you take control of an enemy unit? [#take-control-with-equipment]
+## What happens to attached equipment when you take control of an enemy unit? [#equipment-control-change]
 
-Equipment stays attached but its controller does not change - only the top-most unit's controller changes.
+Equipment stays attached but its controller does not change — only the top-most unit's controller changes.
 
-When you take control of a unit, any equipment attached to it remains controlled by whoever originally controlled it.
+When you take control of a unit, any equipment attached to it retains its current controller.
 Changes in control of the top-most card do not affect control of attached cards, and vice versa.<Rule number="718.5.f" />
 
 When the equipment detaches, it remains at the unit's last location.<Rule number="719.5" /><Rule number="435.4.b" />
 If that location is a battlefield, it is recalled to its controller's base during the next cleanup.<Rule number="435.4.a" />
-If that location is your base, it cannot remain there since other players cannot have game objects they control in another player's base,<Rule number="107.1.c" /> so it goes to its controller's base.
+If that location is another player's base, the equipment remains there until the next cleanup, when it is recalled to its controller's base.<Rule number="323.7" />
 
-Since the equipment is still controlled by its original owner, they can also use a unit with <Weaponmaster /> to pull it back, even while it remains attached - attached cards can still be chosen by game effects.<Rule number="718.5.b" /><Rule number="821.1.c" />
+Because the equipment remains under the other player's control, that player can play a unit with <Weaponmaster /> and choose the equipment, even while it is attached to the unit you control.<Rule number="718.5.b" /><Rule number="821.1.c" />
+If its <Equip /> cost can be paid and it can legally be detached and attached, it moves to the newly played unit.<Rule number="821.1.c.4" /><Rule number="821.1.c.5" />
 
-## Which equipment effects choose units? [#choose-units]
+## Which equipment effects choose units? [#equipment-unit-selection]
 
 <Equip /> and <QuickDraw /> choose units; <Weaponmaster /> does not.
 
 Some abilities trigger or care about when you choose friendly units. Here's how equipment-related effects interact with such abilities:
 
-- When you activate a gear's <Equip /> ability, you choose a unit you control to attach the equipment to.<Rule number="818.1.b" />
-This choice is a target, so activating <Equip /> counts as choosing a unit.
+- When you activate a gear's <Equip /> ability, you choose a unit you control to attach the equipment to.<Rule number="818.1.b.1" />
+This choice is a target, so activating <Equip /> counts as choosing a unit.<Rule number="355.7" />
 - When you play a gear with <QuickDraw />, its triggered ability instructs you to "attach it to a Unit you control".<Rule number="819.1.d" />
-While attaching cards doesn't inherently choose or specify a target,<Rule number="434.3" /> <QuickDraw />'s ability does require you to choose which unit to attach to.
+While attaching cards doesn't inherently choose or specify a target,<Rule number="434.3" /> <QuickDraw />'s ability does require you to choose which unit to attach to.<Rule number="355.10" />
 This counts as choosing a unit.
 - When you play a unit with <Weaponmaster />, you choose an equipment you control, not the unit.<Rule number="821.1.c" />
 The rules explicitly state that "The <Equip /> ability is not activated this way, and the unit with the <Weaponmaster /> ability is not chosen".<Rule number="821.1.c.6" />
@@ -44,17 +45,17 @@ Therefore, <Weaponmaster /> does **not** count as choosing a unit.
 
 ## Can I react to equipment abilities? [#equipment-reactions]
 
-Yes — all three equipment abilities create chain items that opponents can respond to before the attachment resolves.
+Yes — all three equipment-related abilities create chain items that opponents can respond to before the attachment resolves.
 
 <Equip /> is an activated ability.<Rule number="818.1" />
 Activated abilities use the chain,<Rule number="377.3" /> so when you activate <Equip />, opponents have an opportunity to play a <Reaction /> spell or ability before the attachment resolves.<Rule number="377.3.b.2" />
 
 When you play a <QuickDraw /> gear, the gear itself resolves immediately when finalized and cannot be reacted to.<Rule number="337.2" />
-However, <QuickDraw />'s triggered ability — "When you play this, attach it to a unit you control"<Rule number="819.1.d" /> — is placed on the chain as a separate item.<Rule number="383.3" />
+However, <QuickDraw />'s triggered ability — "When you play this, attach it to a unit you control"<Rule number="819.1.d" /> — is placed on the chain as a separate item.<Rule number="383.4.a.2" />
 Opponents can respond to that ability before the attachment resolves.
 
 <Weaponmaster /> is also a triggered ability keyword.<Rule number="821.1" />
-Its ability triggers when you play the unit, and is placed on the chain just like any other triggered ability.<Rule number="383.3" />
+Its ability triggers when you play the unit, and is placed on the chain just like any other triggered ability.<Rule number="383.4.a.2" />
 Opponents can respond to it before the equipment is attached.
 
 Skipping straight to attaching without checking for reactions is not correct play for any of these abilities.
