@@ -8,6 +8,10 @@ const config = {
 	// oxfmt-ignore
 	async redirects() {
 		return [
+			// Reference — patch notes moved into /reference/patch-notes/{set}
+			{ source: '/reference/vendetta-patch-notes', destination: '/reference/patch-notes/vendetta', permanent: true },
+			{ source: '/reference/unleashed-patch-notes', destination: '/reference/patch-notes/unleashed', permanent: true },
+			{ source: '/reference/spiritforged-patch-notes', destination: '/reference/patch-notes/spiritforged', permanent: true },
 			// Cards
 			{ source: '/sets/origins/cards/hidden-blade', destination: '/cards/hidden-blade', permanent: true },
 			{ source: '/sets/origins/cards/karthus-eternal', destination: '/cards/karthus-eternal', permanent: true },
