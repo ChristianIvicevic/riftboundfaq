@@ -1,16 +1,3 @@
 {
-	"pages": [
-		"index",
-		"---Reference---",
-		"reference/core-rules",
-		"reference/vendetta-patch-notes",
-		"reference/unleashed-patch-notes",
-		"reference/spiritforged-patch-notes",
-		"---General Rules---",
-		"...general-rules",
-		"---Mechanics---",
-		"...mechanics",
-		"---Cards---",
-		"...cards"
-	]
+	"pages": ["(rulings)", "reference"]
 }
