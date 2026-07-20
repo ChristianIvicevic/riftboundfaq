@@ -3,6 +3,15 @@ import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons'
 import { docs } from 'fumadocs-mdx:collections/server'
 import { Badge } from '@/components/ui/badge'
 
+const NEW_PAGE_WINDOW_MS = 30 * 24 * 60 * 60 * 1000
+const BUILD_TIMESTAMP = Date.now()
+
+function isNewPage(createdAt?: string) {
+	if (!createdAt) return false
+	const age = BUILD_TIMESTAMP - Date.parse(createdAt)
+	return age >= 0 && age < NEW_PAGE_WINDOW_MS
+}
+
 export const source = loader({
 	baseUrl: '/',
 	source: docs.toFumadocsSource(),
@@ -17,7 +26,7 @@ export const source = loader({
 				file(node, file) {
 					if (!file) return node
 					const content = this.storage.read(file)
-					if (content && content.format === 'page' && content.data.isNew)
+					if (content && content.format === 'page' && isNewPage(content.data.createdAt))
 						node.name = (
 							<div key={content.path} className="flex w-full items-center gap-2">
 								<span className="flex-1">{node.name}</span>
