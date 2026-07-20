@@ -13,9 +13,13 @@ Yes, cards played from Hidden by your opponents still cost <Energy value={1} /><
 When a card with Hidden is played from its facedown state, it is played "ignoring its base cost".<Rule number="811.1.b" />
 During step 3 of playing a card ("Determine Total Cost"), the following happens in order:
 
-1. Set base costs to zero.<Rule number="356.1" /> If an ability or instruction allows you to "ignore" costs, set the base costs to zero. Hidden cards played from facedown have their base cost set to <Energy value={0} />.
-2. Apply cost increases.<Rule number="356.3" /> Vex's ability increases enemy spell costs by <Energy value={1} /><Universal />, which is applied to the total cost even though the base cost is zero.
-3. Apply discounts.<Rule number="356.4" /> No discounts apply in this scenario.
+1. Set base costs to zero.<Rule number="356.1" />
+If an ability or instruction allows you to "ignore" costs, set the base costs to zero.
+Hidden cards played from facedown have their base cost set to <Energy value={0} />.
+2. Apply cost increases.<Rule number="356.3" />
+Vex's ability increases enemy spell costs by <Energy value={1} /><Universal />, which is applied to the total cost even though the base cost is zero.
+3. Apply discounts.<Rule number="356.4" />
+No discounts apply in this scenario.
 
 ## Does Vex reduce Deflect costs when you play spells? [#deflect-cost-reduction]
 
