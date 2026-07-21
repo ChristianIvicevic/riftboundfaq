@@ -8,6 +8,8 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
 	return {
 		...defaultMdxComponents,
 		Card,
+		Tiles: defaultMdxComponents.Cards,
+		Tile: defaultMdxComponents.Card,
 		FeedbackBlock: (props) => <FeedbackBlock {...props} onSendAction={submitBlockFeedback} />,
 		...components,
 	}

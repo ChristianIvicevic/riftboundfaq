@@ -1,5 +1,5 @@
 // Parses a raw Core Rules text export (sources/CR-vX.Y.txt) into the structured
-// CoreRule[] shape used by src/components/core-rules/data. Dependency-free; run with node.
+// RuleRecord[] shape used by src/components/core-rules/data. Dependency-free; run with node.
 //
 //   node scripts/parse-cr.mjs <raw.txt> <ExportName> [out]  emit a data file (stdout or file)
 //
@@ -76,21 +76,21 @@ export function parseCr(text) {
 
 /**
  * Serialize rules in the exact one-rule-per-line, tab-indented style of data.ts.
- * `header` defaults to importing the CoreRule type from the registry; pass 'inline'
+ * `header` defaults to importing the shared RuleRecord type; pass 'inline'
  * to instead declare the type in-file (matches the original standalone data.ts).
  */
 export function serialize(rules, exportName, header = 'import') {
 	const preamble =
 		header === 'inline'
-			? 'export type CoreRule = { id: string; lines: string[] }\n\n'
-			: "import type { CoreRule } from './index'\n\n"
+			? 'export type RuleRecord = { id: string; lines: string[] }\n\n'
+			: "import type { RuleRecord } from '@/components/rules/types'\n\n"
 	const body = rules
 		.map((r) => {
 			const lines = r.lines.map((l) => JSON.stringify(l)).join(', ')
 			return `\t{"id": ${JSON.stringify(r.id)}, "lines": [${lines}]},`
 		})
 		.join('\n')
-	return `${preamble}// oxfmt-ignore\nexport const ${exportName}: CoreRule[] = [\n${body}\n]\n`
+	return `${preamble}// oxfmt-ignore\nexport const ${exportName}: RuleRecord[] = [\n${body}\n]\n`
 }
 
 function main() {

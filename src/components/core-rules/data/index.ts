@@ -2,14 +2,13 @@ import { RULES_1_1 } from '@/components/core-rules/data/v1-1'
 import { RULES_1_2 } from '@/components/core-rules/data/v1-2'
 import { RULES_1_3 } from '@/components/core-rules/data/v1-3'
 import { RULES_1_4 } from '@/components/core-rules/data/v1-4'
-
-export type CoreRule = { id: string; lines: string[] }
+import type { RuleRecord } from '@/components/rules/types'
 
 export type CrdVersion = {
 	version: string
 	name: string
 	lastUpdated: string
-	rules: CoreRule[]
+	rules: RuleRecord[]
 }
 
 export const CRD_VERSIONS: Record<string, CrdVersion> = {

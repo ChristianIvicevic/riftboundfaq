@@ -14,6 +14,8 @@ import { Feedback } from '@/components/feedback/client'
 import { KEYWORDS } from '@/components/keywords'
 import { LastUpdated } from '@/components/last-updated'
 import { Energy, RUNES, Universal } from '@/components/resources'
+import { TournamentRulesDiff } from '@/components/tournament-rules/diff-view'
+import { TournamentRulesTable } from '@/components/tournament-rules/table'
 import { baseUrl } from '@/lib/metadata'
 import { getPageImage, source } from '@/lib/source'
 import { getMDXComponents } from '@/mdx-components'
@@ -48,6 +50,8 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 							Rule,
 							CoreRulesTable,
 							CoreRulesDiff,
+							TournamentRulesTable,
+							TournamentRulesDiff,
 							Energy,
 							Universal,
 							...RUNES,

@@ -12,7 +12,8 @@
 		"format:check": "oxfmt --check",
 		"lint": "oxlint",
 		"lint:fix": "oxlint --fix",
-		"lint:github": "oxlint --format=github --deny-warnings"
+		"lint:github": "oxlint --format=github --deny-warnings",
+		"rules:tr:check": "node scripts/parse-tr.mjs --check"
 	},
 	"dependencies": {
 		"@radix-ui/react-collapsible": "1.1.16",

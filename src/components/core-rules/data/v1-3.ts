@@ -1,7 +1,7 @@
-import type { CoreRule } from './index'
+import type { RuleRecord } from '@/components/rules/types'
 
 // oxfmt-ignore
-export const RULES_1_3: CoreRule[] = [
+export const RULES_1_3: RuleRecord[] = [
 	{"id": "000", "lines": ["Golden and Silver Rules"]},
 	{"id": "001", "lines": ["Golden Rule"]},
 	{"id": "002", "lines": ["Card text supersedes rules text. Whenever a card fundamentally contradicts the rules, the card's indication is what is true."]},

@@ -1,8 +1,8 @@
 import { createFromSource } from 'fumadocs-core/search/server'
 import { source } from '@/lib/source'
 
-// Keep `noindex` pages (everything under content/reference/, e.g. CRD snapshots and
-// patch-note diffs) out of the search index, mirroring the sitemap's `!page.data.noindex`
+// Keep `noindex` pages (everything under content/reference/, e.g. rules snapshots and
+// change diffs) out of the search index, mirroring the sitemap's `!page.data.noindex`
 // filter so site search matches what search engines are allowed to see. createFromSource
 // indexes every `loader.getPages()` with no built-in filter, so we wrap the loader and
 // filter there. A Proxy (rather than spreading `source`) avoids eagerly triggering the
