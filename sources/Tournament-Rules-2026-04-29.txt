@@ -372,8 +372,7 @@ player who scores that point wins the match. This does not remove normal
 scoring restrictions if the next point is the Final Point. See CR 448.1.a. for
 Final Point details.
 408.4.d. If the game score is tied and a new game needs to be started, players start the new
-game and act as though time immediately runs out, beginning the process of
-408.4.a., except with five additional turns following the first player's turn before
+game and act as though time immediately runs out, beginning the process of 408.4.a., except with five additional turns following the first player's turn before
 moving into sudden death scoring as described in 408.4.c.3. if the point score is tied
 at the end of those turns.
 409. Tiebreakers
@@ -521,8 +520,7 @@ layers and be the same orientation at all times.
 decks (Main, Rune).
 422.2.b. Players may use a unique sleeve or additional layer to distinguish their Chosen
 Champion during game setup, but must change its sleeve to match their Main Deck
-if it would enter a zone whose information level is private during gameplay. See CR
-127. Privacy for information types.
+if it would enter a zone whose information level is private during gameplay. See CR 127. Privacy for information types.
 422.3. Sleeves must have opaque backs.
 422.4. During a match, a player may request that a judge inspect an opponent’s sleeves.
 422.5. Judges may disallow any specific sleeve or the sleeves generally if they believe they are
@@ -707,8 +705,7 @@ non-optional “First time” or similarly restricted triggers.
 507.1. Players may communicate with teammates at all times unless explicitly prohibited by the
 format rules.
 507.2. Players that acquire secret or private information about a match in which a teammate is
-playing can’t communicate with that teammate for the remainder of that match. See CR
-127. Privacy for information types
+playing can’t communicate with that teammate for the remainder of that match. See CR 127. Privacy for information types
 508. Layout
 508.1. In high OPL, players must arrange their cards according to the following rules, for clarity.
 508.2. Runes must be closer to the player than nonrunes.
@@ -820,7 +817,7 @@ promotional cards that the head judge will specify are not part of
 that player’s limited card pool and can’t be used for that event.
 602.1.a.2. Players may utilize any number of the 6 basic Runes from any source, even
 if they are not in the player’s provided card pool.
-Players may utilize as many “blank” battlefields as they need for limited
+602.1.a.3. Players may utilize as many “blank” battlefields as they need for limited
 gameplay. See 602.3.d. below for more information on “blank” battlefields.
 602.1.b. Even if a card is banned in constructed, it is legal to use in a limited deck as long as
 it is not also banned in that limited format.
@@ -1064,8 +1061,7 @@ turn order from the previous game is maintained.
 604.1. It’s recommended that players be given 60 minutes for rounds of play in the Swiss portion
 of a competitive event.
 604.2. It is strongly recommended that single elimination matches use untimed rounds so players
-can play their games to a natural conclusion. If single elimination rounds must be timed, see
-408.4. for an altered End of Match procedure.
+can play their games to a natural conclusion. If single elimination rounds must be timed, see 408.4. for an altered End of Match procedure.
 604.2.a. Players are still expected to play at a reasonable pace. See 703.2 the Slow Play
 penalty.
 700. Enforcement and Penalties
@@ -1274,8 +1270,7 @@ they are entitled to under the Core Rules as the result of a limited action.
 game state.
 702.6.b. Remedies:
 702.6.b.1. If the additional runes have been used to pay for actions, rewind if
-possible. If rewinding is not possible, this is a General Error instead. See
-702.15 for more information about General Errors.
+possible. If rewinding is not possible, this is a General Error instead. See 702.15 for more information about General Errors.
 702.6.b.2. If the additional runes are caught and no more than a full round cycle has
 passed, shuffle them appropriately into the rune deck.
 702.6.b.2.a. If the specific runes can’t be identified, shuffle random runes

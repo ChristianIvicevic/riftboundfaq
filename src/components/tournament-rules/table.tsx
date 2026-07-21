@@ -1,32 +1,28 @@
 import { Fragment, type ReactNode } from 'react'
-import { CRD_VERSIONS } from '@/components/core-rules/data'
 import { Indent } from '@/components/rules/indent'
 import { RuleAnchor } from '@/components/rules/rule-anchor'
-import { CURRENT_CRD_VERSION } from '@/lib/constants'
-
-const RULE_REFERENCE = /\brules?\s+(\d{3}(?:\.[0-9a-z]+)*)/giu
+import { TOURNAMENT_RULES_VERSIONS } from '@/components/tournament-rules/data'
+import { findTournamentRuleReferences } from '@/components/tournament-rules/references'
+import { CURRENT_TOURNAMENT_RULES_VERSION } from '@/lib/constants'
 
 function RuleText({ text, ruleIds }: { text: string; ruleIds: Set<string> }): ReactNode {
+	const references = findTournamentRuleReferences(text, ruleIds)
+	if (references.length === 0) return text
+
 	const nodes: ReactNode[] = []
 	let cursor = 0
 
-	for (const match of text.matchAll(RULE_REFERENCE)) {
-		const id = match[1]
-		if (!ruleIds.has(id)) continue
-
-		const start = match.index
+	for (const reference of references) {
 		nodes.push(
-			text.slice(cursor, start),
-			<a key={start} href={`#R${id}`}>
-				{match[0]}
+			text.slice(cursor, reference.start),
+			<a key={reference.start} href={`#R${reference.id}`}>
+				{text.slice(reference.start, reference.end)}
 			</a>,
 		)
-		cursor = start + match[0].length
+		cursor = reference.end
 	}
 
-	if (cursor === 0) return text
-	nodes.push(text.slice(cursor))
-	return nodes
+	return [...nodes, text.slice(cursor)]
 }
 
 function RuleLines({ lines, ruleIds }: { lines: string[]; ruleIds: Set<string> }) {
@@ -42,11 +38,11 @@ function RuleLines({ lines, ruleIds }: { lines: string[]; ruleIds: Set<string> }
 	)
 }
 
-export function CoreRulesTable({ version = CURRENT_CRD_VERSION }: { version?: string }) {
-	const crd = CRD_VERSIONS[version]
-	if (!crd) throw new Error(`CoreRulesTable: unknown version ${JSON.stringify(version)}`)
+export function TournamentRulesTable({ version = CURRENT_TOURNAMENT_RULES_VERSION }: { version?: string }) {
+	const tournamentRules = TOURNAMENT_RULES_VERSIONS[version]
+	if (!tournamentRules) throw new Error(`TournamentRulesTable: unknown version ${JSON.stringify(version)}`)
 
-	const ruleIds = new Set(crd.rules.map((rule) => rule.id))
+	const ruleIds = new Set(tournamentRules.rules.map((rule) => rule.id))
 
 	return (
 		<div className="overflow-x-auto">
@@ -58,7 +54,7 @@ export function CoreRulesTable({ version = CURRENT_CRD_VERSION }: { version?: st
 					</tr>
 				</thead>
 				<tbody>
-					{crd.rules.map((rule) => {
+					{tournamentRules.rules.map((rule) => {
 						const level = rule.id.split('.').length - 1
 						return (
 							<tr key={rule.id}>

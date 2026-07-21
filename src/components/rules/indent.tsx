@@ -14,6 +14,8 @@ export function Indent({ level, children }: IndentProps) {
 				level === 2 && 'pl-4 sm:pl-12',
 				level === 3 && 'pl-6 sm:pl-18',
 				level === 4 && 'pl-8 sm:pl-24',
+				level === 5 && 'pl-10 sm:pl-30',
+				level >= 6 && 'pl-12 sm:pl-36',
 			)}
 		>
 			{children}
