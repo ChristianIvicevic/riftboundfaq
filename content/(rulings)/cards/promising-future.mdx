@@ -54,6 +54,20 @@ The opponent can avoid this by choosing a permanent, a spell that cannot be coun
 If this leaves the counterspell with no other legal target, it cannot be finalized.
 Conversely, a counterspell queued before another chosen card cannot wait for that later pending card to finalize; it needs an eligible target when its own targets are chosen.
 
+## Does Brynhir Thundersong stop an opponent's chosen card from being played? [#brynhir-thundersong]
+
+No.
+Both chosen cards are already on the chain and queued for finalization before Brynhir Thundersong's play effect exists.
+
+Promising Future puts each chosen card on the chain as a pending item while it resolves.<Rule number="354.2" /><Rule number="354.3" />
+Brynhir's play effect is only added as another pending item after she finalizes and enters the board.<Rule number="383.4.a.2" />
+The opponent's chosen card either finalized before Brynhir or is an older pending item, so it finalizes before her play effect in either ordering.<Rule number="337.1.b" />
+
+If the opponent's card is a spell, Brynhir's play effect may resolve before that spell resolves, but it still does not stop the spell.
+As an instruction, "play" means putting a new card on the chain and queuing it for finalization;<Rule number="419.1" /> it does not mean finalizing or resolving a card already there.
+Brynhir prevents opponents from starting that process for any further cards that turn, but she does not remove, counter, or prevent the resolution of cards already on the chain.
+See also [What does "play" mean on a card?](/general-rules/playing-cards#play-definition).
+
 ## Does Akshan, Mischievous have to pay his additional cost before knowing whether he can take Dazzling Aurora? [#akshan-aurora]
 
 No.
