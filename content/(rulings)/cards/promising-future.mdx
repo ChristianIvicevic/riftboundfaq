@@ -1,0 +1,83 @@
+---
+title: "Promising Future"
+createdAt: "2026-07-21"
+crdVersion: "1.4"
+galleryLink: "https://playriftbound.com/en-us/card-gallery/#card-gallery--ogn-115-298"
+authors:
+- "Christian I. (Near)"
+---
+
+## How does Promising Future resolve? [#resolution]
+
+Resolve it in two passes: first, players choose and banish their cards starting with the turn player; then, players queue those cards for play starting with the next player.
+Do not resolve each chosen card as soon as it is put on the chain.
+
+### Resolution Sequence [#resolution-sequence]
+
+1. Starting with the turn player and proceeding in turn order, each player looks at their top 5 cards, banishes one, then recycles the rest.<Rule number="303.2.a" />
+The cards already banished are public information, so each later player knows what the players before them chose.<Rule number="108.6.e" />
+2. Starting with the next player and proceeding in turn order, each player puts their banished card on the chain as a pending item.
+This only queues the card for finalization; its play process pauses while Promising Future continues resolving.<Rule number="354.2" /><Rule number="354.3" />
+3. Promising Future finishes resolving.
+At this point, Promising Future being played causes applicable abilities on cards such as <Card name="Ravenbloom Student" /> and <Card name="Astral Heron" /> to trigger.<Rule number="419.4.a" />
+Those triggered abilities are added to the chain after the chosen cards.
+4. Finalize the chosen cards in the order they were put on the chain: the next player's card first, followed by each other player in turn order.<Rule number="337.1.b" />
+Promising Future ignores their energy costs, but their power costs and any applicable additional costs still apply.<Rule number="356.1.b.2" />
+5. A unit or gear resolves immediately when it finalizes and enters the board.<Rule number="337.2" />
+If that permanent has its own play effect, or its entering causes any other abilities to trigger, add those triggered abilities to the end of the pending items already on the chain.<Rule number="383.4.a.2" />
+Continue finalizing the older pending items first, so every card chosen with Promising Future finalizes before any of those triggered abilities.
+6. Once no pending items remain, players receive the normal opportunity to play reactions.
+After everyone passes, finalized spells and abilities resolve from newest to oldest.<Rule number="340.1" />
+
+<Callout type="idea" title="In a two-player game">
+
+The turn player chooses and banishes first, so their opponent knows that choice before making their own.
+The opponent then queues their card first, followed by the turn player.
+If both cards are permanents, the opponent's permanent enters first; if both are spells, the turn player's spell is newer on the chain and resolves first, after anything played or triggered above it.
+
+</Callout>
+
+## Can a counterspell chosen with Promising Future counter another chosen card? [#counterspells]
+
+Yes, if the counterspell finalizes after an eligible spell or ability and has a legal target at that time.
+
+Players only choose which card to banish during Promising Future's first pass.
+Targets for a counterspell are chosen later, when that counterspell is finalized.<Rule number="355.5" />
+A counterspell cannot finalize without a valid target;<Rule number="355.8" /> if none exists, its play process is undone and the card returns to banishment.<Rule number="358.5" />
+
+In a two-player game, if the turn player banishes a counterspell, their opponent sees that public choice before selecting their own card.
+The opponent's card is then queued and finalized first, followed by the turn player's counterspell.<Rule number="337.1.b" />
+If the opponent chose a spell that the counterspell can target, the turn player can choose it while finalizing their counterspell.
+The counterspell is newer on the chain and resolves first, allowing it to counter the opponent's spell before that spell resolves.<Rule number="340.1" />
+
+The opponent can avoid this by choosing a permanent, a spell that cannot be countered, or a spell that does not meet that counterspell's targeting requirements.
+If this leaves the counterspell with no other legal target, it cannot be finalized.
+Conversely, a counterspell queued before another chosen card cannot wait for that later pending card to finalize; it needs an eligible target when its own targets are chosen.
+
+## Does Akshan, Mischievous have to pay his additional cost before knowing whether he can take Dazzling Aurora? [#akshan-aurora]
+
+No.
+Regardless of which card is banished first, Akshan's controller knows whether their opponent chose <Card name="Dazzling Aurora" /> before deciding whether to pay Akshan's additional cost, and his play effect can take control of it.
+
+Akshan's controller decides whether to pay his optional additional cost while Akshan is being finalized, not when he is first banished or put on the chain.<Rule number="355.1.a" />
+His play effect is a separate pending ability added after Akshan finalizes and enters the board.<Rule number="383.4.a.2" />
+The enemy gear is chosen only when that triggered ability is finalized, rather than while Akshan himself is being finalized.<Rule number="355.5.b" />
+
+### Dazzling Aurora Is Banished First [#aurora-first-sequence]
+
+This is the most favorable ordering for the player with Akshan:
+
+1. The turn player banishes Dazzling Aurora.
+Because banished cards are public, their opponent sees that choice before selecting Akshan from their own top 5 cards.<Rule number="108.6.e" />
+2. Starting with the next player, Akshan is put on the chain first and Dazzling Aurora second.
+3. Akshan finalizes first.
+His controller already knows Dazzling Aurora was selected and may choose to pay Akshan's additional cost, even though Dazzling Aurora is still pending.
+4. Akshan enters the board, and his play effect is added as a pending item after Dazzling Aurora.
+5. Dazzling Aurora is the older pending item, so it finalizes next and enters the board before Akshan's play effect is finalized.<Rule number="337.1.b" /><Rule number="337.2" />
+6. Akshan's play effect then finalizes.
+Dazzling Aurora is now an enemy gear on the board and can be chosen, so the ability can resolve and take control of it.
+
+### Akshan Is Banished First [#akshan-first-sequence]
+
+This ordering is simpler: the opponent sees Akshan before choosing Dazzling Aurora, then Dazzling Aurora is queued and enters before Akshan is finalized.
+Akshan's controller therefore sees Dazzling Aurora already on the board when deciding whether to pay the additional cost.
