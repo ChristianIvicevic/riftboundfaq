@@ -80,7 +80,7 @@ function DiffRow({
 
 	return (
 		<>
-			<div>
+			<div className="mb-4 sm:mb-0">
 				<RuleLink ruleId={entry.oldId} version={from} label={fromLabel} />
 				<div>
 					<DiffTokens tokens={entry.oldText} />
@@ -119,7 +119,11 @@ export function TournamentRulesDiff({
 	const toLabel = formatVersion(newVersion.version)
 
 	return (
-		<div className="grid flex-1 grid-cols-1 gap-x-8 gap-y-2 pb-20 text-fd-muted-foreground sm:grid-cols-2">
+		<div className="grid flex-1 grid-cols-1 gap-x-8 gap-y-2 pb-20 sm:grid-cols-2">
+			<div className="mb-4 text-center text-sm font-medium sm:hidden">
+				Comparing <span className="text-fd-diff-remove-symbol">{fromLabel}</span> to{' '}
+				<span className="text-fd-diff-add-symbol">{toLabel}</span>
+			</div>
 			<div className="hidden text-center sm:block">
 				<h2 className="mt-2! mb-8! font-serif text-3xl font-bold text-fd-diff-remove-symbol">{fromLabel}</h2>
 			</div>
