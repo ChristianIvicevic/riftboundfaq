@@ -4,7 +4,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"build": "next build",
+		"build": "pnpm rules:generate && next build",
 		"dev": "next dev",
 		"start": "next start",
 		"types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
@@ -15,8 +15,7 @@
 		"lint:fix": "oxlint --fix",
 		"lint:github": "oxlint --format=github --deny-warnings",
 		"test": "node --test tests/*.test.mjs",
-		"rules:cr:check": "node scripts/parse-cr.mjs --check",
-		"rules:tr:check": "node scripts/parse-tr.mjs --check"
+		"rules:generate": "node scripts/generate-rules.mjs"
 	},
 	"dependencies": {
 		"@radix-ui/react-collapsible": "1.1.16",

@@ -1,8 +1,8 @@
 'use client'
 
 import { use } from 'react'
-import { RULES_BY_ID } from '@/components/core-rules/data'
 import { CrdVersionContext } from '@/components/core-rules/version'
+import { RULES_BY_ID } from '@/generated/rules/core-rules'
 import { ruleHref } from '@/lib/constants'
 
 export function Rule({ number }: { number: string }) {
