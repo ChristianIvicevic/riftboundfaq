@@ -1,5 +1,6 @@
 .local
 .source
+src/generated/rules/
 next-env.d.ts
 
 ### Intellij+all ###

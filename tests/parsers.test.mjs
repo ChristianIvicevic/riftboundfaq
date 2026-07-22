@@ -1,14 +1,11 @@
 import assert from 'node:assert/strict'
-import { mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import test from 'node:test'
-import { parseCr, validateCoreRulesDataIndex } from '../scripts/parse-cr.mjs'
-import {
-	parseTournamentRules,
-	parseTournamentRulesFile,
-	validateTournamentRulesDataIndex,
-} from '../scripts/parse-tr.mjs'
+import { generateRules } from '../scripts/generate-rules.mjs'
+import { parseCr } from '../scripts/parse-cr.mjs'
+import { parseTournamentRules, parseTournamentRulesFile } from '../scripts/parse-tr.mjs'
 import { serializeRuleRecords } from '../scripts/rules-parser-utils.mjs'
 
 const TOURNAMENT_RULES_HEADER = 'Riftbound Tournament Rules\nLast Updated: 2026-07-16\n'
@@ -77,41 +74,55 @@ test('Rule records serialize in the generated data format', () => {
 
 // oxfmt-ignore
 export const RULES_TEST: RuleRecord[] = [
-\t{"id": "100", "lines": ["Quoted \\"text\\"."]},
+	{"id": "100", "lines": ["Quoted \\"text\\"."]},
 ]
 `,
 	)
 })
 
-test('Tournament Rules registry entries must use their matching datasets', () => {
-	const index = `import { TOURNAMENT_RULES_2026_04_29 } from '@/components/tournament-rules/data/v2026-04-29'
-import { TOURNAMENT_RULES_2026_07_16 } from '@/components/tournament-rules/data/v2026-07-16'
+test('Rules generation creates deterministic indexes and removes stale artifacts', async () => {
+	const directory = await mkdtemp(join(tmpdir(), 'riftboundfaq-rules-'))
+	const sourcesDirectory = join(directory, 'sources')
+	const outputDirectory = join(directory, 'generated')
+	try {
+		await mkdir(sourcesDirectory)
+		await mkdir(outputDirectory)
+		await writeFile(
+			join(sourcesDirectory, 'rules-manifest.json'),
+			JSON.stringify({
+				coreRules: { current: '1.0', versions: { '1.0': { name: 'Test Set' } } },
+				tournamentRules: { current: '2026-07-16' },
+			}),
+		)
+		await writeFile(
+			join(sourcesDirectory, 'CR-v1.0.txt'),
+			'Riftbound Core Rules\nLast Updated: 2026-07-16\n100. Core rule.\n',
+		)
+		await writeFile(
+			join(sourcesDirectory, 'Tournament-Rules-2026-07-16.txt'),
+			`${TOURNAMENT_RULES_HEADER}100. Tournament rule.\n`,
+		)
+		await writeFile(join(outputDirectory, 'stale.ts'), 'stale')
 
-export const TOURNAMENT_RULES_VERSIONS = {
-\t'2026-04-29': { version: '2026-04-29', rules: TOURNAMENT_RULES_2026_07_16 },
-\t'2026-07-16': { version: '2026-07-16', rules: TOURNAMENT_RULES_2026_07_16 },
-}
-`
+		await generateRules({ sourcesDirectory, outputDirectory })
+		const firstIndex = await readFile(join(outputDirectory, 'core-rules', 'index.ts'), 'utf8')
+		assert.match(firstIndex, /CURRENT_CRD_VERSION = "1\.0"/u)
+		assert.match(firstIndex, /name: "Test Set"/u)
+		await assert.rejects(readFile(join(outputDirectory, 'stale.ts'), 'utf8'))
 
-	assert.throws(
-		() => validateTournamentRulesDataIndex(index, new Set(['2026-04-29', '2026-07-16'])),
-		/entry 2026-04-29 uses TOURNAMENT_RULES_2026_07_16/u,
-	)
-})
+		await generateRules({ sourcesDirectory, outputDirectory })
+		assert.equal(await readFile(join(outputDirectory, 'core-rules', 'index.ts'), 'utf8'), firstIndex)
 
-test('Core Rules registry entries must match their source metadata and datasets', () => {
-	const index = `import { RULES_1_3 } from '@/components/core-rules/data/v1-3'
-import { RULES_1_4 } from '@/components/core-rules/data/v1-4'
-
-export const CRD_VERSIONS = {
-	'1.3': { version: '1.3', name: 'Unleashed', lastUpdated: '2026-03-30', rules: RULES_1_4 },
-	'1.4': { version: '1.4', name: 'Vendetta', lastUpdated: '2026-06-18', rules: RULES_1_4 },
-}
-`
-	const expectedVersions = new Map([
-		['1.3', '2026-03-30'],
-		['1.4', '2026-06-18'],
-	])
-
-	assert.throws(() => validateCoreRulesDataIndex(index, expectedVersions), /entry 1\.3 uses RULES_1_4/u)
+		await writeFile(
+			join(sourcesDirectory, 'rules-manifest.json'),
+			JSON.stringify({
+				coreRules: { current: '1.0', versions: {} },
+				tournamentRules: { current: '2026-07-16' },
+			}),
+		)
+		await assert.rejects(generateRules({ sourcesDirectory, outputDirectory }), /missing Core Rules metadata/u)
+		assert.equal(await readFile(join(outputDirectory, 'core-rules', 'index.ts'), 'utf8'), firstIndex)
+	} finally {
+		await rm(directory, { recursive: true })
+	}
 })

@@ -1,5 +1,7 @@
-export const CURRENT_CRD_VERSION = '1.4'
-export const CURRENT_TOURNAMENT_RULES_VERSION = '2026-07-16'
+import { CURRENT_CRD_VERSION } from '@/generated/rules/core-rules'
+import { CURRENT_TOURNAMENT_RULES_VERSION } from '@/generated/rules/tournament-rules'
+
+export { CURRENT_CRD_VERSION, CURRENT_TOURNAMENT_RULES_VERSION }
 export const GITHUB_REPO_URL = 'https://github.com/ChristianIvicevic/riftboundfaq'
 
 export const CORE_RULES_PATH = '/reference/core-rules'

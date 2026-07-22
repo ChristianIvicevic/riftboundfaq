@@ -22,6 +22,7 @@ This resource helps judges and players quickly find answers about rules, card in
 
 ```bash
 pnpm install
+pnpm rules:generate # Generate rule datasets from sources
 pnpm dev        # Start development server at http://localhost:3000
 pnpm build      # Build for production
 pnpm start      # Run production server
@@ -32,6 +33,7 @@ pnpm start      # Run production server
 ```bash
 pnpm lint         # Run linter
 pnpm format       # Format code
+pnpm rules:generate # Generate rule datasets from sources
 pnpm types:check  # Run TypeScript type checking
 ```
 

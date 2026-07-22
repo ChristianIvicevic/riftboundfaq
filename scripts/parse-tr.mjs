@@ -1,7 +1,6 @@
 // Parses Tournament Rules text exports into the RuleRecord[] shape used by the site.
 // Dependency-free; run with node.
 //
-//   node scripts/parse-tr.mjs --check
 //   node scripts/parse-tr.mjs <raw.txt> <ExportName> [out]
 //
 // Source normalization notes:
@@ -13,7 +12,7 @@
 //   restored on 602.1.a.1 and 602.1.a.2.
 // - The unnumbered blank-battlefields item in all three extractions is restored as 602.1.a.3.
 
-import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
+import { readFileSync, writeFileSync } from 'node:fs'
 import { basename } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { serializeRuleRecords } from './rules-parser-utils.mjs'
@@ -22,14 +21,6 @@ const TITLE = 'Riftbound Tournament Rules'
 const RULE_START = /^(\d{3}(?:\.[0-9a-z]+)*)\.(?:\s+(.*))?$/u
 const MALFORMED_RULE_START = /^(\d{3}(?:\.[0-9A-Za-z]+)*)(?:\.)?\s+\S/u
 const SOURCE_FILENAME = /^Tournament-Rules-(\d{4}-\d{2}-\d{2})\.txt$/u
-const DATA_FILENAME = /^v\d{4}-\d{2}-\d{2}\.ts$/u
-const REGISTRY_IMPORT =
-	/^import \{ (TOURNAMENT_RULES_\d{4}_\d{2}_\d{2}) \} from '@\/components\/tournament-rules\/data\/v(\d{4}-\d{2}-\d{2})'$/gmu
-const REGISTRY_ENTRY =
-	/^\s*'(\d{4}-\d{2}-\d{2})': \{ version: '(\d{4}-\d{2}-\d{2})', rules: (TOURNAMENT_RULES_\d{4}_\d{2}_\d{2}) \},$/gmu
-const SOURCES_DIRECTORY = new URL('../sources/', import.meta.url)
-const DATA_DIRECTORY = new URL('../src/components/tournament-rules/data/', import.meta.url)
-const DATA_INDEX = new URL('index.ts', DATA_DIRECTORY)
 
 function normalize(text) {
 	return text.replaceAll(/[ \t]{2,}/gu, ' ').trim()
@@ -148,104 +139,10 @@ export function parseTournamentRulesFile(sourcePath) {
 	return parsed
 }
 
-function checkRegistryVersions(label, versions, expectedVersions) {
-	const duplicates = versions.filter((version, index) => versions.indexOf(version) !== index)
-	if (duplicates.length > 0) throw new Error(`data/index.ts: duplicate ${label} for ${duplicates[0]}`)
-
-	const actualVersions = new Set(versions)
-	for (const version of expectedVersions) {
-		if (!actualVersions.has(version)) throw new Error(`data/index.ts: missing ${label} for ${version}`)
-	}
-	for (const version of actualVersions) {
-		if (!expectedVersions.has(version))
-			throw new Error(`data/index.ts: ${label} ${version} has no matching source`)
-	}
-}
-
-const dataExportName = (version) => `TOURNAMENT_RULES_${version.replaceAll('-', '_')}`
-
-export function validateTournamentRulesDataIndex(index, expectedVersions) {
-	const imports = [...index.matchAll(REGISTRY_IMPORT)].map((match) => ({ name: match[1], version: match[2] }))
-	for (const imported of imports) {
-		if (imported.name !== dataExportName(imported.version)) {
-			throw new Error(`data/index.ts: import ${imported.name} does not match version ${imported.version}`)
-		}
-	}
-
-	const entries = [...index.matchAll(REGISTRY_ENTRY)].map((match) => ({
-		key: match[1],
-		version: match[2],
-		name: match[3],
-	}))
-	for (const entry of entries) {
-		if (entry.version !== entry.key) {
-			throw new Error(`data/index.ts: entry ${entry.key} declares version ${entry.version}`)
-		}
-		if (entry.name !== dataExportName(entry.key)) {
-			throw new Error(`data/index.ts: entry ${entry.key} uses ${entry.name}`)
-		}
-	}
-
-	checkRegistryVersions(
-		'import',
-		imports.map((entry) => entry.version),
-		expectedVersions,
-	)
-	checkRegistryVersions(
-		'registry entry',
-		entries.map((entry) => entry.key),
-		expectedVersions,
-	)
-}
-
-function checkDataIndex(expectedVersions) {
-	validateTournamentRulesDataIndex(readFileSync(DATA_INDEX, 'utf8'), expectedVersions)
-}
-
-function checkAllSources() {
-	const filenames = readdirSync(SOURCES_DIRECTORY)
-		.filter((filename) => filename.startsWith('Tournament-Rules-') && filename.endsWith('.txt'))
-		.toSorted()
-
-	if (filenames.length === 0) throw new Error('no Tournament Rules sources found')
-
-	const expectedDataFilenames = new Set()
-	const expectedVersions = new Set()
-	for (const filename of filenames) {
-		const { lastUpdated, rules } = parseTournamentRulesFile(new URL(filename, SOURCES_DIRECTORY))
-		const exportName = dataExportName(lastUpdated)
-		const dataFilename = `v${lastUpdated}.ts`
-		const dataUrl = new URL(dataFilename, DATA_DIRECTORY)
-		expectedDataFilenames.add(dataFilename)
-		expectedVersions.add(lastUpdated)
-		if (!existsSync(dataUrl)) throw new Error(`${filename}: generated data file is missing`)
-		if (readFileSync(dataUrl, 'utf8') !== serializeRuleRecords(rules, exportName)) {
-			throw new Error(`${filename}: generated data is stale; regenerate v${lastUpdated}.ts`)
-		}
-		console.log(`${lastUpdated}: ${rules.length} rules`)
-	}
-
-	for (const dataFilename of readdirSync(DATA_DIRECTORY).filter((filename) => DATA_FILENAME.test(filename))) {
-		if (!expectedDataFilenames.has(dataFilename)) {
-			throw new Error(`${dataFilename}: generated data has no matching source`)
-		}
-	}
-
-	checkDataIndex(expectedVersions)
-}
-
 function main() {
-	const cliArguments = process.argv.slice(2)
-	const [firstArgument, exportName, outputPath] = cliArguments
-	if (firstArgument === '--check') {
-		if (cliArguments.length !== 1) throw new Error('--check does not accept additional arguments')
-		checkAllSources()
-		return
-	}
-
+	const [firstArgument, exportName, outputPath] = process.argv.slice(2)
 	if (!firstArgument || !exportName) {
-		console.error('usage: node scripts/parse-tr.mjs --check')
-		console.error('   or: node scripts/parse-tr.mjs <raw.txt> <ExportName> [out]')
+		console.error('usage: node scripts/parse-tr.mjs <raw.txt> <ExportName> [out]')
 		process.exit(2)
 	}
 

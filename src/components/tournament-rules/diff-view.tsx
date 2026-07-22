@@ -1,6 +1,6 @@
 import { diffRuleSets } from '@/components/rules/diff'
 import { RulesDiffView } from '@/components/rules/diff-view'
-import { TOURNAMENT_RULES_VERSIONS } from '@/components/tournament-rules/data'
+import { TOURNAMENT_RULES_VERSIONS } from '@/generated/rules/tournament-rules'
 import { tournamentRuleHref } from '@/lib/constants'
 
 const VERSIONS = Object.keys(TOURNAMENT_RULES_VERSIONS).toSorted()

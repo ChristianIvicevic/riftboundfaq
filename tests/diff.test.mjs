@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { diffRuleSets } from '../src/components/rules/diff.ts'
-import { TOURNAMENT_RULES_2026_04_29 } from '../src/components/tournament-rules/data/v2026-04-29.ts'
-import { TOURNAMENT_RULES_2026_07_16 } from '../src/components/tournament-rules/data/v2026-07-16.ts'
+import { TOURNAMENT_RULES_2026_04_29 } from '../src/generated/rules/tournament-rules/v2026-04-29.ts'
+import { TOURNAMENT_RULES_2026_07_16 } from '../src/generated/rules/tournament-rules/v2026-07-16.ts'
 
 const rule = (id, text) => ({ id, lines: [text] })
 
