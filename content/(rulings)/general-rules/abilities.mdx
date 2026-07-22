@@ -27,6 +27,26 @@ Yes, with one important exception: abilities that use the <Add /> keyword.
 All triggered and activated abilities are placed on the chain.<Rule number="377.3" /><Rule number="383.3" />
 However, abilities that add resources resolve immediately when finalized, which means players do not receive priority to react to them.<Rule number="337.2" /><Rule number="429.2" /><Rule number="429.2.a" />
 
+## Does removing the source of a triggered ability stop it? [#source-removal]
+
+Usually no — once a triggered ability has finalized, removing its source does not remove or counter the ability on the chain.<Rule number="383.3" /><Rule number="406.2" />
+The ability still resolves and executes its instructions like a spell.<Rule number="406.5" />
+To stop the chain item itself, an effect must specifically instruct a player to counter it.<Rule number="425.2.a" /><Rule number="425.3" />
+
+However, removing the source can prevent an instruction from working if it needs information from that source.
+Source referents such as "here," "my," or "this battlefield" are checked when the instruction executes.<Rule number="359.3.f.1" /><Rule number="359.3.f.2" />
+If the source is no longer on the board, information such as its location is unavailable, and an instruction that needs that information is ignored.<Rule number="359.3.e.6" /><Rule number="359.3.e.12" />
+
+<Callout type="idea" title="Examples">
+	If an opponent responds to <Card name="Ashe, Focused" />'s play effect with <Card name="Star-Crossed" /> and returns Ashe to her owner's hand, her ability still resolves.
+	Nothing in its instructions requires Ashe to remain on the board.
+
+	If Star-Crossed returns <Card name="Vi, Peacekeeper" /> before her attack trigger resolves, Vi cannot <Stun /> an enemy unit "here."
+	Because Vi is no longer on the board, she has no location for "here" to reference, so that instruction is ignored.
+
+	The same applies to <Card name="Azir, Sovereign" />: if Azir leaves the board before his attack trigger resolves, there is no "this battlefield" to which his token units can move.
+</Callout>
+
 ## How are additional conditions in triggered abilities evaluated? [#trigger-time-conditions]
 
 It depends on where the condition appears in the ability's text.
