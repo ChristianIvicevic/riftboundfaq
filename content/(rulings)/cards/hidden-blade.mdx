@@ -13,8 +13,8 @@ Yes.
 Replacing Hidden Blade's kill does not prevent its linked draw instruction from executing.
 
 The phrase "its controller" links the draw to the unit affected by the preceding kill instruction.<Rule number="359.3.e.14" />
-Replacing that kill action does not stop the later linked instruction unless it directly references the action itself.<Rule number="359.3.e.14.b" />
-Hidden Blade's draw references the targeted unit's controller, not whether the unit was killed, so the draw still executes.
+[Replacing the kill does not stop a later instruction that refers only to the affected object](/general-rules/replacement-effects#partial-resolution).
+Hidden Blade's draw references the targeted unit's controller, not whether it was killed, so the draw still executes.
 
 <Callout type="idea" title="Example">
 	You play Hidden Blade targeting an opponent's unit.
@@ -28,8 +28,7 @@ Hidden Blade's draw references the targeted unit's controller, not whether the u
 No.
 An illegal target is entirely unaffected by the spell, and the draw is no exception.
 
-An illegal target is unaffected by the spell, so Hidden Blade's kill instruction is ignored.<Rule number="359.3.e.5" />
-When an earlier linked instruction is ignored, its later linked instructions are also ignored, so the controller does not draw.<Rule number="359.3.e.14.a" />
+When Hidden Blade's target becomes illegal, [the kill instruction and its linked draw instruction are ignored](/general-rules/targeting#illegal-targets), so the controller does not draw.
 
 <Callout type="idea" title="Example">
 	You play Hidden Blade targeting an opponent's unit at a battlefield.

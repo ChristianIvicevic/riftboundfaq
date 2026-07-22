@@ -2,6 +2,7 @@ import { type InferPageType, loader } from 'fumadocs-core/source'
 import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons'
 import { docs } from 'fumadocs-mdx:collections/server'
 import { Badge } from '@/components/ui/badge'
+import { buildRulingRelationIndex, getRulingRelations } from '@/lib/ruling-relations'
 
 const NEW_PAGE_WINDOW_MS = 30 * 24 * 60 * 60 * 1000
 const BUILD_TIMESTAMP = Date.now()
@@ -37,6 +38,12 @@ export const source = loader({
 		}),
 	],
 })
+
+const rulingRelationIndex = buildRulingRelationIndex(source.getPages())
+
+export function getPageRulingRelations(pageUrl: string) {
+	return getRulingRelations(rulingRelationIndex, pageUrl)
+}
 
 export function getPageImage(page: InferPageType<typeof source>) {
 	const segments = [...page.slugs, 'image.png']

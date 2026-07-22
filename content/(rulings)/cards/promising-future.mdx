@@ -5,6 +5,12 @@ crdVersion: "1.4"
 galleryLink: "https://playriftbound.com/en-us/card-gallery/#card-gallery--ogn-115-298"
 authors:
 - "Christian I. (Near)"
+rulingRelations:
+- id: "promising-future-akshan-aurora"
+  anchor: "akshan-aurora"
+  question: "Does Akshan, Mischievous have to pay his additional cost before knowing whether he can take Dazzling Aurora?"
+  appliesTo:
+  - "/cards/akshan-mischievous"
 ---
 
 ## How does Promising Future resolve? [#resolution]
@@ -21,7 +27,7 @@ This only queues the card for finalization; its play process pauses while Promis
 3. Promising Future finishes resolving.
 At this point, Promising Future being played causes applicable abilities on cards such as <Card name="Ravenbloom Student" /> and <Card name="Astral Heron" /> to trigger.<Rule number="419.4.a" />
 Those triggered abilities are added to the chain after the chosen cards.
-4. Finalize the chosen cards in the order they were put on the chain: the next player's card first, followed by each other player in turn order.<Rule number="337.1.b" />
+4. [Finalize the chosen cards in the order they were put on the chain](/general-rules/chain-and-priority#pending-item-order): the next player's card first, followed by each other player in turn order.
 Promising Future ignores their energy costs, but their power costs and any applicable additional costs still apply.<Rule number="356.1.b.2" />
 5. A unit or gear resolves immediately when it finalizes and enters the board.<Rule number="337.2" />
 If that permanent has its own play effect, or its entering causes any other abilities to trigger, add those triggered abilities to the end of the pending items already on the chain.<Rule number="383.4.a.2" />

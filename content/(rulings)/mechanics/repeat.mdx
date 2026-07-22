@@ -4,6 +4,13 @@ createdAt: "2026-02-02"
 crdVersion: "1.4"
 authors:
 - "Christian I. (Near)"
+rulingRelations:
+- id: "repeated-instruction-applications"
+  anchor: "repeated-instructions"
+  question: "What does Repeat repeat?"
+  appliesTo:
+  - "/cards/heedless-resurrection"
+  - "/cards/irelia-fervent"
 ---
 
 ## When do I decide whether to pay for Repeat? [#repeat-decision-timing]
@@ -19,7 +26,6 @@ If you chose to pay it, you apply the <Repeat /> cost as an optional additional 
 
 This means you cannot put a spell on the chain, pass priority to see what happens, and then decide whether to pay its <Repeat /> cost later.
 The decision must be made upfront during finalization.
-Any targets, modes, or other choices for the additional execution are also made during finalization and may differ from the original execution's choices.<Rule number="820.2" /><Rule number="820.2.a" />
 
 <Callout type="idea" title="Example">
 	You put <Card name="Blood Rush" />, a spell with <Repeat /> <Energy value={1} />, that says "Give a unit <Assault value={2} /> this turn," onto the chain.
@@ -29,12 +35,17 @@ Any targets, modes, or other choices for the additional execution are also made 
 	Your opponent can now respond with priority, but your <Repeat /> decision is locked in.
 </Callout>
 
+## What does Repeat repeat? [#repeated-instructions]
+
+<Repeat /> executes the spell's instructions an additional time; it does not create or play another copy of the spell.<Rule number="820.1.d.1" /><Rule number="820.3.a" />
+Because the spell is played only once, its playing costs are paid only once during the original finalization.
+
+Targets, modes, and other choices are made separately for each execution.<Rule number="820.2" /><Rule number="820.2.a" />
+Those choices may differ between the original and additional executions.
+
 ## What happens if a repeated spell is countered? [#repeated-spell-countering]
 
 The entire spell is countered, including all repeated instructions.
-
-<Repeat /> does *not* create a second instance of the spell on the chain.<Rule number="820.3.a" />
-Instead, it modifies how the spell resolves by executing its instructions an additional time.<Rule number="820.1.d.1" />
 
 When a spell is countered, it does nothing and is cleared from the chain.<Rule number="425.1.a" />
 Since the spell never resolves, none of its instructions are executed, whether they came from <Repeat /> or not.

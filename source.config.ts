@@ -5,6 +5,20 @@ import { defineConfig, defineDocs } from 'fumadocs-mdx/config'
 import lastModified from 'fumadocs-mdx/plugins/last-modified'
 import { z } from 'zod'
 
+const kebabCase = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u)
+const internalRoute = z.string().regex(/^\/(?:[a-z0-9]+(?:-[a-z0-9]+)*)(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*$/u)
+const rulingRelationSchema = z
+	.object({
+		id: kebabCase,
+		anchor: kebabCase,
+		question: z.string().min(1),
+		appliesTo: z
+			.array(internalRoute)
+			.min(1)
+			.refine((routes) => new Set(routes).size === routes.length, 'Participant routes must be unique'),
+	})
+	.strict()
+
 export const docs = defineDocs({
 	dir: 'content',
 	docs: {
@@ -14,6 +28,7 @@ export const docs = defineDocs({
 			authors: z.array(z.string()).optional(),
 			createdAt: z.iso.date().optional(),
 			noindex: z.boolean().optional(),
+			rulingRelations: z.array(rulingRelationSchema).optional(),
 		}),
 	},
 	meta: { schema: metaSchema },

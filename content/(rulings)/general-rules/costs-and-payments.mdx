@@ -1,0 +1,71 @@
+---
+title: "Costs and Payments"
+createdAt: "2026-07-22"
+description: "Commonly asked questions about costs and payments in Riftbound"
+crdVersion: "1.4"
+authors:
+- "Christian I. (Near)"
+rulingRelations:
+- id: "countered-additional-costs"
+  anchor: "countered-costs"
+  question: "Are paid costs refunded if a card or ability is countered?"
+  appliesTo:
+  - "/cards/heedless-resurrection"
+  - "/cards/sacrifice"
+- id: "ignored-cost-applications"
+  anchor: "ignored-costs"
+  question: "What costs still apply when I play a card ignoring its cost?"
+  appliesTo:
+  - "/cards/heedless-resurrection"
+  - "/cards/bone-skewer"
+  - "/cards/temporal-breach"
+  - "/cards/vex-cheerless"
+- id: "cost-reaction-window-applications"
+  anchor: "cost-reaction-window"
+  question: "Can players react while costs are being paid?"
+  appliesTo:
+  - "/cards/sacrifice"
+  - "/cards/diana-lunari"
+  - "/cards/emperors-dais"
+- id: "optional-additional-costs-ezreal"
+  anchor: "optional-additional-costs"
+  question: "What are optional additional costs?"
+  appliesTo:
+  - "/cards/ezreal-prodigy"
+---
+
+## Are paid costs refunded if a card or ability is countered? [#countered-costs]
+
+No.
+Countering does not refund any costs paid to play a card, activate an ability, or trigger an ability, including additional costs.<Rule number="425.1.c" /><Rule number="425.1.c.1" />
+
+A countered card or ability does nothing and is cleared from the chain,<Rule number="425.1.a" /> but anything already spent, discarded, killed, or otherwise paid as a cost remains paid.
+
+## What are optional additional costs? [#optional-additional-costs]
+
+Optional additional costs are additional costs a player may choose to pay.<Rule number="356.2.b.1" />
+
+Their rules text uses both "may" and the exact phrase "as an additional cost."
+<Accelerate /> and <Repeat /> are keyworded optional additional costs.<Rule number="805.1.a" /><Rule number="820.1.d" />
+
+The player chooses whether to pay an optional additional cost while making relevant choices.
+If chosen, it is included while determining the card's total cost before applicable discounts are applied.<Rule number="355.1.a" /><Rule number="356.2" /><Rule number="356.4" />
+
+## What costs still apply when I play a card ignoring its cost? [#ignored-costs]
+
+Additional costs and cost increases still apply.
+Playing a card "ignoring its cost" sets only its base energy and power costs to zero.<Rule number="356.1.b.1" />
+Additional costs and cost increases are applied afterward and can raise its total cost above zero.<Rule number="356.1.b.3" />
+
+Mandatory additional costs must still be paid, while optional additional costs may still be chosen and paid.<Rule number="356.2.a.1" /><Rule number="356.2.b.1" />
+By contrast, "ignoring any and all costs" sets the card's total cost to zero, including non-standard costs.<Rule number="356.5.a" />
+
+## Can players react while costs are being paid? [#cost-reaction-window]
+
+Not through a normal reaction window.
+Costs are paid while the card or ability is being finalized, and finalization does not pass priority.<Rule number="357" /><Rule number="404" /><Rule number="337.1.a" />
+
+When resources are required, the player paying them may activate eligible <Add /> abilities with <Reaction /> during that payment.<Rule number="429.3" /><Rule number="444.2.c" />
+This is a special permission for resource payment, not a normal reaction window: those abilities finalize and resolve immediately without passing priority.<Rule number="429.2" /><Rule number="429.2.a" />
+
+Any normal opportunity to react comes only after finalization, when the costs have already been paid.

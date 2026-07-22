@@ -25,8 +25,7 @@ Yes, control of the battlefield is never lost during this sequence.
 
 When Temporal Breach resolves, the replayed unit is added to the chain as a pending item,<Rule number="354.2" /> with its play process held until the spell has fully resolved.<Rule number="354.3" />
 Once the spell finishes resolving, a cleanup runs — but the pending unit keeps the chain alive throughout it.<Rule number="330" /><Rule number="331" />
-Because the chain is not empty, the turn remains in a closed state, and cleanup step 4 — which would make the battlefield uncontrolled — only applies during an open state.<Rule number="323.6" />
-Control is never lost, so any effects that care about gaining or losing control of that battlefield don't trigger.
+[A pending chain item prevents the battlefield from becoming uncontrolled during that cleanup](/general-rules/chain-and-priority#empty-battlefield-control), so effects that care about gaining or losing control of it do not trigger.
 When all outstanding tasks are complete, the pending unit is finalized<Rule number="334.2" /><Rule number="337.1" /> and replayed to the same battlefield you still control, as dictated by Temporal Breach's own text.<Rule number="359.2" />
 
 ## What happens if Temporal Breach banishes a unit at Rockfall Path? [#rockfall-path]
@@ -59,9 +58,7 @@ So by the time Temporal Breach's "then its owner plays it to the same location" 
 
 ## Can I pay optional additional costs, like Accelerate, when replaying the banished unit? [#optional-additional-costs]
 
-Yes, since the replayed unit still goes through the complete, normal process of playing a card, and "ignoring its cost" only narrows one part of that process — the base cost — leaving everything else, including optional additional costs, unaffected.
-
-"Its owner plays it" instructs the normal process of playing a card — the unit is removed from banishment and put onto the chain as a pending item,<Rule number="354" /><Rule number="354.2" /> it isn't placed directly onto the board.
-That pending item goes through the full finalization process once it's ready to be finalized, including making relevant choices<Rule number="355" /> and determining total cost.<Rule number="356" />
-Playing a card "ignoring its cost" only sets its base Energy and base Power cost to zero;<Rule number="356.1.b.1" /> further additional costs applied in later steps can still raise the total cost back above zero.<Rule number="356.1.b.3" />
-<Accelerate /> is one such optional additional cost, paid as a player plays the unit with the ability,<Rule number="805.2" /> so its owner may still declare their intent to pay it during finalization<Rule number="356.2.b.1" /> and pay it as usual, unaffected by Temporal Breach ignoring the unit's base cost.
+Yes.
+Temporal Breach puts the unit on the chain to be played normally rather than placing it directly onto the board.<Rule number="354" /><Rule number="354.2" />
+Its instruction ignores only the unit's base energy and power costs, so [optional additional costs still apply](/general-rules/costs-and-payments#ignored-costs).
+The unit's owner may therefore choose and pay an optional additional cost such as <Accelerate /> during finalization.<Rule number="805.2" />

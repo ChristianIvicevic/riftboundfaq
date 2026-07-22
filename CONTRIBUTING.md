@@ -84,6 +84,47 @@ Mechanic and general-rules pages use the same fields except `galleryLink`.
 - Use MDX components such as `<Card />`, `<Rule />`, keyword badges, resource symbols, and `<Callout />` instead of recreating their formatting
 - If the current Core Rules do not fully support a ruling, disclose the gap with a warning callout rather than overstating a citation
 
+### Placing Card Interactions
+
+Give each rules explanation one canonical home at the most general level that fully answers the question:
+
+| Question type | Canonical location |
+|---|---|
+| General procedure that works without card names | General-rules page |
+| Behavior intrinsic to a keyword | Mechanic page |
+| Outcome determined by one card's unique text | That card's page |
+| Bespoke interaction requiring both cards | The page for the card whose instruction or ability is resolving |
+
+Use this decision process:
+
+1. Can the question be stated and answered without card names? If so, use a general-rules page.
+2. Is the disputed behavior defined by a keyword or mechanic? If so, use that mechanic's page.
+3. Which card supplies the instruction, condition, restriction, or replacement effect being interpreted? Use that card's page.
+4. Is each other named card material to the ruling, or merely an interchangeable example?
+5. Does a canonical explanation already exist? If so, link to it instead of repeating its reasoning.
+
+A card is material when replacing it with another object performing the same operation could change the ruling.
+Otherwise, it is an example and does not need reciprocal coverage.
+
+Keep the full reasoning at the canonical location.
+A card page may repeat a concise card-specific outcome when players are likely to search by that card, but it should link to the canonical explanation for the shared reasoning.
+Use exact heading links such as `/general-rules/abilities#source-removal`, not page-only links.
+Do not create empty card pages or pair-specific pages solely for reciprocal discovery.
+`<Card />` links to the official card gallery; using it does not declare an internal interaction.
+Use `rulingRelations` in the canonical page's frontmatter to provide reverse discovery without duplicated prose:
+
+```yaml
+rulingRelations:
+- id: "gangplank-switcheroo"
+  anchor: "switcheroo-interaction"
+  question: "How does Gangplank's replacement effect interact with Switcheroo?"
+  appliesTo:
+  - "/cards/switcheroo"
+```
+
+The `id` must be globally unique, `anchor` must identify a heading on the canonical page, and `appliesTo` contains the public routes of other material pages.
+Generated related-ruling links then appear in both directions.
+
 ## Code Contributions
 
 ### Development Setup

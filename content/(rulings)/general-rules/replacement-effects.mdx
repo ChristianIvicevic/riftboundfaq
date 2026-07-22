@@ -1,0 +1,39 @@
+---
+title: "Replacement Effects"
+createdAt: "2026-07-22"
+description: "Commonly asked questions about replacement effects"
+crdVersion: "1.4"
+authors:
+- "Christian I. (Near)"
+rulingRelations:
+- id: "partial-replacement-resolution"
+  anchor: "partial-resolution"
+  question: "Does a replacement effect stop the rest of a spell or ability?"
+  appliesTo:
+  - "/cards/gangplank-naval"
+  - "/cards/hidden-blade"
+- id: "multiple-replacement-applications"
+  anchor: "multiple-replacements"
+  question: "Who chooses the order when multiple replacement effects apply?"
+  appliesTo:
+  - "/cards/smite"
+  - "/cards/lotus-trap"
+---
+
+## Does a replacement effect stop the rest of a spell or ability? [#partial-resolution]
+
+No.
+
+A replacement effect changes only the event for which it applies.<Rule number="370.1" />
+The remaining instructions of the spell or ability continue resolving normally.
+
+Replacing an action in an earlier linked instruction also does not stop a later instruction unless that later instruction directly references whether the action occurred.<Rule number="359.3.e.14.b" />
+A later instruction that refers only to the affected object can still execute using that object.
+
+## Who chooses the order when multiple replacement effects apply? [#multiple-replacements]
+
+The controller of the affected object chooses the order.<Rule number="372" />
+If a player is being affected, that player chooses; if an uncontrolled battlefield is affected, the current turn player chooses.<Rule number="372.1" /><Rule number="372.2" />
+
+The first replacement effect changes the event before the next applicable replacement effect is processed.
+An effect can apply only once to the original event or anything that replaces it, so the chosen order can change the final outcome.<Rule number="370.2" />

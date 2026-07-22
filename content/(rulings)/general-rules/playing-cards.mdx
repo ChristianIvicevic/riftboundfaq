@@ -5,6 +5,20 @@ description: "Commonly asked questions about playing cards in Riftbound"
 crdVersion: "1.4"
 authors:
 - "Christian I. (Near)"
+rulingRelations:
+- id: "play-definition-applications"
+  anchor: "play-definition"
+  question: "What does \"play\" mean on a card?"
+  appliesTo:
+  - "/cards/abandoned-hall"
+  - "/cards/astral-heron"
+- id: "playing-from-trash"
+  anchor: "playing-from-trash"
+  question: "When I play a card from my trash, is it still in my trash?"
+  appliesTo:
+  - "/cards/consuming-curse"
+  - "/cards/shadow-assassin"
+  - "/cards/shadowblade-lurker"
 ---
 
 ## What does "play" mean on a card? [#play-definition]
@@ -20,3 +34,12 @@ A card satisfies this check when it becomes a finalized chain item.<Rule number=
 The <Legion /> keyword makes this precise: it's written as "if you have played another card this turn,"<Rule number="812.1.b.1" /> but the dependent ability is active as long as that other card "has been Finalized by you on the same turn" — not resolved.<Rule number="812.1.c" />
 
 As an instruction — "play a card," as seen on <Card name="Here to Help" /> and <Card name="Fizz, Trickster" /> — it initiates that underlying action by placing the card on the chain and queuing it for finalization.<Rule number="419.1" />
+
+## When I play a card from my trash, is it still in my trash? [#playing-from-trash]
+
+No.
+The first step of playing a card moves it from its current zone to the chain, where it waits to be finalized.<Rule number="354" /><Rule number="354.2" />
+
+Once you begin playing a card from your trash, it is no longer there while you make choices, determine its total cost, or resolve it.
+If the card counts copies of itself in your trash, only the other copies still there count.
+Likewise, if its cost is reduced for each card in your trash, it does not count itself toward that reduction.

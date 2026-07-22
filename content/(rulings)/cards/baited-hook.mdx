@@ -31,7 +31,7 @@ Because the unit has already moved to the trash by the time this later instructi
 
 The unit can't be killed, and no unit can be banished from the top 5, since nothing can satisfy a might comparison against a null value.
 
-If the friendly unit is no longer a legal target when the ability resolves — for example, if it was returned to its owner's hand in response — it is unaffected by the ability's "kill" instruction.<Rule number="359.3.e.2" /><Rule number="359.3.e.5" />
+If the friendly unit is no longer a legal target when the ability resolves — for example, if it was returned to its owner's hand in response — [it is unaffected by the ability](/general-rules/targeting#illegal-targets).<Rule number="359.3.e.2" />
 Because the unit was never killed, any information the ability checks about it, including its might, returns null.<Rule number="359.3.e.12" />
 "Banish a unit with might up to 1 more than the killed unit" can never be satisfied against a null might, so no unit can be chosen from among the top 5 cards, even though you still look at them.
 "Then recycle the rest" is unaffected by this, since it isn't tied to the killed unit's might — you still recycle every card you looked at that wasn't banished.
@@ -40,8 +40,8 @@ Because the unit was never killed, any information the ability checks about it, 
 
 After, even though it's finalized first — finalization proceeds in the order items were appended to the chain, but resolution proceeds in the opposite order, newest item first.
 
-Baited Hook's ability resolves in its entirety without interruption,<Rule number="354.3" /> so both the killed unit's <Deathknell /> trigger and the unit it later banishes and plays get appended to the chain as pending items during that same resolution, with the <Deathknell /> appended first.
-Once Baited Hook's ability finishes, those pending items are finalized in that same order — <Deathknell /> first — but the chain then resolves newest-first, so anything appended after the <Deathknell />, including the played unit's play effect and any abilities triggered by it being played, resolves before it does.
+Because a <Deathknell /> ability [does not interrupt the resolving ability that killed its unit](/mechanics/deathknell#killed-during-resolution), both the trigger and the unit Baited Hook later banishes and plays become pending items during that same resolution, with the <Deathknell /> appended first.
+Once Baited Hook's ability finishes, those pending items [finalize in the order they were added before the chain resolves newest-first](/general-rules/chain-and-priority#pending-item-order), so anything appended after the <Deathknell />, including the played unit's play effect and any abilities triggered by it being played, resolves before it does.
 The step-by-step below spells this out.
 
 ### Resolution Sequence [#deathknell-order-sequence]

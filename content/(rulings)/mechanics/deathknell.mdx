@@ -1,0 +1,63 @@
+---
+title: "Deathknell"
+createdAt: "2026-07-22"
+crdVersion: "1.4"
+authors:
+- "Christian I. (Near)"
+rulingRelations:
+- id: "deathknell-trigger-timing"
+  anchor: "trigger-timing"
+  question: "When is a Deathknell ability added to the chain?"
+  appliesTo:
+  - "/cards/karthus-eternal"
+  - "/cards/glasc-mixologist"
+- id: "deathknell-cleanup-timing"
+  anchor: "cleanup-timing"
+  question: "When does a Deathknell ability resolve if its unit dies during a cleanup?"
+  appliesTo:
+  - "/cards/ruined-rex"
+  - "/cards/glasc-mixologist"
+- id: "deathknell-killing-card-timing"
+  anchor: "killing-card-timing"
+  question: "Does Deathknell resolve before the card or ability that killed the unit?"
+  appliesTo:
+  - "/cards/sacrifice"
+  - "/cards/baited-hook"
+---
+
+## When is a Deathknell ability added to the chain? [#trigger-timing]
+
+A <Deathknell /> ability is added to the chain as a pending item before the dying permanent moves to the trash.<Rule number="808.1.d.2" />
+Before the permanent leaves the board, the game records its location, attributes, and other information needed by its ability.<Rule number="808.1.d.3" />
+If the permanent's death is replaced and it is not sent to the trash, the pending ability is removed from the chain.<Rule number="808.1.d.1" />
+Each instance of <Deathknell /> triggers separately and creates its own pending item.<Rule number="808.2" /><Rule number="808.2.a" />
+
+## When does a Deathknell ability resolve if its unit dies during a cleanup? [#cleanup-timing]
+
+After the cleanup finishes.
+The ability becomes a pending item before the unit moves to the trash.<Rule number="323.4" /><Rule number="323.5" /><Rule number="808.1.d.2" />
+The remaining cleanup steps are then completed before that pending ability can be finalized.<Rule number="334" />
+
+During a combat cleanup, this means surviving units are healed before the <Deathknell /> ability is finalized or resolved.<Rule number="466.1.a.1" />
+After the cleanup, the ability is finalized, any required targets are chosen, and players receive priority before it resolves.<Rule number="334.2" /><Rule number="337.4" />
+
+## Does Deathknell resolve before the card or ability that killed the unit? [#killing-card-timing]
+
+It depends on when the unit is killed and what kind of chain item caused it.
+
+### Killed as a cost [#killed-as-cost]
+
+If a unit is killed to pay a cost, the kill happens while the card or ability is being finalized.<Rule number="357.2" /><Rule number="404.1" />
+The <Deathknell /> ability becomes pending above that chain item.<Rule number="808.1.d.2" />
+
+If the original item is a spell or an ability that does not add resources, the pending <Deathknell /> ability is finalized before play continues.<Rule number="359.3.b" /><Rule number="406.3" />
+Because it is newer on the chain, the <Deathknell /> ability resolves before that spell or ability.<Rule number="340.1" />
+
+If the original item is a unit, gear, or ability that adds resources, it resolves immediately when finalized, before the pending <Deathknell /> ability is processed.<Rule number="337.2" />
+The <Deathknell /> ability resolves afterward.
+
+### Killed during resolution [#killed-during-resolution]
+
+If a resolving card or ability kills the unit, that chain item continues resolving without interruption.<Rule number="354.3" />
+The <Deathknell /> ability becomes pending, but it cannot be finalized until the current chain item finishes resolving.<Rule number="334.2" />
+The killing card or ability therefore finishes before the <Deathknell /> ability can resolve.
