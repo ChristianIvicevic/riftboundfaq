@@ -1,18 +1,14 @@
+import type { RuleReference } from '@/components/rules/types'
+
 const REFERENCE_CUE =
 	/\b(?:see(?:\s+rule)?|section|proceed to|process of|described in|except for|perform|listed (?:under|in)|qualifies for)\s+/giu
 const RULE_ID = /^(\d{3}(?:\.[0-9a-z]+)*)(\.)?(?![0-9a-z./])/iu
 const CONJUNCTION = /^\s+(?:and|or)\s+/iu
 const RANGE_SEPARATOR = /^[-–—]/u
 
-export type TournamentRuleReference = {
-	id: string
-	start: number
-	end: number
-}
+type ParsedReference = RuleReference & { matchEnd: number }
 
-type ParsedReference = TournamentRuleReference & { matchEnd: number }
-
-function parseReference(text: string, start: number, ruleIds: Set<string>): ParsedReference | null {
+function parseReference(text: string, start: number, ruleIds: ReadonlySet<string>): ParsedReference | null {
 	const match = text.slice(start).match(RULE_ID)
 	if (!match || !ruleIds.has(match[1])) return null
 
@@ -22,8 +18,8 @@ function parseReference(text: string, start: number, ruleIds: Set<string>): Pars
 	return { id: match[1], start, end: start + match[1].length, matchEnd }
 }
 
-export function findTournamentRuleReferences(text: string, ruleIds: Set<string>) {
-	const references: TournamentRuleReference[] = []
+export function findTournamentRuleReferences(text: string, ruleIds: ReadonlySet<string>): RuleReference[] {
+	const references: RuleReference[] = []
 	let consumedUntil = 0
 
 	for (const cue of text.matchAll(REFERENCE_CUE)) {

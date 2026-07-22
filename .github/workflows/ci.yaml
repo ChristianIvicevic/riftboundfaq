@@ -24,5 +24,8 @@ jobs:
       - run: pnpm install
       - run: pnpm format:check
       - run: pnpm lint:github
+      - run: pnpm test
+      - run: pnpm rules:cr:check
+      - run: pnpm rules:tr:check
       - run: pnpm types:check
       - run: pnpm build
