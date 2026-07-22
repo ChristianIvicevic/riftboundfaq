@@ -6,16 +6,10 @@ crdVersion: "1.4"
 authors:
 - "Christian I. (Near)"
 rulingRelations:
-- id: "play-definition-applications"
-  anchor: "play-definition"
-  question: "What does \"play\" mean on a card?"
-  appliesTo:
+  play-definition:
   - "/cards/abandoned-hall"
   - "/cards/astral-heron"
-- id: "playing-from-trash"
-  anchor: "playing-from-trash"
-  question: "When I play a card from my trash, is it still in my trash?"
-  appliesTo:
+  playing-from-trash:
   - "/cards/consuming-curse"
   - "/cards/shadow-assassin"
   - "/cards/shadowblade-lurker"
@@ -35,9 +29,9 @@ The <Legion /> keyword makes this precise: it's written as "if you have played a
 
 As an instruction — "play a card," as seen on <Card name="Here to Help" /> and <Card name="Fizz, Trickster" /> — it initiates that underlying action by placing the card on the chain and queuing it for finalization.<Rule number="419.1" />
 
-## When I play a card from my trash, is it still in my trash? [#playing-from-trash]
+## When does a card leave my trash when I play it from there? [#playing-from-trash]
 
-No.
+As soon as you begin playing it.
 The first step of playing a card moves it from its current zone to the chain, where it waits to be finalized.<Rule number="354" /><Rule number="354.2" />
 
 Once you begin playing a card from your trash, it is no longer there while you make choices, determine its total cost, or resolve it.

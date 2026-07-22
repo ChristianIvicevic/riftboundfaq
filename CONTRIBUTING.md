@@ -84,9 +84,9 @@ Mechanic and general-rules pages use the same fields except `galleryLink`.
 - Use MDX components such as `<Card />`, `<Rule />`, keyword badges, resource symbols, and `<Callout />` instead of recreating their formatting
 - If the current Core Rules do not fully support a ruling, disclose the gap with a warning callout rather than overstating a citation
 
-### Placing Card Interactions
+### Placing and Connecting Rulings
 
-Give each rules explanation one canonical home at the most general level that fully answers the question:
+Place each FAQ question where players are most likely to look for that ruling:
 
 | Question type | Canonical location |
 |---|---|
@@ -101,29 +101,33 @@ Use this decision process:
 2. Is the disputed behavior defined by a keyword or mechanic? If so, use that mechanic's page.
 3. Which card supplies the instruction, condition, restriction, or replacement effect being interpreted? Use that card's page.
 4. Is each other named card material to the ruling, or merely an interchangeable example?
-5. Does a canonical explanation already exist? If so, link to it instead of repeating its reasoning.
+5. Does a related explanation already exist? If so, link to it as supplementary context after making the local answer self-contained.
 
 A card is material when replacing it with another object performing the same operation could change the ruling.
 Otherwise, it is an example and does not need reciprocal coverage.
 
-Keep the full reasoning at the canonical location.
-A card page may repeat a concise card-specific outcome when players are likely to search by that card, but it should link to the canonical explanation for the shared reasoning.
-Use exact heading links such as `/general-rules/abilities#source-removal`, not page-only links.
+Placement determines where the question belongs; it does not make supporting rules exclusive to that page.
+Every FAQ answer must stand on its own.
+State the result, explain the card-specific reasoning, and include the load-bearing `<Rule />` citations needed to verify it without following another link.
+Keep resolution sequences on the page whose answer depends on that sequence.
+
+Related pages may repeat rules reasoning when that repetition is necessary for a complete local answer.
+Avoid duplicating an entire pair-specific ruling across multiple pages, but do not replace useful explanation or direct citations with an internal link merely to deduplicate prose.
+Use links for additional context and discovery, with exact heading URLs such as `/general-rules/abilities#source-removal` rather than page-only links.
 Do not create empty card pages or pair-specific pages solely for reciprocal discovery.
 `<Card />` links to the official card gallery; using it does not declare an internal interaction.
-Use `rulingRelations` in the canonical page's frontmatter to provide reverse discovery without duplicated prose:
+Use `rulingRelations` in the page containing the related question to provide reverse discovery:
 
 ```yaml
 rulingRelations:
-- id: "gangplank-switcheroo"
-  anchor: "switcheroo-interaction"
-  question: "How does Gangplank's replacement effect interact with Switcheroo?"
-  appliesTo:
+  switcheroo-might-reduction:
   - "/cards/switcheroo"
 ```
 
-The `id` must be globally unique, `anchor` must identify a heading on the canonical page, and `appliesTo` contains the public routes of other material pages.
+Each key must be the explicit anchor of a heading on that page, and its list contains the public routes of other material pages.
+The heading supplies the displayed question, so do not duplicate it in frontmatter.
 Generated related-ruling links then appear in both directions.
+Adding a relation does not require shortening or otherwise rewriting the pages it connects.
 
 ## Code Contributions
 

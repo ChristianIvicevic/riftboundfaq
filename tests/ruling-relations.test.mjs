@@ -2,12 +2,15 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { buildRulingRelationIndex, getRulingRelations } from '../src/lib/ruling-relations.ts'
 
-const page = (url, title, anchors, rulingRelations) => ({
+const page = (url, title, anchors, rulingRelations, headingTitles = {}) => ({
 	url,
 	path: `content${url}.mdx`,
 	data: {
 		title,
 		toc: anchors.map((anchor) => ({ url: `#${anchor}` })),
+		structuredData: {
+			headings: anchors.map((anchor) => ({ id: anchor, content: headingTitles[anchor] ?? anchor })),
+		},
 		rulingRelations,
 	},
 })
@@ -18,14 +21,8 @@ test('ruling relations generate canonical and reverse page entries', () => {
 			'/general-rules/costs',
 			'Costs',
 			['countered-costs'],
-			[
-				{
-					id: 'countered-costs',
-					anchor: 'countered-costs',
-					question: 'Are paid costs refunded?',
-					appliesTo: ['/cards/zeta', '/cards/alpha'],
-				},
-			],
+			{ 'countered-costs': ['/cards/zeta', '/cards/alpha'] },
+			{ 'countered-costs': 'Are paid costs refunded?' },
 		),
 		page('/cards/alpha', 'Alpha', ['countering']),
 		page('/cards/zeta', 'Zeta', ['countering']),
@@ -42,28 +39,20 @@ test('ruling relations generate canonical and reverse page entries', () => {
 	)
 	assert.equal(participant.incoming.length, 1)
 	assert.equal(participant.incoming[0].question, 'Are paid costs refunded?')
-	assert.equal(participant.incoming[0].canonicalPage.title, 'Costs')
+	assert.equal(participant.incoming[0].canonicalTitle, 'Costs')
 	assert.deepEqual(getRulingRelations(index, '/cards/unrelated'), { owned: [], incoming: [] })
 })
 
-test('ruling relations reject duplicate IDs', () => {
-	assert.throws(
-		() =>
-			buildRulingRelationIndex([
-				page(
-					'/cards/alpha',
-					'Alpha',
-					['first'],
-					[{ id: 'duplicate', anchor: 'first', question: 'First?', appliesTo: ['/cards/beta'] }],
-				),
-				page(
-					'/cards/beta',
-					'Beta',
-					['second'],
-					[{ id: 'duplicate', anchor: 'second', question: 'Second?', appliesTo: ['/cards/alpha'] }],
-				),
-			]),
-		/Duplicate ruling relation ID "duplicate"/u,
+test('ruling relations derive distinct identities from canonical URLs', () => {
+	const index = buildRulingRelationIndex([
+		page('/cards/alpha', 'Alpha', ['interaction'], { interaction: ['/cards/gamma'] }),
+		page('/cards/beta', 'Beta', ['interaction'], { interaction: ['/cards/gamma'] }),
+		page('/cards/gamma', 'Gamma', []),
+	])
+
+	assert.deepEqual(
+		getRulingRelations(index, '/cards/gamma').incoming.map(({ canonicalUrl }) => canonicalUrl),
+		['/cards/alpha#interaction', '/cards/beta#interaction'],
 	)
 })
 
@@ -71,15 +60,27 @@ test('ruling relations reject missing canonical anchors', () => {
 	assert.throws(
 		() =>
 			buildRulingRelationIndex([
-				page(
-					'/cards/alpha',
-					'Alpha',
-					['existing'],
-					[{ id: 'missing-anchor', anchor: 'missing', question: 'Missing?', appliesTo: ['/cards/beta'] }],
-				),
+				page('/cards/alpha', 'Alpha', ['existing'], { missing: ['/cards/beta'] }),
 				page('/cards/beta', 'Beta', ['answer']),
 			]),
 		/missing anchor \/cards\/alpha#missing/u,
+	)
+})
+
+test('ruling relations reject headings without plain-text structured titles', () => {
+	assert.throws(
+		() =>
+			buildRulingRelationIndex([
+				page(
+					'/cards/alpha',
+					'Alpha',
+					['question'],
+					{ question: ['/cards/beta'] },
+					{ question: { type: 'strong' } },
+				),
+				page('/cards/beta', 'Beta', []),
+			]),
+		/must have a plain-text title/u,
 	)
 })
 
@@ -87,12 +88,7 @@ test('ruling relations reject missing, duplicate, and self participant routes', 
 	assert.throws(
 		() =>
 			buildRulingRelationIndex([
-				page(
-					'/cards/alpha',
-					'Alpha',
-					['question'],
-					[{ id: 'missing-page', anchor: 'question', question: 'Question?', appliesTo: ['/cards/missing'] }],
-				),
+				page('/cards/alpha', 'Alpha', ['question'], { question: ['/cards/missing'] }),
 			]),
 		/references missing page \/cards\/missing/u,
 	)
@@ -100,19 +96,7 @@ test('ruling relations reject missing, duplicate, and self participant routes', 
 	assert.throws(
 		() =>
 			buildRulingRelationIndex([
-				page(
-					'/cards/alpha',
-					'Alpha',
-					['question'],
-					[
-						{
-							id: 'duplicate-page',
-							anchor: 'question',
-							question: 'Question?',
-							appliesTo: ['/cards/beta', '/cards/beta'],
-						},
-					],
-				),
+				page('/cards/alpha', 'Alpha', ['question'], { question: ['/cards/beta', '/cards/beta'] }),
 				page('/cards/beta', 'Beta', ['answer']),
 			]),
 		/contains duplicate participant \/cards\/beta/u,
@@ -120,14 +104,7 @@ test('ruling relations reject missing, duplicate, and self participant routes', 
 
 	assert.throws(
 		() =>
-			buildRulingRelationIndex([
-				page(
-					'/cards/alpha',
-					'Alpha',
-					['question'],
-					[{ id: 'self-page', anchor: 'question', question: 'Question?', appliesTo: ['/cards/alpha'] }],
-				),
-			]),
+			buildRulingRelationIndex([page('/cards/alpha', 'Alpha', ['question'], { question: ['/cards/alpha'] })]),
 		/cannot reference its own page \/cards\/alpha/u,
 	)
 })

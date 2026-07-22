@@ -7,7 +7,7 @@ authors:
 - "Christian I. (Near)"
 ---
 
-## Can a unit that's normally untargetable — "can't be chosen by enemy spells and abilities" — be chosen with Bone Skewer? [#targeting-protection]
+## Can Bone Skewer choose a unit that says it "can't be chosen by enemy spells and abilities"? [#targeting-protection]
 
 Yes, as the untargetability is inactive in hand and hand cards cannot be targeted in any case.
 
@@ -17,9 +17,9 @@ Abilities that function in another zone self-describe that context,<Rule number=
 They therefore have no effect while the unit is in hand.
 Beyond that, Bone Skewer never targets the chosen unit in the first place — cards in hand are never targets because the hand is not a public zone,<Rule number="355.10.a" /> so there is no finalization step at which a unit there could be declared as a target.<Rule number="355.5" />
 
-## Can targeting protection prevent the stun from Bone Skewer? [#stun-targeting]
+## Does Bone Skewer stun a unit that can't be chosen by enemy spells or abilities? [#stun-targeting]
 
-No, because the reflexive trigger that stuns the unit does not ask its controller to choose anything.
+Yes, because the reflexive trigger that stuns the unit does not ask its controller to choose anything.
 
 If the opponent plays the unit, Bone Skewer's "then do this" wording creates a reflexive trigger as a pending item on the chain.<Rule number="387.1" /><Rule number="387.2" /><Rule number="388.1" />
 The trigger is linked to the preceding ability, and "it" can only refer to the unit played by that ability.<Rule number="394.1" /><Rule number="397" />
@@ -29,12 +29,12 @@ Because the unit is programmatically determined rather than chosen, it is not a 
 This means untargetability — the "can't be chosen by enemy spells and abilities" passive on units like <Card name="Ruin Runner" /> and <Card name="Baron Nashor" /> — does not prevent the stun, since it only stops a unit from being chosen as a target and the stun targets nothing.<Rule number="758" />
 <Deflect /> is similarly irrelevant, since <Deflect /> is only added as a cost when a spell or ability chooses an opponent's permanent,<Rule number="809.1.d" /> which is not the case here.
 
-## Can the opponent trigger an optional additional cost effect when playing a unit via Bone Skewer, even though its costs are ignored? [#optional-additional-costs]
+## Can a unit played for free by Bone Skewer still get an effect for paying an optional additional cost? [#optional-additional-costs]
 
 Yes, as declaring the intent to pay is what satisfies the condition, not the amount actually spent.
 
 The phrase "any and all costs" in Bone Skewer's text is intentionally broader than the standard "ignoring its cost" wording.
-[Standard cost-ignoring](/general-rules/costs-and-payments#ignored-costs) only zeroes out a card's base energy and power costs, whereas "any and all costs" sets the card's total cost to zero, including non-standard costs like additional costs.<Rule number="356.5.a" />
+Standard cost-ignoring only zeroes out a card's base energy and power costs,<Rule number="356.1.b.1" /> whereas "any and all costs" sets the card's total cost to zero, including non-standard costs like additional costs.<Rule number="356.5.a" />
 Despite this, the opponent may still declare their intention to pay an optional additional cost during step 2 of playing the card — the decision to pay is made before costs are determined.
 Once declared, that additional cost is folded into the total cost, which "any and all costs" then sets to zero, so it's already 0 when it comes time to pay.<Rule number="356.5.a" />
 An optional additional cost is considered paid based on the decision to pay, not the amount actually spent,<Rule number="356.4.f.1" /> so the condition is fully satisfied.

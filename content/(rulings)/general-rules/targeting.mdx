@@ -6,26 +6,21 @@ crdVersion: "1.4"
 authors:
 - "Christian I. (Near)"
 rulingRelations:
-- id: "target-definition-applications"
-  anchor: "target-definition"
-  question: "What makes something a target?"
-  appliesTo:
+  target-definition:
   - "/mechanics/equipment"
+  - "/cards/baited-hook"
+  - "/cards/emperors-dais"
   - "/cards/irelia-fervent"
   - "/cards/bone-skewer"
+  - "/cards/sacrifice"
   - "/cards/vex-apathetic"
-- id: "target-restriction-lacerate"
-  anchor: "target-restrictions"
-  question: "How can I tell whether text restricts a spell's targets?"
-  appliesTo:
+  target-restrictions:
   - "/cards/lacerate"
-- id: "illegal-target-applications"
-  anchor: "illegal-targets"
-  question: "What happens if a target becomes illegal before a spell or ability resolves?"
-  appliesTo:
+  illegal-targets:
   - "/cards/alpha-strike"
   - "/cards/baited-hook"
   - "/cards/hidden-blade"
+  - "/cards/lilting-lullaby"
 ---
 
 ## What makes something a target? [#target-definition]
@@ -42,7 +37,7 @@ When in doubt, assume it is a target — the list below covers the only situatio
 - **It is only a location requirement for another target**.<Rule number="355.10.b" />
 Words like "at a battlefield" narrow down which objects are valid targets; the battlefield itself is not a target — unless the effect lets you choose *which* of several battlefields to affect, as in "Kill all units at a battlefield."
 - **It is part of a trigger condition, cost, or replacement effect**.<Rule number="355.10.c" /><Rule number="355.10.c.1" />
-Objects referenced in "when X happens" conditions, payment costs (see also [When do I pay costs within instructions using "may"?](/general-rules/abilities#costs-within-instructions)), or "instead" effects are not targets.
+Objects referenced in "when X happens" conditions, payment costs (see also [When do I pay a cost in a triggered ability that says "you may"?](/general-rules/abilities#costs-within-instructions)), or "instead" effects are not targets.
 e.g., the dying unit in "When a friendly unit dies, kill a gear" is not a target — only the gear is.
 - **There is no real choice involved**.<Rule number="355.10.d" />
 If an effect applies to every object meeting a description rather than a specific one you pick, nothing is targeted.
@@ -55,8 +50,9 @@ e.g., "Each player kills a unit they control" targets nothing — each player ch
 This signals the choice is made on resolution rather than upfront.
 e.g., "You must recycle one of your runes" does not target, whereas "Recycle a rune you control" does.
 
-## How can I tell whether text restricts a spell's targets? [#target-restrictions]
+## Does "Kill a unit if it has 3 might or less" mean I can only choose a unit with 3 might or less? [#target-restrictions]
 
+No.
 Only words that describe the target restrict which objects can be chosen.
 
 For example, "Kill a unit with 3 might or less" can target only a unit meeting that description.<Rule number="355.9.b" />

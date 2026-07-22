@@ -6,21 +6,12 @@ crdVersion: "1.4"
 authors:
 - "Christian I. (Near)"
 rulingRelations:
-- id: "non-combat-showdown-applications"
-  anchor: "non-combat-showdown"
-  question: "What happens when I move a unit into a non-combat showdown?"
-  appliesTo:
+  non-combat-showdown:
   - "/cards/baron-nashor"
   - "/cards/irresistible-faefolk"
-- id: "attack-defend-trigger-timing"
-  anchor: "attack-defend-triggers"
-  question: "When do attack and defend triggers happen?"
-  appliesTo:
+  attack-defend-triggers:
   - "/cards/diana-lunari"
-- id: "once-per-combat-trigger-applications"
-  anchor: "once-per-combat-triggers"
-  question: "Can attack and defend abilities trigger more than once per combat?"
-  appliesTo:
+  once-per-combat-triggers:
   - "/cards/khazix-mutating-horror"
 ---
 
@@ -40,7 +31,7 @@ It ends once all players have consecutively passed focus on an empty chain.<Rule
 	You still have the opportunity to play a legally timed card or ability in an attempt to prevent your opponent from conquering.<Rule number="347.1" />
 </Callout>
 
-## What happens when I move a unit into a non-combat showdown? [#non-combat-showdown]
+## What happens if I move a unit into a showdown that doesn't have combat yet? [#non-combat-showdown]
 
 When a unit controlled by a different player becomes present during a non-combat showdown, combat is staged and the showdown becomes a combat showdown during the cleanup following that unit's arrival.<Rule number="316.8.b.1.a" /><Rule number="323.9" /><Rule number="323.14" />
 
@@ -49,7 +40,7 @@ Their units at that battlefield receive the corresponding designations then,<Rul
 
 This interaction is commonly called the surprise defender: the player who first contested the battlefield remains the attacker, while the player joining later becomes the defender.
 
-## When do attack/defend triggers happen? [#attack-defend-triggers]
+## When do attack and defend triggers happen? [#attack-defend-triggers]
 
 Attack and defend triggered abilities (such as "When I attack" or "When I defend") trigger when a unit receives its attacker or defender designation, not necessarily at the start of combat.
 Units already present receive their initial designations when combat opens.<Rule number="464.2.c.3" />
@@ -60,7 +51,7 @@ Units that join an ongoing combat receive their designations during the cleanup 
 If a unit is moved into a battlefield where combat is already in progress, it will receive the appropriate attacker or defender designation during the next cleanup.<Rule number="323.2.a" />
 When it receives this designation, any "When I attack" or "When I defend" abilities will trigger at that time.
 
-### Attack and defend abilities only trigger once per combat [#once-per-combat-triggers]
+### Can attack and defend abilities trigger more than once per combat? [#once-per-combat-triggers]
 
 Attack and defend triggered abilities can only trigger once per combat, even if a unit gains and loses its designation multiple times.<Rule number="383.4.e.2.a" /><Rule number="383.4.f.2.a" />
 
