@@ -1,9 +1,4 @@
-export type RulingRelationDefinition = {
-	id: string
-	anchor: string
-	question: string
-	appliesTo: readonly string[]
-}
+import type { RulingRelationDefinitions } from './ruling-relations-schema'
 
 type RelationPage = {
 	url: string
@@ -11,7 +6,10 @@ type RelationPage = {
 	data: {
 		title: string
 		toc: readonly { url: string }[]
-		rulingRelations?: readonly RulingRelationDefinition[]
+		structuredData: {
+			headings: readonly { id: string; content: unknown }[]
+		}
+		rulingRelations?: RulingRelationDefinitions
 	}
 }
 
@@ -21,10 +19,8 @@ export type RulingPageReference = {
 }
 
 export type ResolvedRulingRelation = {
-	id: string
-	anchor: string
 	question: string
-	canonicalPage: RulingPageReference
+	canonicalTitle: string
 	canonicalUrl: string
 	participantPages: RulingPageReference[]
 }
@@ -38,7 +34,6 @@ const EMPTY_RELATIONS: PageRulingRelations = { owned: [], incoming: [] }
 
 export function buildRulingRelationIndex(pages: readonly RelationPage[]) {
 	const pagesByUrl = new Map(pages.map((page) => [page.url, page]))
-	const relationIds = new Set<string>()
 	const index = new Map<string, PageRulingRelations>()
 
 	const getPageRelations = (url: string) => {
@@ -51,36 +46,35 @@ export function buildRulingRelationIndex(pages: readonly RelationPage[]) {
 	}
 
 	for (const page of pages) {
-		for (const relation of page.data.rulingRelations ?? []) {
-			if (relationIds.has(relation.id))
-				throw new Error(`Duplicate ruling relation ID "${relation.id}" in ${page.path}`)
-			relationIds.add(relation.id)
+		for (const [anchor, participantRoutes] of Object.entries(page.data.rulingRelations ?? {})) {
+			const canonicalUrl = `${page.url}#${anchor}`
+			if (!page.data.toc.some((item) => item.url === `#${anchor}`))
+				throw new Error(`Ruling relation references missing anchor ${canonicalUrl} in ${page.path}`)
 
-			if (!page.data.toc.some((item) => item.url === `#${relation.anchor}`))
+			const heading = page.data.structuredData.headings.find((item) => item.id === anchor)
+			if (!heading || typeof heading.content !== 'string' || heading.content.trim() === '')
 				throw new Error(
-					`Ruling relation "${relation.id}" references missing anchor ${page.url}#${relation.anchor} in ${page.path}`,
+					`Ruling relation heading ${canonicalUrl} must have a plain-text title in ${page.path}`,
 				)
 
-			const participantRoutes = new Set<string>()
-			const participantPages = relation.appliesTo.map((route) => {
+			const seenParticipantRoutes = new Set<string>()
+			const participantPages = participantRoutes.map((route) => {
 				if (route === page.url)
-					throw new Error(`Ruling relation "${relation.id}" cannot reference its own page ${route}`)
-				if (participantRoutes.has(route))
-					throw new Error(`Ruling relation "${relation.id}" contains duplicate participant ${route}`)
-				participantRoutes.add(route)
+					throw new Error(`Ruling relation ${canonicalUrl} cannot reference its own page ${route}`)
+				if (seenParticipantRoutes.has(route))
+					throw new Error(`Ruling relation ${canonicalUrl} contains duplicate participant ${route}`)
+				seenParticipantRoutes.add(route)
 
 				const participant = pagesByUrl.get(route)
-				if (!participant) throw new Error(`Ruling relation "${relation.id}" references missing page ${route}`)
+				if (!participant) throw new Error(`Ruling relation ${canonicalUrl} references missing page ${route}`)
 				return { title: participant.data.title, url: participant.url }
 			})
 
 			participantPages.sort((a, b) => a.title.localeCompare(b.title))
 			const resolved: ResolvedRulingRelation = {
-				id: relation.id,
-				anchor: relation.anchor,
-				question: relation.question,
-				canonicalPage: { title: page.data.title, url: page.url },
-				canonicalUrl: `${page.url}#${relation.anchor}`,
+				question: heading.content.trim(),
+				canonicalTitle: page.data.title,
+				canonicalUrl,
 				participantPages,
 			}
 

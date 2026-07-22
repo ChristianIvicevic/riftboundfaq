@@ -10,9 +10,19 @@ authors:
 ## Does Ruined Rex's Deathknell deal damage before or after units are healed at the end of combat? [#heal-timing]
 
 After.
+The combat heal is part of the same cleanup that queues the trigger, and the trigger does not resolve until that cleanup has run to completion.
 
-Ruined Rex follows the [normal timing for a Deathknell ability created during a cleanup](/mechanics/deathknell#cleanup-timing): its trigger becomes pending when Rex dies, but the combat cleanup finishes before that ability is finalized.
-Surviving units are therefore healed before its target is chosen and it deals 4 damage.<Rule number="466.1.a.1" />
+When Ruined Rex dies with lethal damage during a combat cleanup, the steps run in this order:
+
+1. **Step 3a** — Ruined Rex's <Deathknell /> trigger is added to the chain as a pending item.<Rule number="323.4" /><Rule number="808.1.d.2" />
+2. **Step 3b** — Ruined Rex is moved to the trash.<Rule number="323.5" />
+3. **Step 3c** — All units are healed.
+This step is inserted by the combat special cleanup.<Rule number="466.1.a.1" />
+
+The pending trigger does not begin finalization until the cleanup task is complete.<Rule number="334" />
+After the cleanup, the trigger is finalized and its target is chosen.
+Once no pending items remain, players receive priority before the trigger resolves.<Rule number="337.4" />
+If it is not countered, it eventually resolves and deals 4 damage to the chosen enemy unit.
 
 ## Can Ruined Rex's Deathknell target the Mech tokens created by Ferrous Forerunner's Deathknell, if both die at the same time? [#ferrous-forerunner-mechs]
 
@@ -20,5 +30,7 @@ No.
 Ruined Rex chooses its target before <Card name="Ferrous Forerunner" /> creates its Mech tokens.
 
 When both units die in the same cleanup, their <Deathknell /> abilities become pending items.<Rule number="323.4" />
-[All pending items are finalized before players receive priority and abilities begin resolving](/general-rules/chain-and-priority#pending-item-order).
-Ruined Rex therefore chooses its target before Ferrous Forerunner creates its Mechs, regardless of finalization order.<Rule number="355.5" />
+All pending items are finalized before players receive priority and ordinary abilities begin resolving.<Rule number="337.3" /><Rule number="337.4" />
+
+Ruined Rex chooses its target during finalization,<Rule number="355.5" /> while Ferrous Forerunner creates its Mechs only when its ability resolves.
+Regardless of finalization order, those Mechs do not exist when Rex chooses its target.

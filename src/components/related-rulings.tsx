@@ -12,16 +12,16 @@ export function RelatedRulings({ relations }: { relations: PageRulingRelations }
 			<Cards>
 				{relations.incoming.map((relation) => (
 					<Card
-						key={`incoming-${relation.id}`}
+						key={`incoming-${relation.canonicalUrl}`}
 						href={relation.canonicalUrl}
 						title={relation.question}
-						description={`Canonical ruling on ${relation.canonicalPage.title}`}
+						description={`Canonical ruling on ${relation.canonicalTitle}`}
 					/>
 				))}
 				{relations.owned.flatMap((relation) =>
 					relation.participantPages.map((participant) => (
 						<Card
-							key={`owned-${relation.id}-${participant.url}`}
+							key={`owned-${relation.canonicalUrl}-${participant.url}`}
 							href={participant.url}
 							title={participant.title}
 							description={`Relevant to: ${relation.question}`}

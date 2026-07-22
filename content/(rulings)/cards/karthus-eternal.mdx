@@ -9,8 +9,9 @@ authors:
 
 ## Does Karthus's ability apply if he dies from the same effect as the unit with Deathknell? [#simultaneous-deathknell]
 
-Yes, because a <Deathknell /> ability is [added to the chain before the dying unit leaves the board](/mechanics/deathknell#trigger-timing).
+Yes, because <Deathknell /> triggers are always queued as pending items before the dying unit leaves the board.
 
+Whenever a unit with <Deathknell /> is killed — whether by a kill effect or by lethal damage during cleanup — its trigger is added to the chain before the card is moved to the trash.<Rule number="808.1.d.2" />
 Karthus's passive is only active while he is on the board.<Rule number="365.1" />
 When one kill action kills Karthus and another unit simultaneously, as with <Card name="The Ruination" />, Karthus is still present when that unit's <Deathknell /> triggers.<Rule number="370.1.a.2" />
 In the cleanup case this ordering is enforced explicitly: step 3a queues all <Deathknell /> triggers<Rule number="323.4" /> before step 3b moves any of those units to the trash.<Rule number="323.5" />

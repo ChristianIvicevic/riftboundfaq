@@ -9,25 +9,42 @@ authors:
 
 ## If Sacrifice is countered, is the killed unit returned? [#countered-additional-cost]
 
-No.
-Killing the friendly <Mighty /> unit is an additional cost paid before Sacrifice can be finalized.
-Countering the spell does not return that unit because [paid costs are not refunded](/general-rules/costs-and-payments#countered-costs).
+No, as the kill is an additional cost and countering a spell never refunds costs already paid.
+
+Killing a friendly <Mighty /> unit is an additional cost required to play Sacrifice.
+A countered spell does nothing and is cleared from the chain.<Rule number="425.1.a" />
+Countering does not refund any costs paid to play a card, including additional costs.<Rule number="425.1.c" /><Rule number="425.1.c.1" />
+That cost is paid before the spell resolves, so the killed unit is not returned.
 
 ## Can my opponent interact before the chosen Mighty unit is killed? [#cost-reaction-window]
 
-No.
-The <Mighty /> unit is chosen and killed while Sacrifice is finalized, and [no normal reaction window opens while costs are being paid](/general-rules/costs-and-payments#cost-reaction-window).
-The unit is not a target because it is referenced as part of a cost.<Rule number="355.10.c" />
+No normal reaction window opens between choosing the <Mighty /> unit and killing it.
 
-Sacrifice's controller may activate an eligible <Add /> ability with <Reaction /> when resources are required.
-This is a special permission for resource payment, not a normal reaction window, so it does not let an opponent play a spell such as <Card name="Stupefy" /> between choosing and killing the unit.
+The unit killed as a cost is not a target — objects referenced as part of a cost are explicitly excluded from targeting.<Rule number="355.10.c" />
+
+Costs are paid during step 4 of finalization, and finalization does not pass priority.<Rule number="357.2" /><Rule number="337.1.a" />
+During that step, Sacrifice's controller may activate an eligible <Add /> ability with <Reaction /> when resources are required, even without priority.<Rule number="357.1.a" /><Rule number="429.3" /><Rule number="429.3.a" />
+This limited exception does not create a normal reaction window or permit an opponent to play a spell like <Card name="Stupefy" /> between choosing and killing the unit.
+
 By the time a normal priority window opens, the cost has been paid and the unit is already in the trash.
 
 ## Does the Deathknell of the unit killed as the cost resolve before Sacrifice draws and channels? [#deathknell-before-spell]
 
 Yes.
-Killing the friendly <Mighty /> unit is a non-standard additional cost paid while Sacrifice is finalized.<Rule number="356.7" /><Rule number="357.2" />
-A <Deathknell /> ability created [by killing a unit as a cost resolves before the card whose cost killed it](/mechanics/deathknell#killed-as-cost), so it resolves before Sacrifice draws and channels.
+The kill is a non-standard additional cost, not a resolution instruction, so it happens during finalization.
+That puts the <Deathknell /> on top of Sacrifice on the chain, where it resolves first.
+
+### Resolution Sequence [#deathknell-sequence]
+
+1. Sacrifice's opening line — "as an additional cost to play this, kill a friendly <Mighty /> unit" — is a cost, not a resolution instruction.<Rule number="356.7" />
+2. Costs are paid in step 4 of the play process, before Sacrifice has finished being finalized.<Rule number="357.2" />
+3. When a unit with <Deathknell /> is killed to pay that cost, its <Deathknell /> ability is added to the chain as a pending item before the unit moves to the trash.<Rule number="428.1.a.1.b" /><Rule number="808.1.d.2" />
+The chain now holds the <Deathknell /> above Sacrifice, which is still mid-finalization.
+4. Sacrifice continues through step 5, the legality check, and step 6, becoming a finalized chain item.<Rule number="359.3.a" />
+5. Because the <Deathknell /> is still pending, it completes its own finalization before play proceeds.<Rule number="359.3.b" />
+6. Once both items are finalized, the chain resolves from the top down.
+The <Deathknell /> was added last, so it resolves first.
+7. After the <Deathknell /> fully resolves, Sacrifice resolves, drawing 2 and channeling 1 rune exhausted.
 
 <Callout type="idea" title="Example">
   You kill <Card name="Rift Herald" />, whose <Deathknell /> reads "Play a unit from your hand to your base, ignoring its Energy cost," to pay Sacrifice's cost.

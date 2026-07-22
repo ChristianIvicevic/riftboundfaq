@@ -6,36 +6,25 @@ crdVersion: "1.4"
 authors:
 - "Christian I. (Near)"
 rulingRelations:
-- id: "source-removal-applications"
-  anchor: "source-removal"
-  question: "Does removing the source of a triggered ability stop it?"
-  appliesTo:
+  source-removal:
   - "/cards/azir-sovereign"
   - "/cards/astral-heron"
   - "/cards/irresistible-faefolk"
-- id: "trigger-time-condition-applications"
-  anchor: "trigger-time-conditions"
-  question: "How are additional conditions in triggered abilities evaluated?"
-  appliesTo:
+  trigger-time-conditions:
   - "/cards/sunken-temple"
   - "/cards/astral-heron"
   - "/cards/khazix-mutating-horror"
-- id: "triggered-instruction-cost-applications"
-  anchor: "costs-within-instructions"
-  question: "When do I pay costs within instructions using \"may\"?"
-  appliesTo:
+  costs-within-instructions:
   - "/cards/diana-lunari"
   - "/cards/emperors-dais"
-- id: "ability-reactions-equipment"
-  anchor: "ability-reactions"
-  question: "Can I react to triggered and activated abilities?"
-  appliesTo:
+  ability-reactions:
   - "/mechanics/equipment"
 ---
 
-## When do triggered abilities trigger? [#triggered-ability-timing]
+## Can triggered abilities trigger on an opponent's turn without Reaction? [#triggered-ability-timing]
 
-When their condition is met, triggered abilities are added to the chain as pending items, regardless of whose turn it is.<Rule number="383.3" /><Rule number="383.3.c" />
+Yes.
+Whenever their condition is met, triggered abilities are added to the chain as pending items, regardless of whose turn it is.<Rule number="383.3" /><Rule number="383.3.c" />
 
 The <Reaction /> keyword is not required for this to work on an opponent's turn.
 Unlike spells and activated abilities which require <Reaction /> to be played outside your turn, satisfying a trigger condition automatically creates the pending ability.
@@ -73,7 +62,7 @@ If the source is no longer on the board, information such as its location is una
 	The same applies to <Card name="Azir, Sovereign" />: if Azir leaves the board before his attack trigger resolves, there is no "this battlefield" to which his token units can move.
 </Callout>
 
-## How are additional conditions in triggered abilities evaluated? [#trigger-time-conditions]
+## When does the game check an "if" condition in a triggered ability? [#trigger-time-conditions]
 
 It depends on where the condition appears in the ability's text.
 
@@ -108,7 +97,7 @@ The ability goes on the chain regardless, and the condition is only evaluated wh
 	Only when the ability resolves is the hand size checked; if you have more than one card at that point, the draw does not happen.
 </Callout>
 
-## When do I decide whether to perform a triggered ability that says "you may"? [#optional-trigger-decision]
+## When do I choose whether to use a triggered ability that says "you may"? [#optional-trigger-decision]
 
 It depends on where "you may" appears in the ability's effect.
 
@@ -118,7 +107,7 @@ If you accept, you make all choices required for finalization and pay any costs 
 
 If "you may" appears later in the effect, you decide whether to perform that instruction when the ability resolves.<Rule number="383.3.a.3" />
 
-## When do I pay costs within instructions using "may"? [#costs-within-instructions]
+## When do I pay a cost in a triggered ability that says "you may"? [#costs-within-instructions]
 
 It depends on where the cost appears in the triggered ability's effect.
 
