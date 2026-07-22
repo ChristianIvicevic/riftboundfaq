@@ -22,15 +22,15 @@ Found an error or have a suggestion?
 ### Before You Start
 
 - **Be accurate**: Ensure your contribution reflects current game rules
-- **Use your own words**: Do not copy official Riot sources verbatim
-- **Include sources**: Reference official rulings or patch notes when possible
+- **Explain in your own words**: Quote official card or rules text exactly only when the wording matters
+- **Cite precisely**: Use `<Rule number="..." />` for the specific rules that support the ruling
 
 ### Workflow
 
 1. Fork and clone the repository
 2. Create a branch: `git checkout -b add-card-faq`
-3. Add or edit MDX files in `/content` following the structure below
-4. Test locally: `pnpm dev`
+3. Add or edit MDX files under `content/(rulings)` following the structure below
+4. Run `pnpm format`, `pnpm types:check`, and `pnpm lint`
 5. Commit: `git commit -m "Add FAQ for card interaction"`
 6. Push and create a pull request
 
@@ -38,23 +38,51 @@ Found an error or have a suggestion?
 
 ```
 content/
-├── cards/                # Per-card FAQ pages
-├── mechanics/            # Per-keyword/mechanic pages
-├── general-rules/        # Cross-cutting rules topics
-└── meta.json             # Navigation structure
+├── (rulings)/
+│   ├── cards/            # Per-card FAQ pages
+│   ├── general-rules/    # Cross-cutting rules topics
+│   ├── mechanics/        # Per-keyword/mechanic pages
+│   └── meta.json         # Rulings navigation (directories auto-expand)
+├── reference/            # Core and Tournament Rules references and histories
+└── meta.json             # Top-level navigation
 ```
+
+Rule source documents live in `sources/`.
+`pnpm rules:generate` turns them into application datasets under `src/generated/rules/`; do not edit or cite those generated files directly.
 
 ### Naming Conventions
 
 - Use kebab-case: `hidden-blade.mdx`, `weaponmaster.mdx`
-- Match file names to card/keyword names (lowercase, hyphenated)
+- Derive file names from page titles, lowercase and hyphenated with punctuation removed: `Nocturne, Horrifying` becomes `nocturne-horrifying.mdx`
+- New ruling files are included automatically by the directory globs in `content/(rulings)/meta.json`
+
+### Frontmatter
+
+Card pages should use the following frontmatter, with `crdVersion` set to `coreRules.current` from `sources/rules-manifest.json`:
+
+```yaml
+---
+title: "Card Name"
+createdAt: "YYYY-MM-DD"
+crdVersion: "1.4"
+galleryLink: "https://playriftbound.com/en-us/card-gallery/#card-gallery--xxx-000-000"
+authors:
+- "Author Name"
+---
+```
+
+`galleryLink` is optional but preferred for card pages.
+Mechanic and general-rules pages use the same fields except `galleryLink`.
 
 ### Writing Style
 
-- Use clear, simple language
-- Double-check rules and interactions
-- Stay neutral (focus on rules, not strategy)
-- Anticipate follow-up questions
+- Phrase each H2 as a direct player question and add a concise explicit anchor: `## Does X trigger Y? [#trigger-timing]`
+- Start with the direct answer, such as `Yes.` or `No.`, before explaining the rules
+- Write one sentence per source line and keep related sentences together without blank lines
+- Use clear, concise language and stay neutral: focus on rules, not strategy
+- Lowercase generic game terms; preserve capitalization in exact quotations and named turn phases or steps
+- Use MDX components such as `<Card />`, `<Rule />`, keyword badges, resource symbols, and `<Callout />` instead of recreating their formatting
+- If the current Core Rules do not fully support a ruling, disclose the gap with a warning callout rather than overstating a citation
 
 ## Code Contributions
 
@@ -63,15 +91,19 @@ content/
 ```bash
 pnpm install      # Install dependencies
 pnpm dev          # Run development server
-pnpm lint         # Run linter
-pnpm types:check  # Run type checking
 pnpm format       # Format code
+pnpm lint         # Run linter
+pnpm test         # Run tests
+pnpm types:check  # Validate MDX and run type checking
+pnpm build        # Generate rule data and build for production
 ```
 
 ### Standards
 
 - Follow code style enforced by Oxfmt and Oxlint
 - Write TypeScript with proper types
+- Do not hand-edit generated files under `src/generated/rules/`
+- Run `pnpm rules:generate` after changing a rule source or `sources/rules-manifest.json`
 - Test locally before submitting
 - Keep commits focused and atomic
 

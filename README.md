@@ -8,47 +8,64 @@ This resource helps judges and players quickly find answers about rules, card in
 - **Framework**: Next.js 16 with React 19
 - **Content**: MDX via Fumadocs
 - **Styling**: Tailwind CSS 4
-- **Type Safety**: TypeScript
+- **Type Safety**: TypeScript 6
 - **Linting**: Oxlint
+- **Formatting**: Oxfmt
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js (see `.nvmrc`)
-- pnpm
+- Node.js 24.18.0 (see `.nvmrc`)
+- pnpm 11.11.0 (see `packageManager` in `package.json`)
 
 ### Installation
 
 ```bash
 pnpm install
-pnpm rules:generate # Generate rule datasets from sources
-pnpm dev        # Start development server at http://localhost:3000
-pnpm build      # Build for production
-pnpm start      # Run production server
+pnpm rules:generate  # Generate rule datasets from sources
+pnpm dev             # Start development server at http://localhost:3000
 ```
+
+Use `pnpm build` followed by `pnpm start` to create and run a production build.
 
 ### Available Scripts
 
 ```bash
-pnpm lint         # Run linter
-pnpm format       # Format code
+pnpm build          # Generate rule datasets and build for production
+pnpm dev            # Start the development server
+pnpm format         # Format files with Oxfmt
+pnpm format:check   # Check formatting without changing files
+pnpm lint           # Run Oxlint
+pnpm lint:fix       # Run Oxlint and apply fixes
+pnpm lint:github    # Run CI linting with warnings treated as errors
 pnpm rules:generate # Generate rule datasets from sources
-pnpm types:check  # Run TypeScript type checking
+pnpm start          # Run the production server
+pnpm test           # Run the Node.js test suite
+pnpm types:check    # Generate MDX/route types and run TypeScript checks
 ```
 
 ## Project Structure
 
 ```
 riftboundfaq/
-├── content/              # Wiki content (MDX files)
-│   ├── cards/            # Per-card FAQ pages
-│   ├── mechanics/        # Per-keyword/mechanic pages
-│   ├── general-rules/    # Cross-cutting rules topics
-│   └── meta.json         # Navigation structure
-├── src/
-│   └── ...               # Application source code
-└── ...
+├── content/                    # Wiki content and navigation metadata
+│   ├── (rulings)/              # Rulings route group
+│   │   ├── cards/              # Per-card FAQ pages
+│   │   ├── general-rules/      # Cross-cutting rules topics
+│   │   └── mechanics/          # Per-keyword/mechanic pages
+│   └── reference/              # Core and Tournament Rules references
+├── public/                     # Static assets
+├── scripts/                    # Rule parsers and dataset generator
+├── sources/                    # Versioned rules text, card text, and manifest
+├── src/                        # Next.js application source
+│   ├── actions/                # Server actions
+│   ├── app/                    # App Router routes and API endpoints
+│   ├── components/             # React and MDX components
+│   ├── generated/              # Generated rule datasets (not hand-edited)
+│   ├── layouts/                # Shared page layouts
+│   └── lib/                    # Shared utilities and configuration
+└── tests/                      # Rule parser and semantic-diff tests
 ```
 
 ## Contributing
