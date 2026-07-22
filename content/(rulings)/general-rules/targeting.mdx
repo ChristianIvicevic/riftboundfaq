@@ -5,6 +5,27 @@ description: "Commonly asked questions about targeting and what constitutes a ta
 crdVersion: "1.4"
 authors:
 - "Christian I. (Near)"
+rulingRelations:
+- id: "target-definition-applications"
+  anchor: "target-definition"
+  question: "What makes something a target?"
+  appliesTo:
+  - "/mechanics/equipment"
+  - "/cards/irelia-fervent"
+  - "/cards/bone-skewer"
+  - "/cards/vex-apathetic"
+- id: "target-restriction-lacerate"
+  anchor: "target-restrictions"
+  question: "How can I tell whether text restricts a spell's targets?"
+  appliesTo:
+  - "/cards/lacerate"
+- id: "illegal-target-applications"
+  anchor: "illegal-targets"
+  question: "What happens if a target becomes illegal before a spell or ability resolves?"
+  appliesTo:
+  - "/cards/alpha-strike"
+  - "/cards/baited-hook"
+  - "/cards/hidden-blade"
 ---
 
 ## What makes something a target? [#target-definition]
@@ -33,3 +54,20 @@ e.g., "Each player kills a unit they control" targets nothing — each player ch
 - **The instruction uses "must"**.<Rule number="355.10.f" />
 This signals the choice is made on resolution rather than upfront.
 e.g., "You must recycle one of your runes" does not target, whereas "Recycle a rune you control" does.
+
+## How can I tell whether text restricts a spell's targets? [#target-restrictions]
+
+Only words that describe the target restrict which objects can be chosen.
+
+For example, "Kill a unit with 3 might or less" can target only a unit meeting that description.<Rule number="355.9.b" />
+
+A separate condition on an effect does not restrict its targets.
+"Kill a unit if it has 3 might or less" can target any otherwise legal unit; the might condition is checked when that instruction resolves.
+
+## What happens if a target becomes illegal before a spell or ability resolves? [#illegal-targets]
+
+The illegal target is unaffected, but the spell or ability still resolves.
+Instructions related to that target cannot be followed, while independent instructions continue normally.<Rule number="359.3.e.5" /><Rule number="359.3.e.6" />
+
+If an instruction needs information from the illegal target, that information is null and calculations using it are ignored.<Rule number="359.3.e.12" />
+If a later instruction is linked to an earlier instruction that was ignored, the later instruction is also ignored.<Rule number="359.3.e.14.a" />

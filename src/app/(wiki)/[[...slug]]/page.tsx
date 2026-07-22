@@ -13,11 +13,12 @@ import { CrdVersionCallout } from '@/components/core-rules/version-callout'
 import { Feedback } from '@/components/feedback/client'
 import { KEYWORDS } from '@/components/keywords'
 import { LastUpdated } from '@/components/last-updated'
+import { RelatedRulings } from '@/components/related-rulings'
 import { Energy, RUNES, Universal } from '@/components/resources'
 import { TournamentRulesDiff } from '@/components/tournament-rules/diff-view'
 import { TournamentRulesTable } from '@/components/tournament-rules/table'
 import { baseUrl } from '@/lib/metadata'
-import { getPageImage, source } from '@/lib/source'
+import { getPageImage, getPageRulingRelations, source } from '@/lib/source'
 import { getMDXComponents } from '@/mdx-components'
 
 export default async function Page(props: PageProps<'/[[...slug]]'>) {
@@ -27,6 +28,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 
 	const MDX = page.data.body
 	const authors = page.data.authors ?? []
+	const rulingRelations = getPageRulingRelations(page.url)
 
 	return (
 		<DocsPage
@@ -60,6 +62,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 					/>
 				</CrdVersionProvider>
 			</DocsBody>
+			<RelatedRulings relations={rulingRelations} />
 			<Feedback onSendAction={submitPageFeedback} />
 			<div className="flex gap-1 pt-2">
 				{authors.length > 0 && <Authors authors={authors} />}

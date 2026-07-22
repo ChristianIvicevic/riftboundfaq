@@ -1,0 +1,39 @@
+---
+title: "Movement"
+createdAt: "2026-07-22"
+description: "Commonly asked questions about moving permanents between locations"
+crdVersion: "1.4"
+authors:
+- "Christian I. (Near)"
+rulingRelations:
+- id: "entering-board-vs-moving"
+  anchor: "entering-board"
+  question: "Does a unit move when it enters the board?"
+  appliesTo:
+  - "/cards/baron-nashor"
+  - "/cards/irresistible-faefolk"
+- id: "chosen-move-destination"
+  anchor: "chosen-destination"
+  question: "Can I choose a permanent's current location as its move destination?"
+  appliesTo:
+  - "/cards/call-to-battle"
+  - "/cards/flash"
+---
+
+## Does a unit move when it enters the board? [#entering-board]
+
+No.
+
+Moving means changing a permanent's position from one space on the board to another.<Rule number="446.1" />
+A card entering the board from another game zone is a zone change, not a move.<Rule number="446.2" />
+
+Playing or creating a unit at a battlefield therefore does not fulfill an ability that triggers when the unit moves there.
+Replacing where a unit enters the board also does not turn that entry into a move.
+
+## Can I choose a permanent's current location as its move destination? [#chosen-destination]
+
+No.
+
+When an effect requires a player to choose a move destination, that destination must differ from the permanent's current location.<Rule number="355.4" /><Rule number="355.4.a" />
+If the card specifies the destination instead, the player makes no destination choice and this restriction does not affect whether the permanent is a legal target.
+If the permanent is already at that specified destination when the instruction resolves, the move is impossible and is ignored.<Rule number="055" />
