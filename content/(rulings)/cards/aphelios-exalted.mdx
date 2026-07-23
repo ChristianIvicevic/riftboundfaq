@@ -1,0 +1,30 @@
+---
+title: "Aphelios, Exalted"
+createdAt: "2026-07-23"
+crdVersion: "1.4"
+galleryLink: "https://playriftbound.com/en-us/card-gallery/#card-gallery--sfd-049-221"
+authors:
+- "Christian I. (Near)"
+rulingRelations:
+  equipment-copy-effects:
+  - "/cards/shady-spectacles"
+---
+
+## How does Aphelios, Exalted interact with Svellsongur and Shady Spectacles? [#equipment-copy-effects]
+
+Aphelios triggers once when either <Card name="Svellsongur" /> or <Card name="Shady Spectacles" /> is attached to him.
+A different unit that becomes a copy of Aphelios through Shady Spectacles does not trigger.
+
+Both equipment abilities are replacement effects because they describe an action that happens "as" the equipment is attached.<Rule number="369.1" />
+Each replaces the single attachment event with that same attachment event plus its copy action.<Rule number="370.1.b.1" />
+This does not create a second attachment event: events are simultaneous only when they result from the same game action,<Rule number="370.1.a.2" /> and copying is a separate game action added to the attachment event by the replacement effect.
+
+Aphelios's trigger condition is evaluated after the attachment event is processed.<Rule number="383.2.c" />
+At that point, he still has his printed ability, so the game adds one pending trigger to the chain before continuing the equipment's replacement effect and performing its copy action.<Rule number="401.1" /><Rule number="401.2" />
+
+With Svellsongur, that pending trigger is created before Svellsongur copies Aphelios's effect text.
+The newly copied text does not look back and trigger from the attachment that already occurred, so there is no second trigger.
+
+With Shady Spectacles attached to Aphelios, his trigger is similarly created before he becomes a copy of the chosen unit.
+If Shady Spectacles is instead attached to another unit and that unit becomes a copy of Aphelios, the unit did not have Aphelios's ability when the attachment event occurred, so it does not trigger at all.
+Treating either copy action as another attachment and triggering Aphelios twice is therefore not consistent with the current rules.
