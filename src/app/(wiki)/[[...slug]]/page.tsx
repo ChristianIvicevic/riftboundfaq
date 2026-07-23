@@ -1,10 +1,11 @@
-import { DocsBody, DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/layouts/docs/page'
+import { DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/layouts/docs/page'
 import { createRelativeLink } from 'fumadocs-ui/mdx'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { submitPageFeedback } from '@/actions/feedback'
 import { Authors } from '@/components/authors'
 import { CardGalleryLink, EditThisPageLink } from '@/components/buttons'
+import { CopyableDocsBody } from '@/components/copyable-docs-body'
 import { CoreRulesDiff } from '@/components/core-rules/diff-view'
 import { Rule } from '@/components/core-rules/rule'
 import { CoreRulesTable } from '@/components/core-rules/table'
@@ -44,7 +45,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 				<EditThisPageLink filePath={page.path} />
 			</div>
 			{page.data.crdVersion && <CrdVersionCallout crdVersion={page.data.crdVersion} />}
-			<DocsBody>
+			<CopyableDocsBody>
 				<CrdVersionProvider crdVersion={page.data.crdVersion}>
 					<MDX
 						components={getMDXComponents({
@@ -61,7 +62,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 						})}
 					/>
 				</CrdVersionProvider>
-			</DocsBody>
+			</CopyableDocsBody>
 			<RelatedRulings relations={rulingRelations} />
 			<Feedback onSendAction={submitPageFeedback} />
 			<div className="flex gap-1 pt-2">

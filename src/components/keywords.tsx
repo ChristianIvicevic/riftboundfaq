@@ -51,9 +51,14 @@ type KeywordName = keyof typeof KEYWORD_CONFIG
 
 function Keyword({
 	children,
+	copyText,
 	variant,
-}: Required<VariantProps<typeof keywordVariants>> & { children: ReactNode }) {
-	return <span className={cn(keywordVariants({ variant }))}>{children}</span>
+}: Required<VariantProps<typeof keywordVariants>> & { children: ReactNode; copyText: string }) {
+	return (
+		<span className={cn(keywordVariants({ variant }))} data-copy-text={copyText}>
+			{children}
+		</span>
+	)
 }
 
 function createKeywordComponent(name: KeywordName) {
@@ -61,16 +66,22 @@ function createKeywordComponent(name: KeywordName) {
 
 	if (config.hasValue) {
 		return function KeywordWithValue({ value }: { value?: number | string }) {
+			const label = value === undefined ? config.label : `${config.label} ${value}`
+
 			return (
-				<Keyword variant={config.variant}>
-					{config.label} {value}
+				<Keyword copyText={`[${label}]`} variant={config.variant}>
+					{label}
 				</Keyword>
 			)
 		}
 	}
 
 	return function KeywordSimple() {
-		return <Keyword variant={config.variant}>{config.label}</Keyword>
+		return (
+			<Keyword copyText={`[${config.label}]`} variant={config.variant}>
+				{config.label}
+			</Keyword>
+		)
 	}
 }
 
