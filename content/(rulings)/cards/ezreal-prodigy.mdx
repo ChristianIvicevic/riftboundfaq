@@ -7,47 +7,20 @@ authors:
 - "Christian I. (Near)"
 ---
 
-## What are "optional additional costs"? [#optional-additional-costs]
+## Which costs does Ezreal reduce? [#optional-additional-costs]
 
-Optional additional costs are costs that:<Rule number="356.2.b.1" />
+Ezreal reduces only optional additional costs you choose to pay.
+These costs use both the word "may" and the exact phrase "as an additional cost."<Rule number="356.2.b.1" />
+<Accelerate /> and <Repeat /> are keyworded optional additional costs, so Ezreal reduces them too.<Rule number="805.1.a" /><Rule number="820.1.d" />
 
-1. Use the exact phrase "as an additional cost"
-2. Include the word "may"
+Ezreal's discount applies to the optional additional cost itself as soon as that cost is added, before discounts that apply to the card's total cost.<Rule number="356.4.c" /><Rule number="356.4.d" />
 
-Ezreal, Prodigy's passive ability reads "Optional additional costs you pay cost <Energy value={1} /> or <Universal /> less."
-It only reduces costs that meet both criteria.
-<Accelerate /> and <Repeat /> are keyworded instances of optional additional costs,<Rule number="805.1.a" /><Rule number="820.1.d" /> so they are also reduced by Ezreal's ability.
-
-Optional additional costs are determined when you calculate a card's total cost during the playing process, and Ezreal's discount is applied when you apply discounts.<Rule number="356.4" />
-Ezreal's discount is a component discount — it applies to a specific component of the cost (the optional additional cost) rather than to the total cost, so it is applied as soon as that component is added, before any general cost discounts take effect.<Rule number="356.4.c" />
+Mandatory additional costs are not optional because they omit "may,"<Rule number="356.2.a.1" /> and payments made while carrying out an effect are not additional costs to play that card.
+Ezreal does not reduce either kind of payment.
 
 <Callout type="idea" title="Example">
-	<Card name="Blast Corps Cadet" />'s ability reads "You may pay <Energy value={1} /><Fury /> as an additional cost to play me."
-	This is an optional additional cost because it uses both "as an additional cost" and "may."
-	Ezreal's ability would reduce this cost to <Energy value={1} /> or <Fury />.
-</Callout>
-
-<Callout type="idea" title="Example">
-	You play <Card name="Sivir, Mercenary" /> with <Accelerate /><Energy value={1} /><Chaos /> while you control Ezreal, Prodigy.
-	With Ezreal's ability, you can choose to reduce this to either <Energy value={1} /> or <Chaos />.
-</Callout>
-
-## What doesn't count as an optional additional cost? [#excluded-additional-costs]
-
-Several similar-looking costs are not optional additional costs and are not reduced by Ezreal's ability.
-
-### Mandatory additional costs [#mandatory-additional-costs]
-
-<Callout type="idea" title="Example">
-	<Card name="Cruel Patron" /> reads "As an additional cost to play me, kill a friendly unit."
-	This is not an optional additional cost: it uses "as an additional cost" but not "may," making it a mandatory additional cost.<Rule number="356.2.a.1" />
-</Callout>
-
-### Costs in effects [#costs-in-effects]
-
-<Callout type="idea" title="Example">
-	<Card name="Hard Bargain" />'s effect reads "Counter a spell unless its controller pays <Energy value={2} />."
-	The controller's <Energy value={2} /> payment is not an optional additional cost.
-	It appears inside Hard Bargain's effect rather than being paid to play the spell, so Ezreal does not reduce it.
-	Hard Bargain's separate <Repeat /> cost is an optional additional cost and is reduced by Ezreal.
+	<Card name="Blast Corps Cadet" /> says "You may pay <Energy value={1} /><Fury /> as an additional cost to play me."
+	Ezreal can reduce that optional additional cost to either <Energy value={1} /> or <Fury />.
+	By contrast, Ezreal does not reduce <Card name="Cruel Patron" />'s mandatory cost to kill a friendly unit or the <Energy value={2} /> an opponent may pay during <Card name="Hard Bargain" />'s effect.
+	Ezreal does reduce Hard Bargain's separate <Repeat /> cost.
 </Callout>
