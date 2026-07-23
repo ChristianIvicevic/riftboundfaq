@@ -6,18 +6,11 @@ import { submitPageFeedback } from '@/actions/feedback'
 import { Authors } from '@/components/authors'
 import { CardGalleryLink, EditThisPageLink } from '@/components/buttons'
 import { CopyableDocsBody } from '@/components/copyable-docs-body'
-import { CoreRulesDiff } from '@/components/core-rules/diff-view'
-import { Rule } from '@/components/core-rules/rule'
-import { CoreRulesTable } from '@/components/core-rules/table'
 import { CrdVersionProvider } from '@/components/core-rules/version'
 import { CrdVersionCallout } from '@/components/core-rules/version-callout'
 import { Feedback } from '@/components/feedback/client'
-import { KEYWORDS } from '@/components/keywords'
 import { LastUpdated } from '@/components/last-updated'
 import { RelatedRulings } from '@/components/related-rulings'
-import { Energy, RUNES, Universal } from '@/components/resources'
-import { TournamentRulesDiff } from '@/components/tournament-rules/diff-view'
-import { TournamentRulesTable } from '@/components/tournament-rules/table'
 import { baseUrl } from '@/lib/metadata'
 import { getPageImage, getPageRulingRelations, source } from '@/lib/source'
 import { getMDXComponents } from '@/mdx-components'
@@ -47,20 +40,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 			{page.data.crdVersion && <CrdVersionCallout crdVersion={page.data.crdVersion} />}
 			<CopyableDocsBody>
 				<CrdVersionProvider crdVersion={page.data.crdVersion}>
-					<MDX
-						components={getMDXComponents({
-							a: createRelativeLink(source, page),
-							Rule,
-							CoreRulesTable,
-							CoreRulesDiff,
-							TournamentRulesTable,
-							TournamentRulesDiff,
-							Energy,
-							Universal,
-							...RUNES,
-							...KEYWORDS,
-						})}
-					/>
+					<MDX components={getMDXComponents(createRelativeLink(source, page))} />
 				</CrdVersionProvider>
 			</CopyableDocsBody>
 			<RelatedRulings relations={rulingRelations} />
