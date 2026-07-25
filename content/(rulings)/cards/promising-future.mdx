@@ -26,6 +26,7 @@ At this point, Promising Future being played causes applicable abilities on card
 Those triggered abilities are added to the chain after the chosen cards.
 4. Finalize the chosen cards in the order they were put on the chain: the next player's card first, followed by each other player in turn order.<Rule number="337.1.b" />
 Promising Future ignores their energy costs, but their power costs and any applicable additional costs still apply.<Rule number="356.1.b.2" />
+If a player cannot pay all required costs, that card's play process is undone and it returns to banishment.<Rule number="358.2" /><Rule number="358.5" />
 5. A unit or gear resolves immediately when it finalizes and enters the board.<Rule number="337.2" />
 If that permanent has its own play effect, or its entering causes any other abilities to trigger, add those triggered abilities to the end of the pending items already on the chain.<Rule number="383.4.a.2" />
 Continue finalizing the older pending items first, so every card chosen with Promising Future finalizes before any of those triggered abilities.
@@ -59,8 +60,11 @@ Conversely, a counterspell queued before another chosen card cannot wait for tha
 
 ## Does Brynhir Thundersong stop an opponent's chosen card from being played? [#brynhir-thundersong]
 
-No.
-Both chosen cards are already on the chain and queued for finalization before Brynhir Thundersong's play effect exists.
+Only if Brynhir Thundersong's play effect resolved before Promising Future instructs that opponent to play their chosen card.
+In that case, the instructed play is skipped as impossible and the chosen card remains banished.<Rule number="358.3.a" />
+
+If Brynhir herself is chosen with Promising Future, she does not stop any of the other chosen cards.
+All chosen cards are already on the chain and queued for finalization before her play effect exists.
 
 Promising Future puts each chosen card on the chain as a pending item while it resolves.<Rule number="354.2" /><Rule number="354.3" />
 Brynhir's play effect is only added as another pending item after she finalizes and enters the board.<Rule number="383.4.a.2" />
