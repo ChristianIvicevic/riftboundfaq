@@ -59,13 +59,12 @@ riftboundfaq/
 ├── scripts/                    # Rule parsers and dataset generator
 ├── sources/                    # Versioned rules text, card text, and manifest
 ├── src/                        # Next.js application source
-│   ├── actions/                # Server actions
-│   ├── app/                    # App Router routes and API endpoints
-│   ├── components/             # React and MDX components
+│   ├── app/                    # App Router routes, endpoints, and route-private UI
+│   ├── components/             # Reusable UI and rules/MDX presentation
+│   ├── features/               # Feature-owned UI, actions, and validation
 │   ├── generated/              # Generated rule datasets (not hand-edited)
-│   ├── layouts/                # Shared page layouts
-│   └── lib/                    # Shared utilities and configuration
-└── tests/                      # Rule parser and semantic-diff tests
+│   └── lib/                    # Content infrastructure, rules utilities, and site configuration
+└── tests/                      # Rules parsing, generation, diff, and relation tests
 ```
 
 ## Contributing
