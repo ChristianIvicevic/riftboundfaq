@@ -6,7 +6,6 @@ import { submitPageFeedback } from '@/actions/feedback'
 import { Authors } from '@/components/authors'
 import { CardGalleryLink, EditThisPageLink } from '@/components/buttons'
 import { CopyableDocsBody } from '@/components/copyable-docs-body'
-import { CrdVersionProvider } from '@/components/core-rules/version'
 import { CrdVersionCallout } from '@/components/core-rules/version-callout'
 import { Feedback } from '@/components/feedback/client'
 import { LastUpdated } from '@/components/last-updated'
@@ -39,9 +38,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 			</div>
 			{page.data.crdVersion && <CrdVersionCallout crdVersion={page.data.crdVersion} />}
 			<CopyableDocsBody>
-				<CrdVersionProvider crdVersion={page.data.crdVersion}>
-					<MDX components={getMDXComponents(createRelativeLink(source, page))} />
-				</CrdVersionProvider>
+				<MDX components={getMDXComponents(createRelativeLink(source, page), page.data.crdVersion)} />
 			</CopyableDocsBody>
 			<RelatedRulings relations={rulingRelations} />
 			<Feedback onSendAction={submitPageFeedback} />
