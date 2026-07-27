@@ -1,16 +1,16 @@
 import { createFromSource } from 'fumadocs-core/search/server'
-import { source } from '@/lib/content/source'
+import { isIndexablePage, source } from '@/lib/content/source'
 
 // Keep `noindex` pages (everything under content/reference/, e.g. rules snapshots and
-// change diffs) out of the search index, mirroring the sitemap's `!page.data.noindex`
-// filter so site search matches what search engines are allowed to see. createFromSource
+// change diffs) out of the search index, mirroring the sitemap's indexability
+// policy so site search matches what search engines are allowed to see. createFromSource
 // indexes every `loader.getPages()` with no built-in filter, so we wrap the loader and
 // filter there. A Proxy (rather than spreading `source`) avoids eagerly triggering the
 // loader's lazy `pageTree` getter.
 const searchSource = new Proxy(source, {
 	get(target, prop, receiver) {
 		if (prop === 'getPages') {
-			return (language?: string) => target.getPages(language).filter((page) => !page.data.noindex)
+			return (language?: string) => target.getPages(language).filter((page) => isIndexablePage(page))
 		}
 		return Reflect.get(target, prop, receiver)
 	},

@@ -1,8 +1,8 @@
 import { generate as DefaultImage } from 'fumadocs-ui/og'
 import { notFound } from 'next/navigation'
 import { ImageResponse } from 'next/og'
-import { getPageImage, source } from '@/lib/content/source'
-import { SITE_DESCRIPTION, SITE_NAME } from '@/lib/site'
+import { getPageDescription, getPageImage, source } from '@/lib/content/source'
+import { SITE_NAME } from '@/lib/site'
 
 export async function GET(_req: Request, { params }: RouteContext<'/og/[...slug]'>) {
 	const { slug } = await params
@@ -12,10 +12,7 @@ export async function GET(_req: Request, { params }: RouteContext<'/og/[...slug]
 	return new ImageResponse(
 		<DefaultImage
 			title={page.data.title}
-			description={
-				page.data.description ||
-				(page.data.title ? `FAQ and rules reference for ${page.data.title} in Riftbound` : SITE_DESCRIPTION)
-			}
+			description={getPageDescription(page)}
 			site={SITE_NAME}
 			primaryColor="#123456"
 			primaryTextColor="#ABCDEF"
@@ -26,7 +23,6 @@ export async function GET(_req: Request, { params }: RouteContext<'/og/[...slug]
 
 export function generateStaticParams() {
 	return source.getPages().map((page) => ({
-		lang: page.locale,
 		slug: getPageImage(page).segments,
 	}))
 }
