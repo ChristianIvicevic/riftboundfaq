@@ -7,5 +7,5 @@ export function serializeRuleRecords(rules, exportName) {
 		})
 		.join('\n')
 
-	return `import type { RuleRecord } from '@/components/rules/types'\n\n// oxfmt-ignore\nexport const ${exportName}: RuleRecord[] = [\n${body}\n]\n`
+	return `import type { RuleRecord } from '@/lib/rules/types'\n\n// oxfmt-ignore\nexport const ${exportName}: RuleRecord[] = [\n${body}\n]\n`
 }

@@ -1,7 +1,7 @@
 import { Fragment, type ReactNode } from 'react'
 import { Indent } from '@/components/rules/indent'
 import { RuleAnchor } from '@/components/rules/rule-anchor'
-import type { RuleRecord, RuleReference } from '@/components/rules/types'
+import type { RuleRecord, RuleReference } from '@/lib/rules/types'
 
 type FindRuleReferences = (text: string, ruleIds: ReadonlySet<string>) => RuleReference[]
 

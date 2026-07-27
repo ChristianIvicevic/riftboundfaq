@@ -1,5 +1,5 @@
 import { Fragment, type ReactNode } from 'react'
-import type { DiffEntry, Token } from '@/components/rules/diff'
+import type { DiffEntry, Token } from '@/lib/rules/diff'
 
 function DiffToken({ token }: { token: Token }): ReactNode {
 	if (token.type === 'same') return token.text

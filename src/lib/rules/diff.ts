@@ -1,4 +1,4 @@
-import type { RuleRecord } from '@/components/rules/types'
+import type { RuleRecord } from '@/lib/rules/types'
 
 export type TokenType = 'same' | 'add' | 'remove'
 export type Token = { type: TokenType; text: string }

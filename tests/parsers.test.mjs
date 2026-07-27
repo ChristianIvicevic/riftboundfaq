@@ -70,7 +70,7 @@ test('Tournament Rules filenames must match the Last Updated date', async () => 
 test('Rule records serialize in the generated data format', () => {
 	assert.equal(
 		serializeRuleRecords([{ id: '100', lines: ['Quoted "text".'] }], 'RULES_TEST'),
-		`import type { RuleRecord } from '@/components/rules/types'
+		`import type { RuleRecord } from '@/lib/rules/types'
 
 // oxfmt-ignore
 export const RULES_TEST: RuleRecord[] = [

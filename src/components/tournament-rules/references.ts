@@ -1,4 +1,4 @@
-import type { RuleReference } from '@/components/rules/types'
+import type { RuleReference } from '@/lib/rules/types'
 
 const REFERENCE_CUE =
 	/\b(?:see(?:\s+rule)?|section|proceed to|process of|described in|except for|perform|listed (?:under|in)|qualifies for)\s+/giu

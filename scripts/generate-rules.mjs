@@ -73,7 +73,7 @@ function serializeCoreRulesIndex(versions, manifest) {
 		})
 		.join('\n')
 
-	return `${GENERATED_HEADER}${imports}\nimport type { RuleRecord } from '@/components/rules/types'\n\nexport type CrdVersion = {\n\tversion: string\n\tname: string\n\tlastUpdated: string\n\trules: RuleRecord[]\n}\n\nexport const CURRENT_CRD_VERSION = ${JSON.stringify(manifest.coreRules.current)}\n\nexport const CRD_VERSIONS: Record<string, CrdVersion> = {\n${entries}\n}\n\nexport const RULES_BY_ID: Record<string, Map<string, string[]>> = Object.fromEntries(\n\tObject.entries(CRD_VERSIONS).map(([version, crd]) => [\n\t\tversion,\n\t\tnew Map(crd.rules.map((rule) => [rule.id, rule.lines])),\n\t]),\n)\n`
+	return `${GENERATED_HEADER}${imports}\nimport type { RuleRecord } from '@/lib/rules/types'\n\nexport type CrdVersion = {\n\tversion: string\n\tname: string\n\tlastUpdated: string\n\trules: RuleRecord[]\n}\n\nexport const CURRENT_CRD_VERSION = ${JSON.stringify(manifest.coreRules.current)}\n\nexport const CRD_VERSIONS: Record<string, CrdVersion> = {\n${entries}\n}\n\nexport const RULES_BY_ID: Record<string, Map<string, string[]>> = Object.fromEntries(\n\tObject.entries(CRD_VERSIONS).map(([version, crd]) => [\n\t\tversion,\n\t\tnew Map(crd.rules.map((rule) => [rule.id, rule.lines])),\n\t]),\n)\n`
 }
 
 function serializeTournamentRulesIndex(versions, manifest) {
@@ -90,7 +90,7 @@ function serializeTournamentRulesIndex(versions, manifest) {
 		)
 		.join('\n')
 
-	return `${GENERATED_HEADER}${imports}\nimport type { RuleRecord } from '@/components/rules/types'\n\nexport type TournamentRulesVersion = {\n\tversion: string\n\trules: RuleRecord[]\n}\n\nexport const CURRENT_TOURNAMENT_RULES_VERSION = ${JSON.stringify(manifest.tournamentRules.current)}\n\nexport const TOURNAMENT_RULES_VERSIONS: Record<string, TournamentRulesVersion> = {\n${entries}\n}\n`
+	return `${GENERATED_HEADER}${imports}\nimport type { RuleRecord } from '@/lib/rules/types'\n\nexport type TournamentRulesVersion = {\n\tversion: string\n\trules: RuleRecord[]\n}\n\nexport const CURRENT_TOURNAMENT_RULES_VERSION = ${JSON.stringify(manifest.tournamentRules.current)}\n\nexport const TOURNAMENT_RULES_VERSIONS: Record<string, TournamentRulesVersion> = {\n${entries}\n}\n`
 }
 
 export async function generateRules({
