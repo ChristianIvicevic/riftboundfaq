@@ -4,6 +4,7 @@ import { pageSchema, metaSchema } from 'fumadocs-core/source/schema'
 import { defineConfig, defineDocs } from 'fumadocs-mdx/config'
 import lastModified from 'fumadocs-mdx/plugins/last-modified'
 import { z } from 'zod'
+import { RUNE_NAMES, TERM_DEFINITIONS } from '@/lib/mdx-vocabulary'
 import { rulingRelationsSchema } from '@/lib/ruling-relations-schema'
 
 export const docs = defineDocs({
@@ -25,36 +26,11 @@ export const docs = defineDocs({
 // only serializes the raw MDX node (it never runs React), so without this these render
 // as placeholder markup like `<Card name="…" />` or get dropped entirely.
 const COMPONENT_SEARCH_TEXT: Record<string, string> = {
-	// Keyword components (src/components/keywords.tsx)
-	Accelerate: 'Accelerate',
-	Action: 'Action',
-	Add: 'Add',
-	Ambush: 'Ambush',
-	Assault: 'Assault',
-	Burn: 'Burn',
-	Deathknell: 'Deathknell',
-	Deflect: 'Deflect',
-	Empower: 'Empower',
-	Empowered: 'Empowered',
-	Equip: 'Equip',
-	Legion: 'Legion',
-	Mighty: 'Mighty',
-	Predict: 'Predict',
-	QuickDraw: 'Quick-Draw',
-	Reaction: 'Reaction',
-	Repeat: 'Repeat',
-	Shield: 'Shield',
-	Stun: 'Stun',
-	Temporary: 'Temporary',
-	Weaponmaster: 'Weaponmaster',
-	// Rune / resource components (src/components/resources.tsx)
+	...Object.fromEntries(
+		Object.entries(TERM_DEFINITIONS).map(([name, definition]) => [name, definition.label]),
+	),
 	Universal: 'Power',
-	Fury: 'Fury',
-	Calm: 'Calm',
-	Mind: 'Mind',
-	Body: 'Body',
-	Chaos: 'Chaos',
-	Order: 'Order',
+	...Object.fromEntries(RUNE_NAMES.map((name) => [name, name])),
 }
 
 const remarkStructureOptions: StructureOptions = {
