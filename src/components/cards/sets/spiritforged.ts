@@ -221,4 +221,4 @@ export const SPIRITFORGED_CARDS = {
 	'The Papertree': '#card-gallery--sfd-219-221',
 	'Treasure Hoard': '#card-gallery--sfd-220-221',
 	'Veiled Temple': '#card-gallery--sfd-221-221',
-}
+} satisfies Record<string, string>

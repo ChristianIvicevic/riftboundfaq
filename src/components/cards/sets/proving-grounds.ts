@@ -23,4 +23,4 @@ export const PROVING_GROUNDS_CARDS = {
 	'Final Spark': '#card-gallery--ogs-022-024',
 	'Might of Demacia': '#card-gallery--ogs-023-024',
 	'Decisive Strike': '#card-gallery--ogs-024-024',
-}
+} satisfies Record<string, string>
