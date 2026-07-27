@@ -31,8 +31,9 @@ export function TournamentRulesDiff({
 		<RulesDiffView
 			entries={diffRuleSets(oldVersion.rules, newVersion.rules, {
 				hideRenumbering: true,
-				hideReferenceOnlyChanges: false,
+				hideReferenceOnlyChanges: true,
 				prioritizeTextSimilarity: true,
+				referenceSyntax: 'tournament',
 			})}
 			from={oldVersion.version}
 			to={newVersion.version}
