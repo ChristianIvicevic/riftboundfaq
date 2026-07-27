@@ -1,5 +1,5 @@
 import { createFromSource } from 'fumadocs-core/search/server'
-import { source } from '@/lib/source'
+import { source } from '@/lib/content/source'
 
 // Keep `noindex` pages (everything under content/reference/, e.g. rules snapshots and
 // change diffs) out of the search index, mirroring the sitemap's `!page.data.noindex`
