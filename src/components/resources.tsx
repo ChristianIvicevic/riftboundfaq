@@ -1,3 +1,5 @@
+import { RUNE_NAMES } from '@/lib/mdx-vocabulary'
+
 export function Energy({ value }: { value: number }) {
 	return (
 		<span
@@ -8,8 +10,6 @@ export function Energy({ value }: { value: number }) {
 		</span>
 	)
 }
-
-const RUNE_NAMES = ['Fury', 'Calm', 'Mind', 'Body', 'Chaos', 'Order'] as const
 
 type RuneName = (typeof RUNE_NAMES)[number]
 
