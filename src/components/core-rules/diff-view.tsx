@@ -1,7 +1,7 @@
 import { RulesDiffView } from '@/components/rules/diff-view'
 import { CRD_VERSIONS } from '@/generated/rules/core-rules'
-import { ruleHref } from '@/lib/constants'
 import { diffRuleSets } from '@/lib/rules/diff'
+import { ruleHref } from '@/lib/rules/links'
 
 const VERSIONS = Object.keys(CRD_VERSIONS)
 

@@ -1,5 +1,5 @@
 import { RULES_BY_ID } from '@/generated/rules/core-rules'
-import { ruleHref } from '@/lib/constants'
+import { ruleHref } from '@/lib/rules/links'
 
 export function Rule({ number, crdVersion }: { number: string; crdVersion?: string }) {
 	if (!crdVersion) {

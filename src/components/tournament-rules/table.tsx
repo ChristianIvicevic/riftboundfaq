@@ -1,7 +1,7 @@
 import { RulesTable } from '@/components/rules/table'
 import { findTournamentRuleReferences } from '@/components/tournament-rules/references'
 import { TOURNAMENT_RULES_VERSIONS } from '@/generated/rules/tournament-rules'
-import { CURRENT_TOURNAMENT_RULES_VERSION } from '@/lib/constants'
+import { CURRENT_TOURNAMENT_RULES_VERSION } from '@/lib/rules/links'
 
 export function TournamentRulesTable({ version = CURRENT_TOURNAMENT_RULES_VERSION }: { version?: string }) {
 	const tournamentRules = TOURNAMENT_RULES_VERSIONS[version]

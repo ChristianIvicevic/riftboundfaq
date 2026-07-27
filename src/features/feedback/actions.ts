@@ -17,7 +17,7 @@ async function captureAnalyticsEvent(eventName: string, properties: Record<strin
 		properties: {
 			$process_person_profile: false,
 			...properties,
-			isProduction: process.env.NODE_ENV === 'production',
+			isProduction: env.NODE_ENV === 'production',
 		},
 	})
 

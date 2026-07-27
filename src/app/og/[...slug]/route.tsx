@@ -2,6 +2,7 @@ import { generate as DefaultImage } from 'fumadocs-ui/og'
 import { notFound } from 'next/navigation'
 import { ImageResponse } from 'next/og'
 import { getPageImage, source } from '@/lib/content/source'
+import { SITE_DESCRIPTION, SITE_NAME } from '@/lib/site'
 
 export async function GET(_req: Request, { params }: RouteContext<'/og/[...slug]'>) {
 	const { slug } = await params
@@ -13,11 +14,9 @@ export async function GET(_req: Request, { params }: RouteContext<'/og/[...slug]
 			title={page.data.title}
 			description={
 				page.data.description ||
-				(page.data.title
-					? `FAQ and rules reference for ${page.data.title} in Riftbound`
-					: 'Community-driven FAQ for Riftbound judges and players')
+				(page.data.title ? `FAQ and rules reference for ${page.data.title} in Riftbound` : SITE_DESCRIPTION)
 			}
-			site="Riftbound FAQ"
+			site={SITE_NAME}
 			primaryColor="#123456"
 			primaryTextColor="#ABCDEF"
 		/>,
