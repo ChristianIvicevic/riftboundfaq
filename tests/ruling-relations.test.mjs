@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { buildRulingRelationIndex, getRulingRelations } from '../src/lib/ruling-relations.ts'
+import { buildRulingRelationIndex, getRulingRelations } from '../src/lib/content/ruling-relations.ts'
 
 const page = (url, title, anchors, rulingRelations, headingTitles = {}) => ({
 	url,

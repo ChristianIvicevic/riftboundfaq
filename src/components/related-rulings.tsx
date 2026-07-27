@@ -1,5 +1,5 @@
 import { Card, Cards } from 'fumadocs-ui/components/card'
-import type { PageRulingRelations } from '@/lib/ruling-relations'
+import type { PageRulingRelations } from '@/lib/content/ruling-relations'
 
 export function RelatedRulings({ relations }: { relations: PageRulingRelations }) {
 	if (relations.owned.length === 0 && relations.incoming.length === 0) return null

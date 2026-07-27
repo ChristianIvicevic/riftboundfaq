@@ -10,9 +10,12 @@ import { CrdVersionCallout } from '@/components/core-rules/version-callout'
 import { Feedback } from '@/components/feedback/client'
 import { LastUpdated } from '@/components/last-updated'
 import { RelatedRulings } from '@/components/related-rulings'
+import { buildRulingRelationIndex, getRulingRelations } from '@/lib/content/ruling-relations'
+import { getPageImage, source } from '@/lib/content/source'
 import { baseUrl } from '@/lib/metadata'
-import { getPageImage, getPageRulingRelations, source } from '@/lib/source'
 import { getMDXComponents } from '@/mdx-components'
+
+const rulingRelationIndex = buildRulingRelationIndex(source.getPages())
 
 export default async function Page(props: PageProps<'/[[...slug]]'>) {
 	const params = await props.params
@@ -21,7 +24,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 
 	const MDX = page.data.body
 	const authors = page.data.authors ?? []
-	const rulingRelations = getPageRulingRelations(page.url)
+	const rulingRelations = getRulingRelations(rulingRelationIndex, page.url)
 
 	return (
 		<DocsPage

@@ -1,7 +1,7 @@
 import { generate as DefaultImage } from 'fumadocs-ui/og'
 import { notFound } from 'next/navigation'
 import { ImageResponse } from 'next/og'
-import { getPageImage, source } from '@/lib/source'
+import { getPageImage, source } from '@/lib/content/source'
 
 export async function GET(_req: Request, { params }: RouteContext<'/og/[...slug]'>) {
 	const { slug } = await params

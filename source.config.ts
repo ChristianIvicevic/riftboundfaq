@@ -4,8 +4,8 @@ import { pageSchema, metaSchema } from 'fumadocs-core/source/schema'
 import { defineConfig, defineDocs } from 'fumadocs-mdx/config'
 import lastModified from 'fumadocs-mdx/plugins/last-modified'
 import { z } from 'zod'
+import { rulingRelationsSchema } from '@/lib/content/ruling-relations-schema'
 import { RUNE_NAMES, TERM_DEFINITIONS } from '@/lib/mdx-vocabulary'
-import { rulingRelationsSchema } from '@/lib/ruling-relations-schema'
 
 export const docs = defineDocs({
 	dir: 'content',
