@@ -38,6 +38,34 @@ test('diffRuleSets can hide or show reference-only changes', () => {
 	assert.equal(diffRuleSets(oldRules, newRules, { hideReferenceOnlyChanges: false })[0].kind, 'modified')
 })
 
+test('diffRuleSets recognizes Tournament Rules reference syntax', () => {
+	const cases = [
+		['See CR 448.1.a. for Final Point details.', 'See CR 469.1.a. for Final Point details.'],
+		['See 506.3.d. for examples of observable impact.', 'See 506.3.e. for examples of observable impact.'],
+		['proceed to 408.4.c.3 and 408.4.d', 'proceed to 408.4.c.4 and 408.4.e'],
+		['perform steps 406.1.c.-406.1.e.3', 'perform steps 406.1.d.-406.1.f.3'],
+	]
+
+	for (const [oldText, newText] of cases) {
+		assert.deepEqual(
+			diffRuleSets([rule('200', oldText)], [rule('200', newText)], { referenceSyntax: 'tournament' }),
+			[],
+		)
+	}
+})
+
+test('diffRuleSets retains the complete diff when other wording changes with a reference', () => {
+	const oldText = 'See CR 448.1.a. for Final Point details.'
+	const newText = 'See CR 471.1.a. for updated Final Point restrictions.'
+	const [entry] = diffRuleSets([rule('200', oldText)], [rule('200', newText)], {
+		referenceSyntax: 'tournament',
+	})
+
+	assert.equal(entry.kind, 'modified')
+	assert.equal(entry.oldText.map((token) => token.text).join(''), oldText)
+	assert.equal(entry.newText.map((token) => token.text).join(''), newText)
+})
+
 test('diffRuleSets aligns duplicate text without hiding a removal', () => {
 	const entries = diffRuleSets(
 		[rule('100', 'Identical text.'), rule('101', 'Identical text.')],
@@ -50,8 +78,9 @@ test('diffRuleSets aligns duplicate text without hiding a removal', () => {
 test('Tournament Rules 202 restructuring remains stably aligned', () => {
 	const entries = diffRuleSets(TOURNAMENT_RULES_2026_04_29, TOURNAMENT_RULES_2026_07_16, {
 		hideRenumbering: true,
-		hideReferenceOnlyChanges: false,
+		hideReferenceOnlyChanges: true,
 		prioritizeTextSimilarity: true,
+		referenceSyntax: 'tournament',
 	})
 	const section202 = entries
 		.filter((entry) => (entry.kind === 'modified' ? entry.newId : entry.rule.id).startsWith('202'))
@@ -59,7 +88,7 @@ test('Tournament Rules 202 restructuring remains stably aligned', () => {
 			entry.kind === 'modified' ? [entry.kind, entry.oldId, entry.newId] : [entry.kind, entry.rule.id],
 		)
 
-	assert.equal(entries.length, 80)
+	assert.equal(entries.length, 70)
 	assert.deepEqual(section202, [
 		['modified', '202', '202'],
 		['added', '202.1'],

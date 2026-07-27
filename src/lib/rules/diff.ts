@@ -21,6 +21,7 @@ export type DiffOptions = {
 	hideRenumbering?: boolean
 	hideReferenceOnlyChanges?: boolean
 	prioritizeTextSimilarity?: boolean
+	referenceSyntax?: 'generic' | 'tournament'
 }
 
 type Op<T> = { type: TokenType; value: T }
@@ -138,16 +139,21 @@ function normalizedText(rule: RuleRecord): string {
 	return rule.lines.join(' ').replaceAll(/\s+/gu, ' ').trim()
 }
 
-/** Rule cross-references such as "rule 481" or "rules 103.2.a". */
-const RULE_REFERENCE = /\brules?\s+\d{3}(?:\.[0-9a-z]+)*/giu
+const RULE_ID = /\d{3}(?:\.[0-9a-z]+)*/giu
+const GENERIC_RULE_REFERENCE = /\brules?\s+\d{3}(?:\.[0-9a-z]+)*/giu
+const TOURNAMENT_CR_REFERENCE = /\bCR\s+\d{3}(?:\.[0-9a-z]+)*/giu
+const TOURNAMENT_CUED_REFERENCE =
+	/\b(?:see(?:\s+rule)?|section|steps?|proceed to|process of|described in|except for|perform|listed (?:under|in)|qualifies for|meets?)\s+\d{3}(?:\.[0-9a-z]+)*(?:\.?\s*(?:-|–|—|and|or)\s*\d{3}(?:\.[0-9a-z]+)*)*/giu
 
 /**
- * Replace rule-number references with a placeholder. A rule whose only change is such a reference
- * (e.g. "See rule 476" → "See rule 481" because the referenced rule itself was renumbered) then
- * compares equal, so it can be treated as noise rather than a content change.
+ * Replace IDs in recognizable rule-reference expressions with a placeholder. A rule whose only
+ * change is such a reference then compares equal, without treating unrelated numbers as references.
  */
-function maskRuleReferences(text: string): string {
-	return text.replaceAll(RULE_REFERENCE, 'rule#')
+function maskRuleReferences(text: string, syntax: 'generic' | 'tournament'): string {
+	const maskIds = (reference: string) => reference.replaceAll(RULE_ID, 'rule#')
+	const masked = text.replaceAll(GENERIC_RULE_REFERENCE, maskIds)
+	if (syntax === 'generic') return masked
+	return masked.replaceAll(TOURNAMENT_CR_REFERENCE, maskIds).replaceAll(TOURNAMENT_CUED_REFERENCE, maskIds)
 }
 
 function splitWords(text: string): string[] {
@@ -236,6 +242,7 @@ export function diffRuleSets(
 		hideRenumbering = true,
 		hideReferenceOnlyChanges = true,
 		prioritizeTextSimilarity = false,
+		referenceSyntax = 'generic',
 	}: DiffOptions = {},
 ): DiffEntry[] {
 	const oldText = oldRules.map((rule) => normalizedText(rule))
@@ -273,7 +280,7 @@ export function diffRuleSets(
 					oldNorm !== newNorm &&
 					hideReferenceOnlyChanges &&
 					(oldRule.id === newRule.id || hideRenumbering) &&
-					maskRuleReferences(oldNorm) === maskRuleReferences(newNorm)
+					maskRuleReferences(oldNorm, referenceSyntax) === maskRuleReferences(newNorm, referenceSyntax)
 				) {
 					continue
 				}
