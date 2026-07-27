@@ -10,8 +10,8 @@ import { CrdVersionCallout } from '@/components/core-rules/version-callout'
 import { submitPageFeedback } from '@/features/feedback/actions'
 import { Feedback } from '@/features/feedback/feedback'
 import { buildRulingRelationIndex, getRulingRelations } from '@/lib/content/ruling-relations'
-import { getPageImage, source } from '@/lib/content/source'
-import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site'
+import { getPageDescription, getPageImage, source } from '@/lib/content/source'
+import { SITE_NAME, SITE_URL } from '@/lib/site'
 import { getMDXComponents } from '@/mdx-components'
 
 const rulingRelationIndex = buildRulingRelationIndex(source.getPages())
@@ -55,15 +55,11 @@ export async function generateMetadata(props: PageProps<'/[[...slug]]'>): Promis
 	const page = source.getPage(params.slug)
 	if (!page) notFound()
 
-	const description =
-		page.data.description ||
-		(page.data.title ? `FAQ and rules reference for ${page.data.title} in Riftbound` : SITE_DESCRIPTION)
-
 	const url = new URL(page.url, SITE_URL).toString()
 
 	return {
 		title: page.data.title,
-		description,
+		description: getPageDescription(page),
 		robots: page.data.noindex ? { index: false, follow: true } : undefined,
 		alternates: { canonical: url },
 		openGraph: {
