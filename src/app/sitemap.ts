@@ -1,9 +1,9 @@
 import type { MetadataRoute } from 'next'
 import { source } from '@/lib/content/source'
-import { baseUrl } from '@/lib/metadata'
+import { SITE_URL } from '@/lib/site'
 
 function buildUrl(path: string): string {
-	return new URL(path, baseUrl).toString()
+	return new URL(path, SITE_URL).toString()
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {

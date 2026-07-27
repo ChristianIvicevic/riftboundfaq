@@ -12,7 +12,7 @@ import { submitPageFeedback } from '@/features/feedback/actions'
 import { Feedback } from '@/features/feedback/feedback'
 import { buildRulingRelationIndex, getRulingRelations } from '@/lib/content/ruling-relations'
 import { getPageImage, source } from '@/lib/content/source'
-import { baseUrl } from '@/lib/metadata'
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site'
 import { getMDXComponents } from '@/mdx-components'
 
 const rulingRelationIndex = buildRulingRelationIndex(source.getPages())
@@ -64,11 +64,9 @@ export async function generateMetadata(props: PageProps<'/[[...slug]]'>): Promis
 
 	const description =
 		page.data.description ||
-		(page.data.title
-			? `FAQ and rules reference for ${page.data.title} in Riftbound`
-			: 'Community-driven FAQ for Riftbound judges and players')
+		(page.data.title ? `FAQ and rules reference for ${page.data.title} in Riftbound` : SITE_DESCRIPTION)
 
-	const url = new URL(page.url, baseUrl).toString()
+	const url = new URL(page.url, SITE_URL).toString()
 
 	return {
 		title: page.data.title,
@@ -77,7 +75,7 @@ export async function generateMetadata(props: PageProps<'/[[...slug]]'>): Promis
 		alternates: { canonical: url },
 		openGraph: {
 			type: 'website',
-			siteName: 'Riftbound FAQ',
+			siteName: SITE_NAME,
 			url,
 			images: getPageImage(page).url,
 		},

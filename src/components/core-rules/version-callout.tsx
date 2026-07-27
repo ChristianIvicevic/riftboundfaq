@@ -1,5 +1,5 @@
 import { Callout } from 'fumadocs-ui/components/callout'
-import { CURRENT_CRD_VERSION } from '@/lib/constants'
+import { CURRENT_CRD_VERSION } from '@/lib/rules/links'
 
 export function CrdVersionCallout({ crdVersion }: { crdVersion: string }) {
 	return (

@@ -1,6 +1,6 @@
 import { Images, PencilLine } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
-import { GITHUB_REPO_URL } from '@/lib/constants'
+import { GITHUB_REPO_URL } from '@/lib/site'
 
 export function CardGalleryLink(props: { href: string }) {
 	return (

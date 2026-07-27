@@ -4,16 +4,16 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import { RootProvider } from 'fumadocs-ui/provider/next'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { baseUrl } from '@/lib/metadata'
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site'
 
 export const metadata: Metadata = {
-	metadataBase: baseUrl,
-	applicationName: 'Riftbound FAQ',
+	metadataBase: SITE_URL,
+	applicationName: SITE_NAME,
 	title: {
-		default: 'Riftbound FAQ',
-		template: '%s | Riftbound FAQ',
+		default: SITE_NAME,
+		template: `%s | ${SITE_NAME}`,
 	},
-	description: 'Community-driven FAQ for Riftbound judges and players',
+	description: SITE_DESCRIPTION,
 }
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' })
