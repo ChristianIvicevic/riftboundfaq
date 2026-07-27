@@ -1,13 +1,7 @@
-'use client'
-
-import { use } from 'react'
-import { CrdVersionContext } from '@/components/core-rules/version'
 import { RULES_BY_ID } from '@/generated/rules/core-rules'
 import { ruleHref } from '@/lib/constants'
 
-export function Rule({ number }: { number: string }) {
-	const { crdVersion } = use(CrdVersionContext)
-
+export function Rule({ number, crdVersion }: { number: string; crdVersion?: string }) {
 	if (!crdVersion) {
 		return <sup className="text-nowrap text-fd-muted-foreground">[{number}]</sup>
 	}

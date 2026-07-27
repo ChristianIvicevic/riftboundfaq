@@ -1,5 +1,6 @@
 import defaultMdxComponents from 'fumadocs-ui/mdx'
 import type { MDXComponents } from 'mdx/types'
+import type { ComponentProps } from 'react'
 import { submitBlockFeedback } from '@/actions/feedback'
 import { Card } from '@/components/cards/card'
 import { CoreRulesDiff } from '@/components/core-rules/diff-view'
@@ -17,7 +18,6 @@ const wikiMdxComponents = {
 	Tiles: defaultMdxComponents.Cards,
 	Tile: defaultMdxComponents.Card,
 	Card,
-	Rule,
 	CoreRulesTable,
 	CoreRulesDiff,
 	TournamentRulesTable,
@@ -29,9 +29,12 @@ const wikiMdxComponents = {
 	FeedbackBlock: (props) => <FeedbackBlock {...props} onSendAction={submitBlockFeedback} />,
 } satisfies MDXComponents
 
-export function getMDXComponents(a: NonNullable<MDXComponents['a']>): MDXComponents {
+export function getMDXComponents(a: NonNullable<MDXComponents['a']>, crdVersion?: string): MDXComponents {
 	return {
 		...wikiMdxComponents,
 		a,
+		Rule: (props: Omit<ComponentProps<typeof Rule>, 'crdVersion'>) => (
+			<Rule {...props} crdVersion={crdVersion} />
+		),
 	}
 }
