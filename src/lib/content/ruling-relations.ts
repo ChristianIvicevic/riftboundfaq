@@ -14,27 +14,37 @@ type RelationPage = {
 }
 
 export type RulingPageReference = {
-	title: string
-	url: string
+	readonly title: string
+	readonly url: string
 }
 
 export type ResolvedRulingRelation = {
-	question: string
-	canonicalTitle: string
-	canonicalUrl: string
-	participantPages: RulingPageReference[]
+	readonly question: string
+	readonly canonicalTitle: string
+	readonly canonicalUrl: string
+	readonly participantPages: readonly RulingPageReference[]
 }
 
 export type PageRulingRelations = {
+	readonly owned: readonly ResolvedRulingRelation[]
+	readonly incoming: readonly ResolvedRulingRelation[]
+}
+
+type MutablePageRulingRelations = {
 	owned: ResolvedRulingRelation[]
 	incoming: ResolvedRulingRelation[]
 }
 
-const EMPTY_RELATIONS: PageRulingRelations = { owned: [], incoming: [] }
+const EMPTY_RELATIONS: PageRulingRelations = Object.freeze({
+	owned: Object.freeze([]),
+	incoming: Object.freeze([]),
+})
 
-export function buildRulingRelationIndex(pages: readonly RelationPage[]) {
+export function buildRulingRelationIndex(
+	pages: readonly RelationPage[],
+): ReadonlyMap<string, PageRulingRelations> {
 	const pagesByUrl = new Map(pages.map((page) => [page.url, page]))
-	const index = new Map<string, PageRulingRelations>()
+	const index = new Map<string, MutablePageRulingRelations>()
 
 	const getPageRelations = (url: string) => {
 		let relations = index.get(url)
@@ -91,6 +101,9 @@ export function buildRulingRelationIndex(pages: readonly RelationPage[]) {
 	return index
 }
 
-export function getRulingRelations(index: ReadonlyMap<string, PageRulingRelations>, pageUrl: string) {
+export function getRulingRelations(
+	index: ReadonlyMap<string, PageRulingRelations>,
+	pageUrl: string,
+): PageRulingRelations {
 	return index.get(pageUrl) ?? EMPTY_RELATIONS
 }
