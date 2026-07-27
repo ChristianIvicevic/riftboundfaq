@@ -5,18 +5,16 @@ import type { FeedbackBlockProps } from 'fumadocs-core/mdx-plugins/remark-feedba
 import { CornerDownRightIcon, MessageSquare, ThumbsDown, ThumbsUp } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { ReactNode, type SyntheticEvent, useEffect, useEffectEvent, useState, useTransition } from 'react'
-import { z } from 'zod/mini'
-import {
-	actionResponse,
-	blockFeedback,
-	pageFeedback,
-	type ActionResponse,
-	type BlockFeedback,
-	type PageFeedback,
-} from '@/components/feedback/schema'
 import { buttonVariants } from '@/components/ui/button'
 import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import {
+	blockFeedback,
+	MAX_FEEDBACK_MESSAGE_LENGTH,
+	pageFeedback,
+	type BlockFeedback,
+	type PageFeedback,
+} from '@/features/feedback/schema'
 import { cn } from '@/lib/cn'
 
 const rateButtonVariants = cva(
@@ -31,17 +29,10 @@ const rateButtonVariants = cva(
 	},
 )
 
-const pageFeedbackResult = z.extend(pageFeedback, { response: actionResponse })
-const blockFeedbackResult = z.extend(blockFeedback, { response: actionResponse })
-
-export function Feedback({
-	onSendAction,
-}: {
-	onSendAction(feedback: PageFeedback): Promise<ActionResponse>
-}) {
+export function Feedback({ onSendAction }: { onSendAction(feedback: PageFeedback): Promise<void> }) {
 	const url = usePathname()
 	const { previous, setPrevious } = useSubmissionStorage(url, (v) => {
-		const result = pageFeedbackResult.safeParse(v)
+		const result = pageFeedback.safeParse(v)
 		return result.success ? result.data : null
 	})
 	const [opinion, setOpinion] = useState<'good' | 'bad' | null>(null)
@@ -55,8 +46,8 @@ export function Feedback({
 		startTransition(async () => {
 			const feedback: PageFeedback = { url, opinion, message }
 
-			const response = await onSendAction(feedback)
-			setPrevious({ response, ...feedback })
+			await onSendAction(feedback)
+			setPrevious(feedback)
 			setMessage('')
 			setOpinion(null)
 		})
@@ -118,13 +109,15 @@ export function Feedback({
 						<textarea
 							autoFocus
 							required
+							maxLength={MAX_FEEDBACK_MESSAGE_LENGTH}
 							value={message}
 							onChange={(e) => setMessage(e.target.value)}
 							className="resize-none rounded-lg border bg-fd-secondary p-3 text-fd-secondary-foreground placeholder:text-fd-muted-foreground focus-visible:outline-none"
 							placeholder="Leave your feedback..."
 							onKeyDown={(e) => {
 								if (!e.shiftKey && e.key === 'Enter') {
-									submit(e)
+									e.preventDefault()
+									e.currentTarget.form?.requestSubmit()
 								}
 							}}
 						/>
@@ -148,13 +141,13 @@ export function FeedbackBlock({
 	onSendAction,
 	children,
 }: FeedbackBlockProps & {
-	onSendAction(feedback: BlockFeedback): Promise<ActionResponse>
+	onSendAction(feedback: BlockFeedback): Promise<void>
 	children: ReactNode
 }) {
 	const url = usePathname()
 	const blockId = `${url}-${id}`
 	const { previous, setPrevious } = useSubmissionStorage(blockId, (v) => {
-		const result = blockFeedbackResult.safeParse(v)
+		const result = blockFeedback.safeParse(v)
 		if (result.success) return result.data
 		return null
 	})
@@ -166,8 +159,8 @@ export function FeedbackBlock({
 		startTransition(async () => {
 			const feedback: BlockFeedback = { blockId, blockBody: body, url, message }
 
-			const response = await onSendAction(feedback)
-			setPrevious({ response, ...feedback })
+			await onSendAction(feedback)
+			setPrevious(feedback)
 			setMessage('')
 		})
 
@@ -186,7 +179,7 @@ export function FeedbackBlock({
 				<PopoverTrigger
 					className={cn(
 						buttonVariants({ variant: 'secondary', size: 'sm' }),
-						'absolute end-0 -top-7 gap-1.5 text-fd-muted-foreground backdrop-blur-sm transition-all duration-100 data-[state=open]:bg-fd-accent data-[state=open]:text-fd-accent-foreground',
+						'absolute inset-e-0 -top-7 gap-1.5 text-fd-muted-foreground backdrop-blur-sm transition-all duration-100 data-[state=open]:bg-fd-accent data-[state=open]:text-fd-accent-foreground',
 						!open &&
 							'pointer-events-none opacity-0 group-hover/feedback:pointer-events-auto group-hover/feedback:opacity-100 group-hover/feedback:delay-100 hover:pointer-events-auto hover:opacity-100 hover:delay-100',
 					)}
@@ -223,13 +216,15 @@ export function FeedbackBlock({
 						<textarea
 							autoFocus
 							required
+							maxLength={MAX_FEEDBACK_MESSAGE_LENGTH}
 							value={message}
 							onChange={(e) => setMessage(e.target.value)}
 							className="resize-none rounded-lg border bg-fd-secondary p-3 text-fd-secondary-foreground placeholder:text-fd-muted-foreground focus-visible:outline-none"
 							placeholder="Leave your feedback..."
 							onKeyDown={(e) => {
 								if (!e.shiftKey && e.key === 'Enter') {
-									submit(e)
+									e.preventDefault()
+									e.currentTarget.form?.requestSubmit()
 								}
 							}}
 						/>
@@ -256,9 +251,14 @@ function useSubmissionStorage<Result>(blockId: string, validate: (v: unknown) =>
 	useEffect(() => {
 		const item = localStorage.getItem(storageKey)
 		if (item === null) return
-		const validated = validateCallback(JSON.parse(item))
 
-		if (validated !== null) setValue(validated)
+		try {
+			const validated = validateCallback(JSON.parse(item))
+			if (validated === null) localStorage.removeItem(storageKey)
+			else setValue(validated)
+		} catch {
+			localStorage.removeItem(storageKey)
+		}
 	}, [storageKey])
 
 	return {

@@ -2,16 +2,13 @@
 
 import { after } from 'next/server'
 import { PostHog } from 'posthog-node'
-import { type ActionResponse, BlockFeedback, PageFeedback } from '@/components/feedback/schema'
 import { env } from '@/env'
+import { blockFeedback, pageFeedback } from '@/features/feedback/schema'
 
-async function captureAnalyticsEvent(
-	eventName: string,
-	properties: Record<string, unknown>,
-): Promise<ActionResponse> {
+async function captureAnalyticsEvent(eventName: string, properties: Record<string, unknown>) {
 	if (!env.POSTHOG_API_KEY) {
 		console.warn('POSTHOG_API_KEY is missing. Feedback analytics will not be captured.')
-		return {}
+		return
 	}
 
 	const client = new PostHog(env.POSTHOG_API_KEY, { host: 'https://us.i.posthog.com' })
@@ -27,14 +24,18 @@ async function captureAnalyticsEvent(
 	after(async () => {
 		await client.shutdown()
 	})
-
-	return {}
 }
 
-export async function submitPageFeedback(feedback: PageFeedback): Promise<ActionResponse> {
-	return captureAnalyticsEvent('page feedback submitted', feedback)
+export async function submitPageFeedback(input: unknown) {
+	const result = pageFeedback.safeParse(input)
+	if (!result.success) throw new Error('Invalid page feedback')
+
+	await captureAnalyticsEvent('page feedback submitted', result.data)
 }
 
-export async function submitBlockFeedback(feedback: BlockFeedback): Promise<ActionResponse> {
-	return captureAnalyticsEvent('block feedback submitted', feedback)
+export async function submitBlockFeedback(input: unknown) {
+	const result = blockFeedback.safeParse(input)
+	if (!result.success) throw new Error('Invalid block feedback')
+
+	await captureAnalyticsEvent('block feedback submitted', result.data)
 }
