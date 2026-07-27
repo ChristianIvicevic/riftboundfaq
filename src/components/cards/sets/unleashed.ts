@@ -224,4 +224,4 @@ export const UNLEASHED_CARDS = {
 	'Trapping Grounds': '#card-gallery--unl-217-219',
 	'Valley of Idols': '#card-gallery--unl-218-219',
 	'Vaults of Helia': '#card-gallery--unl-219-219',
-}
+} satisfies Record<string, string>

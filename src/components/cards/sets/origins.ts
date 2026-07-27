@@ -297,4 +297,4 @@ export const ORIGINS_CARDS = {
 	'Void Gate': '#card-gallery--ogn-296-298',
 	'Windswept Hillock': '#card-gallery--ogn-297-298',
 	'Zaun Warrens': '#card-gallery--ogn-298-298',
-}
+} satisfies Record<string, string>

@@ -165,4 +165,4 @@ export const VENDETTA_CARDS = {
 	'Sandswept Tomb': '#card-gallery--ven-164-166',
 	'Shadow Temple': '#card-gallery--ven-165-166',
 	'Threshold of the Gray': '#card-gallery--ven-166-166',
-}
+} satisfies Record<string, string>
