@@ -2,12 +2,11 @@ import { DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/layouts/docs/p
 import { createRelativeLink } from 'fumadocs-ui/mdx'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { Authors } from '@/components/authors'
-import { CardGalleryLink, EditThisPageLink } from '@/components/buttons'
-import { CopyableDocsBody } from '@/components/copyable-docs-body'
+import { CopyableDocsBody } from '@/app/(wiki)/[[...slug]]/_components/copyable-docs-body'
+import { PageActions } from '@/app/(wiki)/[[...slug]]/_components/page-actions'
+import { PageAttribution } from '@/app/(wiki)/[[...slug]]/_components/page-attribution'
+import { RelatedRulings } from '@/app/(wiki)/[[...slug]]/_components/related-rulings'
 import { CrdVersionCallout } from '@/components/core-rules/version-callout'
-import { LastUpdated } from '@/components/last-updated'
-import { RelatedRulings } from '@/components/related-rulings'
 import { submitPageFeedback } from '@/features/feedback/actions'
 import { Feedback } from '@/features/feedback/feedback'
 import { buildRulingRelationIndex, getRulingRelations } from '@/lib/content/ruling-relations'
@@ -35,20 +34,14 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 		>
 			<DocsTitle>{page.data.title}</DocsTitle>
 			<DocsDescription className="mb-0">{page.data.description}</DocsDescription>
-			<div className="flex flex-row flex-wrap items-center gap-2 border-b pb-6">
-				{page.data.galleryLink && <CardGalleryLink href={page.data.galleryLink} />}
-				<EditThisPageLink filePath={page.path} />
-			</div>
+			<PageActions galleryLink={page.data.galleryLink} filePath={page.path} />
 			{page.data.crdVersion && <CrdVersionCallout crdVersion={page.data.crdVersion} />}
 			<CopyableDocsBody>
 				<MDX components={getMDXComponents(createRelativeLink(source, page), page.data.crdVersion)} />
 			</CopyableDocsBody>
 			<RelatedRulings relations={rulingRelations} />
 			<Feedback onSendAction={submitPageFeedback} />
-			<div className="flex gap-1 pt-2">
-				{authors.length > 0 && <Authors authors={authors} />}
-				{page.data.lastModified && <LastUpdated value={page.data.lastModified} />}
-			</div>
+			<PageAttribution authors={authors} lastModified={page.data.lastModified} />
 		</DocsPage>
 	)
 }
