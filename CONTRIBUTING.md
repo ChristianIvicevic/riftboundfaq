@@ -81,7 +81,7 @@ Mechanic and general-rules pages use the same fields except `galleryLink`.
 - Write one sentence per source line and keep related sentences together without blank lines
 - Use clear, concise language and stay neutral: focus on rules, not strategy
 - Lowercase generic game terms; preserve capitalization in exact quotations and named turn phases or steps
-- Use MDX components such as `<Card />`, `<Rule />`, keyword badges, resource symbols, and `<Callout />` instead of recreating their formatting
+- Use MDX components such as `<Card />`, `<Rule />`, game-term badges, resource symbols, and `<Callout />` instead of recreating their formatting
 - If the current Core Rules do not fully support a ruling, disclose the gap with a warning callout rather than overstating a citation
 
 ### Placing and Connecting Rulings
@@ -147,6 +147,7 @@ pnpm build        # Generate rule data and build for production
 
 - Follow code style enforced by Oxfmt and Oxlint
 - Write TypeScript with proper types
+- Keep route-private components beside their route under `src/app/`, feature-owned code under `src/features/`, reusable presentation under `src/components/`, and shared infrastructure under `src/lib/`
 - Do not hand-edit generated files under `src/generated/rules/`
 - Run `pnpm rules:generate` after changing a rule source or `sources/rules-manifest.json`
 - Test locally before submitting
