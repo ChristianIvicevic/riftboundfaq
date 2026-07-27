@@ -1,4 +1,4 @@
-import type { RuleReference } from '@/components/rules/types'
+import type { RuleReference } from '@/lib/rules/types'
 
 const RULE_REFERENCE = /\brules?\s+(\d{3}(?:\.[0-9a-z]+)*)/giu
 
