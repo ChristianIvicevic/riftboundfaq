@@ -1,4 +1,4 @@
-import type { RulingRelationDefinitions } from './ruling-relations-schema'
+import type { RulingRelationDefinitions } from '@/lib/content/ruling-relations-schema'
 
 type RelationPage = {
 	url: string
