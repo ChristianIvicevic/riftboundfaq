@@ -4,7 +4,7 @@ import { docs } from 'fumadocs-mdx:collections/server'
 import { Badge } from '@/components/ui/badge'
 import { SITE_DESCRIPTION } from '@/lib/site'
 
-const NEW_PAGE_WINDOW_MS = 30 * 24 * 60 * 60 * 1000
+const NEW_PAGE_WINDOW_MS = 21 * 24 * 60 * 60 * 1000
 const BUILD_TIMESTAMP = Date.now()
 
 function isNewPage(createdAt?: string) {
