@@ -78,7 +78,7 @@ export function RulesTable({
 						return (
 							<tr key={rule.id}>
 								<td className="align-top whitespace-nowrap">
-									<RuleAnchor id={`R${rule.id}`}>{rule.id}</RuleAnchor>
+									<RuleAnchor id={`R${rule.id}`}>{rule.id}.</RuleAnchor>
 								</td>
 								<td>{level > 0 ? <Indent level={level}>{lines}</Indent> : lines}</td>
 							</tr>

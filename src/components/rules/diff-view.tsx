@@ -18,7 +18,7 @@ function RuleLink({ href, label, ruleId }: { href: string; label: string; ruleId
 		<>
 			<div className="text-xs font-medium text-fd-muted-foreground sm:hidden">{label}</div>
 			<a href={href} rel="noopener noreferrer" target="_blank" className="text-nowrap no-underline">
-				<strong className="font-bold">{ruleId}</strong>
+				<strong className="font-bold">{ruleId}.</strong>
 			</a>
 		</>
 	)
