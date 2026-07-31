@@ -1,0 +1,55 @@
+---
+title: "Empower"
+createdAt: "2026-08-01"
+crdVersion: "1.4"
+authors:
+- "Christian I. (Near)"
+---
+
+## Can opponents react to an Empower ability? [#empower-reactions]
+
+Yes.
+<Empower /> is an activated ability keyword,<Rule number="827.1" /> and activated abilities use the chain.<Rule number="377.3" />
+After the ability is finalized, opponents have an opportunity to react before it resolves.<Rule number="377.3.b.2" />
+
+This differs from activated abilities that use <Add />, which resolve immediately when finalized and cannot be reacted to.<Rule number="337.2" /><Rule number="429.2" />
+See also [Can I react to triggered and activated abilities?](/general-rules/abilities#ability-reactions).
+
+## When can I activate an Empower ability? [#empower-timing]
+
+By default, only during your own Main Phase while the turn is in a neutral open state.
+
+An <Empower /> ability is an activated ability,<Rule number="827.1" /> and activated abilities can normally be activated only on their controller's turn during an open state.<Rule number="381" />
+Because <Empower /> has neither <Action /> nor <Reaction /> by default, it cannot be activated during a showdown or in response to another chain item.<Rule number="308.1.a" /><Rule number="309.1.a" />
+
+An <Empower /> ability may have text that changes its timing.<Rule number="827.1.c.4" />
+If it explicitly has <Action /> or <Reaction />, follow the permissions of that keyword instead.
+
+## Does a "When I become Empowered" ability trigger if the unit leaves the board before its Empower ability resolves? [#removed-source-trigger]
+
+No.
+If the unit is killed, returned to hand, or otherwise leaves the board before its <Empower /> ability resolves, it does not become <Empowered /> and its "When I become <Empowered />" ability does not trigger.
+
+The <Empower /> ability remains on the chain, but the <Empowered /> state exists only for game objects on the board.<Rule number="441.2" />
+Because triggered abilities of permanents can evaluate their conditions only while their source is on the board, its dependent "When I become <Empowered />" ability is not active and does not trigger.<Rule number="384.2" /><Rule number="828.1.c" /><Rule number="828.1.d" />
+
+<Callout type="idea" title="Example">
+	A player activates <Card name="Mel, Defiant Soul" />'s <Empower /> ability by discarding a spell.
+	An opponent responds with <Card name="Star-Crossed" /> and returns Mel to her owner's hand.
+	When the <Empower /> ability resolves, Mel is no longer a game object on the board and does not become <Empowered />.
+	Her "When I become <Empowered />" ability does not trigger, so no enemy unit is banished.
+</Callout>
+
+## Can a unit or gear without an Empower or Empowered ability become Empowered? [#empower-other-objects]
+
+Yes, if a game effect instructs a player to empower it.
+
+The <Empowered /> state can apply to game objects on the board; it is not restricted to cards with printed <Empower /> or <Empowered /> abilities.<Rule number="441.1" /><Rule number="441.2" />
+Players cannot empower a game object at will, however; they may do so only when directed by a game effect.<Rule number="441.3" /><Rule number="441.3.a" />
+
+<Callout type="idea" title="Examples">
+	<Card name="Sanction" /> can empower any unit that is a legal choice, even if that unit has no printed reference to <Empower /> or <Empowered />.
+	Once that unit is <Empowered />, effects such as <Card name="Aurok General" />'s ability can identify and affect it normally.
+
+	<Card name="Hextech Formula" /> can empower another gear, even if that gear has no printed reference to <Empower /> or <Empowered />.
+</Callout>
