@@ -18,6 +18,7 @@ export const TERM_DEFINITIONS = {
 	Equip: { label: 'Equip', variant: 'tertiary' },
 	Empower: { label: 'Empower', variant: 'tertiary' },
 	Empowered: { label: 'Empowered', variant: 'secondary' },
+	Flow: { label: 'Flow', variant: 'primary', hasValue: true },
 	Hidden: { label: 'Hidden', variant: 'primary' },
 	Legion: { label: 'Legion', variant: 'primary' },
 	Mighty: { label: 'Mighty', variant: 'tertiary' },

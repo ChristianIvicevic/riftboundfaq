@@ -1,0 +1,45 @@
+---
+title: "Flow"
+createdAt: "2026-08-01"
+crdVersion: "1.4"
+authors:
+- "Christian I. (Near)"
+---
+
+## When can I play a spell using Flow? [#play-timing]
+
+You can play it only when its existing timing restrictions allow.
+
+<Flow /> lets you play the spell from your trash for its <Flow /> cost, but it changes no other permissions or timing restrictions.<Rule number="829.1.b" /><Rule number="829.1.b.2" />
+For example, <Flow /> does not grant a spell <Reaction /> or let you play an <Action /> outside its normal timing.
+
+## Where does a spell played using Flow go if it is countered? [#countered-destination]
+
+It is banished unless another replacement effect changes that result.
+
+Countering clears the spell from the chain and would normally put it in the trash.<Rule number="425.1.a" /><Rule number="425.1.a.1" />
+However, playing a spell using <Flow /> creates a delayed replacement effect that banishes it if it would leave the chain after becoming finalized, unless its own execution instructed it to leave.<Rule number="829.1.b.1" />
+Being countered meets those conditions, so the <Flow /> replacement effect banishes the spell instead of letting it go to the trash.
+
+## Can Defy counter a spell whose Flow cost exceeds Defy's limit? [#printed-cost]
+
+Yes, provided the spell's printed cost meets Defy's restrictions.
+
+<Card name="Defy" /> checks the cost of its target, and effects that determine a card's cost always use its printed or copied cost rather than the amount actually paid.<Rule number="206" />
+A <Flow /> cost is an alternate cost that replaces the spell's base cost during finalization,<Rule number="829.1.c.1" /> but it does not change the printed cost that Defy checks.
+
+<Callout type="idea" title="Example">
+	<Card name="Lacerate" /> has a printed cost of <Energy value={2} /><Order /> and a <Flow /> cost of <Energy value={4} /><Order /><Order />.
+	Defy can counter it because Defy checks the printed cost, not the <Flow /> cost paid.
+</Callout>
+
+## Where does a Flow spell countered by Abandon go? [#abandon-destination]
+
+It is banished rather than returned to its owner's hand.
+
+<Card name="Abandon" /> replaces putting the countered spell in the trash with returning it to its owner's hand, while <Flow /> replaces the spell leaving the chain with banishing it.<Rule number="425.1.a.1" /><Rule number="829.1.b.1" />
+Because both replacement effects apply to the affected spell's departure from the chain, that spell's controller chooses their order.<Rule number="372" />
+
+The result is the same in either order.
+If <Flow /> applies first, the spell is banished instead of going to the trash, so Abandon no longer has a qualifying event to replace.
+If Abandon applies first, it still replaces the original event with the spell leaving the chain for its owner's hand, so <Flow /> applies to that replacement event and banishes the spell instead.<Rule number="370.2" />
