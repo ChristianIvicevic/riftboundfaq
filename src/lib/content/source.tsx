@@ -10,7 +10,7 @@ const BUILD_TIMESTAMP = Date.now()
 function isNewPage(createdAt?: string) {
 	if (!createdAt) return false
 	const age = BUILD_TIMESTAMP - Date.parse(createdAt)
-	return age >= 0 && age < NEW_PAGE_WINDOW_MS
+	return age < NEW_PAGE_WINDOW_MS
 }
 
 export const source = loader({
