@@ -52,6 +52,16 @@ If it moves elsewhere on the board but remains a friendly unit, it is still a le
 If the target changes to a non-board zone, stops being a unit, or stops being friendly, it is illegal as Alpha Strike resolves.<Rule number="359.3.e.2" />
 Alpha Strike still resolves, but the illegal target is unaffected and the "its Might" referent returns null, so the related damage instruction is ignored.<Rule number="359.3.e.5" /><Rule number="359.3.e.12" /><Rule number="359.3.f.2.a" />
 
+## What if a chosen enemy unit leaves a battlefield or becomes illegal before Alpha Strike resolves? [#illegal-enemy-target]
+
+It receives no damage from Alpha Strike.
+
+Each chosen enemy unit must still be an enemy unit at a battlefield when Alpha Strike resolves.
+If one moves to base or otherwise stops meeting those requirements, it is an illegal target and is unaffected by the spell.<Rule number="359.3.e.2" /><Rule number="359.3.e.5" />
+
+Alpha Strike still distributes its damage among any remaining legal enemy targets.<Rule number="359.3.e.8" />
+If every chosen enemy unit is illegal, the damage instruction does not execute.<Rule number="359.3.e.7" />
+
 ## What if my unit's might is reduced before Alpha Strike resolves? [#might-reduction]
 
 If the friendly unit's might is reduced between finalization and resolution, the total damage pool shrinks accordingly.
