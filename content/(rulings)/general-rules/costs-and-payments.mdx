@@ -40,14 +40,21 @@ Their rules text uses both "may" and the exact phrase "as an additional cost."
 The player chooses whether to pay an optional additional cost while making relevant choices.
 If chosen, it is included while determining the card's total cost before applicable discounts are applied.<Rule number="355.1.a" /><Rule number="356.2" /><Rule number="356.4" />
 
-## What costs still apply when I play a card ignoring its cost? [#ignored-costs]
+## What costs still apply when I play a card ignoring one or more of its costs? [#ignored-costs]
 
 Additional costs and cost increases still apply.
-Playing a card "ignoring its cost" sets only its base energy and power costs to zero.<Rule number="356.1.b.1" />
+Playing a card "ignoring its cost" sets only its base energy and power costs to zero, while ignoring only its energy or power cost sets only that base cost to zero.<Rule number="356.1.b.1" /><Rule number="356.1.b.2" />
 Additional costs and cost increases are applied afterward and can raise its total cost above zero.<Rule number="356.1.b.3" />
 
 Mandatory additional costs must still be paid, while optional additional costs may still be chosen and paid.<Rule number="356.2.a.1" /><Rule number="356.2.b.1" />
 By contrast, "ignoring any and all costs" sets the card's total cost to zero, including non-standard costs.<Rule number="356.5.a" />
+
+<Callout type="idea" title="Example">
+
+<Card name="Fizz, Trickster" /> sets the chosen spell's base energy cost to <Energy value={0} />.
+If an opponent controls <Card name="Helm of Suppression" />, Helm's cost increase is applied afterward, so the spell costs <Energy value={1} />, or <Energy value={1} /><Universal /> if Helm is <Empowered />.<Rule number="356.1.b.2" /><Rule number="356.1.b.3" /><Rule number="356.3" />
+
+</Callout>
 
 ## Can players react while costs are being paid? [#cost-reaction-window]
 
