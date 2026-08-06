@@ -36,6 +36,32 @@ Banishment is a non-board zone,<Rule number="056.1" /> and a game object that ch
 When the unit enters banishment, all temporary modifications and statuses on it are cleared.<Rule number="124.1" />
 This means effects such as <Card name="Stupefy" />'s might reduction no longer apply, and a unit that was <Empowered /> is no longer <Empowered /> when it is replayed.<Rule number="124.2" />
 
+## Does a replayed unit trigger its attack or defend ability again during the same combat? [#replayed-combat-triggers]
+
+Yes, if the unit is replayed to the battlefield where combat is in progress, its attack or defend ability can trigger again during that combat.
+
+The unit becomes a new game object when it enters banishment,<Rule number="124" /> so the new object has not yet had its attack or defend trigger condition checked during that combat.
+After the replayed unit enters the battlefield, the next cleanup gives it the same attacker or defender designation as its controller.<Rule number="323.2.a" />
+Gaining that designation causes its corresponding attack or defend ability to trigger.<Rule number="383.4.e" /><Rule number="383.4.f" />
+The normal once-per-combat limit does not prevent this trigger because it applied to the previous game object, not the newly replayed one.<Rule number="383.4.e.2.a" /><Rule number="383.4.f.2.a" />
+
+<Callout type="idea" title="Example">
+  <Card name="Ahri, Inquisitive" />'s "When I attack or defend" ability can trigger when she gains the defender designation at the start of combat.
+  After that ability resolves, Temporal Breach can banish and replay her to the same battlefield.
+  The replayed Ahri is a new game object and gains the defender designation during the next cleanup, triggering her ability a second time in the same combat.
+</Callout>
+
+## Does Ravenbloom Conservatory trigger again if Temporal Breach replays my only defending unit? [#ravenbloom-conservatory]
+
+No, <Card name="Ravenbloom Conservatory" /> does not trigger a second time during the same combat.
+
+Its "When you defend here" ability is tied to the defending player, not to any particular unit.
+When combat opens, the defending player and their units separately gain the defender designation,<Rule number="464.2.c.3" /> and defend triggers can check whether either a unit or player gained that designation.<Rule number="383.4.f" />
+
+Temporal Breach makes the replayed unit a new game object,<Rule number="124" /> but it does not make the defending player a new object or begin a new combat.
+The player keeps the defender designation until combat ends,<Rule number="466.7.a" /> so the replayed unit gaining that designation during cleanup does not cause the player to gain it again.
+Because Ravenbloom Conservatory's defend trigger has already checked its condition during this combat, it cannot trigger again.<Rule number="383.4.f.2.a" />
+
 ## If Temporal Breach banishes and replays my only unit at a battlefield, can I score there on my opponent's turn? [#score-on-opponents-turn]
 
 No, as control of the battlefield is never lost during this sequence.
