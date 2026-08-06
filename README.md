@@ -11,38 +11,47 @@ This resource helps judges and players quickly find answers about rules, card in
 - **Type Safety**: TypeScript 6
 - **Linting**: Oxlint
 - **Formatting**: Oxfmt
+- **Rules Extraction**: PDF.js
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js 24.18.0 (see `.nvmrc`)
-- pnpm 11.11.0 (see `packageManager` in `package.json`)
+- pnpm 11.17.0 (see `packageManager` in `package.json`)
 
 ### Installation
 
 ```bash
 pnpm install
-pnpm rules:generate  # Generate rule datasets from sources
-pnpm dev             # Start development server at http://localhost:3000
+pnpm rules:generate      # Generate rules data, reference pages, and local transcripts
+pnpm dev                 # Start development server at http://localhost:3000
 ```
+
+`pnpm install` runs `fumadocs-mdx` to create the ignored `.source/` collection data, but it does not generate rules artifacts.
+Run `pnpm rules:generate` after cloning and whenever rules PDFs or `sources/rules-manifest.json` change.
+The command processes every manifest-listed PDF into ignored runtime data under `src/generated/`, generates reference pages under `content/reference/` from `templates/reference/`, writes local transcripts for named Core Rules versions and every Tournament Rules version under `sources/`, and refreshes Fumadocs collection data.
+
+Environment configuration is optional for normal development.
+Set `POSTHOG_API_KEY` in `.env.local` only when local feedback events should be sent to PostHog; see `.env.example`.
 
 Use `pnpm build` followed by `pnpm start` to create and run a production build.
 
 ### Available Scripts
 
 ```bash
-pnpm build          # Generate rule datasets and build for production
-pnpm dev            # Start the development server
-pnpm format         # Format files with Oxfmt
-pnpm format:check   # Check formatting without changing files
-pnpm lint           # Run Oxlint
-pnpm lint:fix       # Run Oxlint and apply fixes
-pnpm lint:github    # Run CI linting with warnings treated as errors
-pnpm rules:generate # Generate rule datasets from sources
-pnpm start          # Run the production server
-pnpm test           # Run the Node.js test suite
-pnpm types:check    # Generate MDX/route types and run TypeScript checks
+pnpm build              # Generate rule datasets and build for production
+pnpm dev                # Start the development server
+pnpm format             # Format files with Oxfmt
+pnpm format:check       # Check formatting without changing files
+pnpm lint               # Run Oxlint
+pnpm lint:fix           # Run Oxlint and apply fixes
+pnpm lint:github        # Run CI linting with warnings treated as errors
+pnpm rules:generate     # Generate rules data, reference pages, transcripts, and Fumadocs data
+pnpm rules:inspect      # Inspect all or selected rules PDFs; add -- --json for JSON output
+pnpm start              # Run the production server
+pnpm test               # Run the Vitest suite once
+pnpm types:check        # Generate MDX/route types and run TypeScript checks
 ```
 
 ## Project Structure
@@ -56,16 +65,24 @@ riftboundfaq/
 │   │   └── mechanics/          # Per-keyword/mechanic pages
 │   └── reference/              # Core and Tournament Rules references
 ├── public/                     # Static assets
-├── scripts/                    # Rule parsers and dataset generator
-├── sources/                    # Versioned rules text, card text, and manifest
+├── scripts/                    # Unified rules commands and CR/TR extraction pipelines
+│   ├── core-rules/             # Core Rules extraction and generation
+│   └── tournament-rules/       # Tournament Rules extraction and generation
+├── sources/                    # Authoritative PDFs, card text, manifest, and ignored transcripts
 ├── src/                        # Next.js application source
 │   ├── app/                    # App Router routes, endpoints, and route-private UI
 │   ├── components/             # Reusable UI and rules/MDX presentation
-│   ├── features/               # Feature-owned UI, actions, and validation
-│   ├── generated/              # Generated rule datasets (not hand-edited)
+│   ├── features/               # Core Rules, Tournament Rules, and feedback features
+│   ├── generated/              # Ignored rules metadata and runtime datasets
 │   └── lib/                    # Content infrastructure, rules utilities, and site configuration
-└── tests/                      # Rules parsing, generation, diff, and relation tests
+├── tests/                      # Node.js tests, currently for ruling relations
+└── source.config.ts            # Fumadocs content schema and MDX configuration
 ```
+
+## Validation
+
+CI generates rules artifacts, checks formatting and linting, runs the Node.js tests and TypeScript checks, and creates a production build.
+The local commands are listed above; `pnpm build` regenerates rules artifacts before invoking Next.js.
 
 ## Contributing
 

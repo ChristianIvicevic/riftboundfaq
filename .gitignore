@@ -1,6 +1,9 @@
 .local
 .source
-src/generated/rules/
+content/reference/
+src/generated/
+sources/CR-v*.txt
+sources/Tournament-Rules-*.txt
 next-env.d.ts
 
 ### Intellij+all ###

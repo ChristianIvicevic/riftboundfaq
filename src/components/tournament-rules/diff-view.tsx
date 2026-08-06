@@ -1,9 +1,8 @@
 import { RulesDiffView } from '@/components/rules/diff-view'
-import { TOURNAMENT_RULES_VERSIONS } from '@/generated/rules/tournament-rules'
+import { prepareTournamentRulesDiff } from '@/features/tournament-rules/rule-records'
+import { PDF_TOURNAMENT_RULES_DOCUMENTS } from '@/generated/tournament-rules'
 import { diffRuleSets } from '@/lib/rules/diff'
 import { tournamentRuleHref } from '@/lib/rules/links'
-
-const VERSIONS = Object.keys(TOURNAMENT_RULES_VERSIONS).toSorted()
 
 function formatVersion(version: string) {
 	return new Intl.DateTimeFormat('en-US', {
@@ -13,33 +12,46 @@ function formatVersion(version: string) {
 	}).format(new Date(`${version}T00:00:00Z`))
 }
 
-type TournamentRulesDiffProps = {
-	from?: string
-	to?: string
-}
-
 export function TournamentRulesDiff({
-	from = VERSIONS.at(-2),
-	to = VERSIONS.at(-1),
-}: TournamentRulesDiffProps) {
-	const oldVersion = from ? TOURNAMENT_RULES_VERSIONS[from] : undefined
-	const newVersion = to ? TOURNAMENT_RULES_VERSIONS[to] : undefined
-	if (!oldVersion) throw new Error(`TournamentRulesDiff: unknown "from" version ${JSON.stringify(from)}`)
-	if (!newVersion) throw new Error(`TournamentRulesDiff: unknown "to" version ${JSON.stringify(to)}`)
+	from,
+	to,
+	includeChangeDescriptions = false,
+}: {
+	from: string
+	to: string
+	includeChangeDescriptions?: boolean
+}) {
+	const oldDocument = PDF_TOURNAMENT_RULES_DOCUMENTS[from]
+	const newDocument = PDF_TOURNAMENT_RULES_DOCUMENTS[to]
+	if (!oldDocument) throw new Error(`TournamentRulesDiff: unknown "from" version ${JSON.stringify(from)}`)
+	if (!newDocument) throw new Error(`TournamentRulesDiff: unknown "to" version ${JSON.stringify(to)}`)
+	const oldPreparation = prepareTournamentRulesDiff(oldDocument)
+	const newPreparation = prepareTournamentRulesDiff(newDocument)
+	const detailsByVersion = new Map([
+		[from, oldPreparation.details],
+		[to, newPreparation.details],
+	])
+	const getDetails = (ruleId: string, version: string) => {
+		const details = detailsByVersion.get(version)?.get(ruleId)
+		if (!details) throw new Error(`TournamentRulesDiff: unknown rule ${JSON.stringify(ruleId)}`)
+		return details
+	}
 
 	return (
 		<RulesDiffView
-			entries={diffRuleSets(oldVersion.rules, newVersion.rules, {
+			entries={diffRuleSets(oldPreparation.rules, newPreparation.rules, {
 				hideRenumbering: true,
 				hideReferenceOnlyChanges: true,
 				prioritizeTextSimilarity: true,
 				referenceSyntax: 'tournament',
 			})}
-			from={oldVersion.version}
-			to={newVersion.version}
-			fromLabel={formatVersion(oldVersion.version)}
-			toLabel={formatVersion(newVersion.version)}
-			ruleHref={tournamentRuleHref}
+			from={oldDocument.version}
+			to={newDocument.version}
+			fromLabel={formatVersion(oldDocument.version)}
+			toLabel={formatVersion(newDocument.version)}
+			includeChangeDescriptions={includeChangeDescriptions}
+			ruleHref={(ruleId, version) => tournamentRuleHref(getDetails(ruleId, version).anchor, version)}
+			ruleLabel={(ruleId, version) => getDetails(ruleId, version).label}
 		/>
 	)
 }
