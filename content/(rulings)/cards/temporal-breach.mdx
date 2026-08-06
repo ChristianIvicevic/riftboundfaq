@@ -29,7 +29,7 @@ This means effects such as <Card name="Stupefy" />'s might reduction no longer a
 
 ## What happens to equipment attached to a unit replayed by Temporal Breach? [#attached-equipment]
 
-The equipment does not remain attached to the replayed unit.
+The equipment detaches and remains at the unit's previous location because Temporal Breach moves the unit from the board to banishment.
 
 When Temporal Breach moves the unit from the board to banishment, all cards attached to that unit detach and remain at the unit's previous location.<Rule number="719.5" /><Rule number="435.4.b" />
 The replayed unit is a new game object,<Rule number="124" /> and nothing instructs the equipment to attach to it again.
@@ -39,9 +39,9 @@ If the unit was at a base, the equipment instead remains unattached at that base
 
 ## Does a replayed unit trigger its attack or defend ability again during the same combat? [#replayed-combat-triggers]
 
-Yes, if the unit is replayed to the battlefield where combat is in progress, its attack or defend ability can trigger again during that combat.
+Yes, if the unit is replayed to the battlefield where combat is in progress, its attack or defend ability can trigger again because it becomes a new game object.
 
-The unit becomes a new game object when it enters banishment,<Rule number="124" /> so the new object has not yet had its attack or defend trigger condition checked during that combat.
+The unit becomes a new game object when it enters banishment,<Rule number="124" /> and that new object has not yet had its attack or defend trigger condition checked during that combat.
 After the replayed unit enters the battlefield, the next cleanup gives it the same attacker or defender designation as its controller.<Rule number="323.2.a" />
 Gaining that designation causes its corresponding attack or defend ability to trigger.<Rule number="383.4.e" /><Rule number="383.4.f" />
 The normal once-per-combat limit does not prevent this trigger because it applied to the previous game object, not the newly replayed one.<Rule number="383.4.e.2.a" /><Rule number="383.4.f.2.a" />
@@ -54,7 +54,7 @@ The normal once-per-combat limit does not prevent this trigger because it applie
 
 ## Does Ravenbloom Conservatory trigger again if Temporal Breach replays my only defending unit? [#ravenbloom-conservatory]
 
-No, <Card name="Ravenbloom Conservatory" /> does not trigger a second time during the same combat.
+No, <Card name="Ravenbloom Conservatory" /> does not trigger a second time because replaying the unit does not cause the defending player to gain the defender designation again.
 
 Its "When you defend here" ability is tied to the defending player, not to any particular unit.
 When combat opens, the defending player and their units separately gain the defender designation,<Rule number="464.2.c.3" /> and defend triggers can check whether either a unit or player gained that designation.<Rule number="383.4.f" />
