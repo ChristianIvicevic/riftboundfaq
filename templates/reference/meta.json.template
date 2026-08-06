@@ -1,0 +1,9 @@
+{
+	"title": "Reference",
+	"description": "The Core Rules, Tournament Rules, and their version histories",
+	"root": true,
+	"icon": "BookMarked",
+	"pages": [
+{{PAGES}}
+	]
+}

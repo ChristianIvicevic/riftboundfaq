@@ -1,4 +1,5 @@
 import './global.css'
+import { Tooltip } from '@base-ui/react/tooltip'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Banner } from 'fumadocs-ui/components/banner'
@@ -28,7 +29,9 @@ export default function Layout({ children }: LayoutProps<'/'>) {
 					🎉 New: Official
 					<RiftboundLogo width={16} height={16} className="mx-1 text-[#EF7D00]" /> Riftbound Wiki links
 				</Banner>
-				<RootProvider>{children}</RootProvider>
+				<RootProvider>
+					<Tooltip.Provider>{children}</Tooltip.Provider>
+				</RootProvider>
 				<Analytics />
 				<SpeedInsights />
 			</body>

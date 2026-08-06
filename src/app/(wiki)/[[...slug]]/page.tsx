@@ -6,10 +6,15 @@ import { CopyableDocsBody } from '@/app/(wiki)/[[...slug]]/_components/copyable-
 import { PageActions } from '@/app/(wiki)/[[...slug]]/_components/page-actions'
 import { PageAttribution } from '@/app/(wiki)/[[...slug]]/_components/page-attribution'
 import { RelatedRulings } from '@/app/(wiki)/[[...slug]]/_components/related-rulings'
-import { CrdVersionCallout } from '@/components/core-rules/version-callout'
+import { CoreRulesReviewCallout } from '@/components/core-rules/review-callout'
+import { getCoreRulesDocument } from '@/features/core-rules/documents'
+import { createCoreRulesNavigation } from '@/features/core-rules/navigation'
 import { submitPageFeedback } from '@/features/feedback/actions'
 import { Feedback } from '@/features/feedback/feedback'
+import { getTournamentRulesDocument } from '@/features/tournament-rules/documents'
+import { createTournamentRulesNavigation } from '@/features/tournament-rules/navigation'
 import { getRiftboundWikiUrl } from '@/lib/cards/links'
+import { shouldShowSourceDetails } from '@/lib/content/page-policy'
 import { buildRulingRelationIndex, getRulingRelations } from '@/lib/content/ruling-relations'
 import { getPageDescription, getPageImage, source } from '@/lib/content/source'
 import { SITE_NAME, SITE_URL } from '@/lib/site'
@@ -25,29 +30,50 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 	const MDX = page.data.body
 	const authors = page.data.authors ?? []
 	const rulingRelations = getRulingRelations(rulingRelationIndex, page.url)
+	const showSourceDetails = shouldShowSourceDetails(page.url)
 	const riftboundWikiUrl = page.url.startsWith('/cards/') ? getRiftboundWikiUrl(page.data.title) : undefined
+	const coreRulesDocument =
+		page.data.rulesDocument?.type === 'core-rules'
+			? getCoreRulesDocument(page.data.rulesDocument.version)
+			: undefined
+	const tournamentRulesDocument =
+		page.data.rulesDocument?.type === 'tournament-rules'
+			? getTournamentRulesDocument(page.data.rulesDocument.version)
+			: undefined
+	const toc = coreRulesDocument
+		? createCoreRulesNavigation(coreRulesDocument).toc
+		: tournamentRulesDocument
+			? createTournamentRulesNavigation(tournamentRulesDocument).toc
+			: page.data.toc
 
 	return (
-		<DocsPage
-			toc={page.data.toc}
-			full={page.data.full}
-			footer={{ enabled: false }}
-			tableOfContent={{ style: 'clerk' }}
-		>
+		<DocsPage toc={toc} full={page.data.full} footer={{ enabled: false }} tableOfContent={{ style: 'clerk' }}>
 			<DocsTitle>{page.data.title}</DocsTitle>
 			<DocsDescription className="mb-0">{page.data.description}</DocsDescription>
-			<PageActions
-				galleryLink={page.data.galleryLink}
-				riftboundWikiUrl={riftboundWikiUrl}
-				filePath={page.path}
-			/>
-			{page.data.crdVersion && <CrdVersionCallout crdVersion={page.data.crdVersion} />}
+			{showSourceDetails && (
+				<PageActions
+					galleryLink={page.data.galleryLink}
+					riftboundWikiUrl={riftboundWikiUrl}
+					filePath={page.path}
+				/>
+			)}
+			{!showSourceDetails && <div className="border-b pb-6" />}
+			{page.data.reviewedCoreRulesVersion && (
+				<CoreRulesReviewCallout reviewedCoreRulesVersion={page.data.reviewedCoreRulesVersion} />
+			)}
 			<CopyableDocsBody>
-				<MDX components={getMDXComponents(createRelativeLink(source, page), page.data.crdVersion)} />
+				<MDX
+					components={getMDXComponents(
+						createRelativeLink(source, page),
+						page.data.reviewedCoreRulesVersion,
+						coreRulesDocument,
+						tournamentRulesDocument,
+					)}
+				/>
 			</CopyableDocsBody>
 			<RelatedRulings relations={rulingRelations} />
 			<Feedback onSendAction={submitPageFeedback} />
-			<PageAttribution authors={authors} lastModified={page.data.lastModified} />
+			{showSourceDetails && <PageAttribution authors={authors} lastModified={page.data.lastModified} />}
 		</DocsPage>
 	)
 }

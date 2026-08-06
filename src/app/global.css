@@ -1,3 +1,48 @@
 @import 'tailwindcss';
 @import 'fumadocs-ui/css/vitepress.css';
 @import 'fumadocs-ui/css/preset.css';
+
+@keyframes core-rule-target {
+	0% {
+		border-left-color: transparent;
+		background-color: transparent;
+	}
+	35% {
+		border-left-color: var(--core-rule-target-flash);
+		background-color: color-mix(in oklab, var(--color-sky-500) 20%, transparent);
+	}
+	100% {
+		border-left-color: var(--core-rule-target-border);
+		background-color: color-mix(in oklab, var(--color-sky-500) 10%, transparent);
+	}
+}
+
+.core-rules-anchor {
+	--core-rule-target-border: var(--color-sky-600);
+	--core-rule-target-flash: var(--color-sky-500);
+}
+
+.dark .core-rules-anchor {
+	--core-rule-target-border: var(--color-sky-400);
+	--core-rule-target-flash: var(--color-sky-300);
+}
+
+.core-rules-anchor:target {
+	animation: core-rule-target 1.4s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.core-rules-anchor:target {
+		animation: none;
+	}
+}
+
+@media (forced-colors: active) {
+	.core-rules-anchor:target {
+		border-left-color: Highlight;
+		outline: 2px solid Highlight;
+		outline-offset: 2px;
+		background-color: transparent;
+		animation: none;
+	}
+}

@@ -7,11 +7,26 @@ import { z } from 'zod'
 import { rulingRelationsSchema } from '@/lib/content/ruling-relations-schema'
 import { RUNE_NAMES, TERM_DEFINITIONS } from '@/lib/mdx-vocabulary'
 
+const coreRulesVersion = z.string().regex(/^1\.\d+$/u)
+const tournamentRulesVersion = z.iso.date()
+
 export const docs = defineDocs({
 	dir: 'content',
 	docs: {
 		schema: pageSchema.extend({
-			crdVersion: z.string().optional(),
+			reviewedCoreRulesVersion: coreRulesVersion.optional(),
+			rulesDocument: z
+				.discriminatedUnion('type', [
+					z.object({
+						type: z.literal('core-rules'),
+						version: z.union([z.literal('current'), coreRulesVersion]),
+					}),
+					z.object({
+						type: z.literal('tournament-rules'),
+						version: z.union([z.literal('current'), tournamentRulesVersion]),
+					}),
+				])
+				.optional(),
 			galleryLink: z.url().optional(),
 			authors: z.array(z.string()).optional(),
 			createdAt: z.iso.date().optional(),

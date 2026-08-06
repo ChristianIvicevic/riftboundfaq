@@ -13,12 +13,31 @@ function DiffTokens({ tokens }: { tokens: Token[] }) {
 	return tokens.map((token, index) => <DiffToken key={index} token={token} />)
 }
 
-function RuleLink({ href, label, ruleId }: { href: string; label: string; ruleId: string }) {
+type RuleLabel = (ruleId: string, version: string) => string
+
+function RuleLink({
+	href,
+	label,
+	ruleId,
+	version,
+	ruleLabel,
+}: {
+	href: string
+	label: string
+	ruleId: string
+	version: string
+	ruleLabel?: RuleLabel
+}) {
 	return (
 		<>
 			<div className="text-xs font-medium text-fd-muted-foreground sm:hidden">{label}</div>
-			<a href={href} rel="noopener noreferrer" target="_blank" className="text-nowrap no-underline">
-				<strong className="font-bold">{ruleId}.</strong>
+			<a
+				href={href}
+				rel="noopener noreferrer"
+				target="_blank"
+				className="font-mono text-sm leading-6 font-medium whitespace-nowrap no-underline"
+			>
+				{ruleLabel ? <span>{ruleLabel(ruleId, version)}</span> : <span>{ruleId}.</span>}
 			</a>
 		</>
 	)
@@ -31,6 +50,8 @@ function DiffRow({
 	fromLabel,
 	toLabel,
 	ruleHref,
+	ruleLabel,
+	includeChangeDescriptions,
 }: {
 	entry: DiffEntry
 	from: string
@@ -38,17 +59,29 @@ function DiffRow({
 	fromLabel: string
 	toLabel: string
 	ruleHref: (ruleId: string, version: string) => string
+	ruleLabel?: RuleLabel
+	includeChangeDescriptions: boolean
 }) {
 	if (entry.kind === 'added') {
 		return (
 			<>
 				<div className="hidden sm:block" />
 				<div>
-					<RuleLink href={ruleHref(entry.rule.id, to)} ruleId={entry.rule.id} label={toLabel} />
-					<ins className="block text-fd-diff-add-symbol no-underline">
-						<span className="sr-only">Added: </span>
-						{entry.rule.lines.join(' ')}
-					</ins>
+					<RuleLink
+						href={ruleHref(entry.rule.id, to)}
+						label={toLabel}
+						ruleId={entry.rule.id}
+						ruleLabel={ruleLabel}
+						version={to}
+					/>
+					{includeChangeDescriptions ? (
+						<ins className="block text-fd-diff-add-symbol no-underline">
+							<span className="sr-only">Added: </span>
+							{entry.rule.lines.join(' ')}
+						</ins>
+					) : (
+						<ins className="block text-fd-diff-add-symbol no-underline">{entry.rule.lines.join(' ')}</ins>
+					)}
 				</div>
 			</>
 		)
@@ -58,11 +91,21 @@ function DiffRow({
 		return (
 			<>
 				<div>
-					<RuleLink href={ruleHref(entry.rule.id, from)} ruleId={entry.rule.id} label={fromLabel} />
-					<del className="block text-fd-diff-remove-symbol no-underline">
-						<span className="sr-only">Removed: </span>
-						{entry.rule.lines.join(' ')}
-					</del>
+					<RuleLink
+						href={ruleHref(entry.rule.id, from)}
+						label={fromLabel}
+						ruleId={entry.rule.id}
+						ruleLabel={ruleLabel}
+						version={from}
+					/>
+					{includeChangeDescriptions ? (
+						<del className="block text-fd-diff-remove-symbol no-underline">
+							<span className="sr-only">Removed: </span>
+							{entry.rule.lines.join(' ')}
+						</del>
+					) : (
+						<del className="block text-fd-diff-remove-symbol no-underline">{entry.rule.lines.join(' ')}</del>
+					)}
 				</div>
 				<div className="hidden sm:block" />
 			</>
@@ -72,13 +115,25 @@ function DiffRow({
 	return (
 		<>
 			<div className="mb-4 sm:mb-0">
-				<RuleLink href={ruleHref(entry.oldId, from)} ruleId={entry.oldId} label={fromLabel} />
+				<RuleLink
+					href={ruleHref(entry.oldId, from)}
+					label={fromLabel}
+					ruleId={entry.oldId}
+					ruleLabel={ruleLabel}
+					version={from}
+				/>
 				<div>
 					<DiffTokens tokens={entry.oldText} />
 				</div>
 			</div>
 			<div>
-				<RuleLink href={ruleHref(entry.newId, to)} ruleId={entry.newId} label={toLabel} />
+				<RuleLink
+					href={ruleHref(entry.newId, to)}
+					label={toLabel}
+					ruleId={entry.newId}
+					ruleLabel={ruleLabel}
+					version={to}
+				/>
 				<div>
 					<DiffTokens tokens={entry.newText} />
 				</div>
@@ -94,6 +149,8 @@ export function RulesDiffView({
 	fromLabel,
 	toLabel,
 	ruleHref,
+	ruleLabel,
+	includeChangeDescriptions = true,
 }: {
 	entries: DiffEntry[]
 	from: string
@@ -101,6 +158,8 @@ export function RulesDiffView({
 	fromLabel: string
 	toLabel: string
 	ruleHref: (ruleId: string, version: string) => string
+	ruleLabel?: RuleLabel
+	includeChangeDescriptions?: boolean
 }) {
 	return (
 		<div className="grid flex-1 grid-cols-1 gap-x-8 gap-y-2 pb-20 sm:grid-cols-2">
@@ -118,7 +177,7 @@ export function RulesDiffView({
 			{entries.map((entry, index) => {
 				const id = entry.kind === 'modified' ? entry.newId : entry.rule.id
 				return (
-					<Fragment key={`${entry.kind}:${id}`}>
+					<Fragment key={`${entry.kind}:${id}:${index}`}>
 						{index > 0 && <hr className="col-span-1 my-4! border-b border-t-transparent sm:col-span-2" />}
 						<DiffRow
 							entry={entry}
@@ -127,6 +186,8 @@ export function RulesDiffView({
 							fromLabel={fromLabel}
 							toLabel={toLabel}
 							ruleHref={ruleHref}
+							ruleLabel={ruleLabel}
+							includeChangeDescriptions={includeChangeDescriptions}
 						/>
 					</Fragment>
 				)

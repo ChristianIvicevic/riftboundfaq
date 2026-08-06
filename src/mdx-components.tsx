@@ -4,13 +4,17 @@ import type { ComponentProps } from 'react'
 import { Card } from '@/components/cards/card'
 import { CoreRulesDiff } from '@/components/core-rules/diff-view'
 import { Rule } from '@/components/core-rules/rule'
-import { CoreRulesTable } from '@/components/core-rules/table'
 import { MDX_TERMS } from '@/components/game-terms'
 import { Energy, RUNES, Universal } from '@/components/resources'
 import { TournamentRulesDiff } from '@/components/tournament-rules/diff-view'
-import { TournamentRulesTable } from '@/components/tournament-rules/table'
+import { CoreRulesDocumentView } from '@/features/core-rules/document-view'
+import { getCoreRulesDocument } from '@/features/core-rules/documents'
+import type { CoreRulesDocument } from '@/features/core-rules/types'
 import { submitBlockFeedback } from '@/features/feedback/actions'
 import { FeedbackBlock } from '@/features/feedback/feedback'
+import { TournamentRulesDocumentView } from '@/features/tournament-rules/document-view'
+import { getTournamentRulesDocument } from '@/features/tournament-rules/documents'
+import type { TournamentRulesDocument } from '@/features/tournament-rules/types'
 
 const wikiMdxComponents = {
 	...defaultMdxComponents,
@@ -18,9 +22,7 @@ const wikiMdxComponents = {
 	Tiles: defaultMdxComponents.Cards,
 	Tile: defaultMdxComponents.Card,
 	Card,
-	CoreRulesTable,
 	CoreRulesDiff,
-	TournamentRulesTable,
 	TournamentRulesDiff,
 	Energy,
 	Universal,
@@ -29,12 +31,25 @@ const wikiMdxComponents = {
 	FeedbackBlock: (props) => <FeedbackBlock {...props} onSendAction={submitBlockFeedback} />,
 } satisfies MDXComponents
 
-export function getMDXComponents(a: NonNullable<MDXComponents['a']>, crdVersion?: string): MDXComponents {
+export function getMDXComponents(
+	relativeLink: NonNullable<MDXComponents['a']>,
+	reviewedCoreRulesVersion?: string,
+	coreRulesDocument?: CoreRulesDocument,
+	tournamentRulesDocument?: TournamentRulesDocument,
+): MDXComponents {
 	return {
 		...wikiMdxComponents,
-		a,
-		Rule: (props: Omit<ComponentProps<typeof Rule>, 'crdVersion'>) => (
-			<Rule {...props} crdVersion={crdVersion} />
+		a: relativeLink,
+		CoreRulesDocument: () => (
+			<CoreRulesDocumentView document={coreRulesDocument ?? getCoreRulesDocument('current')} />
+		),
+		TournamentRulesDocument: () => (
+			<TournamentRulesDocumentView
+				document={tournamentRulesDocument ?? getTournamentRulesDocument('current')}
+			/>
+		),
+		Rule: (props: Omit<ComponentProps<typeof Rule>, 'coreRulesVersion'>) => (
+			<Rule {...props} coreRulesVersion={reviewedCoreRulesVersion} />
 		),
 	}
 }

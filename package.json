@@ -14,10 +14,12 @@
 		"lint": "oxlint",
 		"lint:fix": "oxlint --fix",
 		"lint:github": "oxlint --format=github --deny-warnings",
-		"test": "node --test tests/*.test.mjs",
-		"rules:generate": "node scripts/generate-rules.mjs"
+		"test": "vitest run",
+		"rules:generate": "tsx scripts/generate-rules.ts && fumadocs-mdx",
+		"rules:inspect": "tsx scripts/inspect-rules.ts"
 	},
 	"dependencies": {
+		"@base-ui/react": "1.7.0",
 		"@radix-ui/react-collapsible": "1.1.20",
 		"@radix-ui/react-popover": "1.1.23",
 		"@t3-oss/env-nextjs": "0.13.11",
@@ -43,9 +45,12 @@
 		"@types/react-dom": "19.2.3",
 		"oxfmt": "0.61.0",
 		"oxlint": "1.76.0",
+		"pdfjs-dist": "6.2.108",
 		"postcss": "8.5.24",
 		"tailwindcss": "4.3.3",
-		"typescript": "6.0.3"
+		"tsx": "4.23.9",
+		"typescript": "6.0.3",
+		"vitest": "4.1.10"
 	},
 	"packageManager": "pnpm@11.17.0"
 }
