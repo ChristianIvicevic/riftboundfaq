@@ -9,6 +9,7 @@ import { RelatedRulings } from '@/app/(wiki)/[[...slug]]/_components/related-rul
 import { CrdVersionCallout } from '@/components/core-rules/version-callout'
 import { submitPageFeedback } from '@/features/feedback/actions'
 import { Feedback } from '@/features/feedback/feedback'
+import { getRiftboundWikiUrl } from '@/lib/cards/links'
 import { buildRulingRelationIndex, getRulingRelations } from '@/lib/content/ruling-relations'
 import { getPageDescription, getPageImage, source } from '@/lib/content/source'
 import { SITE_NAME, SITE_URL } from '@/lib/site'
@@ -24,6 +25,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 	const MDX = page.data.body
 	const authors = page.data.authors ?? []
 	const rulingRelations = getRulingRelations(rulingRelationIndex, page.url)
+	const riftboundWikiUrl = page.url.startsWith('/cards/') ? getRiftboundWikiUrl(page.data.title) : undefined
 
 	return (
 		<DocsPage
@@ -34,7 +36,11 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 		>
 			<DocsTitle>{page.data.title}</DocsTitle>
 			<DocsDescription className="mb-0">{page.data.description}</DocsDescription>
-			<PageActions galleryLink={page.data.galleryLink} filePath={page.path} />
+			<PageActions
+				galleryLink={page.data.galleryLink}
+				riftboundWikiUrl={riftboundWikiUrl}
+				filePath={page.path}
+			/>
 			{page.data.crdVersion && <CrdVersionCallout crdVersion={page.data.crdVersion} />}
 			<CopyableDocsBody>
 				<MDX components={getMDXComponents(createRelativeLink(source, page), page.data.crdVersion)} />
