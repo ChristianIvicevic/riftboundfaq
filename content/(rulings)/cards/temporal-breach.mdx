@@ -36,6 +36,16 @@ Banishment is a non-board zone,<Rule number="056.1" /> and a game object that ch
 When the unit enters banishment, all temporary modifications and statuses on it are cleared.<Rule number="124.1" />
 This means effects such as <Card name="Stupefy" />'s might reduction no longer apply, and a unit that was <Empowered /> is no longer <Empowered /> when it is replayed.<Rule number="124.2" />
 
+## What happens to equipment attached to a unit replayed by Temporal Breach? [#attached-equipment]
+
+The equipment does not remain attached to the replayed unit.
+
+When Temporal Breach moves the unit from the board to banishment, all cards attached to that unit detach and remain at the unit's previous location.<Rule number="719.5" /><Rule number="435.4.b" />
+The replayed unit is a new game object,<Rule number="124" /> and nothing instructs the equipment to attach to it again.
+
+If the unit was at a battlefield, the unattached equipment is recalled to its controller's base during the next cleanup.<Rule number="435.4.a" />
+If the unit was at a base, the equipment instead remains unattached at that base.
+
 ## Does a replayed unit trigger its attack or defend ability again during the same combat? [#replayed-combat-triggers]
 
 Yes, if the unit is replayed to the battlefield where combat is in progress, its attack or defend ability can trigger again during that combat.
