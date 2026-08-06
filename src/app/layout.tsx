@@ -1,9 +1,11 @@
 import './global.css'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { Banner } from 'fumadocs-ui/components/banner'
 import { RootProvider } from 'fumadocs-ui/provider/next'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { RiftboundLogo } from '@/components/icons/riftbound-logo'
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site'
 
 export const metadata: Metadata = {
@@ -22,6 +24,10 @@ export default function Layout({ children }: LayoutProps<'/'>) {
 	return (
 		<html lang="en" className={inter.className} suppressHydrationWarning>
 			<body className="flex min-h-screen flex-col">
+				<Banner id="riftbound-wiki-page-action-announcement" variant="rainbow" changeLayout={true}>
+					🎉 New: Official
+					<RiftboundLogo width={16} height={16} className="mx-1 text-[#EF7D00]" /> Riftbound Wiki links
+				</Banner>
 				<RootProvider>{children}</RootProvider>
 				<Analytics />
 				<SpeedInsights />

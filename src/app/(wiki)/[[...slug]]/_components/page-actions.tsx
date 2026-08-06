@@ -40,7 +40,7 @@ export function PageActions({
 			)}
 			{riftboundWikiUrl && (
 				<PageActionLink href={riftboundWikiUrl}>
-					<RiftboundLogo />
+					<RiftboundLogo className="text-[#EF7D00]!" />
 					Open in Riftbound Wiki
 				</PageActionLink>
 			)}
