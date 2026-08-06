@@ -16,3 +16,43 @@ The optional power payment is not an additional cost to play Rebuttal; it is a c
 Costs within a spell's instructions are paid during that spell's resolution.<Rule number="204.3.b" />
 
 Opponents can therefore react to Rebuttal knowing which spell it chose, but without knowing whether you will pay <Universal /> to gain control of that spell or decline to pay and counter it.
+
+## Can Rebuttal redirect a spell played from Hidden to another location? [#hidden-target-restriction]
+
+No — taking control of the spell and making new choices for it does not remove the targeting restriction imposed by <Hidden />.
+
+Rebuttal allows its controller to remake a finalized spell's targets,<Rule number="752.1" /> but every new choice must still be legal.<Rule number="753.1" />
+When a spell is played from <Hidden />, its targets must be chosen from among the options at the battlefield where it was hidden unless the spell's own targeting restriction makes that impossible.<Rule number="811.1.d.2" />
+Changing the spell's controller does not change where it was played from, so this restriction continues to apply.
+
+<Callout type="idea" title="Example">
+	An opponent plays <Card name="Hidden Blade" /> from <Hidden /> and chooses a unit at that battlefield.
+	If you gain control of Hidden Blade with Rebuttal, you may choose another legal unit at the same battlefield.
+	You cannot choose a unit at another battlefield, and you cannot choose a unit at base because Hidden Blade itself requires a unit "at a battlefield."
+</Callout>
+
+## Whose "when you play a spell" abilities trigger for a spell Rebuttal takes control of? [#play-trigger-controller]
+
+The abilities controlled by the spell's new controller trigger when that spell resolves.
+
+Abilities such as <Card name="Ravenbloom Student" />'s do not trigger when a spell is first placed on or finalized to the chain.
+They trigger when the act of playing that spell is completed by its resolution.<Rule number="419.4.a" />
+At that point, the player who gained control of the spell with Rebuttal is its controller.<Rule number="191.2" />
+
+<Callout type="idea" title="Example">
+	You control Ravenbloom Student and use Rebuttal to gain control of an opponent's <Card name="Gust" />.
+	Your Student triggers when Rebuttal resolves.
+	When Gust resolves afterward, your Student triggers again because you now control Gust.
+	Your opponent's "when you play a spell" abilities do not trigger for Gust.
+</Callout>
+
+## Do I draw a card if I take control of Back Off? [#back-off-draw]
+
+No — you did not play <Card name="Back Off" /> from your hand merely by taking control of it.
+
+To play a card, a player places it on the chain and queues it for finalization.<Rule number="419.1" />
+Back Off's "if you played this from your hand" clause is a non-triggered condition, so it checks whether the card was finalized by that player.<Rule number="419.4.b" /><Rule number="329.3" />
+Gaining control of an already-finalized spell does not repeat that process or change which player performed it.
+
+When Back Off resolves under your control, "you" refers to you, but you did not play it from your hand, so you do not draw a card.
+The opponent who originally played Back Off does not draw either because they no longer control the resolving spell.
