@@ -54,14 +54,15 @@ The normal once-per-combat limit does not prevent this trigger because it applie
 
 ## Does Ravenbloom Conservatory trigger again if Temporal Breach replays my only defending unit? [#ravenbloom-conservatory]
 
-No, <Card name="Ravenbloom Conservatory" /> does not trigger a second time because replaying the unit does not cause the defending player to gain the defender designation again.
+No, <Card name="Ravenbloom Conservatory" /> does not trigger a second time because it remains the same game object, and its defend trigger has already checked its condition during that combat.
 
-Its "When you defend here" ability is tied to the defending player, not to any particular unit.
-When combat opens, the defending player and their units separately gain the defender designation,<Rule number="464.2.c.3" /> and defend triggers can check whether either a unit or player gained that designation.<Rule number="383.4.f" />
+Ravenbloom Conservatory's "When you defend here" ability is a defend trigger whose condition is fulfilled when its controller gains the defender designation.<Rule number="383.4.f" />
+When combat opens, the defending player and their units separately gain that designation,<Rule number="464.2.c.3" /> so Ravenbloom Conservatory checks its trigger condition then.
+A defend triggered ability can have its condition checked only once per combat.<Rule number="383.4.f.2.a" />
 
-Temporal Breach makes the replayed unit a new game object,<Rule number="124" /> but it does not make the defending player a new object or begin a new combat.
-The player keeps the defender designation until combat ends,<Rule number="466.7.a" /> so the replayed unit gaining that designation during cleanup does not cause the player to gain it again.
-Because Ravenbloom Conservatory's defend trigger has already checked its condition during this combat, it cannot trigger again.<Rule number="383.4.f.2.a" />
+Temporal Breach makes the replayed unit a new game object,<Rule number="124" /> which allows that new unit's own defend ability to receive its first condition check during the same combat.
+It does not make Ravenbloom Conservatory a new object or begin a new combat, so Ravenbloom Conservatory's ability does not receive another condition check.
+The defending player also keeps the defender designation until combat ends,<Rule number="466.7.a" /> and therefore does not gain it again when the replayed unit gains its separate designation during cleanup.
 
 ## What happens if Temporal Breach banishes a token unit? [#token-unit]
 
