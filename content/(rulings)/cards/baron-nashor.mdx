@@ -37,6 +37,27 @@ If it hasn't been scored, the winning conquer draws a card instead.
 
 Winning by hold is unaffected, as it has no such requirement.<Rule number="471.1.a.1" />
 
+## Can a unit survive combat damage that becomes lethal when Baron Nashor dies in the same combat? [#might-loss-survival]
+
+Yes.
+The combat cleanup checks for lethal damage only once, before Baron Nashor's passive stops granting the other unit +2 might.
+
+For example, suppose Baron Nashor and <Card name="Mystic Poro" />, which has 2 printed might, are in the combat, so Mystic Poro currently has 4 might.
+If combat damage leaves Baron Nashor with lethal damage and marks 2 damage on Mystic Poro, the cleanup resolves as follows:
+
+### Resolution Sequence [#might-loss-survival-sequence]
+
+1. **Step 3b** — Baron Nashor is killed and moved to the trash because he has lethal damage.
+	Mystic Poro is not killed because its 2 marked damage is less than its current 4 might.<Rule number="142.4.b" /><Rule number="323.5" />
+2. Baron Nashor's passive ability becomes inactive once he leaves the board, so Mystic Poro returns to 2 might while it still has 2 damage marked on it.<Rule number="365.1" />
+	The lethal-damage check has already passed, so Mystic Poro briefly has lethal damage without being killed.
+3. **Step 3c** — The combat special cleanup heals all units, clearing Mystic Poro's damage.<Rule number="418.1" /><Rule number="466.1.a.1" />
+4. Baron Nashor leaving the board requires another cleanup after the combat cleanup finishes, but that next cleanup is a normal cleanup.
+	By then, Mystic Poro has no damage marked on it, so it is not killed.<Rule number="319.6" /><Rule number="322" /><Rule number="324.2" />
+
+Mystic Poro therefore survives.
+This result applies only when the damage becomes lethal after the cleanup's lethal-damage check; a unit that already has lethal damage at step 3b is killed alongside Baron Nashor.
+
 ## Can I play Baron Nashor while an opponent's Mageseeker Warden is at a battlefield? [#warden-play-lock]
 
 It depends on whether the <Card name="Baron Pit" /> is already on the board.
