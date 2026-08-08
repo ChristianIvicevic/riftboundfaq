@@ -110,6 +110,6 @@ For official policies, visit: https://www.riotgames.com/en/legal
 
 ## Maintainer
 
-Created and maintained by [Christian Ivicevic](https://github.com/ChristianIvicevic).
+Created and maintained by [Christian Ivicevic](https://x.com/civicevic).
 
 **Links**: [Report Issues](https://github.com/ChristianIvicevic/riftboundfaq/issues) • [Official Riftbound](https://playriftbound.com/)

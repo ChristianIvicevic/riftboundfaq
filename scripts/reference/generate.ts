@@ -96,6 +96,14 @@ function coreChangeTitle(version: string, name?: string): string {
 	return name ? `${name} Changes` : `Core Rules ${version} Changes`
 }
 
+function coreMetadataTitle(version: string, name?: string): string {
+	return `Core Rules ${coreVersionLabel(version, name)}`
+}
+
+function coreChangeMetadataTitle(version: string, name?: string): string {
+	return `Core Rules ${version} Changes${name ? ` (${name})` : ''}`
+}
+
 function dateFromIso(value: string): Date {
 	return new Date(`${value}T00:00:00Z`)
 }
@@ -300,7 +308,13 @@ export async function prepareReferencePages(
 			'core-rules/index.mdx',
 			renderTemplate(
 				templates['core-rules-current.mdx'],
-				{ CREATED_AT: coreDates.get(manifest.coreRules.current)! },
+				{
+					CREATED_AT: coreDates.get(manifest.coreRules.current)!,
+					METADATA_TITLE: coreMetadataTitle(
+						manifest.coreRules.current,
+						coreMetadata[manifest.coreRules.current].name,
+					),
+				},
 				'core-rules-current.mdx',
 			),
 		],
@@ -308,7 +322,10 @@ export async function prepareReferencePages(
 			'tournament-rules/index.mdx',
 			renderTemplate(
 				templates['tournament-rules-current.mdx'],
-				{ CREATED_AT: tournamentDates.get(manifest.tournamentRules.current)! },
+				{
+					CREATED_AT: tournamentDates.get(manifest.tournamentRules.current)!,
+					METADATA_TITLE: `Tournament Rules (${formatDate(manifest.tournamentRules.current)})`,
+				},
 				'tournament-rules-current.mdx',
 			),
 		],
@@ -323,6 +340,7 @@ export async function prepareReferencePages(
 				{
 					CREATED_AT: coreDates.get(version)!,
 					DESCRIPTION: `Archived snapshot of the Riftbound Core Rules Document as of version ${coreVersionLabel(version, name)}.`,
+					METADATA_TITLE: coreMetadataTitle(version, name),
 					TITLE: coreTitle(version, name),
 					VERSION: version,
 				},
@@ -339,6 +357,7 @@ export async function prepareReferencePages(
 					CREATED_AT: coreDates.get(to)!,
 					DESCRIPTION: `Changes between Riftbound Core Rules ${coreVersionLabel(from, coreMetadata[from].name)} and ${coreVersionLabel(to, coreMetadata[to].name)}.`,
 					FROM: from,
+					METADATA_TITLE: coreChangeMetadataTitle(to, coreMetadata[to].name),
 					TITLE: coreChangeTitle(to, coreMetadata[to].name),
 					TO: to,
 				},
@@ -354,6 +373,7 @@ export async function prepareReferencePages(
 				{
 					CREATED_AT: tournamentDates.get(version)!,
 					DESCRIPTION: `Archived snapshot of the Riftbound Tournament Rules last updated ${formatDate(version)}.`,
+					METADATA_TITLE: `Tournament Rules (${formatDate(version)})`,
 					TITLE: `${formatMonthYear(version)} Tournament Rules`,
 					VERSION: version,
 				},
@@ -370,6 +390,7 @@ export async function prepareReferencePages(
 					CREATED_AT: tournamentDates.get(to)!,
 					DESCRIPTION: `Changes between the ${formatMonthYear(from)} and ${formatMonthYear(to)} Riftbound Tournament Rules.`,
 					FROM: from,
+					METADATA_TITLE: `Tournament Rules Changes (${formatDate(to)})`,
 					TITLE: `${formatMonthYear(to)} Changes`,
 					TO: to,
 				},

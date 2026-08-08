@@ -50,23 +50,26 @@ async function createTemplates(directory: string): Promise<void> {
 			'core changes:\n{{CORE_RULES_CHANGES}}\ncore archive:\n{{CORE_RULES_ARCHIVE}}\ntournament changes:\n{{TOURNAMENT_RULES_CHANGES}}\ntournament archive:\n{{TOURNAMENT_RULES_ARCHIVE}}\n',
 		),
 		writeFile(join(directory, 'meta.json.template'), '{\n\t"pages": [\n{{PAGES}}\n\t]\n}\n'),
-		writeFile(join(directory, 'core-rules-current.mdx'), 'current core {{CREATED_AT}}'),
+		writeFile(join(directory, 'core-rules-current.mdx'), 'current core {{METADATA_TITLE}}|{{CREATED_AT}}'),
 		writeFile(
 			join(directory, 'core-rules-archive.mdx'),
-			'{{TITLE}}|{{DESCRIPTION}}|{{VERSION}}|{{CREATED_AT}}',
+			'{{TITLE}}|{{METADATA_TITLE}}|{{DESCRIPTION}}|{{VERSION}}|{{CREATED_AT}}',
 		),
 		writeFile(
 			join(directory, 'core-rules-change.mdx'),
-			'{{TITLE}}|{{DESCRIPTION}}|{{FROM}}|{{TO}}|{{CREATED_AT}}',
+			'{{TITLE}}|{{METADATA_TITLE}}|{{DESCRIPTION}}|{{FROM}}|{{TO}}|{{CREATED_AT}}',
 		),
-		writeFile(join(directory, 'tournament-rules-current.mdx'), 'current tournament {{CREATED_AT}}'),
+		writeFile(
+			join(directory, 'tournament-rules-current.mdx'),
+			'current tournament {{METADATA_TITLE}}|{{CREATED_AT}}',
+		),
 		writeFile(
 			join(directory, 'tournament-rules-archive.mdx'),
-			'{{TITLE}}|{{DESCRIPTION}}|{{VERSION}}|{{CREATED_AT}}',
+			'{{TITLE}}|{{METADATA_TITLE}}|{{DESCRIPTION}}|{{VERSION}}|{{CREATED_AT}}',
 		),
 		writeFile(
 			join(directory, 'tournament-rules-change.mdx'),
-			'{{TITLE}}|{{DESCRIPTION}}|{{FROM}}|{{TO}}|{{CREATED_AT}}',
+			'{{TITLE}}|{{METADATA_TITLE}}|{{DESCRIPTION}}|{{FROM}}|{{TO}}|{{CREATED_AT}}',
 		),
 	])
 }
@@ -108,19 +111,19 @@ describe('reference publication integration', () => {
 		})
 
 		expect(await readFile(join(outputDirectory, 'core-rules/index.mdx'), 'utf8')).toBe(
-			'current core 2025-12-01',
+			'current core Core Rules 1.2 (Spiritforged)|2025-12-01',
 		)
 		expect(await readFile(join(outputDirectory, 'core-rules/1.0.mdx'), 'utf8')).toMatch(
-			/^Core Rules 1\.0\|Archived snapshot.+version 1\.0\.\|1\.0\|2025-06-02$/u,
+			/^Core Rules 1\.0\|Core Rules 1\.0\|Archived snapshot.+version 1\.0\.\|1\.0\|2025-06-02$/u,
 		)
 		await expect(readFile(join(outputDirectory, 'core-rules/1.2.mdx'), 'utf8')).rejects.toMatchObject({
 			code: 'ENOENT',
 		})
 		expect(await readFile(join(outputDirectory, 'core-rules/changes/1.1.mdx'), 'utf8')).toMatch(
-			/Origins Changes\|.+1\.0.+1\.1 \(Origins\)\.\|1\.0\|1\.1\|2025-10-01/u,
+			/Origins Changes\|Core Rules 1\.1 Changes \(Origins\)\|.+1\.0.+1\.1 \(Origins\)\.\|1\.0\|1\.1\|2025-10-01/u,
 		)
 		expect(await readFile(join(outputDirectory, 'tournament-rules/changes/2026-03-30.mdx'), 'utf8')).toMatch(
-			/March 2026 Changes\|.+July 2025.+March 2026.+\|2025-07-21\|2026-03-30\|2026-03-30/u,
+			/March 2026 Changes\|Tournament Rules Changes \(March 30, 2026\)\|.+July 2025.+March 2026.+\|2025-07-21\|2026-03-30\|2026-03-30/u,
 		)
 		const meta = JSON.parse(await readFile(join(outputDirectory, 'meta.json'), 'utf8'))
 		expect(meta.pages).toStrictEqual([

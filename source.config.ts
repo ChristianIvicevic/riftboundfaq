@@ -14,6 +14,7 @@ export const docs = defineDocs({
 	dir: 'content',
 	docs: {
 		schema: pageSchema.extend({
+			metadataTitle: z.string().optional(),
 			reviewedCoreRulesVersion: coreRulesVersion.optional(),
 			rulesDocument: z
 				.discriminatedUnion('type', [

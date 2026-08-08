@@ -2,10 +2,11 @@ import { loader } from 'fumadocs-core/source'
 import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons'
 import { docs } from 'fumadocs-mdx:collections/server'
 import { Badge } from '@/components/ui/badge'
-import { SITE_DESCRIPTION } from '@/lib/site'
 
 const NEW_PAGE_WINDOW_MS = 21 * 24 * 60 * 60 * 1000
 const BUILD_TIMESTAMP = Date.now()
+
+export const PAGE_IMAGE_SIZE = { width: 1200, height: 630 } as const
 
 function isNewPage(createdAt?: string) {
 	if (!createdAt) return false
@@ -41,18 +42,11 @@ export const source = loader({
 
 type ContentPage = ReturnType<typeof source.getPages>[number]
 
-export function getPageDescription(page: ContentPage) {
-	return (
-		page.data.description ||
-		(page.data.title ? `FAQ and rules reference for ${page.data.title} in Riftbound` : SITE_DESCRIPTION)
-	)
-}
-
 export function isIndexablePage(page: ContentPage) {
 	return !page.data.noindex
 }
 
 export function getPageImage(page: Pick<ContentPage, 'slugs'>) {
 	const segments = [...page.slugs, 'image.png']
-	return { segments, url: `/og/${segments.join('/')}` }
+	return { segments, url: `/og/${segments.join('/')}?v=2` }
 }
