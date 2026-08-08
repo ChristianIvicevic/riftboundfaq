@@ -1,3 +1,4 @@
+import { RulePreviewLink } from '@/components/core-rules/rule-preview-link'
 import { PDF_CORE_RULES_BY_ID } from '@/generated/core-rules'
 import { ruleHref } from '@/lib/rules/links'
 
@@ -7,18 +8,17 @@ export function Rule({ number, coreRulesVersion }: { number: string; coreRulesVe
 	}
 
 	const rulesText = PDF_CORE_RULES_BY_ID[coreRulesVersion]?.get(number)
+	const href = ruleHref(number, coreRulesVersion)
 
 	return (
 		<sup>
-			<a
-				href={ruleHref(number, coreRulesVersion)}
-				rel="noopener noreferrer"
-				target="_blank"
-				className="text-nowrap no-underline"
-				title={rulesText}
-			>
-				[{number}]
-			</a>
+			{rulesText ? (
+				<RulePreviewLink href={href} number={number} rulesText={rulesText} />
+			) : (
+				<a href={href} rel="noopener noreferrer" target="_blank" className="text-nowrap no-underline">
+					[{number}]
+				</a>
+			)}
 		</sup>
 	)
 }
