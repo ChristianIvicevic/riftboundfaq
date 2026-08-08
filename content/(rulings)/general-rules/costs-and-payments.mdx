@@ -6,6 +6,8 @@ reviewedCoreRulesVersion: "1.4"
 authors:
 - "Christian I. (Near)"
 rulingRelations:
+  total-cost-determination:
+  - "/cards/applied-researchers"
   countered-costs:
   - "/cards/heedless-resurrection"
   - "/cards/sacrifice"
@@ -22,6 +24,20 @@ rulingRelations:
   optional-additional-costs:
   - "/cards/ezreal-prodigy"
 ---
+
+## How is a card's total cost determined? [#total-cost-determination]
+
+A card's total cost is determined in a fixed sequence, rather than by applying every change at once:
+
+1. Start with the card's base cost and apply any changes to it.<Rule number="356.1" />
+2. Add all mandatory additional costs and any optional additional costs you chose to pay.<Rule number="356.2" />
+3. Apply cost increases.<Rule number="356.3" />
+4. Apply discounts.<Rule number="356.4" />
+5. Apply any effects that modify the final total cost.<Rule number="356.5" />
+
+Discounts that apply to one specific part of a cost are applied before discounts that apply to the total cost.<Rule number="356.4.c" /><Rule number="356.4.d" />
+If multiple discounts apply within either group, you may choose their order.<Rule number="356.4.c.1" /><Rule number="356.4.d.1" />
+Any minimum imposed by a discount applies only to that discount, so a later discount can reduce the cost further.<Rule number="356.4.e" />
 
 ## Are paid costs refunded if a card or ability is countered? [#countered-costs]
 
