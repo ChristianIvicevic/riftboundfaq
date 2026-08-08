@@ -1,39 +1,37 @@
 'use client'
 
-import { Tooltip } from '@base-ui/react/tooltip'
+import { Popover } from '@base-ui/react/popover'
+import { Images } from 'lucide-react'
 import type { ReactNode } from 'react'
+import { RiftboundLogo } from '@/components/icons/riftbound-logo'
+import { buttonVariants } from '@/components/ui/button'
 
 export function CardPreviewLink({
 	children,
+	galleryUrl,
 	imageUrl,
 	name,
-	url,
+	wikiUrl,
 }: {
 	children: ReactNode
+	galleryUrl: string
 	imageUrl: string
 	name: string
-	url: string
+	wikiUrl: string
 }) {
 	return (
-		<Tooltip.Root disableHoverablePopup>
-			<Tooltip.Trigger
-				delay={300}
-				render={(props) => (
-					<a
-						{...props}
-						className="font-medium text-fd-primary underline decoration-fd-primary/35 decoration-dotted underline-offset-2 hover:decoration-fd-primary"
-						href={url}
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						{children}
-					</a>
-				)}
-			/>
-			<Tooltip.Portal>
-				<Tooltip.Positioner className="z-50 max-w-[calc(100vw-2rem)]" sideOffset={8}>
-					<Tooltip.Popup className="w-64 origin-(--transform-origin) rounded-xl border bg-fd-popover/80 p-1 text-fd-popover-foreground shadow-xl backdrop-blur-lg transition data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0">
-						<span className="sr-only">{name} card preview</span>
+		<Popover.Root>
+			<Popover.Trigger
+				aria-label={`Preview ${name}`}
+				className="cursor-pointer border-0 bg-transparent p-0 font-medium text-fd-primary underline decoration-fd-primary/35 decoration-dotted underline-offset-2 hover:decoration-fd-primary"
+				openOnHover
+			>
+				{children}
+			</Popover.Trigger>
+			<Popover.Portal>
+				<Popover.Positioner className="z-50 max-w-[calc(100vw-2rem)]" sideOffset={8}>
+					<Popover.Popup className="max-h-(--available-height) w-64 origin-(--transform-origin) overflow-y-auto rounded-xl border bg-fd-popover/80 p-1 text-fd-popover-foreground shadow-xl backdrop-blur-lg transition data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0">
+						<Popover.Title className="sr-only">{name} card preview</Popover.Title>
 						<img
 							alt=""
 							className="m-0! block h-auto w-full rounded-lg"
@@ -41,9 +39,29 @@ export function CardPreviewLink({
 							src={imageUrl}
 							width={300}
 						/>
-					</Tooltip.Popup>
-				</Tooltip.Positioner>
-			</Tooltip.Portal>
-		</Tooltip.Root>
+						<div className="mt-1 grid gap-1">
+							<a
+								className={buttonVariants({ variant: 'secondary', size: 'sm', className: 'w-full gap-2' })}
+								href={galleryUrl}
+								rel="noopener noreferrer"
+								target="_blank"
+							>
+								<Images className="size-3.5 text-fd-muted-foreground" />
+								Open in Card Gallery
+							</a>
+							<a
+								className={buttonVariants({ variant: 'secondary', size: 'sm', className: 'w-full gap-2' })}
+								href={wikiUrl}
+								rel="noopener noreferrer"
+								target="_blank"
+							>
+								<RiftboundLogo className="size-3.5 text-[#EF7D00]!" />
+								Open in Riftbound Wiki
+							</a>
+						</div>
+					</Popover.Popup>
+				</Popover.Positioner>
+			</Popover.Portal>
+		</Popover.Root>
 	)
 }

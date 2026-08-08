@@ -3,7 +3,7 @@ import { describe, expect, test } from 'vitest'
 import { RulesDocumentRuleList } from '@/components/rules/document'
 
 describe('RulesDocumentRuleList', () => {
-	test('uses the conventional link color for cards in rules examples', () => {
+	test('uses the conventional link color for card preview triggers in rules examples', () => {
 		const html = renderToStaticMarkup(
 			<RulesDocumentRuleList
 				anchors={new Map()}
@@ -22,6 +22,6 @@ describe('RulesDocumentRuleList', () => {
 			/>,
 		)
 
-		expect(html).toMatch(/<a[^>]*class="[^"]*text-fd-primary[^"]*"[^>]*>Loose Cannon<\/a>/u)
+		expect(html).toMatch(/<button[^>]*class="[^"]*text-fd-primary[^"]*"[^>]*>Loose Cannon<\/button>/u)
 	})
 })
