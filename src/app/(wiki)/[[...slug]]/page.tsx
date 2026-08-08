@@ -50,14 +50,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 		<DocsPage toc={toc} full={page.data.full} footer={{ enabled: false }} tableOfContent={{ style: 'clerk' }}>
 			<DocsTitle>{page.data.title}</DocsTitle>
 			<DocsDescription className="mb-0">{page.data.description}</DocsDescription>
-			{showSourceDetails && (
-				<PageActions
-					galleryLink={page.data.galleryLink}
-					riftboundWikiUrl={riftboundWikiUrl}
-					filePath={page.path}
-				/>
-			)}
-			{!showSourceDetails && <div className="border-b pb-6" />}
+			<PageActions galleryLink={page.data.galleryLink} riftboundWikiUrl={riftboundWikiUrl} />
 			{page.data.reviewedCoreRulesVersion && (
 				<CoreRulesReviewCallout reviewedCoreRulesVersion={page.data.reviewedCoreRulesVersion} />
 			)}

@@ -42,21 +42,21 @@ export function CardPreviewLink({
 						<div className="mt-1 grid gap-1">
 							<a
 								className={buttonVariants({ variant: 'secondary', size: 'sm', className: 'w-full gap-2' })}
-								href={galleryUrl}
-								rel="noopener noreferrer"
-								target="_blank"
-							>
-								<Images className="size-3.5 text-fd-muted-foreground" />
-								Open in Card Gallery
-							</a>
-							<a
-								className={buttonVariants({ variant: 'secondary', size: 'sm', className: 'w-full gap-2' })}
 								href={wikiUrl}
 								rel="noopener noreferrer"
 								target="_blank"
 							>
 								<RiftboundLogo className="size-3.5 text-[#EF7D00]!" />
 								Open in Riftbound Wiki
+							</a>
+							<a
+								className={buttonVariants({ variant: 'secondary', size: 'sm', className: 'w-full gap-2' })}
+								href={galleryUrl}
+								rel="noopener noreferrer"
+								target="_blank"
+							>
+								<Images className="size-3.5 text-fd-muted-foreground" />
+								Open in Card Gallery
 							</a>
 						</div>
 					</Popover.Popup>
