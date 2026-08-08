@@ -1,0 +1,38 @@
+---
+title: "Applied Researchers"
+createdAt: "2026-08-08"
+reviewedCoreRulesVersion: "1.4"
+galleryLink: "https://playriftbound.com/en-us/card-gallery/#card-gallery--ven-055-166"
+authors:
+- "Christian I. (Near)"
+---
+
+## Can Applied Researchers reduce Shock Blast's cost to zero? [#shock-blast-cost]
+
+Yes, if Applied Researchers is <Empowered />, you can play <Card name="Shock Blast" /> for <Energy value={0} />.
+Applied Researchers itself satisfies Shock Blast's requirement that you control something that is <Empowered />, so both cards' discounts apply.
+
+Both abilities discount Shock Blast's total cost during the Determine Total Cost step of playing it.<Rule number="356.4" />
+Discounts that apply to the total cost may be applied in any order,<Rule number="356.4.d" /><Rule number="356.4.d.1" /> and a minimum imposed by one discount applies only to that discount.<Rule number="356.4.e" />
+
+### Cost Determination Sequence [#cost-determination-sequence]
+
+1. Shock Blast starts with its base cost of <Energy value={3} /><Mind />.
+2. Apply Researchers' discount first, reducing that cost by <Energy value={1} /><Universal /> to <Energy value={2} />.
+This satisfies Researchers' minimum of <Energy value={1} />.
+3. Apply Shock Blast's own discount next, reducing its remaining energy cost by <Energy value={2} /> to <Energy value={0} />.
+
+Applying the discounts in the opposite order would leave the spell costing <Energy value={1} />, but you may choose the order that results in the lower cost.
+
+## Does Applied Researchers reduce Repeat, Flow, and Deflect costs? [#other-spell-costs]
+
+Yes, provided Applied Researchers is <Empowered /> and the cost belongs to a spell.
+
+<Repeat /> is an optional additional cost.<Rule number="820.1" /><Rule number="820.1.c.1" />
+<Deflect /> imposes a mandatory additional cost on a spell or ability that targets the permanent with <Deflect />.<Rule number="356.2.a.2" /><Rule number="809.1.d" />
+Discounts can reduce both kinds of additional costs, including to zero.<Rule number="356.4.f" />
+
+A <Flow /> cost is an alternate cost that replaces a spell's base cost during finalization.<Rule number="829.1.c.1" />
+Applied Researchers' discount is applied afterward when determining the spell's total cost.<Rule number="356.1" /><Rule number="356.4" />
+
+Applied Researchers reduces only spells, so it does not reduce a <Repeat /> cost paid while playing an ability or a <Deflect /> cost imposed on an ability.<Rule number="820.1.a" /><Rule number="809.1.d" />

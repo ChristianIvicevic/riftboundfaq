@@ -19,7 +19,7 @@ function createRuneComponent(name: RuneName) {
 			<img
 				alt={`[${name}]`}
 				src={`/images/rune_${name.toLowerCase()}.svg`}
-				className="mx-0.5 my-0! inline h-lh"
+				className="mx-0.5 my-0! inline size-5"
 				data-copy-text={`[${name}]`}
 			/>
 		)
