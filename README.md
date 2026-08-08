@@ -1,6 +1,6 @@
 # Riftbound FAQ
 
-A community-driven wiki for the Riftbound Trading Card Game, built with Next.js and Fumadocs.
+An independently maintained, open-source FAQ for the Riftbound Trading Card Game, built with Next.js and Fumadocs.
 This resource helps judges and players quickly find answers about rules, card interactions, and gameplay scenarios.
 
 ## Tech Stack
@@ -84,14 +84,11 @@ riftboundfaq/
 CI generates rules artifacts, checks formatting and linting, runs the Node.js tests and TypeScript checks, and creates a production build.
 The local commands are listed above; `pnpm build` regenerates rules artifacts before invoking Next.js.
 
-## Contributing
+## Feedback and Development
 
-Contributions are welcome!
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
-
-- Adding documentation for cards and mechanics
-- Fixing errors or clarifying content
-- Reporting issues
+The FAQ's content is independently authored and curated, and unsolicited content or code contributions are not currently accepted.
+Error reports and suggestions are welcome through [GitHub Issues](https://github.com/ChristianIvicevic/riftboundfaq/issues) or the feedback controls on each page.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution policy.
 
 ## License
 
@@ -106,13 +103,13 @@ Content is freely shareable and adaptable with attribution.
 
 **Riftbound** and all related content are the intellectual property of **Riot Games, Inc.**
 
-This is an **unofficial, community-maintained** resource, **not affiliated with or endorsed by Riot Games**.
+This is an **unofficial, independently maintained** resource, **not affiliated with or endorsed by Riot Games**.
 
 Created under Riot Games' "Legal Jibber Jabber" policy.
 For official policies, visit: https://www.riotgames.com/en/legal
 
 ## Maintainer
 
-Created and maintained by [Christian Ivicevic](https://github.com/ChristianIvicevic) and the Riftbound community.
+Created and maintained by [Christian Ivicevic](https://github.com/ChristianIvicevic).
 
 **Links**: [Report Issues](https://github.com/ChristianIvicevic/riftboundfaq/issues) • [Official Riftbound](https://playriftbound.com/)

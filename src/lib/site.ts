@@ -1,7 +1,7 @@
 import { env } from '@/env'
 
 export const SITE_NAME = 'Riftbound FAQ'
-export const SITE_DESCRIPTION = 'Community-driven FAQ for Riftbound judges and players'
+export const SITE_DESCRIPTION = 'Independently maintained FAQ for Riftbound judges and players'
 export const GITHUB_REPO_URL = 'https://github.com/ChristianIvicevic/riftboundfaq'
 
 export const SITE_URL =
