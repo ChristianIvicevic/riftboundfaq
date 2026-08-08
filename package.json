@@ -35,6 +35,7 @@
 		"react": "19.2.8",
 		"react-dom": "19.2.8",
 		"tailwind-merge": "3.6.0",
+		"takumi-js": "2.5.11",
 		"zod": "4.4.3"
 	},
 	"devDependencies": {
