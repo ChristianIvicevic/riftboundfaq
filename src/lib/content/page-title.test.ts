@@ -30,7 +30,7 @@ describe('getPageTitle', () => {
 		},
 		{
 			case: 'reference page',
-			url: '/reference/core-rules',
+			url: '/reference/core-rules/1.4',
 			title: 'Core Rules',
 			expected: 'Core Rules',
 		},
@@ -41,7 +41,7 @@ describe('getPageTitle', () => {
 	test('prefers an explicit metadata title', () => {
 		expect(
 			getPageTitle({
-				url: '/reference/core-rules',
+				url: '/reference/core-rules/1.4',
 				data: { title: 'Core Rules', metadataTitle: 'Core Rules 1.4 (Vendetta)' },
 			}),
 		).toBe('Core Rules 1.4 (Vendetta)')

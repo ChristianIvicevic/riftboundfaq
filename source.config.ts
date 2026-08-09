@@ -20,11 +20,11 @@ export const docs = defineDocs({
 				.discriminatedUnion('type', [
 					z.object({
 						type: z.literal('core-rules'),
-						version: z.union([z.literal('current'), coreRulesVersion]),
+						version: coreRulesVersion,
 					}),
 					z.object({
 						type: z.literal('tournament-rules'),
-						version: z.union([z.literal('current'), tournamentRulesVersion]),
+						version: tournamentRulesVersion,
 					}),
 				])
 				.optional(),

@@ -1,6 +1,6 @@
 import { RulePreviewLink } from '@/components/core-rules/rule-preview-link'
 import { PDF_CORE_RULES_BY_ID } from '@/generated/core-rules'
-import { ruleHref } from '@/lib/rules/links'
+import { coreRulesLinks } from '@/lib/rules/links'
 
 export function Rule({ number, coreRulesVersion }: { number: string; coreRulesVersion?: string }) {
 	if (!coreRulesVersion) {
@@ -8,7 +8,7 @@ export function Rule({ number, coreRulesVersion }: { number: string; coreRulesVe
 	}
 
 	const rulesText = PDF_CORE_RULES_BY_ID[coreRulesVersion]?.get(number)
-	const href = ruleHref(number, coreRulesVersion)
+	const href = coreRulesLinks.rule({ number, version: coreRulesVersion })
 
 	return (
 		<sup>

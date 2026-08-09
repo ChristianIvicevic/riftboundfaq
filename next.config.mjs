@@ -10,6 +10,8 @@ const config = {
 	async redirects() {
 		return [
 			// Reference
+			{ source: '/reference/core-rules', destination: '/reference#core-rules', permanent: false },
+			{ source: '/reference/tournament-rules', destination: '/reference#tournament-rules', permanent: false },
 			{ source: '/reference/vendetta-patch-notes', destination: '/reference/core-rules/changes/1.4', permanent: true },
 			{ source: '/reference/unleashed-patch-notes', destination: '/reference/core-rules/changes/1.3', permanent: true },
 			{ source: '/reference/spiritforged-patch-notes', destination: '/reference/core-rules/changes/1.2', permanent: true },
