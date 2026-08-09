@@ -21,35 +21,33 @@ rulingRelations:
 
 ## Can I react to units being played? [#unit-play-reactions]
 
-No, as units enter the board immediately without priority being passed to other players.
+No.
+A unit enters the board before any player receives priority to react.<Rule number="337.2" /><Rule number="337.4" /><Rule number="359.2" />
 
-Unlike spells, units resolve the moment they are finalized and do not open a window of opportunity for reactions.<Rule number="337.2" /><Rule number="359.2" />
+If playing the unit triggers an ability, that ability is added to the chain only after the unit has entered.<Rule number="383.2.c" /><Rule number="383.3" /><Rule number="383.4.a.2" />
+Any opportunity to react to that ability comes later and cannot stop the unit from entering.<Rule number="406.4" />
 
-If the unit has a play effect ("When you play me…"), or if another permanent's triggered ability fires as it enters the board, those triggered abilities are placed on the chain as pending items *after* the unit has already entered.<Rule number="383.4.a.2" /><Rule number="383.2.c" /><Rule number="383.3" />
-Once those pending items are finalized with no further items pending, priority passes and players may react<Rule number="337.4" /> — but by that point, the unit is already in play.
+## What order does the game follow when several cards or abilities are waiting on the chain? [#pending-item-order]
 
-## In what order are multiple pending chain items finalized and resolved? [#pending-item-order]
-
-Pending items are finalized in the order they were added, starting with the oldest.<Rule number="337.1" /><Rule number="337.1.b" />
-A unit, gear, or ability that adds resources resolves immediately when it finalizes.<Rule number="337.2" />
+The game first prepares pending items for resolution, a process called finalization, in the order they were added starting with the oldest.<Rule number="337.1" /><Rule number="337.1.b" />
+A unit, gear, or ability that <Add />s resources resolves immediately when it finalizes.<Rule number="337.2" /><Rule number="429.2" /><Rule number="429.2.a" />
 Other finalized items remain on the chain while the remaining pending items are processed.
 
-Players do not receive priority until no pending items remain.<Rule number="337.3" /><Rule number="337.4" />
-After players pass priority, finalized chain items resolve in the opposite direction, starting with the newest.<Rule number="340.1" />
+Once every pending item has been processed, the controller of the next item on the chain receives priority.<Rule number="337.3" /><Rule number="337.4" />
+After all players pass priority in sequence without adding an item, finalized chain items resolve in the opposite direction, starting with the newest.<Rule number="339.1" /><Rule number="340.1" />
 
 ## Can I play a reaction after one, but not all, items on the chain have resolved? [#partial-chain-reactions]
 
-Yes, once you have gained priority.
-The chain does not have to resolve in its entirety prior to (re)gaining priority, unlike in some other TCGs.
+Yes.
+After the newest item resolves, players receive another opportunity to react before the next item resolves if the chain still has a finalized item and no pending items remain.<Rule number="340.4" />
 
-Any time the most recent item on the chain resolves and there are no pending items, the controller of the newest item on the chain gains priority.<Rule number="340.4" />
+The controller of the newest remaining item gains priority first.<Rule number="340.4" />
 
 <Callout type="idea" title="Example">
 	You put <Card name="Singularity" /> on the chain targeting an opponent's unit.
-	Your opponent reacts by putting their <Card name="Wind Wall" /> on the chain, attempting to counter the Singularity.
-	In response, you play <Card name="Stupefy" />, in the hopes of drawing into a counterspell of your own.
+	Your opponent reacts with <Card name="Wind Wall" /> to counter Singularity, and you react with <Card name="Stupefy" />.
 	Once Stupefy resolves and you draw a card, priority is back to your opponent as the most recent item is their Wind Wall.
-	After they pass priority, you can react once again and play your own counterspell, assuming you drew it off of the Stupefy.
+	After they pass priority, you can react again before Wind Wall resolves.
 </Callout>
 
 ## Outside a showdown, do I lose control of a battlefield as soon as my last unit leaves it? [#empty-battlefield-control]
