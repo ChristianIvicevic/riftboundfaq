@@ -10,6 +10,7 @@ const PLACEHOLDER = /\{\{([A-Z_]+)\}\}/gu
 const TEMPLATE_FILES = [
 	'index.mdx',
 	'meta.json.template',
+	'group-meta.json.template',
 	'core-rules-current.mdx',
 	'core-rules-archive.mdx',
 	'core-rules-change.mdx',
@@ -222,30 +223,23 @@ function tournamentArchiveTiles(versions: readonly string[]): string {
 		.join('\n')
 }
 
-function navigationPages(
-	currentCoreVersion: string,
-	coreVersions: readonly string[],
-	coreChanges: readonly VersionPair[],
-	currentTournamentVersion: string,
-	tournamentVersions: readonly string[],
-	tournamentChanges: readonly VersionPair[],
-): string {
-	return [
+function metadataPages(pages: readonly string[]): string {
+	return pages.map((page) => `\t\t${JSON.stringify(page)}`).join(',\n')
+}
+
+function navigationPages(currentCoreVersion: string, currentTournamentVersion: string): string {
+	return metadataPages([
 		'index',
 		'---Current Documents---',
 		`core-rules/${currentCoreVersion}`,
 		`tournament-rules/${currentTournamentVersion}`,
-		'---Core Rules Changes---',
-		...coreChanges.toReversed().map(({ to }) => `core-rules/changes/${to}`),
-		'---Tournament Rules Changes---',
-		...tournamentChanges.toReversed().map(({ to }) => `tournament-rules/changes/${to}`),
-		'---Archived Core Rules---',
-		...coreVersions.toReversed().map((version) => `core-rules/${version}`),
-		'---Archived Tournament Rules---',
-		...tournamentVersions.toReversed().map((version) => `tournament-rules/${version}`),
-	]
-		.map((page) => `\t\t${JSON.stringify(page)}`)
-		.join(',\n')
+		'---Core Rules---',
+		'core-rules/changes',
+		'core-rules/(archive)',
+		'---Tournament Rules---',
+		'tournament-rules/changes',
+		'tournament-rules/(archive)',
+	])
 }
 
 export async function prepareReferencePages(
@@ -298,16 +292,53 @@ export async function prepareReferencePages(
 			renderTemplate(
 				templates['meta.json.template'],
 				{
-					PAGES: navigationPages(
-						manifest.coreRules.current,
-						coreArchivedVersions,
-						coreChanges,
-						manifest.tournamentRules.current,
-						tournamentArchivedVersions,
-						tournamentChanges,
-					),
+					PAGES: navigationPages(manifest.coreRules.current, manifest.tournamentRules.current),
 				},
 				'meta.json.template',
+			),
+		],
+		[
+			'core-rules/changes/meta.json',
+			renderTemplate(
+				templates['group-meta.json.template'],
+				{
+					PAGES: metadataPages(coreChanges.toReversed().map(({ to }) => to)),
+					TITLE: 'Changes',
+				},
+				'group-meta.json.template',
+			),
+		],
+		[
+			'core-rules/(archive)/meta.json',
+			renderTemplate(
+				templates['group-meta.json.template'],
+				{
+					PAGES: metadataPages(coreArchivedVersions.toReversed()),
+					TITLE: 'Archive',
+				},
+				'group-meta.json.template',
+			),
+		],
+		[
+			'tournament-rules/changes/meta.json',
+			renderTemplate(
+				templates['group-meta.json.template'],
+				{
+					PAGES: metadataPages(tournamentChanges.toReversed().map(({ to }) => to)),
+					TITLE: 'Changes',
+				},
+				'group-meta.json.template',
+			),
+		],
+		[
+			'tournament-rules/(archive)/meta.json',
+			renderTemplate(
+				templates['group-meta.json.template'],
+				{
+					PAGES: metadataPages(tournamentArchivedVersions.toReversed()),
+					TITLE: 'Archive',
+				},
+				'group-meta.json.template',
 			),
 		],
 		[
@@ -342,7 +373,7 @@ export async function prepareReferencePages(
 	for (const version of coreArchivedVersions) {
 		const name = coreMetadata[version].name
 		artifacts.set(
-			`core-rules/${version}.mdx`,
+			`core-rules/(archive)/${version}.mdx`,
 			renderTemplate(
 				templates['core-rules-archive.mdx'],
 				{
@@ -376,7 +407,7 @@ export async function prepareReferencePages(
 	}
 	for (const version of tournamentArchivedVersions) {
 		artifacts.set(
-			`tournament-rules/${version}.mdx`,
+			`tournament-rules/(archive)/${version}.mdx`,
 			renderTemplate(
 				templates['tournament-rules-archive.mdx'],
 				{
@@ -409,7 +440,8 @@ export async function prepareReferencePages(
 		)
 	}
 
-	return { artifacts, summary: { pages: artifacts.size } }
+	const pageCount = [...artifacts.keys()].filter((path) => path.endsWith('.mdx')).length
+	return { artifacts, summary: { pages: pageCount } }
 }
 
 export async function publishReferencePages(

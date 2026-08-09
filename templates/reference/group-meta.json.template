@@ -1,0 +1,8 @@
+{
+	"title": "{{TITLE}}",
+	"defaultOpen": false,
+	"collapsible": true,
+	"pages": [
+{{PAGES}}
+	]
+}

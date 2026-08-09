@@ -51,6 +51,10 @@ async function createTemplates(directory: string): Promise<void> {
 		),
 		writeFile(join(directory, 'meta.json.template'), '{\n\t"pages": [\n{{PAGES}}\n\t]\n}\n'),
 		writeFile(
+			join(directory, 'group-meta.json.template'),
+			'{\n\t"title": "{{TITLE}}",\n\t"defaultOpen": false,\n\t"collapsible": true,\n\t"pages": [\n{{PAGES}}\n\t]\n}\n',
+		),
+		writeFile(
 			join(directory, 'core-rules-current.mdx'),
 			'current core {{METADATA_TITLE}}|{{VERSION}}|{{CREATED_AT}}',
 		),
@@ -116,7 +120,7 @@ describe('reference publication integration', () => {
 		expect(await readFile(join(outputDirectory, 'core-rules/1.2.mdx'), 'utf8')).toBe(
 			'current core Core Rules 1.2 (Spiritforged)|1.2|2025-12-01',
 		)
-		expect(await readFile(join(outputDirectory, 'core-rules/1.0.mdx'), 'utf8')).toMatch(
+		expect(await readFile(join(outputDirectory, 'core-rules/(archive)/1.0.mdx'), 'utf8')).toMatch(
 			/^Core Rules 1\.0\|Core Rules 1\.0\|Archived snapshot.+version 1\.0\.\|1\.0\|2025-06-02\|1\.2$/u,
 		)
 		await expect(readFile(join(outputDirectory, 'core-rules/index.mdx'), 'utf8')).rejects.toMatchObject({
@@ -140,33 +144,60 @@ describe('reference publication integration', () => {
 			'---Current Documents---',
 			'core-rules/1.2',
 			'tournament-rules/2026-04-29',
-			'---Core Rules Changes---',
-			'core-rules/changes/1.2',
-			'core-rules/changes/1.1',
-			'---Tournament Rules Changes---',
-			'tournament-rules/changes/2026-04-29',
-			'tournament-rules/changes/2026-03-30',
-			'---Archived Core Rules---',
-			'core-rules/1.1',
-			'core-rules/1.0',
-			'---Archived Tournament Rules---',
-			'tournament-rules/2026-03-30',
-			'tournament-rules/2025-07-21',
+			'---Core Rules---',
+			'core-rules/changes',
+			'core-rules/(archive)',
+			'---Tournament Rules---',
+			'tournament-rules/changes',
+			'tournament-rules/(archive)',
 		])
+		expect(
+			JSON.parse(await readFile(join(outputDirectory, 'core-rules/changes/meta.json'), 'utf8')),
+		).toStrictEqual({
+			title: 'Changes',
+			defaultOpen: false,
+			collapsible: true,
+			pages: ['1.2', '1.1'],
+		})
+		expect(
+			JSON.parse(await readFile(join(outputDirectory, 'core-rules/(archive)/meta.json'), 'utf8')),
+		).toStrictEqual({
+			title: 'Archive',
+			defaultOpen: false,
+			collapsible: true,
+			pages: ['1.1', '1.0'],
+		})
+		expect(
+			JSON.parse(await readFile(join(outputDirectory, 'tournament-rules/changes/meta.json'), 'utf8')),
+		).toStrictEqual({
+			title: 'Changes',
+			defaultOpen: false,
+			collapsible: true,
+			pages: ['2026-04-29', '2026-03-30'],
+		})
+		expect(
+			JSON.parse(await readFile(join(outputDirectory, 'tournament-rules/(archive)/meta.json'), 'utf8')),
+		).toStrictEqual({
+			title: 'Archive',
+			defaultOpen: false,
+			collapsible: true,
+			pages: ['2026-03-30', '2025-07-21'],
+		})
 		expect(await readFile(join(outputDirectory, 'index.mdx'), 'utf8')).not.toMatch(/\{\{[A-Z_]+\}\}/u)
 	})
 })
 
 describe('prepareReferencePages', () => {
 	test('preserves archived Core Rules frontmatter and components from tracked templates', async () => {
-		const { artifacts } = await prepareReferencePages(MANIFEST, {
+		const { artifacts, summary } = await prepareReferencePages(MANIFEST, {
 			coreRules: PREPARED_CORE_RULES,
 			tournamentRules: PREPARED_TOURNAMENT_RULES,
 		})
 
-		expect(artifacts.get('core-rules/1.0.mdx')).toMatch(
+		expect(artifacts.get('core-rules/(archive)/1.0.mdx')).toMatch(
 			/createdAt: "2025-06-02"[\s\S]+version: "1\.0"[\s\S]+noindex: true[\s\S]+Archived reference[\s\S]+\/reference\/core-rules\/1\.2[\s\S]+<CoreRulesDocument \/>/u,
 		)
+		expect(summary.pages).toBe(11)
 	})
 
 	test('selects current documents by explicit version', async () => {
@@ -199,7 +230,7 @@ describe('prepareReferencePages', () => {
 		expect(artifacts.get('tournament-rules/changes/2026-04-29.mdx')).toMatch(
 			/<TournamentRulesDiff[\s\S]+from="2026-03-30"[\s\S]+to="2026-04-29"[\s\S]+includeChangeDescriptions/u,
 		)
-		expect(artifacts.get('tournament-rules/2026-03-30.mdx')).toMatch(
+		expect(artifacts.get('tournament-rules/(archive)/2026-03-30.mdx')).toMatch(
 			/Archived reference[\s\S]+\/reference\/tournament-rules\/2026-04-29[\s\S]+<TournamentRulesDocument \/>/u,
 		)
 	})
