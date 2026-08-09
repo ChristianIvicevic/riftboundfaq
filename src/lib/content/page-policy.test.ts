@@ -4,7 +4,7 @@ import { getRulingPageKind, isEditorialRulingPage, shouldShowSourceDetails } fro
 describe('shouldShowSourceDetails', () => {
 	test.each([
 		{ case: 'the reference index', path: '/reference', expected: false },
-		{ case: 'a current reference document', path: '/reference/core-rules', expected: false },
+		{ case: 'a current reference document', path: '/reference/core-rules/1.4', expected: false },
 		{ case: 'a reference change page', path: '/reference/core-rules/changes/1.4', expected: false },
 		{ case: 'a ruling page', path: '/cards/ahri', expected: true },
 		{ case: 'a similarly prefixed route', path: '/reference-card', expected: true },
@@ -19,7 +19,7 @@ describe('isEditorialRulingPage', () => {
 		{ path: '/mechanics/ambush', expected: true },
 		{ path: '/general-rules/targeting', expected: true },
 		{ path: '/', expected: false },
-		{ path: '/reference/core-rules', expected: false },
+		{ path: '/reference/core-rules/1.4', expected: false },
 		{ path: '/cards-reference', expected: false },
 	])('returns $expected for $path', ({ path, expected }) => {
 		expect(isEditorialRulingPage(path)).toBe(expected)

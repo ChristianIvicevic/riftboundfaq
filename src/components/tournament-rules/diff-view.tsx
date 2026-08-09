@@ -2,7 +2,7 @@ import { RulesDiffView } from '@/components/rules/diff-view'
 import { prepareTournamentRulesDiff } from '@/features/tournament-rules/rule-records'
 import { PDF_TOURNAMENT_RULES_DOCUMENTS } from '@/generated/tournament-rules'
 import { diffRuleSets } from '@/lib/rules/diff'
-import { tournamentRuleHref } from '@/lib/rules/links'
+import { tournamentRulesLinks } from '@/lib/rules/links'
 
 function formatVersion(version: string) {
 	return new Intl.DateTimeFormat('en-US', {
@@ -50,7 +50,9 @@ export function TournamentRulesDiff({
 			fromLabel={formatVersion(oldDocument.version)}
 			toLabel={formatVersion(newDocument.version)}
 			includeChangeDescriptions={includeChangeDescriptions}
-			ruleHref={(ruleId, version) => tournamentRuleHref(getDetails(ruleId, version).anchor, version)}
+			ruleHref={(ruleId, version) =>
+				tournamentRulesLinks.rule({ anchor: getDetails(ruleId, version).anchor, version })
+			}
 			ruleLabel={(ruleId, version) => getDetails(ruleId, version).label}
 		/>
 	)

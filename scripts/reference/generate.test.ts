@@ -47,13 +47,16 @@ async function createTemplates(directory: string): Promise<void> {
 	await Promise.all([
 		writeFile(
 			join(directory, 'index.mdx'),
-			'core changes:\n{{CORE_RULES_CHANGES}}\ncore archive:\n{{CORE_RULES_ARCHIVE}}\ntournament changes:\n{{TOURNAMENT_RULES_CHANGES}}\ntournament archive:\n{{TOURNAMENT_RULES_ARCHIVE}}\n',
+			'core current: {{CORE_RULES_CURRENT_VERSION}}\ncore changes:\n{{CORE_RULES_CHANGES}}\ncore archive:\n{{CORE_RULES_ARCHIVE}}\ntournament current: {{TOURNAMENT_RULES_CURRENT_VERSION}}\ntournament changes:\n{{TOURNAMENT_RULES_CHANGES}}\ntournament archive:\n{{TOURNAMENT_RULES_ARCHIVE}}\n',
 		),
 		writeFile(join(directory, 'meta.json.template'), '{\n\t"pages": [\n{{PAGES}}\n\t]\n}\n'),
-		writeFile(join(directory, 'core-rules-current.mdx'), 'current core {{METADATA_TITLE}}|{{CREATED_AT}}'),
+		writeFile(
+			join(directory, 'core-rules-current.mdx'),
+			'current core {{METADATA_TITLE}}|{{VERSION}}|{{CREATED_AT}}',
+		),
 		writeFile(
 			join(directory, 'core-rules-archive.mdx'),
-			'{{TITLE}}|{{METADATA_TITLE}}|{{DESCRIPTION}}|{{VERSION}}|{{CREATED_AT}}',
+			'{{TITLE}}|{{METADATA_TITLE}}|{{DESCRIPTION}}|{{VERSION}}|{{CREATED_AT}}|{{CURRENT_VERSION}}',
 		),
 		writeFile(
 			join(directory, 'core-rules-change.mdx'),
@@ -61,11 +64,11 @@ async function createTemplates(directory: string): Promise<void> {
 		),
 		writeFile(
 			join(directory, 'tournament-rules-current.mdx'),
-			'current tournament {{METADATA_TITLE}}|{{CREATED_AT}}',
+			'current tournament {{METADATA_TITLE}}|{{VERSION}}|{{CREATED_AT}}',
 		),
 		writeFile(
 			join(directory, 'tournament-rules-archive.mdx'),
-			'{{TITLE}}|{{METADATA_TITLE}}|{{DESCRIPTION}}|{{VERSION}}|{{CREATED_AT}}',
+			'{{TITLE}}|{{METADATA_TITLE}}|{{DESCRIPTION}}|{{VERSION}}|{{CREATED_AT}}|{{CURRENT_VERSION}}',
 		),
 		writeFile(
 			join(directory, 'tournament-rules-change.mdx'),
@@ -110,15 +113,21 @@ describe('reference publication integration', () => {
 			},
 		})
 
-		expect(await readFile(join(outputDirectory, 'core-rules/index.mdx'), 'utf8')).toBe(
-			'current core Core Rules 1.2 (Spiritforged)|2025-12-01',
+		expect(await readFile(join(outputDirectory, 'core-rules/1.2.mdx'), 'utf8')).toBe(
+			'current core Core Rules 1.2 (Spiritforged)|1.2|2025-12-01',
 		)
 		expect(await readFile(join(outputDirectory, 'core-rules/1.0.mdx'), 'utf8')).toMatch(
-			/^Core Rules 1\.0\|Core Rules 1\.0\|Archived snapshot.+version 1\.0\.\|1\.0\|2025-06-02$/u,
+			/^Core Rules 1\.0\|Core Rules 1\.0\|Archived snapshot.+version 1\.0\.\|1\.0\|2025-06-02\|1\.2$/u,
 		)
-		await expect(readFile(join(outputDirectory, 'core-rules/1.2.mdx'), 'utf8')).rejects.toMatchObject({
+		await expect(readFile(join(outputDirectory, 'core-rules/index.mdx'), 'utf8')).rejects.toMatchObject({
 			code: 'ENOENT',
 		})
+		expect(await readFile(join(outputDirectory, 'tournament-rules/2026-04-29.mdx'), 'utf8')).toBe(
+			'current tournament Tournament Rules (April 29, 2026)|2026-04-29|2026-04-29',
+		)
+		await expect(readFile(join(outputDirectory, 'tournament-rules/index.mdx'), 'utf8')).rejects.toMatchObject(
+			{ code: 'ENOENT' },
+		)
 		expect(await readFile(join(outputDirectory, 'core-rules/changes/1.1.mdx'), 'utf8')).toMatch(
 			/Origins Changes\|Core Rules 1\.1 Changes \(Origins\)\|.+1\.0.+1\.1 \(Origins\)\.\|1\.0\|1\.1\|2025-10-01/u,
 		)
@@ -129,8 +138,8 @@ describe('reference publication integration', () => {
 		expect(meta.pages).toStrictEqual([
 			'index',
 			'---Current Documents---',
-			'core-rules/index',
-			'tournament-rules/index',
+			'core-rules/1.2',
+			'tournament-rules/2026-04-29',
 			'---Core Rules Changes---',
 			'core-rules/changes/1.2',
 			'core-rules/changes/1.1',
@@ -156,8 +165,18 @@ describe('prepareReferencePages', () => {
 		})
 
 		expect(artifacts.get('core-rules/1.0.mdx')).toMatch(
-			/createdAt: "2025-06-02"[\s\S]+version: "1\.0"[\s\S]+noindex: true[\s\S]+<CoreRulesDocument \/>/u,
+			/createdAt: "2025-06-02"[\s\S]+version: "1\.0"[\s\S]+noindex: true[\s\S]+Archived reference[\s\S]+\/reference\/core-rules\/1\.2[\s\S]+<CoreRulesDocument \/>/u,
 		)
+	})
+
+	test('selects current documents by explicit version', async () => {
+		const { artifacts } = await prepareReferencePages(MANIFEST, {
+			coreRules: PREPARED_CORE_RULES,
+			tournamentRules: PREPARED_TOURNAMENT_RULES,
+		})
+
+		expect(artifacts.get('core-rules/1.2.mdx')).toMatch(/version: "1\.2"/u)
+		expect(artifacts.get('tournament-rules/2026-04-29.mdx')).toMatch(/version: "2026-04-29"/u)
 	})
 
 	test('preserves Core Rules diff components from tracked templates', async () => {
@@ -180,6 +199,9 @@ describe('prepareReferencePages', () => {
 		expect(artifacts.get('tournament-rules/changes/2026-04-29.mdx')).toMatch(
 			/<TournamentRulesDiff[\s\S]+from="2026-03-30"[\s\S]+to="2026-04-29"[\s\S]+includeChangeDescriptions/u,
 		)
+		expect(artifacts.get('tournament-rules/2026-03-30.mdx')).toMatch(
+			/Archived reference[\s\S]+\/reference\/tournament-rules\/2026-04-29[\s\S]+<TournamentRulesDocument \/>/u,
+		)
 	})
 
 	test('preserves history prose from tracked templates', async () => {
@@ -188,7 +210,12 @@ describe('prepareReferencePages', () => {
 			tournamentRules: PREPARED_TOURNAMENT_RULES,
 		})
 
-		expect(artifacts.get('index.mdx')).toMatch(/Changes from March 30 to April 29, 2026\./u)
+		const overview = artifacts.get('index.mdx')
+		expect(overview).toMatch(/## Core Rules \[#core-rules\]/u)
+		expect(overview).toMatch(/href="\/reference\/core-rules\/1\.2"/u)
+		expect(overview).toMatch(/## Tournament Rules \[#tournament-rules\]/u)
+		expect(overview).toMatch(/href="\/reference\/tournament-rules\/2026-04-29"/u)
+		expect(overview).toMatch(/Changes from March 30 to April 29, 2026\./u)
 	})
 
 	test('rejects a current version that is not the greatest registered version', async () => {

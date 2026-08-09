@@ -2,7 +2,7 @@ import { RulesDiffView } from '@/components/rules/diff-view'
 import { flattenCoreRulesDocument } from '@/features/core-rules/rule-records'
 import { PDF_CORE_RULES_VERSION_NAMES, PDF_CORE_RULES_VERSIONS } from '@/generated/core-rules'
 import { diffRuleSets } from '@/lib/rules/diff'
-import { ruleHref } from '@/lib/rules/links'
+import { coreRulesLinks } from '@/lib/rules/links'
 
 const VERSIONS = Object.keys(PDF_CORE_RULES_VERSIONS)
 const RULES_BY_VERSION = Object.fromEntries(
@@ -30,7 +30,7 @@ export function CoreRulesDiff({ from = VERSIONS.at(-2), to = VERSIONS.at(-1) }: 
 			to={to}
 			fromLabel={PDF_CORE_RULES_VERSION_NAMES[from] ?? `Core Rules ${from}`}
 			toLabel={PDF_CORE_RULES_VERSION_NAMES[to] ?? `Core Rules ${to}`}
-			ruleHref={ruleHref}
+			ruleHref={(number, version) => coreRulesLinks.rule({ number, version })}
 		/>
 	)
 }

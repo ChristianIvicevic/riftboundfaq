@@ -223,16 +223,18 @@ function tournamentArchiveTiles(versions: readonly string[]): string {
 }
 
 function navigationPages(
+	currentCoreVersion: string,
 	coreVersions: readonly string[],
 	coreChanges: readonly VersionPair[],
+	currentTournamentVersion: string,
 	tournamentVersions: readonly string[],
 	tournamentChanges: readonly VersionPair[],
 ): string {
 	return [
 		'index',
 		'---Current Documents---',
-		'core-rules/index',
-		'tournament-rules/index',
+		`core-rules/${currentCoreVersion}`,
+		`tournament-rules/${currentTournamentVersion}`,
 		'---Core Rules Changes---',
 		...coreChanges.toReversed().map(({ to }) => `core-rules/changes/${to}`),
 		'---Tournament Rules Changes---',
@@ -283,8 +285,10 @@ export async function prepareReferencePages(
 				{
 					CORE_RULES_ARCHIVE: coreArchiveTiles(coreArchivedVersions, coreMetadata),
 					CORE_RULES_CHANGES: coreChangeTiles(coreChanges, coreMetadata),
+					CORE_RULES_CURRENT_VERSION: manifest.coreRules.current,
 					TOURNAMENT_RULES_ARCHIVE: tournamentArchiveTiles(tournamentArchivedVersions),
 					TOURNAMENT_RULES_CHANGES: tournamentChangeTiles(tournamentChanges),
+					TOURNAMENT_RULES_CURRENT_VERSION: manifest.tournamentRules.current,
 				},
 				'index.mdx',
 			),
@@ -295,8 +299,10 @@ export async function prepareReferencePages(
 				templates['meta.json.template'],
 				{
 					PAGES: navigationPages(
+						manifest.coreRules.current,
 						coreArchivedVersions,
 						coreChanges,
+						manifest.tournamentRules.current,
 						tournamentArchivedVersions,
 						tournamentChanges,
 					),
@@ -305,7 +311,7 @@ export async function prepareReferencePages(
 			),
 		],
 		[
-			'core-rules/index.mdx',
+			`core-rules/${manifest.coreRules.current}.mdx`,
 			renderTemplate(
 				templates['core-rules-current.mdx'],
 				{
@@ -314,17 +320,19 @@ export async function prepareReferencePages(
 						manifest.coreRules.current,
 						coreMetadata[manifest.coreRules.current].name,
 					),
+					VERSION: manifest.coreRules.current,
 				},
 				'core-rules-current.mdx',
 			),
 		],
 		[
-			'tournament-rules/index.mdx',
+			`tournament-rules/${manifest.tournamentRules.current}.mdx`,
 			renderTemplate(
 				templates['tournament-rules-current.mdx'],
 				{
 					CREATED_AT: tournamentDates.get(manifest.tournamentRules.current)!,
 					METADATA_TITLE: `Tournament Rules (${formatDate(manifest.tournamentRules.current)})`,
+					VERSION: manifest.tournamentRules.current,
 				},
 				'tournament-rules-current.mdx',
 			),
@@ -339,6 +347,7 @@ export async function prepareReferencePages(
 				templates['core-rules-archive.mdx'],
 				{
 					CREATED_AT: coreDates.get(version)!,
+					CURRENT_VERSION: manifest.coreRules.current,
 					DESCRIPTION: `Archived snapshot of the Riftbound Core Rules Document as of version ${coreVersionLabel(version, name)}.`,
 					METADATA_TITLE: coreMetadataTitle(version, name),
 					TITLE: coreTitle(version, name),
@@ -372,6 +381,7 @@ export async function prepareReferencePages(
 				templates['tournament-rules-archive.mdx'],
 				{
 					CREATED_AT: tournamentDates.get(version)!,
+					CURRENT_VERSION: manifest.tournamentRules.current,
 					DESCRIPTION: `Archived snapshot of the Riftbound Tournament Rules last updated ${formatDate(version)}.`,
 					METADATA_TITLE: `Tournament Rules (${formatDate(version)})`,
 					TITLE: `${formatMonthYear(version)} Tournament Rules`,
