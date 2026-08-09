@@ -229,6 +229,7 @@ function metadataPages(pages: readonly string[]): string {
 
 function navigationPages(currentCoreVersion: string, currentTournamentVersion: string): string {
 	return metadataPages([
+		'---Introduction---',
 		'index',
 		'---Current Documents---',
 		`core-rules/${currentCoreVersion}`,

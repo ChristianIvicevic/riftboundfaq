@@ -137,6 +137,7 @@ describe('reference publication integration', () => {
 		)
 		const meta = JSON.parse(await readFile(join(outputDirectory, 'meta.json'), 'utf8'))
 		expect(meta.pages).toStrictEqual([
+			'---Introduction---',
 			'index',
 			'---Current Documents---',
 			'core-rules/1.2',
