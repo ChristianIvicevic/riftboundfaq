@@ -85,7 +85,7 @@ function renderTemplate(template: string, values: Record<string, string>, filena
 	return rendered
 }
 
-function coreTitle(version: string, name?: string): string {
+function coreSidebarTitle(version: string, name?: string): string {
 	return name ? `${name} Core Rules` : `Core Rules ${version}`
 }
 
@@ -93,15 +93,15 @@ function coreVersionLabel(version: string, name?: string): string {
 	return `${version}${name ? ` (${name})` : ''}`
 }
 
-function coreChangeTitle(version: string, name?: string): string {
+function coreChangeSidebarTitle(version: string, name?: string): string {
 	return name ? `${name} Changes` : `Core Rules ${version} Changes`
 }
 
-function coreMetadataTitle(version: string, name?: string): string {
+function coreTitle(version: string, name?: string): string {
 	return `Core Rules ${coreVersionLabel(version, name)}`
 }
 
-function coreChangeMetadataTitle(version: string, name?: string): string {
+function coreChangeTitle(version: string, name?: string): string {
 	return `Core Rules ${version} Changes${name ? ` (${name})` : ''}`
 }
 
@@ -185,7 +185,7 @@ function coreChangeTiles(
 		.toReversed()
 		.map(({ from, to }) => {
 			const name = metadata[to].name
-			return `\t<Tile href="/reference/core-rules/changes/${to}" title="${coreChangeTitle(to, name)}">\n\t\tChanges from Core Rules ${from} to ${to}.\n\t</Tile>`
+			return `\t<Tile href="/reference/core-rules/changes/${to}" title="${coreChangeSidebarTitle(to, name)}">\n\t\tChanges from Core Rules ${from} to ${to}.\n\t</Tile>`
 		})
 		.join('\n')
 }
@@ -198,7 +198,7 @@ function coreArchiveTiles(
 		.toReversed()
 		.map(
 			(version) =>
-				`\t<Tile href="/reference/core-rules/${version}" title="${coreTitle(version, metadata[version].name)}">\n\t\tArchived Core Rules version ${version}.\n\t</Tile>`,
+				`\t<Tile href="/reference/core-rules/${version}" title="${coreSidebarTitle(version, metadata[version].name)}">\n\t\tArchived Core Rules version ${version}.\n\t</Tile>`,
 		)
 		.join('\n')
 }
@@ -347,10 +347,7 @@ export async function prepareReferencePages(
 				templates['core-rules-current.mdx'],
 				{
 					CREATED_AT: coreDates.get(manifest.coreRules.current)!,
-					METADATA_TITLE: coreMetadataTitle(
-						manifest.coreRules.current,
-						coreMetadata[manifest.coreRules.current].name,
-					),
+					TITLE: coreTitle(manifest.coreRules.current, coreMetadata[manifest.coreRules.current].name),
 					VERSION: manifest.coreRules.current,
 				},
 				'core-rules-current.mdx',
@@ -362,7 +359,7 @@ export async function prepareReferencePages(
 				templates['tournament-rules-current.mdx'],
 				{
 					CREATED_AT: tournamentDates.get(manifest.tournamentRules.current)!,
-					METADATA_TITLE: `Tournament Rules (${formatDate(manifest.tournamentRules.current)})`,
+					TITLE: `Tournament Rules (${formatDate(manifest.tournamentRules.current)})`,
 					VERSION: manifest.tournamentRules.current,
 				},
 				'tournament-rules-current.mdx',
@@ -380,7 +377,7 @@ export async function prepareReferencePages(
 					CREATED_AT: coreDates.get(version)!,
 					CURRENT_VERSION: manifest.coreRules.current,
 					DESCRIPTION: `Archived snapshot of the Riftbound Core Rules Document as of version ${coreVersionLabel(version, name)}.`,
-					METADATA_TITLE: coreMetadataTitle(version, name),
+					SIDEBAR_TITLE: coreSidebarTitle(version, name),
 					TITLE: coreTitle(version, name),
 					VERSION: version,
 				},
@@ -397,7 +394,7 @@ export async function prepareReferencePages(
 					CREATED_AT: coreDates.get(to)!,
 					DESCRIPTION: `Changes between Riftbound Core Rules ${coreVersionLabel(from, coreMetadata[from].name)} and ${coreVersionLabel(to, coreMetadata[to].name)}.`,
 					FROM: from,
-					METADATA_TITLE: coreChangeMetadataTitle(to, coreMetadata[to].name),
+					SIDEBAR_TITLE: coreChangeSidebarTitle(to, coreMetadata[to].name),
 					TITLE: coreChangeTitle(to, coreMetadata[to].name),
 					TO: to,
 				},
@@ -414,8 +411,8 @@ export async function prepareReferencePages(
 					CREATED_AT: tournamentDates.get(version)!,
 					CURRENT_VERSION: manifest.tournamentRules.current,
 					DESCRIPTION: `Archived snapshot of the Riftbound Tournament Rules last updated ${formatDate(version)}.`,
-					METADATA_TITLE: `Tournament Rules (${formatDate(version)})`,
-					TITLE: `${formatMonthYear(version)} Tournament Rules`,
+					SIDEBAR_TITLE: `${formatMonthYear(version)} Tournament Rules`,
+					TITLE: `Tournament Rules (${formatDate(version)})`,
 					VERSION: version,
 				},
 				'tournament-rules-archive.mdx',
@@ -431,8 +428,8 @@ export async function prepareReferencePages(
 					CREATED_AT: tournamentDates.get(to)!,
 					DESCRIPTION: `Changes between the ${formatMonthYear(from)} and ${formatMonthYear(to)} Riftbound Tournament Rules.`,
 					FROM: from,
-					METADATA_TITLE: `Tournament Rules Changes (${formatDate(to)})`,
-					TITLE: `${formatMonthYear(to)} Changes`,
+					SIDEBAR_TITLE: `${formatMonthYear(to)} Changes`,
+					TITLE: `Tournament Rules Changes (${formatDate(to)})`,
 					TO: to,
 				},
 				'tournament-rules-change.mdx',

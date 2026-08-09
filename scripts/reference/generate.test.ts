@@ -54,29 +54,26 @@ async function createTemplates(directory: string): Promise<void> {
 			join(directory, 'group-meta.json.template'),
 			'{\n\t"title": "{{TITLE}}",\n\t"defaultOpen": false,\n\t"collapsible": true,\n\t"pages": [\n{{PAGES}}\n\t]\n}\n',
 		),
-		writeFile(
-			join(directory, 'core-rules-current.mdx'),
-			'current core {{METADATA_TITLE}}|{{VERSION}}|{{CREATED_AT}}',
-		),
+		writeFile(join(directory, 'core-rules-current.mdx'), 'current core {{TITLE}}|{{VERSION}}|{{CREATED_AT}}'),
 		writeFile(
 			join(directory, 'core-rules-archive.mdx'),
-			'{{TITLE}}|{{METADATA_TITLE}}|{{DESCRIPTION}}|{{VERSION}}|{{CREATED_AT}}|{{CURRENT_VERSION}}',
+			'{{TITLE}}|{{SIDEBAR_TITLE}}|{{DESCRIPTION}}|{{VERSION}}|{{CREATED_AT}}|{{CURRENT_VERSION}}',
 		),
 		writeFile(
 			join(directory, 'core-rules-change.mdx'),
-			'{{TITLE}}|{{METADATA_TITLE}}|{{DESCRIPTION}}|{{FROM}}|{{TO}}|{{CREATED_AT}}',
+			'{{TITLE}}|{{SIDEBAR_TITLE}}|{{DESCRIPTION}}|{{FROM}}|{{TO}}|{{CREATED_AT}}',
 		),
 		writeFile(
 			join(directory, 'tournament-rules-current.mdx'),
-			'current tournament {{METADATA_TITLE}}|{{VERSION}}|{{CREATED_AT}}',
+			'current tournament {{TITLE}}|{{VERSION}}|{{CREATED_AT}}',
 		),
 		writeFile(
 			join(directory, 'tournament-rules-archive.mdx'),
-			'{{TITLE}}|{{METADATA_TITLE}}|{{DESCRIPTION}}|{{VERSION}}|{{CREATED_AT}}|{{CURRENT_VERSION}}',
+			'{{TITLE}}|{{SIDEBAR_TITLE}}|{{DESCRIPTION}}|{{VERSION}}|{{CREATED_AT}}|{{CURRENT_VERSION}}',
 		),
 		writeFile(
 			join(directory, 'tournament-rules-change.mdx'),
-			'{{TITLE}}|{{METADATA_TITLE}}|{{DESCRIPTION}}|{{FROM}}|{{TO}}|{{CREATED_AT}}',
+			'{{TITLE}}|{{SIDEBAR_TITLE}}|{{DESCRIPTION}}|{{FROM}}|{{TO}}|{{CREATED_AT}}',
 		),
 	])
 }
@@ -133,10 +130,10 @@ describe('reference publication integration', () => {
 			{ code: 'ENOENT' },
 		)
 		expect(await readFile(join(outputDirectory, 'core-rules/changes/1.1.mdx'), 'utf8')).toMatch(
-			/Origins Changes\|Core Rules 1\.1 Changes \(Origins\)\|.+1\.0.+1\.1 \(Origins\)\.\|1\.0\|1\.1\|2025-10-01/u,
+			/Core Rules 1\.1 Changes \(Origins\)\|Origins Changes\|.+1\.0.+1\.1 \(Origins\)\.\|1\.0\|1\.1\|2025-10-01/u,
 		)
 		expect(await readFile(join(outputDirectory, 'tournament-rules/changes/2026-03-30.mdx'), 'utf8')).toMatch(
-			/March 2026 Changes\|Tournament Rules Changes \(March 30, 2026\)\|.+July 2025.+March 2026.+\|2025-07-21\|2026-03-30\|2026-03-30/u,
+			/Tournament Rules Changes \(March 30, 2026\)\|March 2026 Changes\|.+July 2025.+March 2026.+\|2025-07-21\|2026-03-30\|2026-03-30/u,
 		)
 		const meta = JSON.parse(await readFile(join(outputDirectory, 'meta.json'), 'utf8'))
 		expect(meta.pages).toStrictEqual([
@@ -208,6 +205,47 @@ describe('prepareReferencePages', () => {
 
 		expect(artifacts.get('core-rules/1.2.mdx')).toMatch(/version: "1\.2"/u)
 		expect(artifacts.get('tournament-rules/2026-04-29.mdx')).toMatch(/version: "2026-04-29"/u)
+	})
+
+	test.each([
+		{
+			path: 'core-rules/1.2.mdx',
+			title: 'Core Rules 1.2 (Spiritforged)',
+			sidebarTitle: 'Core Rules',
+		},
+		{
+			path: 'core-rules/(archive)/1.1.mdx',
+			title: 'Core Rules 1.1 (Origins)',
+			sidebarTitle: 'Origins Core Rules',
+		},
+		{
+			path: 'core-rules/changes/1.1.mdx',
+			title: 'Core Rules 1.1 Changes (Origins)',
+			sidebarTitle: 'Origins Changes',
+		},
+		{
+			path: 'tournament-rules/2026-04-29.mdx',
+			title: 'Tournament Rules (April 29, 2026)',
+			sidebarTitle: 'Tournament Rules',
+		},
+		{
+			path: 'tournament-rules/(archive)/2026-03-30.mdx',
+			title: 'Tournament Rules (March 30, 2026)',
+			sidebarTitle: 'March 2026 Tournament Rules',
+		},
+		{
+			path: 'tournament-rules/changes/2026-03-30.mdx',
+			title: 'Tournament Rules Changes (March 30, 2026)',
+			sidebarTitle: 'March 2026 Changes',
+		},
+	])('separates the canonical and sidebar titles for $path', async ({ path, title, sidebarTitle }) => {
+		const { artifacts } = await prepareReferencePages(MANIFEST, {
+			coreRules: PREPARED_CORE_RULES,
+			tournamentRules: PREPARED_TOURNAMENT_RULES,
+		})
+
+		expect(artifacts.get(path)).toContain(`title: "${title}"`)
+		expect(artifacts.get(path)).toContain(`sidebarTitle: "${sidebarTitle}"`)
 	})
 
 	test('preserves Core Rules diff components from tracked templates', async () => {

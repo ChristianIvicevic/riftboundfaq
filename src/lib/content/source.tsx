@@ -26,7 +26,9 @@ export const source = loader({
 				file(node, file) {
 					if (!file) return node
 					const content = this.storage.read(file)
-					if (content && content.format === 'page' && isNewPage(content.data.createdAt))
+					if (!content || content.format !== 'page') return node
+					node.name = content.data.sidebarTitle ?? node.name
+					if (isNewPage(content.data.createdAt))
 						node.name = (
 							<div key={content.path} className="flex w-full items-center gap-2">
 								<span className="flex-1">{node.name}</span>
