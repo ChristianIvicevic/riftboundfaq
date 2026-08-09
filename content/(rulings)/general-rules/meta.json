@@ -1,0 +1,7 @@
+{
+	"title": "General Rules",
+	"icon": "BookOpenText",
+	"defaultOpen": false,
+	"collapsible": true,
+	"pages": ["..."]
+}

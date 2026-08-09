@@ -3,13 +3,5 @@
 	"description": "Answers to common rules questions",
 	"root": true,
 	"icon": "MessageCircleQuestionMark",
-	"pages": [
-		"index",
-		"---General Rules---",
-		"...general-rules",
-		"---Mechanics---",
-		"...mechanics",
-		"---Cards---",
-		"...cards"
-	]
+	"pages": ["---Introduction---", "index", "---Browse Rulings---", "general-rules", "mechanics", "cards"]
 }

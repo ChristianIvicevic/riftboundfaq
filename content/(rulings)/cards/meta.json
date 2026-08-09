@@ -1,0 +1,7 @@
+{
+	"title": "Cards",
+	"icon": "GalleryHorizontalEnd",
+	"defaultOpen": false,
+	"collapsible": true,
+	"pages": ["..."]
+}
