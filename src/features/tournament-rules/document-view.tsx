@@ -3,19 +3,16 @@ import {
 	RulesDocumentSectionHeading,
 	RulesDocumentSubsectionHeading,
 } from '@/components/rules/document'
-import { createTournamentRulesNavigation, tournamentHeadingKey } from '@/features/tournament-rules/navigation'
+import type { TraversedRulesDocument } from '@/features/rules-documents/registry'
 import { findTournamentRuleReferences } from '@/features/tournament-rules/references'
-import type { TournamentRulesDocument } from '@/lib/rules/tournament-rules-document'
 
-export function TournamentRulesDocumentView({ document }: { document: TournamentRulesDocument }) {
-	const { anchors, referenceTargets, ruleIds } = createTournamentRulesNavigation(document)
-
+export function TournamentRulesDocumentView({ document }: { document: TraversedRulesDocument }) {
 	return (
 		<div className="not-prose mt-8 space-y-14">
 			{document.sections.map((section) => {
-				const sectionAnchor = anchors.get(tournamentHeadingKey(section.heading))!
+				const sectionAnchor = section.heading.anchor
 				return (
-					<section aria-labelledby={sectionAnchor} key={tournamentHeadingKey(section.heading)}>
+					<section aria-labelledby={sectionAnchor} key={sectionAnchor}>
 						<RulesDocumentSectionHeading anchor={sectionAnchor} heading={section.heading} />
 
 						<div className="mt-6 space-y-10">
@@ -23,32 +20,24 @@ export function TournamentRulesDocumentView({ document }: { document: Tournament
 								if (block.kind === 'rules') {
 									return (
 										<RulesDocumentRuleList
-											anchors={anchors}
 											findReferences={findTournamentRuleReferences}
-											key={`rules:${block.rules[0]?.sequence}`}
+											key={`rules:${block.rules[0]?.anchor}`}
 											labelMode="source"
-											referenceTargets={referenceTargets}
-											ruleIds={ruleIds}
+											referenceTarget={document.referenceTarget}
 											rules={block.rules}
 										/>
 									)
 								}
 
-								const subsectionAnchor = anchors.get(tournamentHeadingKey(block.heading))!
+								const subsectionAnchor = block.heading.anchor
 								return (
-									<section
-										aria-labelledby={subsectionAnchor}
-										className="scroll-mt-20"
-										key={tournamentHeadingKey(block.heading)}
-									>
+									<section aria-labelledby={subsectionAnchor} className="scroll-mt-20" key={subsectionAnchor}>
 										<RulesDocumentSubsectionHeading anchor={subsectionAnchor} heading={block.heading} />
 										<RulesDocumentRuleList
-											anchors={anchors}
 											findReferences={findTournamentRuleReferences}
 											labelMode="source"
 											nested
-											referenceTargets={referenceTargets}
-											ruleIds={ruleIds}
+											referenceTarget={document.referenceTarget}
 											rules={block.rules}
 										/>
 									</section>

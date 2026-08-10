@@ -113,7 +113,12 @@ function sideTokens(ops: Op<string>[], change: 'remove' | 'add'): Token[] {
 }
 
 /** Build a modified entry: word-level diff of the two rules' joined text. */
-function buildModified(oldId: string, newId: string, oldLines: string[], newLines: string[]): DiffEntry {
+function buildModified(
+	oldId: string,
+	newId: string,
+	oldLines: readonly string[],
+	newLines: readonly string[],
+): DiffEntry {
 	const ops = diffSequence(tokenize(oldLines.join(' ')), tokenize(newLines.join(' ')), (x, y) => x === y)
 	return {
 		kind: 'modified',
@@ -236,8 +241,8 @@ function alignIndices(n: number, m: number, eq: (i: number, j: number) => boolea
  * become modifications, while the rest are genuine additions/removals. Document order is preserved.
  */
 export function diffRuleSets(
-	oldRules: RuleRecord[],
-	newRules: RuleRecord[],
+	oldRules: readonly RuleRecord[],
+	newRules: readonly RuleRecord[],
 	{
 		hideRenumbering = true,
 		hideReferenceOnlyChanges = true,

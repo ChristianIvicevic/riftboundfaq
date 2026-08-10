@@ -7,12 +7,9 @@ import { PageActions } from '@/app/(wiki)/[[...slug]]/_components/page-actions'
 import { PageAttribution } from '@/app/(wiki)/[[...slug]]/_components/page-attribution'
 import { RelatedRulings } from '@/app/(wiki)/[[...slug]]/_components/related-rulings'
 import { CoreRulesReviewCallout } from '@/components/core-rules/review-callout'
-import { getCoreRulesDocument } from '@/features/core-rules/documents'
-import { createCoreRulesNavigation } from '@/features/core-rules/navigation'
 import { submitPageFeedback } from '@/features/feedback/actions'
 import { Feedback } from '@/features/feedback/feedback'
-import { getTournamentRulesDocument } from '@/features/tournament-rules/documents'
-import { createTournamentRulesNavigation } from '@/features/tournament-rules/navigation'
+import { rulesDocuments } from '@/features/rules-documents/registry'
 import { getRiftboundWikiUrl } from '@/lib/cards/links'
 import { getPageDescription } from '@/lib/content/page-description'
 import { isEditorialRulingPage, shouldShowSourceDetails } from '@/lib/content/page-policy'
@@ -36,19 +33,14 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 	const rulingRelations = getRulingRelations(rulingRelationIndex, page.url)
 	const showSourceDetails = shouldShowSourceDetails(page.url)
 	const riftboundWikiUrl = page.url.startsWith('/cards/') ? getRiftboundWikiUrl(page.data.title) : undefined
-	const coreRulesDocument =
-		page.data.rulesDocument?.type === 'core-rules'
-			? getCoreRulesDocument(page.data.rulesDocument.version)
-			: undefined
-	const tournamentRulesDocument =
-		page.data.rulesDocument?.type === 'tournament-rules'
-			? getTournamentRulesDocument(page.data.rulesDocument.version)
-			: undefined
-	const toc = coreRulesDocument
-		? createCoreRulesNavigation(coreRulesDocument).toc
-		: tournamentRulesDocument
-			? createTournamentRulesNavigation(tournamentRulesDocument).toc
-			: page.data.toc
+	const rulesDocument = page.data.rulesDocument ? rulesDocuments.get(page.data.rulesDocument) : undefined
+	const toc = rulesDocument
+		? rulesDocument.navigation.map(({ id, text, anchor, depth }) => ({
+				title: `${id}. ${text}`,
+				url: `#${anchor}`,
+				depth,
+			}))
+		: page.data.toc
 	const structuredData =
 		page.url === '/'
 			? {
@@ -100,8 +92,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 					components={getMDXComponents(
 						createRelativeLink(source, page),
 						page.data.reviewedCoreRulesVersion,
-						coreRulesDocument,
-						tournamentRulesDocument,
+						rulesDocument,
 					)}
 				/>
 			</CopyableDocsBody>

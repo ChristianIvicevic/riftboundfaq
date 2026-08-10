@@ -3,50 +3,41 @@ import {
 	RulesDocumentSectionHeading,
 	RulesDocumentSubsectionHeading,
 } from '@/components/rules/document'
-import { createCoreRulesNavigation, headingKey } from '@/features/core-rules/navigation'
 import { findCoreRuleReferences } from '@/features/core-rules/references'
-import type { CoreRulesDocument } from '@/lib/rules/core-rules-document'
+import type { TraversedRulesDocument } from '@/features/rules-documents/registry'
 
-export function CoreRulesDocumentView({ document }: { document: CoreRulesDocument }) {
-	const { anchors, referenceTargets, ruleIds } = createCoreRulesNavigation(document)
-
+export function CoreRulesDocumentView({ document }: { document: TraversedRulesDocument }) {
 	return (
 		<div className="not-prose mt-8 space-y-14">
 			{document.sections.map((section) => {
-				const sectionAnchor = anchors.get(headingKey(section.heading))!
+				const sectionAnchor = section.heading.anchor
+				const preamble = section.blocks.find((block) => block.kind === 'rules')
+				const subsections = section.blocks.filter((block) => block.kind === 'subsection')
 				return (
-					<section aria-labelledby={sectionAnchor} key={headingKey(section.heading)}>
+					<section aria-labelledby={sectionAnchor} key={sectionAnchor}>
 						<RulesDocumentSectionHeading anchor={sectionAnchor} heading={section.heading} />
 
-						{section.preamble.length > 0 && (
+						{preamble && preamble.rules.length > 0 && (
 							<div className="mt-6">
 								<RulesDocumentRuleList
-									anchors={anchors}
 									findReferences={findCoreRuleReferences}
 									labelMode="id-with-period"
-									referenceTargets={referenceTargets}
-									ruleIds={ruleIds}
-									rules={section.preamble}
+									referenceTarget={document.referenceTarget}
+									rules={preamble.rules}
 								/>
 							</div>
 						)}
 
 						<div className="mt-6 space-y-10">
-							{section.subsections.map((subsection) => {
-								const subsectionAnchor = anchors.get(headingKey(subsection.heading))!
+							{subsections.map((subsection) => {
+								const subsectionAnchor = subsection.heading.anchor
 								return (
-									<section
-										aria-labelledby={subsectionAnchor}
-										className="scroll-mt-20"
-										key={headingKey(subsection.heading)}
-									>
+									<section aria-labelledby={subsectionAnchor} className="scroll-mt-20" key={subsectionAnchor}>
 										<RulesDocumentSubsectionHeading anchor={subsectionAnchor} heading={subsection.heading} />
 										<RulesDocumentRuleList
-											anchors={anchors}
 											findReferences={findCoreRuleReferences}
 											labelMode="id-with-period"
-											referenceTargets={referenceTargets}
-											ruleIds={ruleIds}
+											referenceTarget={document.referenceTarget}
 											rules={subsection.rules}
 										/>
 									</section>

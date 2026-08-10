@@ -8,13 +8,10 @@ import { MDX_TERMS } from '@/components/game-terms'
 import { Energy, RUNES, Universal } from '@/components/resources'
 import { TournamentRulesDiff } from '@/components/tournament-rules/diff-view'
 import { CoreRulesDocumentView } from '@/features/core-rules/document-view'
-import { getCoreRulesDocument } from '@/features/core-rules/documents'
 import { submitBlockFeedback } from '@/features/feedback/actions'
 import { FeedbackBlock } from '@/features/feedback/feedback'
+import { rulesDocuments, type TraversedRulesDocument } from '@/features/rules-documents/registry'
 import { TournamentRulesDocumentView } from '@/features/tournament-rules/document-view'
-import { getTournamentRulesDocument } from '@/features/tournament-rules/documents'
-import type { CoreRulesDocument } from '@/lib/rules/core-rules-document'
-import type { TournamentRulesDocument } from '@/lib/rules/tournament-rules-document'
 
 const wikiMdxComponents = {
 	...defaultMdxComponents,
@@ -34,18 +31,27 @@ const wikiMdxComponents = {
 export function getMDXComponents(
 	relativeLink: NonNullable<MDXComponents['a']>,
 	reviewedCoreRulesVersion?: string,
-	coreRulesDocument?: CoreRulesDocument,
-	tournamentRulesDocument?: TournamentRulesDocument,
+	rulesDocument?: TraversedRulesDocument,
 ): MDXComponents {
 	return {
 		...wikiMdxComponents,
 		a: relativeLink,
 		CoreRulesDocument: () => (
-			<CoreRulesDocumentView document={coreRulesDocument ?? getCoreRulesDocument('current')} />
+			<CoreRulesDocumentView
+				document={
+					rulesDocument?.identity.type === 'core-rules'
+						? rulesDocument
+						: rulesDocuments.family('core-rules').current
+				}
+			/>
 		),
 		TournamentRulesDocument: () => (
 			<TournamentRulesDocumentView
-				document={tournamentRulesDocument ?? getTournamentRulesDocument('current')}
+				document={
+					rulesDocument?.identity.type === 'tournament-rules'
+						? rulesDocument
+						: rulesDocuments.family('tournament-rules').current
+				}
 			/>
 		),
 		Rule: (props: Omit<ComponentProps<typeof Rule>, 'coreRulesVersion'>) => (

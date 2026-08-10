@@ -6,15 +6,14 @@ describe('RulesDocumentRuleList', () => {
 	test('uses the conventional link color for card preview triggers in rules examples', () => {
 		const html = renderToStaticMarkup(
 			<RulesDocumentRuleList
-				anchors={new Map()}
 				findReferences={() => []}
 				labelMode="id-with-period"
-				referenceTargets={new Map()}
-				ruleIds={new Set()}
+				referenceTarget={() => {}}
 				rules={[
 					{
-						sequence: 1,
 						id: '100.1',
+						label: '100.1.',
+						anchor: 'R100.1',
 						content: [{ kind: 'example', text: 'Example: Loose Cannon.' }],
 						children: [],
 					},

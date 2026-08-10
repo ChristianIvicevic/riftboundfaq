@@ -1,35 +1,37 @@
 import { RulesDiffView } from '@/components/rules/diff-view'
-import { flattenCoreRulesDocument } from '@/features/core-rules/rule-records'
-import { PDF_CORE_RULES_VERSION_NAMES, PDF_CORE_RULES_VERSIONS } from '@/generated/core-rules'
+import { rulesDocuments } from '@/features/rules-documents/registry'
 import { diffRuleSets } from '@/lib/rules/diff'
 import { coreRulesLinks } from '@/lib/rules/links'
 
-const VERSIONS = Object.keys(PDF_CORE_RULES_VERSIONS)
-const RULES_BY_VERSION = Object.fromEntries(
-	VERSIONS.map((version) => [version, flattenCoreRulesDocument(PDF_CORE_RULES_VERSIONS[version])]),
-)
+const CORE_RULES = rulesDocuments.family('core-rules')
+const VERSIONS = CORE_RULES.registeredVersions
 
 type CoreRulesDiffProps = {
 	from?: string
 	to?: string
 }
 
-export function CoreRulesDiff({ from = VERSIONS.at(-2), to = VERSIONS.at(-1) }: CoreRulesDiffProps) {
+export function CoreRulesDiff({
+	from = VERSIONS.at(-2)?.version,
+	to = VERSIONS.at(-1)?.version,
+}: CoreRulesDiffProps) {
 	if (!from) throw new Error('CoreRulesDiff: no default "from" version is available')
 	if (!to) throw new Error('CoreRulesDiff: no default "to" version is available')
 
-	const oldRules = RULES_BY_VERSION[from]
-	const newRules = RULES_BY_VERSION[to]
-	if (!oldRules) throw new Error(`CoreRulesDiff: unknown "from" version ${JSON.stringify(from)}`)
-	if (!newRules) throw new Error(`CoreRulesDiff: unknown "to" version ${JSON.stringify(to)}`)
+	// oxlint-disable-next-line unicorn/no-array-callback-reference -- This is a catalog lookup, not Array.find.
+	const oldDocument = CORE_RULES.find(from)
+	// oxlint-disable-next-line unicorn/no-array-callback-reference -- This is a catalog lookup, not Array.find.
+	const newDocument = CORE_RULES.find(to)
+	if (!oldDocument) throw new Error(`CoreRulesDiff: unknown "from" version ${JSON.stringify(from)}`)
+	if (!newDocument) throw new Error(`CoreRulesDiff: unknown "to" version ${JSON.stringify(to)}`)
 
 	return (
 		<RulesDiffView
-			entries={diffRuleSets(oldRules, newRules)}
+			entries={diffRuleSets(oldDocument.diffRecords, newDocument.diffRecords)}
 			from={from}
 			to={to}
-			fromLabel={PDF_CORE_RULES_VERSION_NAMES[from] ?? `Core Rules ${from}`}
-			toLabel={PDF_CORE_RULES_VERSION_NAMES[to] ?? `Core Rules ${to}`}
+			fromLabel={oldDocument.identity.name ?? `Core Rules ${from}`}
+			toLabel={newDocument.identity.name ?? `Core Rules ${to}`}
 			ruleHref={(number, version) => coreRulesLinks.rule({ number, version })}
 		/>
 	)
