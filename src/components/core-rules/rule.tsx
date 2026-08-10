@@ -1,5 +1,5 @@
 import { RulePreviewLink } from '@/components/core-rules/rule-preview-link'
-import { PDF_CORE_RULES_BY_ID } from '@/generated/core-rules'
+import { rulesDocuments } from '@/features/rules-documents/registry'
 import { coreRulesLinks } from '@/lib/rules/links'
 
 export function Rule({ number, coreRulesVersion }: { number: string; coreRulesVersion?: string }) {
@@ -7,7 +7,7 @@ export function Rule({ number, coreRulesVersion }: { number: string; coreRulesVe
 		return <sup className="text-nowrap text-fd-muted-foreground">[{number}]</sup>
 	}
 
-	const rulesText = PDF_CORE_RULES_BY_ID[coreRulesVersion]?.get(number)
+	const rulesText = rulesDocuments.find({ type: 'core-rules', version: coreRulesVersion })?.lookupText(number)
 	const href = coreRulesLinks.rule({ number, version: coreRulesVersion })
 
 	return (

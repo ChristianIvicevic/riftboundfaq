@@ -1,8 +1,8 @@
-import type { RuleReference } from '@/lib/rules/types'
+import type { RuleIdLookup, RuleReference } from '@/lib/rules/types'
 
 const RULE_REFERENCE = /\brules?\s+(\d{3}(?:\.[0-9a-z]+)*)/giu
 
-export function findCoreRuleReferences(text: string, ruleIds: ReadonlySet<string>): RuleReference[] {
+export function findCoreRuleReferences(text: string, ruleIds: RuleIdLookup): RuleReference[] {
 	const references: RuleReference[] = []
 	for (const match of text.matchAll(RULE_REFERENCE)) {
 		const id = match[1]

@@ -34,7 +34,7 @@ function serializeIndex(versions: readonly string[], current: string, versionNam
 		.map((version) => `\t${JSON.stringify(version)}: ${JSON.stringify(versionNames[version])},`)
 		.join('\n')
 
-	return `${GENERATED_HEADER}${imports}\nimport { buildCoreRulesLookup } from '@/features/core-rules/lookup'\nimport type { CoreRulesDocument } from '@/lib/rules/core-rules-document'\n\nexport const CURRENT_PDF_CORE_RULES_VERSION = ${JSON.stringify(current)}\n\nexport const PDF_CORE_RULES_VERSIONS: Record<string, CoreRulesDocument> = {\n${entries}\n}\n\nexport const PDF_CORE_RULES_VERSION_NAMES: Record<string, string> = {\n${nameEntries}\n}\n\nexport const PDF_CORE_RULES_BY_ID: Record<string, Map<string, string>> = Object.fromEntries(\n\tObject.entries(PDF_CORE_RULES_VERSIONS).map(([version, document]) => [\n\t\tversion,\n\t\tbuildCoreRulesLookup(document),\n\t]),\n)\n`
+	return `${GENERATED_HEADER}${imports}\nimport type { CoreRulesDocument } from '@/lib/rules/core-rules-document'\n\nexport const CURRENT_PDF_CORE_RULES_VERSION = ${JSON.stringify(current)}\n\nexport const PDF_CORE_RULES_VERSIONS: Record<string, CoreRulesDocument> = {\n${entries}\n}\n\nexport const PDF_CORE_RULES_VERSION_NAMES: Record<string, string> = {\n${nameEntries}\n}\n`
 }
 
 export function prepareCoreRulesArtifacts(extracted: ExtractedCoreRulesFamily): CoreRulesArtifacts {

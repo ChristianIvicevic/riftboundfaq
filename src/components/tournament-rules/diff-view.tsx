@@ -1,6 +1,5 @@
 import { RulesDiffView } from '@/components/rules/diff-view'
-import { prepareTournamentRulesDiff } from '@/features/tournament-rules/rule-records'
-import { PDF_TOURNAMENT_RULES_DOCUMENTS } from '@/generated/tournament-rules'
+import { rulesDocuments, type TraversedRulesDocument } from '@/features/rules-documents/registry'
 import { diffRuleSets } from '@/lib/rules/diff'
 import { tournamentRulesLinks } from '@/lib/rules/links'
 
@@ -12,6 +11,10 @@ function formatVersion(version: string) {
 	}).format(new Date(`${version}T00:00:00Z`))
 }
 
+function indexDiffRecords(document: TraversedRulesDocument) {
+	return new Map(document.diffRecords.map((record) => [record.id, record]))
+}
+
 export function TournamentRulesDiff({
 	from,
 	to,
@@ -21,15 +24,16 @@ export function TournamentRulesDiff({
 	to: string
 	includeChangeDescriptions?: boolean
 }) {
-	const oldDocument = PDF_TOURNAMENT_RULES_DOCUMENTS[from]
-	const newDocument = PDF_TOURNAMENT_RULES_DOCUMENTS[to]
+	const tournamentRules = rulesDocuments.family('tournament-rules')
+	// oxlint-disable-next-line unicorn/no-array-callback-reference -- This is a catalog lookup, not Array.find.
+	const oldDocument = tournamentRules.find(from)
+	// oxlint-disable-next-line unicorn/no-array-callback-reference -- This is a catalog lookup, not Array.find.
+	const newDocument = tournamentRules.find(to)
 	if (!oldDocument) throw new Error(`TournamentRulesDiff: unknown "from" version ${JSON.stringify(from)}`)
 	if (!newDocument) throw new Error(`TournamentRulesDiff: unknown "to" version ${JSON.stringify(to)}`)
-	const oldPreparation = prepareTournamentRulesDiff(oldDocument)
-	const newPreparation = prepareTournamentRulesDiff(newDocument)
 	const detailsByVersion = new Map([
-		[from, oldPreparation.details],
-		[to, newPreparation.details],
+		[from, indexDiffRecords(oldDocument)],
+		[to, indexDiffRecords(newDocument)],
 	])
 	const getDetails = (ruleId: string, version: string) => {
 		const details = detailsByVersion.get(version)?.get(ruleId)
@@ -39,16 +43,16 @@ export function TournamentRulesDiff({
 
 	return (
 		<RulesDiffView
-			entries={diffRuleSets(oldPreparation.rules, newPreparation.rules, {
+			entries={diffRuleSets(oldDocument.diffRecords, newDocument.diffRecords, {
 				hideRenumbering: true,
 				hideReferenceOnlyChanges: true,
 				prioritizeTextSimilarity: true,
 				referenceSyntax: 'tournament',
 			})}
-			from={oldDocument.version}
-			to={newDocument.version}
-			fromLabel={formatVersion(oldDocument.version)}
-			toLabel={formatVersion(newDocument.version)}
+			from={oldDocument.identity.version}
+			to={newDocument.identity.version}
+			fromLabel={formatVersion(oldDocument.identity.version)}
+			toLabel={formatVersion(newDocument.identity.version)}
 			includeChangeDescriptions={includeChangeDescriptions}
 			ruleHref={(ruleId, version) =>
 				tournamentRulesLinks.rule({ anchor: getDetails(ruleId, version).anchor, version })

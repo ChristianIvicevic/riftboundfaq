@@ -23,6 +23,8 @@ describe('rules document artifact preparation', () => {
 		expect(prepared.artifacts.get('index.ts')).toContain(
 			'export const CURRENT_PDF_CORE_RULES_VERSION = "1.0"',
 		)
+		expect(prepared.artifacts.get('index.ts')).not.toContain('buildCoreRulesLookup')
+		expect(prepared.artifacts.get('index.ts')).not.toContain('PDF_CORE_RULES_BY_ID')
 		expect(prepared.transcripts).toStrictEqual(new Map([['CR-v1.0.txt', 'Core transcript\n']]))
 		expect(prepared.summary).toStrictEqual({ current: '1.0', transcripts: 1, versions: 1 })
 	})

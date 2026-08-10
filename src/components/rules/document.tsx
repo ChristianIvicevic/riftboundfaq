@@ -1,33 +1,29 @@
 import type { ReactNode } from 'react'
 import { Card } from '@/components/cards/card'
-import { rulesRuleKey } from '@/lib/rules/document-navigation'
+import type { RulesReferenceTarget, TraversedRule } from '@/features/rules-documents/registry'
 import type { RulesDocumentContent, RulesDocumentHeading } from '@/lib/rules/document-types'
 import { segmentRulesExampleText } from '@/lib/rules/example-text'
-import type { RuleReference } from '@/lib/rules/types'
+import type { RuleIdLookup, RuleReference } from '@/lib/rules/types'
 
-type RulesDocumentRule = {
-	sequence: number
-	id: string | null
-	label?: string | null
-	content: RulesDocumentContent[]
-	children: RulesDocumentRule[]
-}
-
-type FindRuleReferences = (text: string, ruleIds: ReadonlySet<string>) => RuleReference[]
+type FindRuleReferences = (text: string, ruleIds: RuleIdLookup) => RuleReference[]
+type FindReferenceTarget = (id: string) => RulesReferenceTarget | undefined
+type DisplayRulesHeading = Pick<RulesDocumentHeading, 'id' | 'text'>
 
 function RuleReferenceLink({
 	id,
 	text,
-	referenceTargets,
+	referenceTarget,
 }: {
 	id: string
 	text: string
-	referenceTargets: Map<string, string>
+	referenceTarget: FindReferenceTarget
 }) {
+	const target = referenceTarget(id)
+	if (!target) return text
 	return (
 		<a
 			className="font-medium text-fd-primary underline decoration-fd-primary/35 underline-offset-2 hover:decoration-fd-primary"
-			href={`#${referenceTargets.get(id)}`}
+			href={`#${target.anchor}`}
 		>
 			{text}
 		</a>
@@ -36,14 +32,14 @@ function RuleReferenceLink({
 
 function LinkedRuleText({
 	text,
-	referenceTargets,
+	referenceTarget,
 	ruleIds,
 	findReferences,
 	linkCards = false,
 }: {
 	text: string
-	referenceTargets: Map<string, string>
-	ruleIds: ReadonlySet<string>
+	referenceTarget: FindReferenceTarget
+	ruleIds: RuleIdLookup
 	findReferences: FindRuleReferences
 	linkCards?: boolean
 }) {
@@ -62,7 +58,7 @@ function LinkedRuleText({
 					<RuleReferenceLink
 						id={segment.id}
 						key={index}
-						referenceTargets={referenceTargets}
+						referenceTarget={referenceTarget}
 						text={segment.text}
 					/>
 				)
@@ -80,7 +76,7 @@ function LinkedRuleText({
 			<RuleReferenceLink
 				id={reference.id}
 				key={reference.start}
-				referenceTargets={referenceTargets}
+				referenceTarget={referenceTarget}
 				text={text.slice(reference.start, reference.end)}
 			/>,
 		)
@@ -92,13 +88,13 @@ function LinkedRuleText({
 
 function RuleContentView({
 	content,
-	referenceTargets,
+	referenceTarget,
 	ruleIds,
 	findReferences,
 }: {
-	content: RulesDocumentContent[]
-	referenceTargets: Map<string, string>
-	ruleIds: ReadonlySet<string>
+	content: readonly RulesDocumentContent[]
+	referenceTarget: FindReferenceTarget
+	ruleIds: RuleIdLookup
 	findReferences: FindRuleReferences
 }) {
 	return (
@@ -113,7 +109,7 @@ function RuleContentView({
 							<LinkedRuleText
 								findReferences={findReferences}
 								linkCards
-								referenceTargets={referenceTargets}
+								referenceTarget={referenceTarget}
 								ruleIds={ruleIds}
 								text={entry.text}
 							/>
@@ -126,7 +122,7 @@ function RuleContentView({
 						<p className="text-sm text-fd-muted-foreground" key={index}>
 							<LinkedRuleText
 								findReferences={findReferences}
-								referenceTargets={referenceTargets}
+								referenceTarget={referenceTarget}
 								ruleIds={ruleIds}
 								text={entry.text}
 							/>
@@ -143,7 +139,7 @@ function RuleContentView({
 							<p>
 								<LinkedRuleText
 									findReferences={findReferences}
-									referenceTargets={referenceTargets}
+									referenceTarget={referenceTarget}
 									ruleIds={ruleIds}
 									text={entry.text}
 								/>
@@ -156,7 +152,7 @@ function RuleContentView({
 					<p key={index}>
 						<LinkedRuleText
 							findReferences={findReferences}
-							referenceTargets={referenceTargets}
+							referenceTarget={referenceTarget}
 							ruleIds={ruleIds}
 							text={entry.text}
 						/>
@@ -169,22 +165,19 @@ function RuleContentView({
 
 export function RulesDocumentRuleList({
 	rules,
-	anchors,
-	referenceTargets,
-	ruleIds,
+	referenceTarget,
 	findReferences,
 	labelMode,
 	nested = false,
 }: {
-	rules: RulesDocumentRule[]
-	anchors: Map<string, string>
-	referenceTargets: Map<string, string>
-	ruleIds: ReadonlySet<string>
+	rules: readonly TraversedRule[]
+	referenceTarget: FindReferenceTarget
 	findReferences: FindRuleReferences
 	labelMode: 'id-with-period' | 'source'
 	nested?: boolean
 }) {
 	if (rules.length === 0) return null
+	const ruleIds: RuleIdLookup = { has: (id) => referenceTarget(id) !== undefined }
 
 	return (
 		<ol
@@ -195,12 +188,12 @@ export function RulesDocumentRuleList({
 			}
 		>
 			{rules.map((rule) => {
-				const anchor = anchors.get(rulesRuleKey(rule))!
+				const anchor = rule.anchor
 				return (
 					<li
 						className="core-rules-anchor scroll-mt-20 target:border-l-2 target:border-sky-600 target:bg-sky-500/10 target:pr-2 target:pl-3 dark:target:border-sky-400"
 						id={anchor}
-						key={rule.sequence}
+						key={anchor}
 					>
 						{rule.id ? (
 							<div className="grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] items-start gap-x-2 py-1.5 sm:gap-x-4">
@@ -224,7 +217,7 @@ export function RulesDocumentRuleList({
 								<RuleContentView
 									content={rule.content}
 									findReferences={findReferences}
-									referenceTargets={referenceTargets}
+									referenceTarget={referenceTarget}
 									ruleIds={ruleIds}
 								/>
 							</div>
@@ -233,18 +226,16 @@ export function RulesDocumentRuleList({
 								<RuleContentView
 									content={rule.content}
 									findReferences={findReferences}
-									referenceTargets={referenceTargets}
+									referenceTarget={referenceTarget}
 									ruleIds={ruleIds}
 								/>
 							</div>
 						)}
 						<RulesDocumentRuleList
-							anchors={anchors}
 							findReferences={findReferences}
 							labelMode={labelMode}
 							nested
-							referenceTargets={referenceTargets}
-							ruleIds={ruleIds}
+							referenceTarget={referenceTarget}
 							rules={rule.children}
 						/>
 					</li>
@@ -258,7 +249,7 @@ export function RulesDocumentHeadingLink({
 	heading,
 	anchor,
 }: {
-	heading: RulesDocumentHeading
+	heading: DisplayRulesHeading
 	anchor: string
 }) {
 	return (
@@ -275,7 +266,7 @@ export function RulesDocumentSectionHeading({
 	heading,
 	anchor,
 }: {
-	heading: RulesDocumentHeading
+	heading: DisplayRulesHeading
 	anchor: string
 }) {
 	return (
@@ -292,7 +283,7 @@ export function RulesDocumentSubsectionHeading({
 	heading,
 	anchor,
 }: {
-	heading: RulesDocumentHeading
+	heading: DisplayRulesHeading
 	anchor: string
 }) {
 	return (

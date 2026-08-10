@@ -1,4 +1,4 @@
-import type { RuleReference } from '@/lib/rules/types'
+import type { RuleIdLookup, RuleReference } from '@/lib/rules/types'
 
 const REFERENCE_CUE =
 	/\b(?:see(?:\s+rule)?|section|proceed to|process of|described in|except for|perform|listed (?:under|in)|qualifies for)\s+/giu
@@ -8,7 +8,7 @@ const RANGE_SEPARATOR = /^[-–—]/u
 
 type ParsedReference = RuleReference & { matchEnd: number }
 
-function parseReference(text: string, start: number, ruleIds: ReadonlySet<string>): ParsedReference | null {
+function parseReference(text: string, start: number, ruleIds: RuleIdLookup): ParsedReference | null {
 	const match = text.slice(start).match(RULE_ID)
 	if (!match || !ruleIds.has(match[1])) return null
 
@@ -18,7 +18,7 @@ function parseReference(text: string, start: number, ruleIds: ReadonlySet<string
 	return { id: match[1], start, end: start + match[1].length, matchEnd }
 }
 
-export function findTournamentRuleReferences(text: string, ruleIds: ReadonlySet<string>): RuleReference[] {
+export function findTournamentRuleReferences(text: string, ruleIds: RuleIdLookup): RuleReference[] {
 	const references: RuleReference[] = []
 	let consumedUntil = 0
 
