@@ -84,10 +84,13 @@ async function createTemplates(directory: string): Promise<void> {
 			join(directory, 'group-meta.json.template'),
 			'{\n\t"title": "{{TITLE}}",\n\t"defaultOpen": false,\n\t"collapsible": true,\n\t"pages": [\n{{PAGES}}\n\t]\n}\n',
 		),
-		writeFile(join(directory, 'core-rules-current.mdx'), 'current core {{TITLE}}|{{VERSION}}|{{CREATED_AT}}'),
+		writeFile(
+			join(directory, 'core-rules-current.mdx'),
+			'---\n{{RULES_DOCUMENT_FRONTMATTER}}\n---\ncurrent core {{TITLE}}|{{CREATED_AT}}\n<RulesDocument />',
+		),
 		writeFile(
 			join(directory, 'core-rules-archive.mdx'),
-			'{{TITLE}}|{{SIDEBAR_TITLE}}|{{DESCRIPTION}}|{{VERSION}}|{{CREATED_AT}}|{{CURRENT_VERSION_ROUTE}}',
+			'---\n{{RULES_DOCUMENT_FRONTMATTER}}\n---\n{{TITLE}}|{{SIDEBAR_TITLE}}|{{DESCRIPTION}}|{{CREATED_AT}}|{{CURRENT_VERSION_ROUTE}}\n<RulesDocument />',
 		),
 		writeFile(
 			join(directory, 'core-rules-change.mdx'),
@@ -95,11 +98,11 @@ async function createTemplates(directory: string): Promise<void> {
 		),
 		writeFile(
 			join(directory, 'tournament-rules-current.mdx'),
-			'current tournament {{TITLE}}|{{VERSION}}|{{CREATED_AT}}',
+			'---\n{{RULES_DOCUMENT_FRONTMATTER}}\n---\ncurrent tournament {{TITLE}}|{{CREATED_AT}}\n<RulesDocument />',
 		),
 		writeFile(
 			join(directory, 'tournament-rules-archive.mdx'),
-			'{{TITLE}}|{{SIDEBAR_TITLE}}|{{DESCRIPTION}}|{{VERSION}}|{{CREATED_AT}}|{{CURRENT_VERSION_ROUTE}}',
+			'---\n{{RULES_DOCUMENT_FRONTMATTER}}\n---\n{{TITLE}}|{{SIDEBAR_TITLE}}|{{DESCRIPTION}}|{{CREATED_AT}}|{{CURRENT_VERSION_ROUTE}}\n<RulesDocument />',
 		),
 		writeFile(
 			join(directory, 'tournament-rules-change.mdx'),
@@ -127,11 +130,11 @@ function prepareFixture() {
 }
 
 describe('prepareReferencePublication', () => {
-	test('preserves archived Core Rules frontmatter and components from tracked templates', async () => {
+	test('preserves archived Core Rules frontmatter and document marker from tracked templates', async () => {
 		const { artifacts, summary } = await prepareFixture()
 
 		expect(artifacts.get('core-rules/(archive)/1.0.mdx')).toMatch(
-			/createdAt: "2025-06-02"[\s\S]+version: "1\.0"[\s\S]+noindex: true[\s\S]+Archived reference[\s\S]+\/reference\/core-rules\/1\.2[\s\S]+<CoreRulesDocument \/>/u,
+			/createdAt: "2025-06-02"[\s\S]+version: "1\.0"[\s\S]+noindex: true[\s\S]+Archived reference[\s\S]+\/reference\/core-rules\/1\.2[\s\S]+<RulesDocument \/>/u,
 		)
 		expect(summary.pages).toBe(11)
 	})
@@ -189,15 +192,104 @@ describe('prepareReferencePublication', () => {
 		)
 	})
 
-	test('preserves Tournament Rules components from tracked templates', async () => {
+	test('preserves Tournament Rules diff and document markers from tracked templates', async () => {
 		const { artifacts } = await prepareFixture()
 
 		expect(artifacts.get('tournament-rules/changes/2026-04-29.mdx')).toMatch(
 			/<TournamentRulesDiff[\s\S]+from="2026-03-30"[\s\S]+to="2026-04-29"[\s\S]+includeChangeDescriptions/u,
 		)
 		expect(artifacts.get('tournament-rules/(archive)/2026-03-30.mdx')).toMatch(
-			/Archived reference[\s\S]+\/reference\/tournament-rules\/2026-04-29[\s\S]+<TournamentRulesDocument \/>/u,
+			/Archived reference[\s\S]+\/reference\/tournament-rules\/2026-04-29[\s\S]+<RulesDocument \/>/u,
 		)
+	})
+
+	test('rejects a Versioned rules route artifact without its document marker', async () => {
+		const { projectDirectory } = await createReferenceWorkspace()
+		await writeFile(
+			join(projectDirectory, 'templates', 'reference', 'core-rules-current.mdx'),
+			'---\n{{RULES_DOCUMENT_FRONTMATTER}}\n---\ncurrent core {{TITLE}}|{{CREATED_AT}}',
+		)
+
+		await expect(
+			prepareReferencePublication({
+				projectDirectory,
+				coreRules: EXTRACTED_CORE_RULES,
+				tournamentRules: EXTRACTED_TOURNAMENT_RULES,
+			}),
+		).rejects.toMatchObject({ stage: 'artifacts' })
+	})
+
+	test('rejects a Versioned rules route artifact with a second identity', async () => {
+		const { projectDirectory } = await createReferenceWorkspace()
+		await writeFile(
+			join(projectDirectory, 'templates', 'reference', 'core-rules-current.mdx'),
+			'---\n{{RULES_DOCUMENT_FRONTMATTER}}\nrulesDocument:\n  type: "core-rules"\n  version: "1.1"\n---\n{{TITLE}}|{{CREATED_AT}}\n<RulesDocument />',
+		)
+
+		await expect(
+			prepareReferencePublication({
+				projectDirectory,
+				coreRules: EXTRACTED_CORE_RULES,
+				tournamentRules: EXTRACTED_TOURNAMENT_RULES,
+			}),
+		).rejects.toMatchObject({ stage: 'artifacts' })
+	})
+
+	test('rejects an inline second identity in a Versioned rules route artifact', async () => {
+		const { projectDirectory } = await createReferenceWorkspace()
+		await writeFile(
+			join(projectDirectory, 'templates', 'reference', 'core-rules-current.mdx'),
+			'---\n{{RULES_DOCUMENT_FRONTMATTER}}\nrulesDocument: { type: "core-rules", version: "1.1" }\n---\n{{TITLE}}|{{CREATED_AT}}\n<RulesDocument />',
+		)
+
+		await expect(
+			prepareReferencePublication({
+				projectDirectory,
+				coreRules: EXTRACTED_CORE_RULES,
+				tournamentRules: EXTRACTED_TOURNAMENT_RULES,
+			}),
+		).rejects.toMatchObject({ stage: 'artifacts' })
+	})
+
+	test('rejects a canonical identity outside frontmatter', async () => {
+		const { projectDirectory } = await createReferenceWorkspace()
+		await writeFile(
+			join(projectDirectory, 'templates', 'reference', 'core-rules-current.mdx'),
+			'---\ntitle: "{{TITLE}}"\ncreatedAt: "{{CREATED_AT}}"\n---\n{{RULES_DOCUMENT_FRONTMATTER}}\n<RulesDocument />',
+		)
+
+		await expect(
+			prepareReferencePublication({
+				projectDirectory,
+				coreRules: EXTRACTED_CORE_RULES,
+				tournamentRules: EXTRACTED_TOURNAMENT_RULES,
+			}),
+		).rejects.toMatchObject({ stage: 'artifacts' })
+	})
+
+	test.each([
+		{
+			problem: 'duplicate document marker',
+			suffix: '<RulesDocument />\n<RulesDocument />',
+		},
+		{
+			problem: 'legacy family marker',
+			suffix: '<RulesDocument />\n<CoreRulesDocument />',
+		},
+	])('rejects a Versioned rules route artifact with a $problem', async ({ suffix }) => {
+		const { projectDirectory } = await createReferenceWorkspace()
+		await writeFile(
+			join(projectDirectory, 'templates', 'reference', 'core-rules-current.mdx'),
+			`---\n{{RULES_DOCUMENT_FRONTMATTER}}\n---\n{{TITLE}}|{{CREATED_AT}}\n${suffix}`,
+		)
+
+		await expect(
+			prepareReferencePublication({
+				projectDirectory,
+				coreRules: EXTRACTED_CORE_RULES,
+				tournamentRules: EXTRACTED_TOURNAMENT_RULES,
+			}),
+		).rejects.toMatchObject({ stage: 'artifacts' })
 	})
 
 	test('preserves history prose from tracked templates', async () => {

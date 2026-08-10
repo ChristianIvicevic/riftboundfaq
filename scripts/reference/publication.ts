@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import { isAbsolute, join } from 'node:path'
 import { coreRulesConventions, tournamentRulesConventions } from '@/lib/rules/document-family-conventions'
+import type { RulesDocumentFamilyId } from '@/lib/rules/document-family-identity'
 import { normalizeRulesDate } from '../rules-date.ts'
 import type { ExtractedCoreRulesFamily, ExtractedTournamentRulesFamily } from '../rules-document-family.ts'
 
@@ -23,11 +24,23 @@ type VersionPair = { from: string; to: string }
 type TemplateFile = (typeof TEMPLATE_FILES)[number]
 
 type ReferenceTemplates = Record<TemplateFile, string>
-type PlannedReferenceArtifact = Readonly<{
+type RulesDocumentReference = Readonly<{
+	type: RulesDocumentFamilyId
+	version: string
+}>
+type PlannedReferenceArtifactBase = Readonly<{
 	path: string
 	template: TemplateFile
 	values: Readonly<Record<string, string>>
 }>
+type PlannedReferenceArtifact =
+	| (PlannedReferenceArtifactBase & Readonly<{ kind: 'change-page' }>)
+	| (PlannedReferenceArtifactBase &
+			Readonly<{
+				kind: 'versioned-rules-route'
+				identity: RulesDocumentReference
+				status: 'current' | 'archived'
+			}>)
 type PlannedOverviewTile = Readonly<{
 	route: string
 	title: string
@@ -132,6 +145,10 @@ function adjacentVersionPairs(versions: readonly string[]): VersionPair[] {
 	return versions.slice(1).map((version, index) => ({ from: versions[index], to: version }))
 }
 
+function renderRulesDocumentFrontmatter(identity: RulesDocumentReference): string {
+	return `rulesDocument:\n  type: ${JSON.stringify(identity.type)}\n  version: ${JSON.stringify(identity.version)}`
+}
+
 function formatDateRange(from: string, to: string): string {
 	const fromDate = dateFromIso(from)
 	const toDate = dateFromIso(to)
@@ -201,30 +218,35 @@ function planCoreRulesReference(family: ExtractedCoreRulesFamily): ReferenceFami
 		changeNavigationPages: changes.toReversed().map(({ to }) => to),
 		artifacts: [
 			{
+				kind: 'versioned-rules-route',
 				path: currentConventions.reference.currentDocumentPath,
 				template: 'core-rules-current.mdx',
+				identity: { type: 'core-rules', version: currentVersion },
+				status: 'current',
 				values: {
 					CREATED_AT: dates.get(currentVersion)!,
 					TITLE: coreTitle(currentVersion, metadata[currentVersion].name),
-					VERSION: currentVersion,
 				},
 			},
 			...archivedVersions.map((version): PlannedReferenceArtifact => {
 				const name = metadata[version].name
 				return {
+					kind: 'versioned-rules-route',
 					path: coreRulesConventions.version(version).reference.archivedDocumentPath,
 					template: 'core-rules-archive.mdx',
+					identity: { type: 'core-rules', version },
+					status: 'archived',
 					values: {
 						CREATED_AT: dates.get(version)!,
 						CURRENT_VERSION_ROUTE: currentConventions.reference.documentRoute,
 						DESCRIPTION: `Archived snapshot of the Riftbound Core Rules Document as of version ${coreVersionLabel(version, name)}.`,
 						SIDEBAR_TITLE: coreSidebarTitle(version, name),
 						TITLE: coreTitle(version, name),
-						VERSION: version,
 					},
 				}
 			}),
 			...changes.map(({ from, to }): PlannedReferenceArtifact => ({
+				kind: 'change-page',
 				path: coreRulesConventions.version(to).reference.changePath,
 				template: 'core-rules-change.mdx',
 				values: {
@@ -271,27 +293,32 @@ function planTournamentRulesReference(family: ExtractedTournamentRulesFamily): R
 		changeNavigationPages: changes.toReversed().map(({ to }) => to),
 		artifacts: [
 			{
+				kind: 'versioned-rules-route',
 				path: currentConventions.reference.currentDocumentPath,
 				template: 'tournament-rules-current.mdx',
+				identity: { type: 'tournament-rules', version: currentVersion },
+				status: 'current',
 				values: {
 					CREATED_AT: dates.get(currentVersion)!,
 					TITLE: `Tournament Rules (${formatDate(currentVersion)})`,
-					VERSION: currentVersion,
 				},
 			},
 			...archivedVersions.map((version): PlannedReferenceArtifact => ({
+				kind: 'versioned-rules-route',
 				path: tournamentRulesConventions.version(version).reference.archivedDocumentPath,
 				template: 'tournament-rules-archive.mdx',
+				identity: { type: 'tournament-rules', version },
+				status: 'archived',
 				values: {
 					CREATED_AT: dates.get(version)!,
 					CURRENT_VERSION_ROUTE: currentConventions.reference.documentRoute,
 					DESCRIPTION: `Archived snapshot of the Riftbound Tournament Rules last updated ${formatDate(version)}.`,
 					SIDEBAR_TITLE: `${formatMonthYear(version)} Tournament Rules`,
 					TITLE: `Tournament Rules (${formatDate(version)})`,
-					VERSION: version,
 				},
 			})),
 			...changes.map(({ from, to }): PlannedReferenceArtifact => ({
+				kind: 'change-page',
 				path: tournamentRulesConventions.version(to).reference.changePath,
 				template: 'tournament-rules-change.mdx',
 				values: {
@@ -424,8 +451,15 @@ function renderReferencePublication(
 		],
 	])
 
-	for (const { path, template, values } of [...coreRules.artifacts, ...tournamentRules.artifacts]) {
-		artifacts.set(path, renderTemplate(templates[template], values, template))
+	for (const artifact of [...coreRules.artifacts, ...tournamentRules.artifacts]) {
+		const values =
+			artifact.kind === 'versioned-rules-route'
+				? {
+						...artifact.values,
+						RULES_DOCUMENT_FRONTMATTER: renderRulesDocumentFrontmatter(artifact.identity),
+					}
+				: artifact.values
+		artifacts.set(artifact.path, renderTemplate(templates[artifact.template], values, artifact.template))
 	}
 
 	const pageCount = [...artifacts.keys()].filter((path) => path.endsWith('.mdx')).length
@@ -453,6 +487,41 @@ function validateArtifacts(
 	coreRules: ReferenceFamilyPlan,
 	tournamentRules: ReferenceFamilyPlan,
 ) {
+	for (const artifact of [...coreRules.artifacts, ...tournamentRules.artifacts]) {
+		if (artifact.kind !== 'versioned-rules-route') continue
+		const source = prepared.artifacts.get(artifact.path)
+		if (!source) throw new Error(`Missing Versioned rules route artifact ${artifact.path}`)
+		const conventions =
+			artifact.identity.type === 'core-rules'
+				? coreRulesConventions.version(artifact.identity.version)
+				: tournamentRulesConventions.version(artifact.identity.version)
+		const expectedPath =
+			artifact.status === 'current'
+				? conventions.reference.currentDocumentPath
+				: conventions.reference.archivedDocumentPath
+		if (artifact.path !== expectedPath) {
+			throw new Error(`Versioned rules route artifact ${artifact.path} does not match ${expectedPath}`)
+		}
+		const frontmatter = renderRulesDocumentFrontmatter(artifact.identity)
+		const frontmatterEnd = source.startsWith('---\n') ? source.indexOf('\n---', 4) : -1
+		const sourceFrontmatter = frontmatterEnd === -1 ? '' : source.slice(4, frontmatterEnd)
+		if (
+			source.match(/^rulesDocument\s*:/gmu)?.length !== 1 ||
+			source.split(frontmatter).length !== 2 ||
+			sourceFrontmatter.split(frontmatter).length !== 2
+		) {
+			throw new Error(
+				`Versioned rules route artifact ${artifact.path} must contain its canonical identity once`,
+			)
+		}
+		if (source.split('<RulesDocument />').length !== 2) {
+			throw new Error(`Versioned rules route artifact ${artifact.path} must contain one <RulesDocument />`)
+		}
+		if (source.includes('<CoreRulesDocument') || source.includes('<TournamentRulesDocument')) {
+			throw new Error(`Versioned rules route artifact ${artifact.path} contains a legacy document marker`)
+		}
+	}
+
 	const expectedPaths = expectedArtifactPaths(coreRules, tournamentRules)
 	const expectedPathSet = new Set(expectedPaths)
 	const expectedCount = 2 * coreRules.versions.length + 2 * tournamentRules.versions.length + 4
