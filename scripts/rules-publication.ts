@@ -1,80 +1,81 @@
-import type { CoreRulesFamily, RulesManifest, TournamentRulesFamily } from './rules-manifest.ts'
+import { readFile } from 'node:fs/promises'
+import { join } from 'node:path'
+import { createCoreRulesFamilyAdapter } from './core-rules/extract-internal.ts'
+import { prepareCoreRulesArtifacts } from './core-rules/generate.ts'
+import { inspectPdf } from './core-rules/inspect.ts'
+import { prepareReferencePages } from './reference/generate.ts'
+import { parseRulesManifest } from './rules-manifest.ts'
+import { prepareRulesMetadata } from './rules-metadata.ts'
+import {
+	createRulesPublisher,
+	type PreparedRulesPublication,
+	type RulesPublicationOptions,
+	type RulesPublicationSummary,
+} from './rules-publication-internal.ts'
+import { createTournamentRulesFamilyAdapter } from './tournament-rules/extract-internal.ts'
+import { prepareTournamentRulesArtifacts } from './tournament-rules/generate.ts'
+import { inspectTournamentPdf } from './tournament-rules/inspect.ts'
 
-export type PreparedPublication<Summary = unknown> = {
-	summary: Summary
-}
+export { RulesPublicationError } from './rules-publication-internal.ts'
+export type {
+	RulesPublicationOptions,
+	RulesPublicationState,
+	RulesPublicationSummary,
+} from './rules-publication-internal.ts'
 
-export type RulesAdapter<Input, Prepared extends PreparedPublication> = {
-	prepare: (input: Input) => Prepared | Promise<Prepared>
-	publish: (prepared: Prepared) => unknown | Promise<unknown>
-}
+const DEFAULT_PROJECT_DIRECTORY = join(import.meta.dirname, '..')
 
-export type RulesDocumentFamilyPublicationAdapter<Input, Extracted, Prepared extends PreparedPublication> = {
-	extract: (input: Input) => Extracted | Promise<Extracted>
-	prepare: (extracted: Extracted) => Prepared | Promise<Prepared>
-	publish: (prepared: Prepared) => unknown | Promise<unknown>
-}
-
-export type ReferenceRulesAdapter<
-	ExtractedCoreRules,
-	ExtractedTournamentRules,
-	Reference extends PreparedPublication,
-> = {
-	prepare: (
-		manifest: RulesManifest,
-		inputs: { coreRules: ExtractedCoreRules; tournamentRules: ExtractedTournamentRules },
-	) => Reference | Promise<Reference>
-	publish: (prepared: Reference) => unknown | Promise<unknown>
-}
-
-export async function publishRules<
-	Metadata extends PreparedPublication,
-	ExtractedCoreRules,
-	CoreRules extends PreparedPublication,
-	ExtractedTournamentRules,
-	TournamentRules extends PreparedPublication,
-	Reference extends PreparedPublication,
->({
-	manifest,
-	metadataAdapter,
-	coreRulesAdapter,
-	tournamentRulesAdapter,
-	referenceAdapter,
-}: {
-	manifest: RulesManifest
-	metadataAdapter: RulesAdapter<RulesManifest, Metadata>
-	coreRulesAdapter: RulesDocumentFamilyPublicationAdapter<CoreRulesFamily, ExtractedCoreRules, CoreRules>
-	tournamentRulesAdapter: RulesDocumentFamilyPublicationAdapter<
-		TournamentRulesFamily,
-		ExtractedTournamentRules,
-		TournamentRules
-	>
-	referenceAdapter: ReferenceRulesAdapter<ExtractedCoreRules, ExtractedTournamentRules, Reference>
-}): Promise<{
-	metadata: Metadata['summary']
-	coreRules: CoreRules['summary']
-	tournamentRules: TournamentRules['summary']
-	reference: Reference['summary']
-}> {
-	const metadata = await metadataAdapter.prepare(manifest)
+async function prepareRulesPublication(projectDirectory: string): Promise<PreparedRulesPublication> {
+	const sourcesDirectory = join(projectDirectory, 'sources')
+	const manifestPath = join(sourcesDirectory, 'rules-manifest.json')
+	const manifest = parseRulesManifest(JSON.parse(await readFile(manifestPath, 'utf8')))
+	const metadata = prepareRulesMetadata(manifest)
+	const coreRulesAdapter = createCoreRulesFamilyAdapter({ inspectSource: inspectPdf, sourcesDirectory })
+	const tournamentRulesAdapter = createTournamentRulesFamilyAdapter({
+		inspectSource: inspectTournamentPdf,
+		sourcesDirectory,
+		warn: console.warn,
+	})
 	const extractedCoreRules = await coreRulesAdapter.extract(manifest.coreRules)
-	const coreRules = await coreRulesAdapter.prepare(extractedCoreRules)
+	const coreRules = prepareCoreRulesArtifacts(extractedCoreRules)
 	const extractedTournamentRules = await tournamentRulesAdapter.extract(manifest.tournamentRules)
-	const tournamentRules = await tournamentRulesAdapter.prepare(extractedTournamentRules)
-	const reference = await referenceAdapter.prepare(manifest, {
-		coreRules: extractedCoreRules,
-		tournamentRules: extractedTournamentRules,
+	const tournamentRules = prepareTournamentRulesArtifacts(extractedTournamentRules)
+	const reference = await prepareReferencePages(manifest, {
+		coreRules: extractedCoreRules.versions,
+		tournamentRules: extractedTournamentRules.versions,
+		templatesDirectory: join(projectDirectory, 'templates', 'reference'),
 	})
 
-	await metadataAdapter.publish(metadata)
-	await coreRulesAdapter.publish(coreRules)
-	await tournamentRulesAdapter.publish(tournamentRules)
-	await referenceAdapter.publish(reference)
-
 	return {
-		metadata: metadata.summary,
-		coreRules: coreRules.summary,
-		tournamentRules: tournamentRules.summary,
-		reference: reference.summary,
+		metadata: metadata.contents,
+		coreRules: {
+			artifacts: coreRules.artifacts,
+			registeredVersions: manifest.coreRules.registeredVersions.map(({ version }) => version),
+			transcripts: coreRules.transcripts,
+		},
+		tournamentRules: {
+			artifacts: tournamentRules.artifacts,
+			registeredVersions: manifest.tournamentRules.registeredVersions.map(({ version }) => version),
+			transcripts: tournamentRules.transcripts,
+		},
+		reference: reference.artifacts,
+		summary: {
+			coreRules: coreRules.summary,
+			tournamentRules: tournamentRules.summary,
+			reference: reference.summary,
+		},
 	}
+}
+
+const rulesPublisher = createRulesPublisher({
+	defaultProjectDirectory: DEFAULT_PROJECT_DIRECTORY,
+	prepare: prepareRulesPublication,
+})
+
+/**
+ * Publishes one complete generated result. Callers must await the single writer
+ * before starting readers that consume generated rules files.
+ */
+export function publishRules(options?: RulesPublicationOptions): Promise<RulesPublicationSummary> {
+	return rulesPublisher(options)
 }
