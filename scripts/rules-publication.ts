@@ -1,9 +1,11 @@
+import type { CoreRulesFamily, RulesManifest, TournamentRulesFamily } from './rules-manifest.ts'
+
 export type PreparedPublication<Summary = unknown> = {
 	summary: Summary
 }
 
-export type RulesAdapter<Prepared extends PreparedPublication> = {
-	prepare: (manifest: unknown) => Prepared | Promise<Prepared>
+export type RulesAdapter<Input, Prepared extends PreparedPublication> = {
+	prepare: (input: Input) => Prepared | Promise<Prepared>
 	publish: (prepared: Prepared) => unknown | Promise<unknown>
 }
 
@@ -13,7 +15,7 @@ export type ReferenceRulesAdapter<
 	Reference extends PreparedPublication,
 > = {
 	prepare: (
-		manifest: unknown,
+		manifest: RulesManifest,
 		inputs: { coreRules: CoreRules; tournamentRules: TournamentRules },
 	) => Reference | Promise<Reference>
 	publish: (prepared: Reference) => unknown | Promise<unknown>
@@ -31,10 +33,10 @@ export async function publishRules<
 	tournamentRulesAdapter,
 	referenceAdapter,
 }: {
-	manifest: unknown
-	metadataAdapter: RulesAdapter<Metadata>
-	coreRulesAdapter: RulesAdapter<CoreRules>
-	tournamentRulesAdapter: RulesAdapter<TournamentRules>
+	manifest: RulesManifest
+	metadataAdapter: RulesAdapter<RulesManifest, Metadata>
+	coreRulesAdapter: RulesAdapter<CoreRulesFamily, CoreRules>
+	tournamentRulesAdapter: RulesAdapter<TournamentRulesFamily, TournamentRules>
 	referenceAdapter: ReferenceRulesAdapter<CoreRules, TournamentRules, Reference>
 }): Promise<{
 	metadata: Metadata['summary']
@@ -43,8 +45,8 @@ export async function publishRules<
 	reference: Reference['summary']
 }> {
 	const metadata = await metadataAdapter.prepare(manifest)
-	const coreRules = await coreRulesAdapter.prepare(manifest)
-	const tournamentRules = await tournamentRulesAdapter.prepare(manifest)
+	const coreRules = await coreRulesAdapter.prepare(manifest.coreRules)
+	const tournamentRules = await tournamentRulesAdapter.prepare(manifest.tournamentRules)
 	const reference = await referenceAdapter.prepare(manifest, { coreRules, tournamentRules })
 
 	await metadataAdapter.publish(metadata)

@@ -2,10 +2,11 @@ import { mkdtemp, mkdir, readFile, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, onTestFinished, test } from 'vitest'
+import { parseRulesManifest, type RulesManifest } from '../rules-manifest.ts'
 import { publishRules, type PreparedPublication, type RulesAdapter } from '../rules-publication.ts'
 import { prepareReferencePages, publishReferencePages, type ReferencePreparationInputs } from './generate.ts'
 
-const MANIFEST = {
+const MANIFEST = parseRulesManifest({
 	coreRules: {
 		current: '1.2',
 		versions: {
@@ -22,7 +23,7 @@ const MANIFEST = {
 			'2026-04-29': {},
 		},
 	},
-}
+})
 
 const PREPARED_CORE_RULES = {
 	referenceVersions: [
@@ -91,7 +92,9 @@ async function createReferenceWorkspace() {
 	}
 }
 
-const inertAdapter = <Prepared extends PreparedPublication>(prepared: Prepared): RulesAdapter<Prepared> => ({
+const inertAdapter = <Prepared extends PreparedPublication>(
+	prepared: Prepared,
+): RulesAdapter<unknown, Prepared> => ({
 	async prepare() {
 		return prepared
 	},
@@ -108,7 +111,7 @@ describe('reference publication integration', () => {
 			coreRulesAdapter: inertAdapter(PREPARED_CORE_RULES),
 			tournamentRulesAdapter: inertAdapter(PREPARED_TOURNAMENT_RULES),
 			referenceAdapter: {
-				prepare: (manifest: unknown, inputs: ReferencePreparationInputs) =>
+				prepare: (manifest: RulesManifest, inputs: ReferencePreparationInputs) =>
 					prepareReferencePages(manifest, { ...inputs, templatesDirectory }),
 				publish: (prepared) => publishReferencePages(prepared, { outputDirectory }),
 			},
@@ -286,20 +289,6 @@ describe('prepareReferencePages', () => {
 		expect(overview).toMatch(/## Tournament Rules \[#tournament-rules\]/u)
 		expect(overview).toMatch(/href="\/reference\/tournament-rules\/2026-04-29"/u)
 		expect(overview).toMatch(/Changes from March 30 to April 29, 2026\./u)
-	})
-
-	test('rejects a current version that is not the greatest registered version', async () => {
-		const { templatesDirectory } = await createReferenceWorkspace()
-		const manifest = structuredClone(MANIFEST)
-		manifest.coreRules.current = '1.1'
-
-		await expect(
-			prepareReferencePages(manifest, {
-				coreRules: { referenceVersions: [] },
-				tournamentRules: { referenceVersions: [] },
-				templatesDirectory,
-			}),
-		).rejects.toThrow(/current Core Rules version 1\.1 must be the greatest registered version 1\.2/u)
 	})
 
 	test('rejects an invalid parsed Last Updated date', async () => {

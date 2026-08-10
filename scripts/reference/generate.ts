@@ -1,6 +1,7 @@
 import { access, mkdir, mkdtemp, readFile, rename, rm, writeFile } from 'node:fs/promises'
 import { basename, dirname, join } from 'node:path'
 import { normalizeRulesDate } from '../rules-date.ts'
+import type { RulesManifest } from '../rules-manifest.ts'
 
 const PROJECT_DIRECTORY = join(import.meta.dirname, '..', '..')
 const DEFAULT_TEMPLATES_DIRECTORY = join(PROJECT_DIRECTORY, 'templates', 'reference')
@@ -20,11 +21,6 @@ const TEMPLATE_FILES = [
 ] as const
 
 type CoreVersionMetadata = { name?: string }
-type VersionFamily<Metadata> = { current: string; versions: Record<string, Metadata> }
-type RulesManifest = {
-	coreRules: VersionFamily<CoreVersionMetadata>
-	tournamentRules: VersionFamily<Record<string, unknown>>
-}
 type ReferenceVersion = { version: string; lastUpdated: unknown }
 type PreparedRulesForReference = { referenceVersions?: readonly ReferenceVersion[] }
 type VersionPair = { from: string; to: string }
@@ -43,34 +39,6 @@ export type PreparedReferencePages = {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
 	return typeof value === 'object' && value !== null
-}
-
-function readManifest(value: unknown): RulesManifest {
-	if (!isRecord(value) || !isRecord(value.coreRules) || !isRecord(value.tournamentRules)) {
-		throw new TypeError('expected rules version metadata')
-	}
-	const coreRules = value.coreRules
-	const tournamentRules = value.tournamentRules
-	if (!isRecord(coreRules.versions) || !isRecord(tournamentRules.versions)) {
-		throw new TypeError('expected rules version metadata')
-	}
-	if (typeof coreRules.current !== 'string' || typeof tournamentRules.current !== 'string') {
-		throw new TypeError('expected rules version metadata')
-	}
-	return {
-		coreRules: {
-			current: coreRules.current,
-			versions: coreRules.versions as Record<string, CoreVersionMetadata>,
-		},
-		tournamentRules: {
-			current: tournamentRules.current,
-			versions: tournamentRules.versions as Record<string, Record<string, unknown>>,
-		},
-	}
-}
-
-function compareCoreVersions(left: string, right: string): number {
-	return left.localeCompare(right, 'en', { numeric: true })
 }
 
 function renderTemplate(template: string, values: Record<string, string>, filename: string): string {
@@ -168,15 +136,6 @@ function referenceDates(
 	return dates
 }
 
-function currentMustBeGreatest(family: string, current: string, versions: readonly string[]): void {
-	const greatest = versions.at(-1)
-	if (current !== greatest) {
-		throw new Error(
-			`current ${family} version ${current} must be the greatest registered version ${greatest}`,
-		)
-	}
-}
-
 function coreChangeTiles(
 	changes: readonly VersionPair[],
 	metadata: Record<string, CoreVersionMetadata>,
@@ -244,20 +203,20 @@ function navigationPages(currentCoreVersion: string, currentTournamentVersion: s
 }
 
 export async function prepareReferencePages(
-	rawManifest: unknown,
+	manifest: RulesManifest,
 	{
 		coreRules,
 		tournamentRules,
 		templatesDirectory = DEFAULT_TEMPLATES_DIRECTORY,
 	}: ReferencePreparationInputs,
 ): Promise<PreparedReferencePages> {
-	const manifest = readManifest(rawManifest)
-	const coreMetadata = manifest.coreRules.versions
-	const tournamentMetadata = manifest.tournamentRules.versions
-	const coreVersions = Object.keys(coreMetadata).toSorted(compareCoreVersions)
-	const tournamentVersions = Object.keys(tournamentMetadata).toSorted()
-	currentMustBeGreatest('Core Rules', manifest.coreRules.current, coreVersions)
-	currentMustBeGreatest('Tournament Rules', manifest.tournamentRules.current, tournamentVersions)
+	const coreMetadata: Record<string, CoreVersionMetadata> = Object.fromEntries(
+		manifest.coreRules.registeredVersions.map(({ version, name }) => [version, { name }]),
+	)
+	const coreVersions = manifest.coreRules.registeredVersions.map(({ version }) => version)
+	const tournamentVersions = manifest.tournamentRules.registeredVersions.map(({ version }) => version)
+	const currentCoreVersion = manifest.coreRules.currentVersion.version
+	const currentTournamentVersion = manifest.tournamentRules.currentVersion.version
 	const coreDates = referenceDates(coreRules, 'Core Rules', coreVersions)
 	const tournamentDates = referenceDates(tournamentRules, 'Tournament Rules', tournamentVersions)
 	const coreArchivedVersions = coreVersions.slice(0, -1)
@@ -280,10 +239,10 @@ export async function prepareReferencePages(
 				{
 					CORE_RULES_ARCHIVE: coreArchiveTiles(coreArchivedVersions, coreMetadata),
 					CORE_RULES_CHANGES: coreChangeTiles(coreChanges, coreMetadata),
-					CORE_RULES_CURRENT_VERSION: manifest.coreRules.current,
+					CORE_RULES_CURRENT_VERSION: currentCoreVersion,
 					TOURNAMENT_RULES_ARCHIVE: tournamentArchiveTiles(tournamentArchivedVersions),
 					TOURNAMENT_RULES_CHANGES: tournamentChangeTiles(tournamentChanges),
-					TOURNAMENT_RULES_CURRENT_VERSION: manifest.tournamentRules.current,
+					TOURNAMENT_RULES_CURRENT_VERSION: currentTournamentVersion,
 				},
 				'index.mdx',
 			),
@@ -293,7 +252,7 @@ export async function prepareReferencePages(
 			renderTemplate(
 				templates['meta.json.template'],
 				{
-					PAGES: navigationPages(manifest.coreRules.current, manifest.tournamentRules.current),
+					PAGES: navigationPages(currentCoreVersion, currentTournamentVersion),
 				},
 				'meta.json.template',
 			),
@@ -343,25 +302,25 @@ export async function prepareReferencePages(
 			),
 		],
 		[
-			`core-rules/${manifest.coreRules.current}.mdx`,
+			`core-rules/${currentCoreVersion}.mdx`,
 			renderTemplate(
 				templates['core-rules-current.mdx'],
 				{
-					CREATED_AT: coreDates.get(manifest.coreRules.current)!,
-					TITLE: coreTitle(manifest.coreRules.current, coreMetadata[manifest.coreRules.current].name),
-					VERSION: manifest.coreRules.current,
+					CREATED_AT: coreDates.get(currentCoreVersion)!,
+					TITLE: coreTitle(currentCoreVersion, coreMetadata[currentCoreVersion].name),
+					VERSION: currentCoreVersion,
 				},
 				'core-rules-current.mdx',
 			),
 		],
 		[
-			`tournament-rules/${manifest.tournamentRules.current}.mdx`,
+			`tournament-rules/${currentTournamentVersion}.mdx`,
 			renderTemplate(
 				templates['tournament-rules-current.mdx'],
 				{
-					CREATED_AT: tournamentDates.get(manifest.tournamentRules.current)!,
-					TITLE: `Tournament Rules (${formatDate(manifest.tournamentRules.current)})`,
-					VERSION: manifest.tournamentRules.current,
+					CREATED_AT: tournamentDates.get(currentTournamentVersion)!,
+					TITLE: `Tournament Rules (${formatDate(currentTournamentVersion)})`,
+					VERSION: currentTournamentVersion,
 				},
 				'tournament-rules-current.mdx',
 			),
@@ -376,7 +335,7 @@ export async function prepareReferencePages(
 				templates['core-rules-archive.mdx'],
 				{
 					CREATED_AT: coreDates.get(version)!,
-					CURRENT_VERSION: manifest.coreRules.current,
+					CURRENT_VERSION: currentCoreVersion,
 					DESCRIPTION: `Archived snapshot of the Riftbound Core Rules Document as of version ${coreVersionLabel(version, name)}.`,
 					SIDEBAR_TITLE: coreSidebarTitle(version, name),
 					TITLE: coreTitle(version, name),
@@ -410,7 +369,7 @@ export async function prepareReferencePages(
 				templates['tournament-rules-archive.mdx'],
 				{
 					CREATED_AT: tournamentDates.get(version)!,
-					CURRENT_VERSION: manifest.tournamentRules.current,
+					CURRENT_VERSION: currentTournamentVersion,
 					DESCRIPTION: `Archived snapshot of the Riftbound Tournament Rules last updated ${formatDate(version)}.`,
 					SIDEBAR_TITLE: `${formatMonthYear(version)} Tournament Rules`,
 					TITLE: `Tournament Rules (${formatDate(version)})`,
