@@ -1,4 +1,6 @@
 .local
+.rules-publication/
+.rules-publication-committed/
 .source
 content/reference/
 src/generated/

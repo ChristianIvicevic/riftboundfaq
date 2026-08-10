@@ -1,5 +1,5 @@
-import { access, mkdir, mkdtemp, readFile, rename, rm, writeFile } from 'node:fs/promises'
-import { basename, dirname, join } from 'node:path'
+import { readFile } from 'node:fs/promises'
+import { join } from 'node:path'
 import { normalizeRulesDate } from '../rules-date.ts'
 import type {
 	RegisteredCoreRulesVersion,
@@ -9,7 +9,6 @@ import type {
 
 const PROJECT_DIRECTORY = join(import.meta.dirname, '..', '..')
 const DEFAULT_TEMPLATES_DIRECTORY = join(PROJECT_DIRECTORY, 'templates', 'reference')
-const DEFAULT_OUTPUT_DIRECTORY = join(PROJECT_DIRECTORY, 'content', 'reference')
 const PLACEHOLDER = /\{\{([A-Z_]+)\}\}/gu
 
 const TEMPLATE_FILES = [
@@ -47,10 +46,6 @@ export type ReferencePreparationInputs = {
 export type PreparedReferencePages = {
 	artifacts: Map<string, string>
 	summary: { pages: number }
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-	return typeof value === 'object' && value !== null
 }
 
 function renderTemplate(template: string, values: Record<string, string>, filename: string): string {
@@ -118,16 +113,6 @@ function formatDateRange(from: string, to: string): string {
 		timeZone: 'UTC',
 	}).format(fromDate)
 	return `${fromMonthDay} to ${formatDate(to)}`
-}
-
-async function pathExists(path: string): Promise<boolean> {
-	try {
-		await access(path)
-		return true
-	} catch (error: unknown) {
-		if (isRecord(error) && error.code === 'ENOENT') return false
-		throw error
-	}
 }
 
 function referenceDates<Version extends { registeredVersion: { version: string }; lastUpdated: unknown }>(
@@ -410,38 +395,4 @@ export async function prepareReferencePages(
 
 	const pageCount = [...artifacts.keys()].filter((path) => path.endsWith('.mdx')).length
 	return { artifacts, summary: { pages: pageCount } }
-}
-
-export async function publishReferencePages(
-	{ artifacts }: PreparedReferencePages,
-	{ outputDirectory = DEFAULT_OUTPUT_DIRECTORY }: { outputDirectory?: string } = {},
-): Promise<void> {
-	const parentDirectory = dirname(outputDirectory)
-	await mkdir(parentDirectory, { recursive: true })
-	const stagingDirectory = await mkdtemp(join(parentDirectory, `${basename(outputDirectory)}.tmp-`))
-	const backupDirectory = `${stagingDirectory}.previous`
-	let hasBackup = false
-	try {
-		await Promise.all(
-			[...artifacts].map(async ([relativePath, contents]) => {
-				const outputPath = join(stagingDirectory, relativePath)
-				await mkdir(dirname(outputPath), { recursive: true })
-				await writeFile(outputPath, contents)
-			}),
-		)
-		if (await pathExists(outputDirectory)) {
-			await rename(outputDirectory, backupDirectory)
-			hasBackup = true
-		}
-		try {
-			await rename(stagingDirectory, outputDirectory)
-		} catch (error) {
-			if (hasBackup) await rename(backupDirectory, outputDirectory)
-			throw error
-		}
-		if (hasBackup) await rm(backupDirectory, { recursive: true })
-	} catch (error) {
-		await rm(stagingDirectory, { recursive: true, force: true })
-		throw error
-	}
 }

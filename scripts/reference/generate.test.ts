@@ -1,11 +1,10 @@
-import { mkdtemp, mkdir, readFile, writeFile } from 'node:fs/promises'
+import { mkdtemp, mkdir, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, onTestFinished, test } from 'vitest'
 import type { ExtractedCoreRulesFamily, ExtractedTournamentRulesFamily } from '../rules-document-family.ts'
-import { parseRulesManifest, type RulesManifest } from '../rules-manifest.ts'
-import { publishRules, type PreparedPublication, type RulesAdapter } from '../rules-publication.ts'
-import { prepareReferencePages, publishReferencePages, type ReferencePreparationInputs } from './generate.ts'
+import { parseRulesManifest } from '../rules-manifest.ts'
+import { prepareReferencePages, type ReferencePreparationInputs } from './generate.ts'
 
 const MANIFEST = parseRulesManifest({
 	coreRules: {
@@ -140,124 +139,6 @@ async function createReferenceWorkspace() {
 		outputDirectory: join(temporaryDirectory, 'reference'),
 	}
 }
-
-const inertAdapter = <Prepared extends PreparedPublication>(
-	prepared: Prepared,
-): RulesAdapter<unknown, Prepared> => ({
-	async prepare() {
-		return prepared
-	},
-	async publish() {},
-})
-
-function inertFamilyAdapter<Extracted>(extracted: Extracted) {
-	return {
-		async extract() {
-			return extracted
-		},
-		async prepare() {
-			return { summary: {} }
-		},
-		async publish() {},
-	}
-}
-
-describe('reference publication integration', () => {
-	test('publishes the complete reference site', async () => {
-		const { templatesDirectory, outputDirectory } = await createReferenceWorkspace()
-
-		await publishRules({
-			manifest: MANIFEST,
-			metadataAdapter: inertAdapter({ summary: {} }),
-			coreRulesAdapter: inertFamilyAdapter(EXTRACTED_CORE_RULES),
-			tournamentRulesAdapter: inertFamilyAdapter(EXTRACTED_TOURNAMENT_RULES),
-			referenceAdapter: {
-				prepare: (
-					manifest: RulesManifest,
-					inputs: {
-						coreRules: ExtractedCoreRulesFamily
-						tournamentRules: ExtractedTournamentRulesFamily
-					},
-				) =>
-					prepareReferencePages(manifest, {
-						coreRules: inputs.coreRules.versions,
-						tournamentRules: inputs.tournamentRules.versions,
-						templatesDirectory,
-					}),
-				publish: (prepared) => publishReferencePages(prepared, { outputDirectory }),
-			},
-		})
-
-		expect(await readFile(join(outputDirectory, 'core-rules/1.2.mdx'), 'utf8')).toBe(
-			'current core Core Rules 1.2 (Spiritforged)|1.2|2025-12-01',
-		)
-		expect(await readFile(join(outputDirectory, 'core-rules/(archive)/1.0.mdx'), 'utf8')).toMatch(
-			/^Core Rules 1\.0\|Core Rules 1\.0\|Archived snapshot.+version 1\.0\.\|1\.0\|2025-06-02\|1\.2$/u,
-		)
-		await expect(readFile(join(outputDirectory, 'core-rules/index.mdx'), 'utf8')).rejects.toMatchObject({
-			code: 'ENOENT',
-		})
-		expect(await readFile(join(outputDirectory, 'tournament-rules/2026-04-29.mdx'), 'utf8')).toBe(
-			'current tournament Tournament Rules (April 29, 2026)|2026-04-29|2026-04-29',
-		)
-		await expect(readFile(join(outputDirectory, 'tournament-rules/index.mdx'), 'utf8')).rejects.toMatchObject(
-			{ code: 'ENOENT' },
-		)
-		expect(await readFile(join(outputDirectory, 'core-rules/changes/1.1.mdx'), 'utf8')).toMatch(
-			/Core Rules 1\.1 Changes \(Origins\)\|Origins Changes\|.+1\.0.+1\.1 \(Origins\)\.\|1\.0\|1\.1\|2025-10-01/u,
-		)
-		expect(await readFile(join(outputDirectory, 'tournament-rules/changes/2026-03-30.mdx'), 'utf8')).toMatch(
-			/Tournament Rules Changes \(March 30, 2026\)\|March 2026 Changes\|.+July 2025.+March 2026.+\|2025-07-21\|2026-03-30\|2026-03-30/u,
-		)
-		const meta = JSON.parse(await readFile(join(outputDirectory, 'meta.json'), 'utf8'))
-		expect(meta.pages).toStrictEqual([
-			'---Introduction---',
-			'index',
-			'---Current Documents---',
-			'core-rules/1.2',
-			'tournament-rules/2026-04-29',
-			'---Core Rules---',
-			'core-rules/changes',
-			'core-rules/(archive)',
-			'---Tournament Rules---',
-			'tournament-rules/changes',
-			'tournament-rules/(archive)',
-		])
-		expect(
-			JSON.parse(await readFile(join(outputDirectory, 'core-rules/changes/meta.json'), 'utf8')),
-		).toStrictEqual({
-			title: 'Changes',
-			defaultOpen: false,
-			collapsible: true,
-			pages: ['1.2', '1.1'],
-		})
-		expect(
-			JSON.parse(await readFile(join(outputDirectory, 'core-rules/(archive)/meta.json'), 'utf8')),
-		).toStrictEqual({
-			title: 'Archive',
-			defaultOpen: false,
-			collapsible: true,
-			pages: ['1.1', '1.0'],
-		})
-		expect(
-			JSON.parse(await readFile(join(outputDirectory, 'tournament-rules/changes/meta.json'), 'utf8')),
-		).toStrictEqual({
-			title: 'Changes',
-			defaultOpen: false,
-			collapsible: true,
-			pages: ['2026-04-29', '2026-03-30'],
-		})
-		expect(
-			JSON.parse(await readFile(join(outputDirectory, 'tournament-rules/(archive)/meta.json'), 'utf8')),
-		).toStrictEqual({
-			title: 'Archive',
-			defaultOpen: false,
-			collapsible: true,
-			pages: ['2026-03-30', '2025-07-21'],
-		})
-		expect(await readFile(join(outputDirectory, 'index.mdx'), 'utf8')).not.toMatch(/\{\{[A-Z_]+\}\}/u)
-	})
-})
 
 describe('prepareReferencePages', () => {
 	test('preserves archived Core Rules frontmatter and components from tracked templates', async () => {
