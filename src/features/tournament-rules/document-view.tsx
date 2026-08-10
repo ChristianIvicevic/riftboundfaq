@@ -5,7 +5,7 @@ import {
 } from '@/components/rules/document'
 import { createTournamentRulesNavigation, tournamentHeadingKey } from '@/features/tournament-rules/navigation'
 import { findTournamentRuleReferences } from '@/features/tournament-rules/references'
-import type { TournamentRulesDocument } from '@/features/tournament-rules/types'
+import type { TournamentRulesDocument } from '@/lib/rules/tournament-rules-document'
 
 export function TournamentRulesDocumentView({ document }: { document: TournamentRulesDocument }) {
 	const { anchors, referenceTargets, ruleIds } = createTournamentRulesNavigation(document)

@@ -1,4 +1,4 @@
-import type { CoreRulesDocument, RuleNode } from '@/features/core-rules/types'
+import type { CoreRulesDocument, RuleNode } from '@/lib/rules/core-rules-document'
 
 function addRules(lookup: Map<string, string>, rules: RuleNode[]) {
 	for (const rule of rules) {

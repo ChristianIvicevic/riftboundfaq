@@ -1,10 +1,10 @@
-import type { TournamentRulesDocument, TournamentRulesHeading } from '@/features/tournament-rules/types'
 import {
 	appendRulesNavigationEntries,
 	createRulesDocumentNavigation,
 	rulesHeadingKey,
 	type RulesNavigationEntry,
 } from '@/lib/rules/document-navigation'
+import type { TournamentRulesDocument, TournamentRulesHeading } from '@/lib/rules/tournament-rules-document'
 
 export function tournamentHeadingKey(heading: TournamentRulesHeading) {
 	return rulesHeadingKey(heading)

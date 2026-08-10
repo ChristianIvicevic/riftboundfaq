@@ -1,7 +1,11 @@
 import { access, mkdir, mkdtemp, readFile, rename, rm, writeFile } from 'node:fs/promises'
 import { basename, dirname, join } from 'node:path'
 import { normalizeRulesDate } from '../rules-date.ts'
-import type { RulesManifest } from '../rules-manifest.ts'
+import type {
+	RegisteredCoreRulesVersion,
+	RegisteredTournamentRulesVersion,
+	RulesManifest,
+} from '../rules-manifest.ts'
 
 const PROJECT_DIRECTORY = join(import.meta.dirname, '..', '..')
 const DEFAULT_TEMPLATES_DIRECTORY = join(PROJECT_DIRECTORY, 'templates', 'reference')
@@ -21,14 +25,22 @@ const TEMPLATE_FILES = [
 ] as const
 
 type CoreVersionMetadata = { name?: string }
-type ReferenceVersion = { version: string; lastUpdated: unknown }
-type PreparedRulesForReference = { referenceVersions?: readonly ReferenceVersion[] }
+type ReferenceVersion<RegisteredVersion> = Readonly<{
+	registeredVersion: RegisteredVersion
+	lastUpdated: string
+}>
 type VersionPair = { from: string; to: string }
 type TemplateFile = (typeof TEMPLATE_FILES)[number]
 
 export type ReferencePreparationInputs = {
-	coreRules: PreparedRulesForReference
-	tournamentRules: PreparedRulesForReference
+	coreRules: readonly [
+		ReferenceVersion<RegisteredCoreRulesVersion>,
+		...ReferenceVersion<RegisteredCoreRulesVersion>[],
+	]
+	tournamentRules: readonly [
+		ReferenceVersion<RegisteredTournamentRulesVersion>,
+		...ReferenceVersion<RegisteredTournamentRulesVersion>[],
+	]
 	templatesDirectory?: string
 }
 
@@ -118,16 +130,15 @@ async function pathExists(path: string): Promise<boolean> {
 	}
 }
 
-function referenceDates(
-	prepared: PreparedRulesForReference,
+function referenceDates<Version extends { registeredVersion: { version: string }; lastUpdated: unknown }>(
+	versionsWithDates: readonly Version[],
 	family: string,
 	versions: readonly string[],
 ): Map<string, string> {
-	const entries = prepared.referenceVersions ?? []
 	const dates = new Map(
-		entries.map(({ version, lastUpdated }) => [
-			version,
-			normalizeRulesDate(lastUpdated, `${family} ${version} Last Updated`),
+		versionsWithDates.map(({ registeredVersion, lastUpdated }) => [
+			registeredVersion.version,
+			normalizeRulesDate(lastUpdated, `${family} ${registeredVersion.version} Last Updated`),
 		]),
 	)
 	for (const version of versions) {

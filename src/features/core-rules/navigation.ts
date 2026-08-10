@@ -1,4 +1,4 @@
-import type { CoreRulesDocument, RulesHeading } from '@/features/core-rules/types'
+import type { CoreRulesDocument, RulesHeading } from '@/lib/rules/core-rules-document'
 import {
 	appendRulesNavigationEntries,
 	createRulesDocumentNavigation,

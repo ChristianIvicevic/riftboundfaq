@@ -9,12 +9,12 @@ import { Energy, RUNES, Universal } from '@/components/resources'
 import { TournamentRulesDiff } from '@/components/tournament-rules/diff-view'
 import { CoreRulesDocumentView } from '@/features/core-rules/document-view'
 import { getCoreRulesDocument } from '@/features/core-rules/documents'
-import type { CoreRulesDocument } from '@/features/core-rules/types'
 import { submitBlockFeedback } from '@/features/feedback/actions'
 import { FeedbackBlock } from '@/features/feedback/feedback'
 import { TournamentRulesDocumentView } from '@/features/tournament-rules/document-view'
 import { getTournamentRulesDocument } from '@/features/tournament-rules/documents'
-import type { TournamentRulesDocument } from '@/features/tournament-rules/types'
+import type { CoreRulesDocument } from '@/lib/rules/core-rules-document'
+import type { TournamentRulesDocument } from '@/lib/rules/tournament-rules-document'
 
 const wikiMdxComponents = {
 	...defaultMdxComponents,

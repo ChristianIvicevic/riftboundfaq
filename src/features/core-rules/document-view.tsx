@@ -5,7 +5,7 @@ import {
 } from '@/components/rules/document'
 import { createCoreRulesNavigation, headingKey } from '@/features/core-rules/navigation'
 import { findCoreRuleReferences } from '@/features/core-rules/references'
-import type { CoreRulesDocument } from '@/features/core-rules/types'
+import type { CoreRulesDocument } from '@/lib/rules/core-rules-document'
 
 export function CoreRulesDocumentView({ document }: { document: CoreRulesDocument }) {
 	const { anchors, referenceTargets, ruleIds } = createCoreRulesNavigation(document)

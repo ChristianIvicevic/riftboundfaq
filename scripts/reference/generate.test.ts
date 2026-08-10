@@ -2,6 +2,7 @@ import { mkdtemp, mkdir, readFile, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, onTestFinished, test } from 'vitest'
+import type { ExtractedCoreRulesFamily, ExtractedTournamentRulesFamily } from '../rules-document-family.ts'
 import { parseRulesManifest, type RulesManifest } from '../rules-manifest.ts'
 import { publishRules, type PreparedPublication, type RulesAdapter } from '../rules-publication.ts'
 import { prepareReferencePages, publishReferencePages, type ReferencePreparationInputs } from './generate.ts'
@@ -25,23 +26,71 @@ const MANIFEST = parseRulesManifest({
 	},
 })
 
-const PREPARED_CORE_RULES = {
-	referenceVersions: [
-		{ version: '1.0', lastUpdated: '2025-06-02' },
-		{ version: '1.1', name: 'Origins', lastUpdated: '2025-10-01' },
-		{ version: '1.2', name: 'Spiritforged', lastUpdated: '2025-12-01' },
-	],
-	summary: { versions: 3 },
+function coreVersion(
+	registeredVersion: (typeof MANIFEST.coreRules.registeredVersions)[number],
+	lastUpdated: string,
+): ExtractedCoreRulesFamily['versions'][number] {
+	return {
+		registeredVersion,
+		lastUpdated,
+		document: { schemaVersion: 3, version: registeredVersion.version, sections: [] },
+		transcript: registeredVersion.name ? '' : null,
+		diagnostics: [],
+	}
 }
 
-const PREPARED_TOURNAMENT_RULES = {
-	referenceVersions: [
-		{ version: '2025-07-21', lastUpdated: '2025-07-21' },
-		{ version: '2026-03-30', lastUpdated: '2026-03-30' },
-		{ version: '2026-04-29', lastUpdated: '2026-04-29' },
-	],
-	summary: { versions: 3 },
+const coreVersions: ExtractedCoreRulesFamily['versions'] = [
+	coreVersion(MANIFEST.coreRules.registeredVersions[0], '2025-06-02'),
+	coreVersion(MANIFEST.coreRules.registeredVersions[1], '2025-10-01'),
+	coreVersion(MANIFEST.coreRules.registeredVersions[2], '2025-12-01'),
+]
+const EXTRACTED_CORE_RULES: ExtractedCoreRulesFamily = {
+	versions: coreVersions,
+	currentVersion: coreVersions[2],
 }
+
+function tournamentVersion(
+	registeredVersion: (typeof MANIFEST.tournamentRules.registeredVersions)[number],
+): ExtractedTournamentRulesFamily['versions'][number] {
+	return {
+		registeredVersion,
+		lastUpdated: registeredVersion.version,
+		document: { schemaVersion: 1, version: registeredVersion.version, sections: [] },
+		transcript: '',
+		diagnostics: [],
+	}
+}
+
+const tournamentVersions: ExtractedTournamentRulesFamily['versions'] = [
+	tournamentVersion(MANIFEST.tournamentRules.registeredVersions[0]),
+	tournamentVersion(MANIFEST.tournamentRules.registeredVersions[1]),
+	tournamentVersion(MANIFEST.tournamentRules.registeredVersions[2]),
+]
+const EXTRACTED_TOURNAMENT_RULES: ExtractedTournamentRulesFamily = {
+	versions: tournamentVersions,
+	currentVersion: tournamentVersions[2],
+}
+
+function referenceVersion<RegisteredVersion>({
+	registeredVersion,
+	lastUpdated,
+}: {
+	registeredVersion: RegisteredVersion
+	lastUpdated: string
+}) {
+	return { registeredVersion, lastUpdated }
+}
+
+const CORE_REFERENCE_VERSIONS: ReferencePreparationInputs['coreRules'] = [
+	referenceVersion(EXTRACTED_CORE_RULES.versions[0]),
+	referenceVersion(EXTRACTED_CORE_RULES.versions[1]),
+	referenceVersion(EXTRACTED_CORE_RULES.versions[2]),
+]
+const TOURNAMENT_REFERENCE_VERSIONS: ReferencePreparationInputs['tournamentRules'] = [
+	referenceVersion(EXTRACTED_TOURNAMENT_RULES.versions[0]),
+	referenceVersion(EXTRACTED_TOURNAMENT_RULES.versions[1]),
+	referenceVersion(EXTRACTED_TOURNAMENT_RULES.versions[2]),
+]
 
 async function createTemplates(directory: string): Promise<void> {
 	await mkdir(directory, { recursive: true })
@@ -101,6 +150,18 @@ const inertAdapter = <Prepared extends PreparedPublication>(
 	async publish() {},
 })
 
+function inertFamilyAdapter<Extracted>(extracted: Extracted) {
+	return {
+		async extract() {
+			return extracted
+		},
+		async prepare() {
+			return { summary: {} }
+		},
+		async publish() {},
+	}
+}
+
 describe('reference publication integration', () => {
 	test('publishes the complete reference site', async () => {
 		const { templatesDirectory, outputDirectory } = await createReferenceWorkspace()
@@ -108,11 +169,21 @@ describe('reference publication integration', () => {
 		await publishRules({
 			manifest: MANIFEST,
 			metadataAdapter: inertAdapter({ summary: {} }),
-			coreRulesAdapter: inertAdapter(PREPARED_CORE_RULES),
-			tournamentRulesAdapter: inertAdapter(PREPARED_TOURNAMENT_RULES),
+			coreRulesAdapter: inertFamilyAdapter(EXTRACTED_CORE_RULES),
+			tournamentRulesAdapter: inertFamilyAdapter(EXTRACTED_TOURNAMENT_RULES),
 			referenceAdapter: {
-				prepare: (manifest: RulesManifest, inputs: ReferencePreparationInputs) =>
-					prepareReferencePages(manifest, { ...inputs, templatesDirectory }),
+				prepare: (
+					manifest: RulesManifest,
+					inputs: {
+						coreRules: ExtractedCoreRulesFamily
+						tournamentRules: ExtractedTournamentRulesFamily
+					},
+				) =>
+					prepareReferencePages(manifest, {
+						coreRules: inputs.coreRules.versions,
+						tournamentRules: inputs.tournamentRules.versions,
+						templatesDirectory,
+					}),
 				publish: (prepared) => publishReferencePages(prepared, { outputDirectory }),
 			},
 		})
@@ -191,8 +262,8 @@ describe('reference publication integration', () => {
 describe('prepareReferencePages', () => {
 	test('preserves archived Core Rules frontmatter and components from tracked templates', async () => {
 		const { artifacts, summary } = await prepareReferencePages(MANIFEST, {
-			coreRules: PREPARED_CORE_RULES,
-			tournamentRules: PREPARED_TOURNAMENT_RULES,
+			coreRules: CORE_REFERENCE_VERSIONS,
+			tournamentRules: TOURNAMENT_REFERENCE_VERSIONS,
 		})
 
 		expect(artifacts.get('core-rules/(archive)/1.0.mdx')).toMatch(
@@ -203,8 +274,8 @@ describe('prepareReferencePages', () => {
 
 	test('selects current documents by explicit version', async () => {
 		const { artifacts } = await prepareReferencePages(MANIFEST, {
-			coreRules: PREPARED_CORE_RULES,
-			tournamentRules: PREPARED_TOURNAMENT_RULES,
+			coreRules: CORE_REFERENCE_VERSIONS,
+			tournamentRules: TOURNAMENT_REFERENCE_VERSIONS,
 		})
 
 		expect(artifacts.get('core-rules/1.2.mdx')).toMatch(/version: "1\.2"/u)
@@ -244,8 +315,8 @@ describe('prepareReferencePages', () => {
 		},
 	])('separates the canonical and sidebar titles for $path', async ({ path, title, sidebarTitle }) => {
 		const { artifacts } = await prepareReferencePages(MANIFEST, {
-			coreRules: PREPARED_CORE_RULES,
-			tournamentRules: PREPARED_TOURNAMENT_RULES,
+			coreRules: CORE_REFERENCE_VERSIONS,
+			tournamentRules: TOURNAMENT_REFERENCE_VERSIONS,
 		})
 
 		expect(artifacts.get(path)).toContain(`title: "${title}"`)
@@ -254,8 +325,8 @@ describe('prepareReferencePages', () => {
 
 	test('preserves Core Rules diff components from tracked templates', async () => {
 		const { artifacts } = await prepareReferencePages(MANIFEST, {
-			coreRules: PREPARED_CORE_RULES,
-			tournamentRules: PREPARED_TOURNAMENT_RULES,
+			coreRules: CORE_REFERENCE_VERSIONS,
+			tournamentRules: TOURNAMENT_REFERENCE_VERSIONS,
 		})
 
 		expect(artifacts.get('core-rules/changes/1.1.mdx')).toMatch(
@@ -265,8 +336,8 @@ describe('prepareReferencePages', () => {
 
 	test('preserves Tournament Rules components from tracked templates', async () => {
 		const { artifacts } = await prepareReferencePages(MANIFEST, {
-			coreRules: PREPARED_CORE_RULES,
-			tournamentRules: PREPARED_TOURNAMENT_RULES,
+			coreRules: CORE_REFERENCE_VERSIONS,
+			tournamentRules: TOURNAMENT_REFERENCE_VERSIONS,
 		})
 
 		expect(artifacts.get('tournament-rules/changes/2026-04-29.mdx')).toMatch(
@@ -279,8 +350,8 @@ describe('prepareReferencePages', () => {
 
 	test('preserves history prose from tracked templates', async () => {
 		const { artifacts } = await prepareReferencePages(MANIFEST, {
-			coreRules: PREPARED_CORE_RULES,
-			tournamentRules: PREPARED_TOURNAMENT_RULES,
+			coreRules: CORE_REFERENCE_VERSIONS,
+			tournamentRules: TOURNAMENT_REFERENCE_VERSIONS,
 		})
 
 		const overview = artifacts.get('index.mdx')
@@ -296,14 +367,12 @@ describe('prepareReferencePages', () => {
 
 		await expect(
 			prepareReferencePages(MANIFEST, {
-				coreRules: {
-					referenceVersions: [
-						{ version: '1.0', lastUpdated: '2025-06-02' },
-						{ version: '1.1', lastUpdated: 'not a date' },
-						{ version: '1.2', lastUpdated: '2025-12-01' },
-					],
-				},
-				tournamentRules: { referenceVersions: [] },
+				coreRules: [
+					CORE_REFERENCE_VERSIONS[0],
+					{ ...CORE_REFERENCE_VERSIONS[1], lastUpdated: 'not a date' },
+					CORE_REFERENCE_VERSIONS[2],
+				],
+				tournamentRules: TOURNAMENT_REFERENCE_VERSIONS,
 				templatesDirectory,
 			}),
 		).rejects.toThrow(/Core Rules 1\.1 Last Updated "not a date" is not a recognized date/u)

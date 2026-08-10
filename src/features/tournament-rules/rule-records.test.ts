@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import { prepareTournamentRulesDiff } from '@/features/tournament-rules/rule-records'
-import type { TournamentRuleNode, TournamentRulesDocument } from '@/features/tournament-rules/types'
+import type { TournamentRuleNode, TournamentRulesDocument } from '@/lib/rules/tournament-rules-document'
 
 const rule = (
 	sequence: number,

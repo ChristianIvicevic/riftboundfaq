@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import type { TournamentRuleNode, TournamentRulesSection } from '@/features/tournament-rules/types'
+import type { TournamentRuleNode, TournamentRulesSection } from '@/lib/rules/tournament-rules-document'
 import type { TournamentRow } from './inspect.ts'
 import { structureTournamentRows } from './structure.ts'
 

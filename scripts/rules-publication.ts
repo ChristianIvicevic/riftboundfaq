@@ -9,21 +9,29 @@ export type RulesAdapter<Input, Prepared extends PreparedPublication> = {
 	publish: (prepared: Prepared) => unknown | Promise<unknown>
 }
 
+export type RulesDocumentFamilyPublicationAdapter<Input, Extracted, Prepared extends PreparedPublication> = {
+	extract: (input: Input) => Extracted | Promise<Extracted>
+	prepare: (extracted: Extracted) => Prepared | Promise<Prepared>
+	publish: (prepared: Prepared) => unknown | Promise<unknown>
+}
+
 export type ReferenceRulesAdapter<
-	CoreRules extends PreparedPublication,
-	TournamentRules extends PreparedPublication,
+	ExtractedCoreRules,
+	ExtractedTournamentRules,
 	Reference extends PreparedPublication,
 > = {
 	prepare: (
 		manifest: RulesManifest,
-		inputs: { coreRules: CoreRules; tournamentRules: TournamentRules },
+		inputs: { coreRules: ExtractedCoreRules; tournamentRules: ExtractedTournamentRules },
 	) => Reference | Promise<Reference>
 	publish: (prepared: Reference) => unknown | Promise<unknown>
 }
 
 export async function publishRules<
 	Metadata extends PreparedPublication,
+	ExtractedCoreRules,
 	CoreRules extends PreparedPublication,
+	ExtractedTournamentRules,
 	TournamentRules extends PreparedPublication,
 	Reference extends PreparedPublication,
 >({
@@ -35,9 +43,13 @@ export async function publishRules<
 }: {
 	manifest: RulesManifest
 	metadataAdapter: RulesAdapter<RulesManifest, Metadata>
-	coreRulesAdapter: RulesAdapter<CoreRulesFamily, CoreRules>
-	tournamentRulesAdapter: RulesAdapter<TournamentRulesFamily, TournamentRules>
-	referenceAdapter: ReferenceRulesAdapter<CoreRules, TournamentRules, Reference>
+	coreRulesAdapter: RulesDocumentFamilyPublicationAdapter<CoreRulesFamily, ExtractedCoreRules, CoreRules>
+	tournamentRulesAdapter: RulesDocumentFamilyPublicationAdapter<
+		TournamentRulesFamily,
+		ExtractedTournamentRules,
+		TournamentRules
+	>
+	referenceAdapter: ReferenceRulesAdapter<ExtractedCoreRules, ExtractedTournamentRules, Reference>
 }): Promise<{
 	metadata: Metadata['summary']
 	coreRules: CoreRules['summary']
@@ -45,9 +57,14 @@ export async function publishRules<
 	reference: Reference['summary']
 }> {
 	const metadata = await metadataAdapter.prepare(manifest)
-	const coreRules = await coreRulesAdapter.prepare(manifest.coreRules)
-	const tournamentRules = await tournamentRulesAdapter.prepare(manifest.tournamentRules)
-	const reference = await referenceAdapter.prepare(manifest, { coreRules, tournamentRules })
+	const extractedCoreRules = await coreRulesAdapter.extract(manifest.coreRules)
+	const coreRules = await coreRulesAdapter.prepare(extractedCoreRules)
+	const extractedTournamentRules = await tournamentRulesAdapter.extract(manifest.tournamentRules)
+	const tournamentRules = await tournamentRulesAdapter.prepare(extractedTournamentRules)
+	const reference = await referenceAdapter.prepare(manifest, {
+		coreRules: extractedCoreRules,
+		tournamentRules: extractedTournamentRules,
+	})
 
 	await metadataAdapter.publish(metadata)
 	await coreRulesAdapter.publish(coreRules)

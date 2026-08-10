@@ -1,10 +1,10 @@
 import { createTournamentRulesNavigation } from '@/features/tournament-rules/navigation'
+import { rulesHeadingKey, rulesRuleKey } from '@/lib/rules/document-navigation'
 import type {
 	TournamentRuleNode,
 	TournamentRulesDocument,
 	TournamentRulesHeading,
-} from '@/features/tournament-rules/types'
-import { rulesHeadingKey, rulesRuleKey } from '@/lib/rules/document-navigation'
+} from '@/lib/rules/tournament-rules-document'
 import type { RuleRecord } from '@/lib/rules/types'
 
 export type TournamentRuleRecord = {

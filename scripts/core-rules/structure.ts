@@ -1,4 +1,4 @@
-import type { RuleContent } from '@/features/core-rules/types'
+import type { RuleContent } from '@/lib/rules/core-rules-document'
 import type { RuleBlock } from './blocks.ts'
 
 export type RuleSourceLocation = {

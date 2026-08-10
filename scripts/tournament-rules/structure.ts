@@ -4,7 +4,7 @@ import type {
 	TournamentRulesHeading,
 	TournamentRulesSection,
 	TournamentRulesSectionBlock,
-} from '@/features/tournament-rules/types'
+} from '@/lib/rules/tournament-rules-document'
 import type { TournamentRow } from './inspect.ts'
 
 export type TournamentStructureDiagnostic =

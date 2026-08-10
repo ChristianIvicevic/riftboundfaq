@@ -1,4 +1,4 @@
-import type { CoreRulesDocument, RuleNode, RulesHeading } from '@/features/core-rules/types'
+import type { CoreRulesDocument, RuleNode, RulesHeading } from '@/lib/rules/core-rules-document'
 import type { RuleRecord } from '@/lib/rules/types'
 
 type SequencedRuleRecord = {
