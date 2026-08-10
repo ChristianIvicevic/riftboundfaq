@@ -3,7 +3,7 @@ import { join } from 'node:path'
 import { createCoreRulesFamilyAdapter } from './core-rules/extract-internal.ts'
 import { prepareCoreRulesArtifacts } from './core-rules/generate.ts'
 import { inspectPdf } from './core-rules/inspect.ts'
-import { prepareReferencePages } from './reference/generate.ts'
+import { prepareReferencePublication } from './reference/publication.ts'
 import { parseRulesManifest } from './rules-manifest.ts'
 import { prepareRulesMetadata } from './rules-metadata.ts'
 import {
@@ -40,10 +40,10 @@ async function prepareRulesPublication(projectDirectory: string): Promise<Prepar
 	const coreRules = prepareCoreRulesArtifacts(extractedCoreRules)
 	const extractedTournamentRules = await tournamentRulesAdapter.extract(manifest.tournamentRules)
 	const tournamentRules = prepareTournamentRulesArtifacts(extractedTournamentRules)
-	const reference = await prepareReferencePages(manifest, {
-		coreRules: extractedCoreRules.versions,
-		tournamentRules: extractedTournamentRules.versions,
-		templatesDirectory: join(projectDirectory, 'templates', 'reference'),
+	const reference = await prepareReferencePublication({
+		projectDirectory,
+		coreRules: extractedCoreRules,
+		tournamentRules: extractedTournamentRules,
 	})
 
 	return {
