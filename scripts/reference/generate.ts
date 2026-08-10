@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
+import { coreRulesConventions, tournamentRulesConventions } from '@/lib/rules/document-family-conventions'
 import { normalizeRulesDate } from '../rules-date.ts'
 import type {
 	RegisteredCoreRulesVersion,
@@ -140,7 +141,8 @@ function coreChangeTiles(
 		.toReversed()
 		.map(({ from, to }) => {
 			const name = metadata[to].name
-			return `\t<Tile href="/reference/core-rules/changes/${to}" title="${coreChangeSidebarTitle(to, name)}">\n\t\tChanges from Core Rules ${from} to ${to}.\n\t</Tile>`
+			const route = coreRulesConventions.version(to).reference.changeRoute
+			return `\t<Tile href="${route}" title="${coreChangeSidebarTitle(to, name)}">\n\t\tChanges from Core Rules ${from} to ${to}.\n\t</Tile>`
 		})
 		.join('\n')
 }
@@ -151,30 +153,30 @@ function coreArchiveTiles(
 ): string {
 	return versions
 		.toReversed()
-		.map(
-			(version) =>
-				`\t<Tile href="/reference/core-rules/${version}" title="${coreSidebarTitle(version, metadata[version].name)}">\n\t\tArchived Core Rules version ${version}.\n\t</Tile>`,
-		)
+		.map((version) => {
+			const route = coreRulesConventions.version(version).reference.documentRoute
+			return `\t<Tile href="${route}" title="${coreSidebarTitle(version, metadata[version].name)}">\n\t\tArchived Core Rules version ${version}.\n\t</Tile>`
+		})
 		.join('\n')
 }
 
 function tournamentChangeTiles(changes: readonly VersionPair[]): string {
 	return changes
 		.toReversed()
-		.map(
-			({ from, to }) =>
-				`\t<Tile href="/reference/tournament-rules/changes/${to}" title="${formatMonthYear(to)} Changes">\n\t\tChanges from ${formatDateRange(from, to)}.\n\t</Tile>`,
-		)
+		.map(({ from, to }) => {
+			const route = tournamentRulesConventions.version(to).reference.changeRoute
+			return `\t<Tile href="${route}" title="${formatMonthYear(to)} Changes">\n\t\tChanges from ${formatDateRange(from, to)}.\n\t</Tile>`
+		})
 		.join('\n')
 }
 
 function tournamentArchiveTiles(versions: readonly string[]): string {
 	return versions
 		.toReversed()
-		.map(
-			(version) =>
-				`\t<Tile href="/reference/tournament-rules/${version}" title="${formatMonthYear(version)} Tournament Rules">\n\t\tArchived Tournament Rules dated ${formatDate(version)}.\n\t</Tile>`,
-		)
+		.map((version) => {
+			const route = tournamentRulesConventions.version(version).reference.documentRoute
+			return `\t<Tile href="${route}" title="${formatMonthYear(version)} Tournament Rules">\n\t\tArchived Tournament Rules dated ${formatDate(version)}.\n\t</Tile>`
+		})
 		.join('\n')
 }
 
@@ -183,12 +185,18 @@ function metadataPages(pages: readonly string[]): string {
 }
 
 function navigationPages(currentCoreVersion: string, currentTournamentVersion: string): string {
+	const currentCorePath = coreRulesConventions
+		.version(currentCoreVersion)
+		.reference.currentDocumentPath.replace(/\.mdx$/u, '')
+	const currentTournamentPath = tournamentRulesConventions
+		.version(currentTournamentVersion)
+		.reference.currentDocumentPath.replace(/\.mdx$/u, '')
 	return metadataPages([
 		'---Introduction---',
 		'index',
 		'---Current Documents---',
-		`core-rules/${currentCoreVersion}`,
-		`tournament-rules/${currentTournamentVersion}`,
+		currentCorePath,
+		currentTournamentPath,
 		'---Core Rules---',
 		'core-rules/changes',
 		'core-rules/(archive)',
@@ -219,6 +227,8 @@ export async function prepareReferencePages(
 	const tournamentArchivedVersions = tournamentVersions.slice(0, -1)
 	const coreChanges = adjacentVersionPairs(coreVersions)
 	const tournamentChanges = adjacentVersionPairs(tournamentVersions)
+	const currentCoreConventions = coreRulesConventions.version(currentCoreVersion)
+	const currentTournamentConventions = tournamentRulesConventions.version(currentTournamentVersion)
 	const templates = Object.fromEntries(
 		await Promise.all(
 			TEMPLATE_FILES.map(async (filename) => [
@@ -298,7 +308,7 @@ export async function prepareReferencePages(
 			),
 		],
 		[
-			`core-rules/${currentCoreVersion}.mdx`,
+			currentCoreConventions.reference.currentDocumentPath,
 			renderTemplate(
 				templates['core-rules-current.mdx'],
 				{
@@ -310,7 +320,7 @@ export async function prepareReferencePages(
 			),
 		],
 		[
-			`tournament-rules/${currentTournamentVersion}.mdx`,
+			currentTournamentConventions.reference.currentDocumentPath,
 			renderTemplate(
 				templates['tournament-rules-current.mdx'],
 				{
@@ -325,8 +335,9 @@ export async function prepareReferencePages(
 
 	for (const version of coreArchivedVersions) {
 		const name = coreMetadata[version].name
+		const conventions = coreRulesConventions.version(version)
 		artifacts.set(
-			`core-rules/(archive)/${version}.mdx`,
+			conventions.reference.archivedDocumentPath,
 			renderTemplate(
 				templates['core-rules-archive.mdx'],
 				{
@@ -342,8 +353,9 @@ export async function prepareReferencePages(
 		)
 	}
 	for (const { from, to } of coreChanges) {
+		const conventions = coreRulesConventions.version(to)
 		artifacts.set(
-			`core-rules/changes/${to}.mdx`,
+			conventions.reference.changePath,
 			renderTemplate(
 				templates['core-rules-change.mdx'],
 				{
@@ -359,8 +371,9 @@ export async function prepareReferencePages(
 		)
 	}
 	for (const version of tournamentArchivedVersions) {
+		const conventions = tournamentRulesConventions.version(version)
 		artifacts.set(
-			`tournament-rules/(archive)/${version}.mdx`,
+			conventions.reference.archivedDocumentPath,
 			renderTemplate(
 				templates['tournament-rules-archive.mdx'],
 				{
@@ -376,8 +389,9 @@ export async function prepareReferencePages(
 		)
 	}
 	for (const { from, to } of tournamentChanges) {
+		const conventions = tournamentRulesConventions.version(to)
 		artifacts.set(
-			`tournament-rules/changes/${to}.mdx`,
+			conventions.reference.changePath,
 			renderTemplate(
 				templates['tournament-rules-change.mdx'],
 				{

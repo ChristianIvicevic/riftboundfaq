@@ -1,3 +1,4 @@
+import { tournamentRulesConventions } from '@/lib/rules/document-family-conventions'
 import type { TournamentRulesDocument } from '@/lib/rules/tournament-rules-document'
 import type { ExtractedTournamentRulesFamily } from '../rules-document-family.ts'
 
@@ -11,30 +12,27 @@ export type PreparedTournamentRules = {
 	summary: { current: string; versions: number; transcripts: number }
 }
 
-function documentExportName(version: string): string {
-	return `PDF_TOURNAMENT_RULES_${version.replaceAll('-', '_')}`
-}
-
-function versionFilename(version: string): string {
-	return `v${version}.ts`
-}
-
 function serializeRuntimeVersion(document: TournamentRulesDocument): string {
-	return `${GENERATED_HEADER}import type { TournamentRulesDocument } from '@/lib/rules/tournament-rules-document'\n\n// oxfmt-ignore\nexport const ${documentExportName(document.version)}: TournamentRulesDocument = ${JSON.stringify(document, null, 2)}\n`
+	const exportName = tournamentRulesConventions.version(document.version).generated.exportName
+	return `${GENERATED_HEADER}import type { TournamentRulesDocument } from '@/lib/rules/tournament-rules-document'\n\n// oxfmt-ignore\nexport const ${exportName}: TournamentRulesDocument = ${JSON.stringify(document, null, 2)}\n`
 }
 
 function serializeRuntimeIndex(artifacts: RuntimeArtifact[], current: string): string {
 	const imports = artifacts
-		.map(
-			({ version }) =>
-				`import { ${documentExportName(version)} } from '@/generated/tournament-rules/v${version}'`,
-		)
+		.map(({ version }) => {
+			const generated = tournamentRulesConventions.version(version).generated
+			return `import { ${generated.exportName} } from '${generated.moduleSpecifier}'`
+		})
 		.join('\n')
 	const documentEntries = artifacts
-		.map(({ version }) => `\t${JSON.stringify(version)}: ${documentExportName(version)},`)
+		.map(({ version }) => {
+			const exportName = tournamentRulesConventions.version(version).generated.exportName
+			return `\t${JSON.stringify(version)}: ${exportName},`
+		})
 		.join('\n')
 
-	return `${GENERATED_HEADER}${imports}\nimport type { TournamentRulesDocument } from '@/lib/rules/tournament-rules-document'\n\nexport const CURRENT_PDF_TOURNAMENT_RULES_VERSION = ${JSON.stringify(current)}\n\nexport const PDF_TOURNAMENT_RULES_DOCUMENTS: Record<string, TournamentRulesDocument> = {\n${documentEntries}\n}\n`
+	const { currentVersionExport, documentsExport } = tournamentRulesConventions.generated
+	return `${GENERATED_HEADER}${imports}\nimport type { TournamentRulesDocument } from '@/lib/rules/tournament-rules-document'\n\nexport const ${currentVersionExport} = ${JSON.stringify(current)}\n\nexport const ${documentsExport}: Record<string, TournamentRulesDocument> = {\n${documentEntries}\n}\n`
 }
 
 export function prepareTournamentRulesArtifacts(
@@ -49,9 +47,10 @@ export function prepareTournamentRulesArtifacts(
 		document,
 		transcript,
 	} of extracted.versions) {
+		const conventions = tournamentRulesConventions.version(version)
 		documents.push({ version, document })
-		artifacts.set(versionFilename(version), serializeRuntimeVersion(document))
-		transcripts.set(`Tournament-Rules-${version}.txt`, transcript)
+		artifacts.set(conventions.generated.filename, serializeRuntimeVersion(document))
+		transcripts.set(conventions.source.transcriptFilename, transcript)
 	}
 
 	const current = extracted.currentVersion.registeredVersion.version

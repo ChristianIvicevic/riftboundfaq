@@ -3,12 +3,12 @@
 import { readFile, readdir, stat } from 'node:fs/promises'
 import { basename, join, resolve } from 'node:path'
 import { getDocument } from 'pdfjs-dist/legacy/build/pdf.mjs'
+import { coreRulesConventions, recognizeRulesSourceFilename } from '@/lib/rules/document-family-conventions'
 import { assembleRuleBlocks, type RuleBlock } from './blocks.ts'
 import { reconstructPhysicalLines } from './lines.ts'
 import { structureRuleBlocks, type StructuredRuleNode } from './structure.ts'
 
 const SOURCES_DIRECTORY = resolve(import.meta.dirname, '..', '..', 'sources')
-const PDF_FILENAME = /^CR-v1\.(\d+)\.pdf$/u
 
 function compareRuleIds(left: string, right: string) {
 	const leftParts = left.split('.')
@@ -71,9 +71,13 @@ function duplicateDetails(occurrencesById: ReadonlyMap<string, RuleBlock[]>) {
 export async function defaultPdfPaths() {
 	const entries = await readdir(SOURCES_DIRECTORY)
 	return entries
-		.map((filename) => ({ filename, match: filename.match(PDF_FILENAME) }))
-		.filter((entry): entry is { filename: string; match: RegExpMatchArray } => entry.match !== null)
-		.toSorted((left, right) => Number(left.match[1]) - Number(right.match[1]))
+		.flatMap((filename) => {
+			const source = recognizeRulesSourceFilename(filename)
+			return source?.kind === 'pdf' && source.family === 'core-rules'
+				? [{ filename, version: source.version }]
+				: []
+		})
+		.toSorted((left, right) => coreRulesConventions.compareVersions(left.version, right.version))
 		.map(({ filename }) => join(SOURCES_DIRECTORY, filename))
 }
 

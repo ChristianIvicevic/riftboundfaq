@@ -6,9 +6,10 @@ import lastModified from 'fumadocs-mdx/plugins/last-modified'
 import { z } from 'zod'
 import { rulingRelationsSchema } from '@/lib/content/ruling-relations-schema'
 import { RUNE_NAMES, TERM_DEFINITIONS } from '@/lib/mdx-vocabulary'
+import { coreRulesConventions, tournamentRulesConventions } from '@/lib/rules/document-family-conventions'
 
-const coreRulesVersion = z.string().regex(/^1\.\d+$/u)
-const tournamentRulesVersion = z.iso.date()
+const coreRulesVersion = z.string().refine(coreRulesConventions.isVersion)
+const tournamentRulesVersion = z.string().refine(tournamentRulesConventions.isVersion)
 
 export const docs = defineDocs({
 	dir: 'content',

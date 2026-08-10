@@ -1,4 +1,5 @@
 import { z, type ZodIssue } from 'zod'
+import { coreRulesConventions, tournamentRulesConventions } from '@/lib/rules/document-family-conventions'
 
 export type RegisteredCoreRulesVersion = Readonly<{
 	version: string
@@ -33,9 +34,6 @@ export type RulesManifestErrorCode =
 	| 'CURRENT_NOT_REGISTERED'
 	| 'CURRENT_NOT_GREATEST'
 
-const CORE_RULES_VERSION = /^1\.(0|[1-9]\d*)$/u
-const TOURNAMENT_RULES_VERSION = /^\d{4}-\d{2}-\d{2}$/u
-
 export class RulesManifestError extends TypeError {
 	constructor(
 		message: string,
@@ -46,12 +44,6 @@ export class RulesManifestError extends TypeError {
 	}
 }
 
-function isTournamentRulesVersion(version: string): boolean {
-	if (!TOURNAMENT_RULES_VERSION.test(version)) return false
-	const date = new Date(`${version}T00:00:00.000Z`)
-	return !Number.isNaN(date.valueOf()) && date.toISOString().slice(0, 10) === version
-}
-
 const manifestValue = z.strictObject({
 	coreRules: z.unknown(),
 	tournamentRules: z.unknown(),
@@ -60,14 +52,14 @@ const familyValue = z.strictObject({
 	current: z.string(),
 	versions: z.record(z.string(), z.unknown()),
 })
-const coreRulesVersionValue = z.string().regex(CORE_RULES_VERSION)
+const coreRulesVersionValue = z.string().refine(coreRulesConventions.isVersion)
 const coreRulesMetadataValue = z.strictObject({
 	name: z
 		.string()
 		.refine((name) => name.trim().length > 0)
 		.optional(),
 })
-const tournamentRulesVersionValue = z.string().refine(isTournamentRulesVersion)
+const tournamentRulesVersionValue = z.string().refine(tournamentRulesConventions.isVersion)
 const tournamentRulesMetadataValue = z.strictObject({})
 
 function fail(code: RulesManifestErrorCode, path: string, message: string): never {
@@ -120,12 +112,6 @@ function versionPath(familyPath: string, version: string): string {
 	return `${familyPath}.versions[${JSON.stringify(version)}]`
 }
 
-function compareCoreRulesVersions(left: string, right: string): number {
-	const leftMinor = BigInt(left.slice(2))
-	const rightMinor = BigInt(right.slice(2))
-	return leftMinor < rightMinor ? -1 : leftMinor > rightMinor ? 1 : 0
-}
-
 function parseCoreRulesVersions(
 	versions: Record<string, unknown>,
 ): [RegisteredCoreRulesVersion, ...RegisteredCoreRulesVersion[]] {
@@ -140,7 +126,7 @@ function parseCoreRulesVersions(
 		}
 	}
 
-	const orderedVersions = versionNumbers.toSorted(compareCoreRulesVersions)
+	const orderedVersions = versionNumbers.toSorted(coreRulesConventions.compareVersions)
 	return orderedVersions.map((version) => {
 		const path = versionPath('$.coreRules', version)
 		rejectPrototypeProperty(versions[version], path)

@@ -17,11 +17,12 @@ import {
 	CURRENT_PDF_TOURNAMENT_RULES_VERSION,
 	PDF_TOURNAMENT_RULES_DOCUMENTS,
 } from '@/generated/tournament-rules'
+import { rulesDocumentFamily, type RulesDocumentFamilyId } from '@/lib/rules/document-family-conventions'
 import type { RulesDocumentContent } from '@/lib/rules/document-types'
 
 export { RulesDocumentInvariantError }
 
-export type RulesDocumentFamily = 'core-rules' | 'tournament-rules'
+export type RulesDocumentFamily = RulesDocumentFamilyId
 
 export type RulesDocumentReference = {
 	readonly type: RulesDocumentFamily
@@ -83,7 +84,7 @@ export class UnknownRulesVersionError extends Error {
 		readonly family: RulesDocumentFamily,
 		readonly version: string,
 	) {
-		const label = family === 'core-rules' ? 'Core Rules' : 'Tournament Rules'
+		const label = rulesDocumentFamily(family).label
 		super(`Unknown ${label} version ${JSON.stringify(version)}`)
 	}
 }

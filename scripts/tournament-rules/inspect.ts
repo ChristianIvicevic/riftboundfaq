@@ -1,6 +1,10 @@
 import { readFile, readdir, stat } from 'node:fs/promises'
 import { basename, join, resolve } from 'node:path'
 import { getDocument } from 'pdfjs-dist/legacy/build/pdf.mjs'
+import {
+	recognizeRulesSourceFilename,
+	tournamentRulesConventions,
+} from '@/lib/rules/document-family-conventions'
 import type { PdfTextItem as TextItem } from '../core-rules/lines.ts'
 import { reconstructPhysicalLines, reconstructText } from '../core-rules/lines.ts'
 import {
@@ -11,7 +15,7 @@ import {
 } from './drawings.ts'
 
 const SOURCES_DIRECTORY = resolve(import.meta.dirname, '..', '..', 'sources')
-const PDF_FILENAME = /^Tournament-Rules-(\d{4}-\d{2}-\d{2})\.pdf$/u
+const FORENSIC_PDF_FILENAME = /^Tournament-Rules-(\d{4}-\d{2}-\d{2})\.pdf$/u
 const LABEL_CELL_LEFT_MAXIMUM = 50
 const LABEL_CELL_RIGHT = 126
 const BODY_CELL_LEFT = 126
@@ -368,16 +372,20 @@ function duplicateIds(rows: TournamentRow[]): Record<string, DuplicateIdEntry[]>
 export async function defaultTournamentPdfPaths() {
 	const filenames = await readdir(SOURCES_DIRECTORY)
 	return filenames
-		.map((filename) => ({ filename, match: filename.match(PDF_FILENAME) }))
-		.filter((entry): entry is { filename: string; match: RegExpMatchArray } => entry.match !== null)
-		.toSorted((left, right) => left.match[1].localeCompare(right.match[1]))
+		.flatMap((filename) => {
+			const source = recognizeRulesSourceFilename(filename)
+			return source?.kind === 'pdf' && source.family === 'tournament-rules'
+				? [{ filename, version: source.version }]
+				: []
+		})
+		.toSorted((left, right) => tournamentRulesConventions.compareVersions(left.version, right.version))
 		.map(({ filename }) => join(SOURCES_DIRECTORY, filename))
 }
 
 export async function inspectTournamentPdf(path: string) {
 	const absolutePath = resolve(path)
 	const filename = basename(absolutePath)
-	const version = filename.match(PDF_FILENAME)?.[1] ?? null
+	const version = filename.match(FORENSIC_PDF_FILENAME)?.[1] ?? null
 	const data = new Uint8Array(await readFile(absolutePath))
 	const loadingTask = getDocument({ data, disableWorker: true } as NonNullable<
 		Parameters<typeof getDocument>[0]

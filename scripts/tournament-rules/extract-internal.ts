@@ -1,4 +1,5 @@
 import { join } from 'node:path'
+import { tournamentRulesConventions } from '@/lib/rules/document-family-conventions'
 import type { TournamentRulesDocument, TournamentRulesSection } from '@/lib/rules/tournament-rules-document'
 import { normalizeRulesDate } from '../rules-date.ts'
 import type {
@@ -81,7 +82,8 @@ export function createTournamentRulesFamilyAdapter({
 		async extract(family) {
 			const versions: ExtractedTournamentRulesVersion[] = []
 			for (const registeredVersion of family.registeredVersions) {
-				const sourcePath = join(sourcesDirectory, `Tournament-Rules-${registeredVersion.version}.pdf`)
+				const conventions = tournamentRulesConventions.version(registeredVersion.version)
+				const sourcePath = join(sourcesDirectory, conventions.source.pdfFilename)
 				// Large PDFs are intentionally processed sequentially to cap memory usage.
 				// oxlint-disable-next-line no-await-in-loop
 				const report = await inspectSource(sourcePath)

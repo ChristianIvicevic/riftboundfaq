@@ -5,6 +5,7 @@ import type {
 	RuleNode,
 	RulesHeading,
 } from '@/lib/rules/core-rules-document'
+import { coreRulesConventions } from '@/lib/rules/document-family-conventions'
 import { normalizeRulesDate } from '../rules-date.ts'
 import type { CoreRulesFamilyAdapter, ExtractedCoreRulesVersion } from '../rules-document-family.ts'
 import type { CoreRulesReport } from './inspect.ts'
@@ -78,7 +79,8 @@ export function createCoreRulesFamilyAdapter({
 		async extract(family) {
 			const versions: ExtractedCoreRulesVersion[] = []
 			for (const registeredVersion of family.registeredVersions) {
-				const sourcePath = join(sourcesDirectory, `CR-v${registeredVersion.version}.pdf`)
+				const conventions = coreRulesConventions.version(registeredVersion.version)
+				const sourcePath = join(sourcesDirectory, conventions.source.pdfFilename)
 				// Large PDFs are intentionally processed sequentially to cap memory usage.
 				// oxlint-disable-next-line no-await-in-loop
 				const report = await inspectSource(sourcePath)
