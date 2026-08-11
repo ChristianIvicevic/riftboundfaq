@@ -4,7 +4,7 @@ import { diffRuleSets } from '@/lib/rules/diff'
 import { coreRulesLinks } from '@/lib/rules/links'
 
 const CORE_RULES = rulesDocuments.family('core-rules')
-const VERSIONS = CORE_RULES.registeredVersions
+const CURRENT_TRANSITION = CORE_RULES.currentTransition
 
 type CoreRulesDiffProps = {
 	from?: string
@@ -12,8 +12,8 @@ type CoreRulesDiffProps = {
 }
 
 export function CoreRulesDiff({
-	from = VERSIONS.at(-2)?.version,
-	to = VERSIONS.at(-1)?.version,
+	from = CURRENT_TRANSITION?.from.version,
+	to = CURRENT_TRANSITION?.to.version,
 }: CoreRulesDiffProps) {
 	if (!from) throw new Error('CoreRulesDiff: no default "from" version is available')
 	if (!to) throw new Error('CoreRulesDiff: no default "to" version is available')

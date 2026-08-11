@@ -8,7 +8,7 @@ import type {
 	TraversedRulesDocument,
 	TraversedRulesHeading,
 	TraversedRulesSection,
-} from '@/features/rules-documents/registry'
+} from '@/features/rules-documents/family-catalog'
 import type { RulesDocumentContent } from '@/lib/rules/document-types'
 
 export type SourceRulesHeading = {
@@ -48,9 +48,11 @@ export class RulesDocumentInvariantError extends Error {
 		readonly version: string,
 		readonly sequence: number | undefined,
 		invariant: string,
+		options?: ErrorOptions,
 	) {
 		super(
 			`${family === 'core-rules' ? 'Core Rules' : 'Tournament Rules'} ${version}${sequence === undefined ? '' : ` source row ${sequence}`}: ${invariant}`,
+			options,
 		)
 	}
 }
