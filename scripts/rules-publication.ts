@@ -14,7 +14,7 @@ import {
 } from './rules-publication-internal.ts'
 import { createTournamentRulesFamilyAdapter } from './tournament-rules/extract-internal.ts'
 import { prepareTournamentRulesArtifacts } from './tournament-rules/generate.ts'
-import { inspectTournamentPdf } from './tournament-rules/inspect.ts'
+import { readTournamentRulesSource } from './tournament-rules/inspect.ts'
 
 export { RulesPublicationError } from './rules-publication-internal.ts'
 export type {
@@ -32,7 +32,7 @@ async function prepareRulesPublication(projectDirectory: string): Promise<Prepar
 	const metadata = prepareRulesMetadata(manifest)
 	const coreRulesAdapter = createCoreRulesFamilyAdapter({ inspectSource: inspectPdf, sourcesDirectory })
 	const tournamentRulesAdapter = createTournamentRulesFamilyAdapter({
-		inspectSource: inspectTournamentPdf,
+		readSource: readTournamentRulesSource,
 		sourcesDirectory,
 		warn: console.warn,
 	})
