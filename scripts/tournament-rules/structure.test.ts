@@ -1,35 +1,21 @@
 import { describe, expect, test } from 'vitest'
 import type { TournamentRuleNode, TournamentRulesSection } from '@/lib/rules/tournament-rules-document'
-import type { TournamentRow } from './inspect.ts'
+import type { TournamentRulesSourceRow } from './source-rows.ts'
 import { structureTournamentRows } from './structure.ts'
 
-function row(sequence: number, kind: TournamentRow['kind'], id: string | null, text: string): TournamentRow {
+function row(
+	sequence: number,
+	kind: TournamentRulesSourceRow['kind'],
+	id: string | null,
+	text: string,
+): TournamentRulesSourceRow {
 	return {
 		sequence,
-		page: 1,
-		pageRow: sequence,
-		pagePosition: sequence,
-		pageRowCount: 1,
-		rawLabel: id ? `${id}.` : '',
 		kind,
-		id,
-		label: id ? `${id}.` : null,
+		label: id ? { sourceText: `${id}.`, id, text: `${id}.`, normalization: 'unchanged' } : null,
 		text,
-		active: true,
-		fontSize: null,
-		highlighted: false,
-		removedText: '',
-		diagnostics: [],
-		continuation: false,
-		source: { startPage: 1, endPage: 1 },
-		geometry: {
-			bounds: { x: 0, y: 0, width: 0, height: 0 },
-			labelBounds: null,
-			bodyBounds: null,
-			items: [],
-			strikeStrokes: [],
-			highlightFills: [],
-		},
+		activity: { status: 'active', removalEvidence: null },
+		sourcePages: { start: 1, end: 1 },
 	}
 }
 
@@ -110,7 +96,13 @@ describe('structureTournamentRows', () => {
 			row(4, 'rule', '100.2.1', 'A responsibility.'),
 			row(5, 'rule', '100.2.1.a', 'Example: A nested example.'),
 			row(6, 'rule', '100.3', 'See Appendix A.'),
-			{ ...row(7, 'rule', '100.4', 'Removed text.'), active: false },
+			{
+				...row(7, 'rule', '100.4', 'Removed text.'),
+				activity: {
+					status: 'removed',
+					removalEvidence: { text: '100.4. Removed text.', coverage: 'complete' },
+				},
+			} satisfies TournamentRulesSourceRow,
 		]
 
 		const { sections, diagnostics } = structureTournamentRows(rows)

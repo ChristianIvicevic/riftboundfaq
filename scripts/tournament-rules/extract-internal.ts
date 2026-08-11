@@ -7,48 +7,46 @@ import type {
 	ExtractedTournamentRulesVersion,
 	TournamentRulesFamilyAdapter,
 } from '../rules-document-family.ts'
-import type { TournamentPdfReport, TournamentRow } from './inspect.ts'
+import type { TournamentRulesSource } from './inspect.ts'
 import { structureTournamentRows, type TournamentStructureDiagnostic } from './structure.ts'
 const TITLE = 'Riftbound Tournament Rules'
 
 export type TournamentRulesExtractionDependencies = Readonly<{
-	inspectSource: (path: string) => Promise<TournamentPdfReport>
+	readSource: (path: string) => Promise<TournamentRulesSource>
 	sourcesDirectory: string
 	warn: (message: string) => void
 }>
 
-function completeRowText(row: TournamentRow): string {
-	return `${row.rawLabel}${row.text ? ` ${row.text}` : ''}`.trim()
-}
-
-function validateReport(report: TournamentPdfReport, version: string): string {
-	const lastUpdated = normalizeRulesDate(report.lastUpdated, `${report.file}: Last Updated`)
-	if (report.version !== version)
-		throw new Error(`${report.file}: filename does not identify version ${version}`)
+function validateSource(source: TournamentRulesSource, version: string): string {
+	const lastUpdated = normalizeRulesDate(source.lastUpdated, `${source.file}: Last Updated`)
+	if (source.version !== version)
+		throw new Error(`${source.file}: filename does not identify version ${version}`)
 	if (lastUpdated !== version) {
 		throw new Error(
-			`${report.file}: Last Updated ${report.lastUpdated || '(missing)'} does not match ${version}`,
+			`${source.file}: Last Updated ${source.lastUpdated || '(missing)'} does not match ${version}`,
 		)
 	}
-	if (report.title !== TITLE) throw new Error(`${report.file}: unexpected document title ${report.title}`)
-	if (report.rows.length === 0) throw new Error(`${report.file}: no table rows found`)
-	if (report.rows.some(({ kind, id }) => kind !== 'rule' && !id)) {
-		throw new Error(`${report.file}: heading without an ID`)
+	if (source.title !== TITLE) throw new Error(`${source.file}: unexpected document title ${source.title}`)
+	if (source.rows.length === 0) throw new Error(`${source.file}: no table rows found`)
+	if (source.rows.some(({ kind, label }) => kind !== 'rule' && !label?.id)) {
+		throw new Error(`${source.file}: heading without an ID`)
 	}
 
-	for (const row of report.rows.filter(({ active }) => !active)) {
-		if (row.removedText !== completeRowText(row)) {
-			throw new Error(`${report.file}: partial strikeout on page ${row.page} requires manual review`)
+	for (const row of source.rows) {
+		if (row.activity.status === 'removed' && row.activity.removalEvidence.coverage === 'partial') {
+			throw new Error(
+				`${source.file}: partial strikeout on page ${row.sourcePages.start} requires manual review`,
+			)
 		}
 	}
 	return lastUpdated
 }
 
 function runtimeDocument(
-	report: TournamentPdfReport,
+	source: TournamentRulesSource,
 	sections: TournamentRulesSection[],
 ): TournamentRulesDocument {
-	return { schemaVersion: 1, version: report.version!, sections }
+	return { schemaVersion: 1, version: source.version!, sections }
 }
 
 function structureWarning(
@@ -65,16 +63,16 @@ function structureWarning(
 	return { severity: 'warning', message: `${file}: preserved structural anomalies (${summary})` }
 }
 
-function serializeTranscript(report: TournamentPdfReport): string {
-	const lines = [report.title, `Last Updated: ${report.lastUpdated}`]
-	for (const row of report.rows.filter(({ active }) => active)) {
-		lines.push(`${row.label ?? row.rawLabel}${row.text ? ` ${row.text}` : ''}`.trim())
+function serializeTranscript(source: TournamentRulesSource): string {
+	const lines = [source.title, `Last Updated: ${source.lastUpdated}`]
+	for (const row of source.rows.filter(({ activity }) => activity.status === 'active')) {
+		lines.push(`${row.label?.text ?? ''}${row.text ? ` ${row.text}` : ''}`.trim())
 	}
 	return `${lines.join('\n')}\n`
 }
 
 export function createTournamentRulesFamilyAdapter({
-	inspectSource,
+	readSource,
 	sourcesDirectory,
 	warn,
 }: TournamentRulesExtractionDependencies): TournamentRulesFamilyAdapter {
@@ -86,21 +84,21 @@ export function createTournamentRulesFamilyAdapter({
 				const sourcePath = join(sourcesDirectory, conventions.source.pdfFilename)
 				// Large PDFs are intentionally processed sequentially to cap memory usage.
 				// oxlint-disable-next-line no-await-in-loop
-				const report = await inspectSource(sourcePath)
-				const lastUpdated = validateReport(report, registeredVersion.version)
+				const source = await readSource(sourcePath)
+				const lastUpdated = validateSource(source, registeredVersion.version)
 				let structured: ReturnType<typeof structureTournamentRows>
 				try {
-					structured = structureTournamentRows(report.rows)
+					structured = structureTournamentRows(source.rows)
 				} catch (cause) {
-					throw new Error(`${report.file}: Tournament Rules structuring failed`, { cause })
+					throw new Error(`${source.file}: Tournament Rules structuring failed`, { cause })
 				}
-				const diagnostic = structureWarning(report.file, structured.diagnostics)
+				const diagnostic = structureWarning(source.file, structured.diagnostics)
 				if (diagnostic) warn(diagnostic.message)
 				versions.push({
 					registeredVersion,
 					lastUpdated,
-					document: runtimeDocument(report, structured.sections),
-					transcript: serializeTranscript({ ...report, lastUpdated }),
+					document: runtimeDocument(source, structured.sections),
+					transcript: serializeTranscript({ ...source, lastUpdated }),
 					diagnostics: diagnostic ? [diagnostic] : [],
 				})
 			}

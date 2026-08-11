@@ -6,7 +6,8 @@ import type { PdfTextItem } from './core-rules/lines.ts'
 import { structureRuleBlocks } from './core-rules/structure.ts'
 import { parseRulesManifest } from './rules-manifest.ts'
 import { createTournamentRulesFamilyAdapter } from './tournament-rules/extract-internal.ts'
-import type { TournamentPdfReport, TournamentRow } from './tournament-rules/inspect.ts'
+import type { TournamentRulesSource } from './tournament-rules/inspect.ts'
+import type { TournamentRulesSourceRow } from './tournament-rules/source-rows.ts'
 
 function textItem(str: string, x: number, y: number, size = 8, width = str.length * 4): PdfTextItem {
 	return { str, transform: [size, 0, 0, size, x, y], width, height: size }
@@ -60,35 +61,20 @@ function coreRulesReport(): CoreRulesReport {
 	} as unknown as CoreRulesReport
 }
 
-function tournamentRow(input: Partial<TournamentRow> & Pick<TournamentRow, 'sequence' | 'kind' | 'text'>) {
+function tournamentRow(
+	input: Partial<TournamentRulesSourceRow> &
+		Pick<TournamentRulesSourceRow, 'sequence' | 'kind' | 'text'> & { id?: string | null },
+): TournamentRulesSourceRow {
+	const { id = null, ...row } = input
 	return {
-		page: 1,
-		pageRow: input.sequence + 1,
-		pagePosition: input.sequence,
-		pageRowCount: 2,
-		rawLabel: input.id ? `${input.id}.` : '',
-		id: null,
-		label: null,
-		fontSize: 8,
-		active: true,
-		highlighted: false,
-		removedText: '',
-		diagnostics: [],
-		continuation: false,
-		source: { startPage: 1, endPage: 1 },
-		geometry: {
-			bounds: { x: 0, y: 0, width: 0, height: 0 },
-			labelBounds: null,
-			bodyBounds: null,
-			items: [],
-			strikeStrokes: [],
-			highlightFills: [],
-		},
-		...input,
-	} satisfies TournamentRow
+		label: id ? { sourceText: `${id}.`, id, text: `${id}.`, normalization: 'unchanged' } : null,
+		activity: { status: 'active', removalEvidence: null },
+		sourcePages: { start: 1, end: 1 },
+		...row,
+	}
 }
 
-function tournamentRulesReport(): TournamentPdfReport {
+function tournamentRulesSource(): TournamentRulesSource {
 	return {
 		file: 'Tournament-Rules-2026-01-01.pdf',
 		version: '2026-01-01',
@@ -99,12 +85,11 @@ function tournamentRulesReport(): TournamentPdfReport {
 				sequence: 0,
 				kind: 'primary-heading',
 				id: '100',
-				label: '100.',
 				text: 'Tournament Operations',
 			}),
 			tournamentRow({ sequence: 1, kind: 'rule', text: 'A preserved unnumbered rule.' }),
 		],
-	} as unknown as TournamentPdfReport
+	}
 }
 
 describe('Rules document family extraction', () => {
@@ -169,17 +154,17 @@ describe('Rules document family extraction', () => {
 			coreRules: { current: '1.0', versions: { '1.0': {} } },
 			tournamentRules: { current: '2026-01-01', versions: { '2026-01-01': {} } },
 		})
-		const inspectSource = vi.fn(async () => tournamentRulesReport())
+		const readSource = vi.fn(async () => tournamentRulesSource())
 		const warn = vi.fn()
 		const adapter = createTournamentRulesFamilyAdapter({
-			inspectSource,
+			readSource,
 			sourcesDirectory: '/rules',
 			warn,
 		})
 
 		const extracted = await adapter.extract(manifest.tournamentRules)
 
-		expect(inspectSource).toHaveBeenCalledWith('/rules/Tournament-Rules-2026-01-01.pdf')
+		expect(readSource).toHaveBeenCalledWith('/rules/Tournament-Rules-2026-01-01.pdf')
 		expect(warn).toHaveBeenCalledWith(
 			'Tournament-Rules-2026-01-01.pdf: preserved structural anomalies (unnumbered-rule: 1)',
 		)
@@ -294,10 +279,10 @@ describe('Rules document family extraction', () => {
 		const adapter = createTournamentRulesFamilyAdapter({
 			sourcesDirectory: '/rules',
 			warn: vi.fn(),
-			async inspectSource(path) {
+			async readSource(path) {
 				const version = path.match(/(\d{4}-\d{2}-\d{2})\.pdf$/u)![1]
 				return {
-					...tournamentRulesReport(),
+					...tournamentRulesSource(),
 					file: `Tournament-Rules-${version}.pdf`,
 					version,
 					lastUpdated: version,
@@ -326,12 +311,12 @@ describe('Rules document family extraction', () => {
 		const adapter = createTournamentRulesFamilyAdapter({
 			sourcesDirectory: '/rules',
 			warn: vi.fn(),
-			async inspectSource(path) {
+			async readSource(path) {
 				inspectedPaths.push(path)
 				if (path.endsWith('2026-02-01.pdf')) throw new Error('invalid Tournament Rules')
 				const version = path.match(/(\d{4}-\d{2}-\d{2})\.pdf$/u)![1]
 				return {
-					...tournamentRulesReport(),
+					...tournamentRulesSource(),
 					file: `Tournament-Rules-${version}.pdf`,
 					version,
 					lastUpdated: version,
@@ -355,21 +340,21 @@ describe('Rules document family extraction', () => {
 		const adapter = createTournamentRulesFamilyAdapter({
 			sourcesDirectory: '/rules',
 			warn,
-			async inspectSource() {
-				const report = tournamentRulesReport()
+			async readSource() {
+				const source = tournamentRulesSource()
 				return {
-					...report,
+					...source,
 					rows: [
-						...report.rows,
+						...source.rows,
 						tournamentRow({
 							sequence: 2,
 							kind: 'rule',
 							id: '100.1',
-							label: '100.1.',
-							rawLabel: '100.1.',
 							text: 'Removed policy.',
-							active: false,
-							removedText: 'Removed',
+							activity: {
+								status: 'removed',
+								removalEvidence: { text: 'Removed', coverage: 'partial' },
+							},
 						}),
 					],
 				}
