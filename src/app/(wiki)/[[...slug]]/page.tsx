@@ -11,9 +11,7 @@ import { submitPageFeedback } from '@/features/feedback/actions'
 import { Feedback } from '@/features/feedback/feedback'
 import { resolveVersionedRulesRoute } from '@/features/rules-documents/versioned-route'
 import { getRiftboundWikiUrl } from '@/lib/cards/links'
-import { getPageDescription } from '@/lib/content/page-description'
-import { isEditorialRulingPage, shouldShowSourceDetails } from '@/lib/content/page-policy'
-import { getPageTitle } from '@/lib/content/page-title'
+import { getPagePublication } from '@/lib/content/page-publication'
 import { buildRulingRelationIndex, getRulingRelations } from '@/lib/content/ruling-relations'
 import { getPageImage, PAGE_IMAGE_SIZE, source } from '@/lib/content/source'
 import { SITE_NAME, SITE_URL, X_HANDLE } from '@/lib/site'
@@ -28,10 +26,8 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 
 	const MDX = page.data.body
 	const authors = page.data.authors ?? []
-	const description = getPageDescription(page)
-	const isEditorial = isEditorialRulingPage(page.url)
+	const publication = getPagePublication(page)
 	const rulingRelations = getRulingRelations(rulingRelationIndex, page.url)
-	const showSourceDetails = shouldShowSourceDetails(page.url)
 	const riftboundWikiUrl = page.url.startsWith('/cards/') ? getRiftboundWikiUrl(page.data.title) : undefined
 	const versionedRulesRoute = resolveVersionedRulesRoute({
 		url: page.url,
@@ -45,15 +41,15 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 					'@type': 'WebSite',
 					name: SITE_NAME,
 					url: SITE_URL.toString(),
-					description,
+					description: publication.description,
 					inLanguage: 'en',
 				}
-			: isEditorial
+			: publication.isEditorial
 				? {
 						'@context': 'https://schema.org',
 						'@type': 'Article',
 						headline: page.data.title,
-						description,
+						description: publication.description,
 						url: new URL(page.url, SITE_URL).toString(),
 						mainEntityOfPage: new URL(page.url, SITE_URL).toString(),
 						image: new URL(getPageImage(page).url, SITE_URL).toString(),
@@ -79,7 +75,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 				/>
 			)}
 			<DocsTitle>{page.data.title}</DocsTitle>
-			<DocsDescription className="mb-0">{description}</DocsDescription>
+			<DocsDescription className="mb-0">{publication.description}</DocsDescription>
 			<PageActions galleryLink={page.data.galleryLink} riftboundWikiUrl={riftboundWikiUrl} />
 			{page.data.reviewedCoreRulesVersion && (
 				<CoreRulesReviewCallout reviewedCoreRulesVersion={page.data.reviewedCoreRulesVersion} />
@@ -95,7 +91,9 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 			</CopyableDocsBody>
 			<RelatedRulings relations={rulingRelations} />
 			<Feedback onSendAction={submitPageFeedback} />
-			{showSourceDetails && <PageAttribution authors={authors} lastModified={page.data.lastModified} />}
+			{publication.isSourceAttributionEligible && (
+				<PageAttribution authors={authors} lastModified={page.data.lastModified} />
+			)}
 		</DocsPage>
 	)
 }
@@ -109,11 +107,10 @@ export async function generateMetadata(props: PageProps<'/[[...slug]]'>): Promis
 	const page = source.getPage(params.slug)
 	if (!page) notFound()
 
+	const publication = getPagePublication(page)
 	const url = new URL(page.url, SITE_URL).toString()
-	const title = getPageTitle(page)
 	const image = getPageImage(page).url
 	const authors = page.data.authors ?? []
-	const isEditorial = isEditorialRulingPage(page.url)
 	const openGraphBase = {
 		siteName: SITE_NAME,
 		url,
@@ -121,17 +118,18 @@ export async function generateMetadata(props: PageProps<'/[[...slug]]'>): Promis
 			url: image,
 			...PAGE_IMAGE_SIZE,
 			type: 'image/png',
-			alt: page.url === '/' ? title : `${SITE_NAME} social preview for ${page.data.title}`,
+			alt:
+				page.url === '/' ? publication.metadataTitle : `${SITE_NAME} social preview for ${page.data.title}`,
 		},
 	}
 
 	return {
-		title: page.url === '/' ? { absolute: title } : title,
-		description: getPageDescription(page),
-		authors: isEditorial ? authors.map((name) => ({ name })) : undefined,
-		robots: page.data.noindex ? { index: false, follow: true } : undefined,
+		title: page.url === '/' ? { absolute: publication.metadataTitle } : publication.metadataTitle,
+		description: publication.description,
+		authors: publication.isEditorial ? authors.map((name) => ({ name })) : undefined,
+		robots: publication.isIndexable ? undefined : { index: false, follow: true },
 		alternates: { canonical: url },
-		openGraph: isEditorial
+		openGraph: publication.isEditorial
 			? {
 					type: 'article',
 					...openGraphBase,
@@ -145,7 +143,7 @@ export async function generateMetadata(props: PageProps<'/[[...slug]]'>): Promis
 		twitter: {
 			card: 'summary_large_image',
 			site: X_HANDLE,
-			creator: isEditorial ? X_HANDLE : undefined,
+			creator: publication.isEditorial ? X_HANDLE : undefined,
 		},
 	}
 }
