@@ -44,10 +44,6 @@ export const source = loader({
 
 type ContentPage = ReturnType<typeof source.getPages>[number]
 
-export function isIndexablePage(page: ContentPage) {
-	return !page.data.noindex
-}
-
 export function getPageImage(page: Pick<ContentPage, 'slugs'>) {
 	const segments = [...page.slugs, 'image.png']
 	return { segments, url: `/og/${segments.join('/')}?v=2` }

@@ -1,5 +1,6 @@
 import { createFromSource } from 'fumadocs-core/search/server'
-import { isIndexablePage, source } from '@/lib/content/source'
+import { getPagePublication } from '@/lib/content/page-publication'
+import { source } from '@/lib/content/source'
 
 // Keep `noindex` pages (everything under content/reference/, e.g. rules snapshots and
 // change diffs) out of the search index, mirroring the sitemap's indexability
@@ -10,7 +11,8 @@ import { isIndexablePage, source } from '@/lib/content/source'
 const searchSource = new Proxy(source, {
 	get(target, prop, receiver) {
 		if (prop === 'getPages') {
-			return (language?: string) => target.getPages(language).filter((page) => isIndexablePage(page))
+			return (language?: string) =>
+				target.getPages(language).filter((page) => getPagePublication(page).isIndexable)
 		}
 		return Reflect.get(target, prop, receiver)
 	},
