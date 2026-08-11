@@ -1,9 +1,9 @@
-import {
-	compileRulesDocument,
-	RulesDocumentInvariantError,
-	type SourceRulesDocument,
-} from '@/features/rules-documents/compile'
 import { adaptCoreRulesDocument, coreRulesDiffId } from '@/features/rules-documents/core-rules-adapter'
+import {
+	createRulesDocumentFamilyCatalog,
+	type RulesDocumentFamily,
+	type RulesDocumentReference,
+} from '@/features/rules-documents/family-catalog'
 import {
 	adaptTournamentRulesDocument,
 	tournamentRulesDiffId,
@@ -17,143 +17,26 @@ import {
 	CURRENT_PDF_TOURNAMENT_RULES_VERSION,
 	PDF_TOURNAMENT_RULES_DOCUMENTS,
 } from '@/generated/tournament-rules'
-import { rulesDocumentFamily, type RulesDocumentFamilyId } from '@/lib/rules/document-family-conventions'
-import type { RulesDocumentContent } from '@/lib/rules/document-types'
 
-export { RulesDocumentInvariantError }
-
-export type RulesDocumentFamily = RulesDocumentFamilyId
-
-export type RulesDocumentReference = {
-	readonly type: RulesDocumentFamily
-	readonly version: string
-}
-
-export type RegisteredRulesVersionSummary = RulesDocumentReference & {
-	readonly name: string | null
-	readonly status: 'current' | 'archived'
-}
-
-export type TraversedRulesHeading = {
-	readonly id: string
-	readonly text: string
-	readonly anchor: string
-	readonly depth: 2 | 3
-}
-
-export type TraversedRule = {
-	readonly id: string | null
-	readonly label: string | null
-	readonly anchor: string
-	readonly content: readonly RulesDocumentContent[]
-	readonly children: readonly TraversedRule[]
-}
-
-export type TraversedRulesBlock =
-	| { kind: 'rules'; rules: readonly TraversedRule[] }
-	| { kind: 'subsection'; heading: TraversedRulesHeading; rules: readonly TraversedRule[] }
-
-export type TraversedRulesSection = {
-	readonly heading: TraversedRulesHeading
-	readonly blocks: readonly TraversedRulesBlock[]
-}
-
-export type RulesDiffRecord = {
-	readonly id: string
-	readonly lines: readonly string[]
-	readonly anchor: string
-	readonly label: string
-}
-
-export type RulesReferenceTarget = {
-	readonly id: string
-	readonly anchor: string
-}
-
-export type TraversedRulesDocument = {
-	readonly identity: RegisteredRulesVersionSummary
-	readonly sections: readonly TraversedRulesSection[]
-	readonly navigation: readonly TraversedRulesHeading[]
-	readonly diffRecords: readonly RulesDiffRecord[]
-	referenceTarget(id: string): RulesReferenceTarget | undefined
-	lookupText(id: string): string | undefined
-}
-
-export class UnknownRulesVersionError extends Error {
-	constructor(
-		readonly family: RulesDocumentFamily,
-		readonly version: string,
-	) {
-		const label = rulesDocumentFamily(family).label
-		super(`Unknown ${label} version ${JSON.stringify(version)}`)
-	}
-}
-
-function createFamilyCatalog<Document extends { version: string }>({
-	type,
-	currentVersion,
-	documents,
-	names = {},
-	adapt,
-	diffId,
-}: {
-	type: RulesDocumentFamily
-	currentVersion: string
-	documents: Record<string, Document>
-	names?: Record<string, string>
-	adapt: (document: Document) => SourceRulesDocument
-	diffId: (id: string | null, occurrence: number) => string
-}) {
-	if (!documents[currentVersion]) {
-		throw new RulesDocumentInvariantError(
-			type,
-			currentVersion,
-			undefined,
-			'current rules version is not registered',
-		)
-	}
-	const registeredVersions = Object.freeze(
-		Object.keys(documents).map((version) =>
-			Object.freeze({
-				type,
-				version,
-				name: names[version] ?? null,
-				status: version === currentVersion ? ('current' as const) : ('archived' as const),
-			}),
-		),
-	)
-	const compiled = new Map<string, TraversedRulesDocument>()
-
-	const find = (version: string) => {
-		const existing = compiled.get(version)
-		if (existing) return existing
-		if (!documents[version]) return
-		const identity = registeredVersions.find((candidate) => candidate.version === version)!
-		const document = compileRulesDocument({
-			identity,
-			source: adapt(documents[version]),
-			diffId,
-		})
-		compiled.set(version, document)
-		return document
-	}
-
-	return {
-		get current() {
-			return find(currentVersion)!
-		},
-		registeredVersions,
-		get(version: string) {
-			const document = find(version)
-			if (!document) throw new UnknownRulesVersionError(type, version)
-			return document
-		},
-		find,
-	}
-}
+export {
+	RulesDocumentInvariantError,
+	UnknownRulesVersionError,
+} from '@/features/rules-documents/family-catalog'
+export type {
+	RegisteredRulesVersionSummary,
+	RulesDiffRecord,
+	RulesDocumentFamily,
+	RulesDocumentReference,
+	RulesReferenceTarget,
+	TraversedRule,
+	TraversedRulesBlock,
+	TraversedRulesDocument,
+	TraversedRulesHeading,
+	TraversedRulesSection,
+} from '@/features/rules-documents/family-catalog'
 
 const families = {
-	'core-rules': createFamilyCatalog({
+	'core-rules': createRulesDocumentFamilyCatalog({
 		type: 'core-rules',
 		currentVersion: CURRENT_PDF_CORE_RULES_VERSION,
 		documents: PDF_CORE_RULES_VERSIONS,
@@ -161,7 +44,7 @@ const families = {
 		adapt: adaptCoreRulesDocument,
 		diffId: coreRulesDiffId,
 	}),
-	'tournament-rules': createFamilyCatalog({
+	'tournament-rules': createRulesDocumentFamilyCatalog({
 		type: 'tournament-rules',
 		currentVersion: CURRENT_PDF_TOURNAMENT_RULES_VERSION,
 		documents: PDF_TOURNAMENT_RULES_DOCUMENTS,
