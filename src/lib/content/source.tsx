@@ -1,7 +1,6 @@
 import { loader } from 'fumadocs-core/source'
 import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons'
 import { docs } from 'fumadocs-mdx:collections/server'
-import { Badge } from '@/components/ui/badge'
 
 const NEW_PAGE_WINDOW_MS = 21 * 24 * 60 * 60 * 1000
 const BUILD_TIMESTAMP = Date.now()
@@ -30,9 +29,9 @@ export const source = loader({
 					node.name = content.data.sidebarTitle ?? node.name
 					if (isNewPage(content.data.createdAt))
 						node.name = (
-							<div key={content.path} className="flex w-full items-center gap-2">
-								<span className="flex-1">{node.name}</span>
-								<Badge>New</Badge>
+							<div key={content.path} className="flex w-full items-center gap-3">
+								<span>{node.name}</span>
+								<div className="size-2 rounded-full bg-fd-primary" />
 							</div>
 						)
 					return node
