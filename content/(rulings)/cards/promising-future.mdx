@@ -106,3 +106,24 @@ Dazzling Aurora is now an enemy gear on the board and can be chosen, so the abil
 
 This ordering is simpler: the opponent sees Akshan before choosing Dazzling Aurora, then Dazzling Aurora is queued and enters before Akshan is finalized.
 Akshan's controller therefore sees Dazzling Aurora already on the board when deciding whether to pay the additional cost.
+
+## Can Disarming Rake kill Dazzling Aurora if both are chosen with Promising Future? [#disarming-rake]
+
+Yes, regardless of which card is put on the chain first.
+
+<Card name="Disarming Rake" />'s "When you play me" ability is a play effect.
+It is added to the chain as a separate pending item only after Disarming Rake finalizes and enters the board.<Rule number="383.4.a" /><Rule number="383.4.a.2" />
+
+If Dazzling Aurora finalized first, it is already on the board.
+If Disarming Rake finalized first, its play effect is put on the chain after Dazzling Aurora, so the older Dazzling Aurora finalizes and enters before the play effect does.<Rule number="337.1.b" /><Rule number="337.2" />
+In either order, Dazzling Aurora is on the board when Disarming Rake's play effect is finalized and can be killed by it.
+
+## Can Ravenbloom Prefect banish Dazzling Aurora if both are chosen with Promising Future? [#ravenbloom-prefect]
+
+Only if <Card name="Ravenbloom Prefect" /> finalizes before Dazzling Aurora.
+
+Unlike Disarming Rake's own play effect, Ravenbloom Prefect's ability triggers when another object is played.<Rule number="383.4.a.4" />
+Ravenbloom Prefect must therefore be on the board when Dazzling Aurora finishes being played for its trigger condition to be fulfilled.<Rule number="383.2.c" /><Rule number="419.4.a" />
+
+If Ravenbloom Prefect finalizes first, it enters the board before Dazzling Aurora finalizes, so its ability triggers and can banish Dazzling Aurora.
+If Dazzling Aurora finalizes first, Ravenbloom Prefect is still a pending card on the chain when Aurora enters, so the ability does not trigger later when Prefect enters.
