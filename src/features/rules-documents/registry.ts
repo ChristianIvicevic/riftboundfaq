@@ -24,6 +24,7 @@ export {
 	UnknownRulesVersionError,
 } from '@/features/rules-documents/family-catalog'
 export type {
+	CurrentRuleChangeStatus,
 	RegisteredRulesVersionSummary,
 	RulesDiffRecord,
 	RulesDocumentFamily,

@@ -3,6 +3,7 @@ import {
 	RulesDocumentInvariantError,
 	type SourceRulesDocument,
 } from '@/features/rules-documents/compile'
+import { diffRuleSets, type DiffEntry } from '@/lib/rules/diff'
 import { rulesDocumentFamily, type RulesDocumentFamilyId } from '@/lib/rules/document-family-conventions'
 import type { RulesDocumentContent } from '@/lib/rules/document-types'
 
@@ -47,7 +48,10 @@ export type TraversedRule = {
 	readonly anchor: string
 	readonly content: readonly RulesDocumentContent[]
 	readonly children: readonly TraversedRule[]
+	readonly changeStatus?: CurrentRuleChangeStatus
 }
+
+export type CurrentRuleChangeStatus = 'new' | 'changed'
 
 export type TraversedRulesBlock =
 	| { kind: 'rules'; rules: readonly TraversedRule[] }
@@ -86,6 +90,7 @@ export type RulesDocumentFamilyCatalog = Readonly<{
 	readonly current: TraversedRulesDocument
 	get(version: string): TraversedRulesDocument
 	find(version: string): TraversedRulesDocument | undefined
+	difference(from: string, to: string): readonly DiffEntry<RulesDiffRecord>[]
 }>
 
 export class UnknownRulesVersionError extends Error {
@@ -167,18 +172,66 @@ export function createRulesDocumentFamilyCatalog<Document extends { readonly ver
 		? Object.freeze({ from: previousSummary, to: currentSummary })
 		: undefined
 	const compiled = new Map<string, TraversedRulesDocument>()
+	const differences = new Map<string, readonly DiffEntry<RulesDiffRecord>[]>()
+	const difference = (from: string, to: string) => {
+		const key = `${from}\0${to}`
+		const existing = differences.get(key)
+		if (existing) return existing
+		const options =
+			type === 'tournament-rules'
+				? {
+						hideRenumbering: true,
+						hideReferenceOnlyChanges: true,
+						referenceSyntax: 'tournament' as const,
+					}
+				: undefined
+		const entries = Object.freeze(diffRuleSets(find(from)!.diffRecords, find(to)!.diffRecords, options))
+		differences.set(key, entries)
+		return entries
+	}
 
 	const find = (version: string) => {
 		const existing = compiled.get(version)
 		if (existing) return existing
 		const source = sources.get(version)
 		if (!source) return
-		const document = compileRulesDocument({
+		let document = compileRulesDocument({
 			identity: summaries.get(version)!,
 			source: adapt(source),
 			diffId,
 		})
 		compiled.set(version, document)
+		if (version === currentVersion && previousSummary) {
+			const statuses = new Map<string, CurrentRuleChangeStatus>()
+			for (const entry of difference(previousSummary.version, currentVersion)) {
+				if (entry.kind === 'added') statuses.set(entry.rule.anchor, 'new')
+				if (entry.kind === 'modified') statuses.set(entry.newRule.anchor, 'changed')
+			}
+			const addStatuses = (rules: readonly TraversedRule[]): readonly TraversedRule[] =>
+				Object.freeze(
+					rules.map((rule) =>
+						Object.freeze({
+							...rule,
+							changeStatus: statuses.get(rule.anchor),
+							children: addStatuses(rule.children),
+						}),
+					),
+				)
+			document = Object.freeze({
+				...document,
+				sections: Object.freeze(
+					document.sections.map((section) =>
+						Object.freeze({
+							...section,
+							blocks: Object.freeze(
+								section.blocks.map((block) => Object.freeze({ ...block, rules: addStatuses(block.rules) })),
+							),
+						}),
+					),
+				),
+			})
+			compiled.set(version, document)
+		}
 		return document
 	}
 
@@ -189,6 +242,7 @@ export function createRulesDocumentFamilyCatalog<Document extends { readonly ver
 		registeredVersions,
 		currentVersion: currentSummary,
 		currentTransition,
+		difference,
 		get(version: string) {
 			const document = find(version)
 			if (!document) throw new UnknownRulesVersionError(type, version)

@@ -1,6 +1,12 @@
+import { cva } from 'class-variance-authority'
 import type { ReactNode } from 'react'
 import { Card } from '@/components/cards/card'
-import type { RulesReferenceTarget, TraversedRule } from '@/features/rules-documents/registry'
+import { Badge } from '@/components/ui/badge'
+import type {
+	CurrentRuleChangeStatus,
+	RulesReferenceTarget,
+	TraversedRule,
+} from '@/features/rules-documents/registry'
 import type { RulesDocumentContent, RulesDocumentHeading } from '@/lib/rules/document-types'
 import { segmentRulesExampleText } from '@/lib/rules/example-text'
 import type { RuleIdLookup, RuleReference } from '@/lib/rules/types'
@@ -8,6 +14,36 @@ import type { RuleIdLookup, RuleReference } from '@/lib/rules/types'
 type FindRuleReferences = (text: string, ruleIds: RuleIdLookup) => RuleReference[]
 type FindReferenceTarget = (id: string) => RulesReferenceTarget | undefined
 type DisplayRulesHeading = Pick<RulesDocumentHeading, 'id' | 'text'>
+
+const ruleChangeBadgeVariants = cva('', {
+	variants: {
+		status: {
+			new: 'bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300',
+			changed: 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
+		},
+		placement: {
+			mobile: 'mt-1 flex sm:hidden',
+			desktop: 'hidden self-start sm:mt-0.5 sm:inline-flex',
+		},
+	},
+})
+
+function RuleChangeBadge({
+	status,
+	placement,
+}: {
+	status: CurrentRuleChangeStatus
+	placement: 'mobile' | 'desktop'
+}) {
+	return (
+		<Badge
+			className={ruleChangeBadgeVariants({ status, placement })}
+			variant={status === 'new' ? 'default' : 'secondary'}
+		>
+			{status === 'new' ? 'New' : 'Changed'}
+		</Badge>
+	)
+}
 
 function RuleReferenceLink({
 	id,
@@ -88,11 +124,13 @@ function LinkedRuleText({
 
 function RuleContentView({
 	content,
+	changeStatus,
 	referenceTarget,
 	ruleIds,
 	findReferences,
 }: {
 	content: readonly RulesDocumentContent[]
+	changeStatus?: CurrentRuleChangeStatus
 	referenceTarget: FindReferenceTarget
 	ruleIds: RuleIdLookup
 	findReferences: FindRuleReferences
@@ -100,6 +138,8 @@ function RuleContentView({
 	return (
 		<div className="min-w-0 space-y-2 leading-6 wrap-anywhere">
 			{content.map((entry, index) => {
+				const mobileBadge =
+					index === 0 && changeStatus ? <RuleChangeBadge placement="mobile" status={changeStatus} /> : null
 				if (entry.kind === 'example') {
 					return (
 						<div
@@ -113,6 +153,7 @@ function RuleContentView({
 								ruleIds={ruleIds}
 								text={entry.text}
 							/>
+							{mobileBadge}
 						</div>
 					)
 				}
@@ -126,6 +167,7 @@ function RuleContentView({
 								ruleIds={ruleIds}
 								text={entry.text}
 							/>
+							{mobileBadge}
 						</p>
 					)
 				}
@@ -143,6 +185,7 @@ function RuleContentView({
 									ruleIds={ruleIds}
 									text={entry.text}
 								/>
+								{mobileBadge}
 							</p>
 						</div>
 					)
@@ -156,6 +199,7 @@ function RuleContentView({
 							ruleIds={ruleIds}
 							text={entry.text}
 						/>
+						{mobileBadge}
 					</p>
 				)
 			})}
@@ -196,7 +240,7 @@ export function RulesDocumentRuleList({
 						key={anchor}
 					>
 						{rule.id ? (
-							<div className="grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] items-start gap-x-2 py-1.5 sm:gap-x-4">
+							<div className="grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] items-start gap-x-2 py-1.5 sm:grid-cols-[max-content_minmax(0,1fr)_max-content] sm:gap-x-4">
 								{labelMode === 'id-with-period' ? (
 									<a
 										aria-label={`Link to rule ${rule.id}`}
@@ -215,20 +259,24 @@ export function RulesDocumentRuleList({
 									</a>
 								)}
 								<RuleContentView
+									changeStatus={rule.changeStatus}
 									content={rule.content}
 									findReferences={findReferences}
 									referenceTarget={referenceTarget}
 									ruleIds={ruleIds}
 								/>
+								{rule.changeStatus && <RuleChangeBadge placement="desktop" status={rule.changeStatus} />}
 							</div>
 						) : (
-							<div className="py-1.5">
+							<div className="grid min-w-0 grid-cols-1 items-start py-1.5 sm:grid-cols-[minmax(0,1fr)_max-content] sm:gap-x-4">
 								<RuleContentView
+									changeStatus={rule.changeStatus}
 									content={rule.content}
 									findReferences={findReferences}
 									referenceTarget={referenceTarget}
 									ruleIds={ruleIds}
 								/>
+								{rule.changeStatus && <RuleChangeBadge placement="desktop" status={rule.changeStatus} />}
 							</div>
 						)}
 						<RulesDocumentRuleList

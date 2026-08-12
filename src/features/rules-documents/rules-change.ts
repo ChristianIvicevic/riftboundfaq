@@ -3,7 +3,7 @@ import type {
 	RulesDocumentFamily,
 	RulesDocumentFamilyCatalog,
 } from '@/features/rules-documents/family-catalog'
-import { diffRuleSets, type DiffEntry } from '@/lib/rules/diff'
+import type { DiffEntry } from '@/lib/rules/diff'
 import { coreRulesLinks, tournamentRulesLinks } from '@/lib/rules/links'
 
 type PreparedRulesChangeVersion = Readonly<{
@@ -93,17 +93,9 @@ export function prepareRulesChange(
 			lines: Object.freeze([...record.lines]),
 		})
 	}
-	const options =
-		family === 'tournament-rules'
-			? {
-					hideRenumbering: true,
-					hideReferenceOnlyChanges: true,
-					referenceSyntax: 'tournament' as const,
-				}
-			: undefined
-	const entries = diffRuleSets(oldDocument.diffRecords, newDocument.diffRecords, options).map(
-		(entry): PreparedRulesChangeEntry => prepareEntry(entry, from, to, prepareRule),
-	)
+	const entries = catalog
+		.difference(from, to)
+		.map((entry): PreparedRulesChangeEntry => prepareEntry(entry, from, to, prepareRule))
 	const label = (version: string, name: string | null) =>
 		family === 'core-rules' ? (name ?? `Core Rules ${version}`) : formatTournamentRulesVersion(version)
 

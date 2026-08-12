@@ -84,6 +84,169 @@ function changedRuleIds(
 }
 
 describe('Change page preparation', () => {
+	test('classifies current rule occurrences with the Current transition', () => {
+		const catalog = createCoreRulesCatalog(
+			[
+				{ id: '300.1', text: 'This rule changed.' },
+				{ id: '300.2', text: 'This rule stayed the same.' },
+			],
+			[
+				{ id: '300.1', text: 'This rule changed meaningfully.' },
+				{ id: '300.2', text: 'This rule stayed the same.' },
+				{ id: '300.3', text: 'This rule is entirely new.' },
+			],
+		)
+		const archivedRules = catalog.get('1.0').sections[0].blocks[0].rules
+		const currentRules = catalog.current.sections[0].blocks[0].rules
+
+		expect(archivedRules.map((rule) => rule.changeStatus)).toEqual([undefined, undefined])
+		expect(currentRules.map((rule) => rule.changeStatus)).toEqual(['changed', undefined, 'new'])
+	})
+
+	test('does not classify rules when the family has no preceding Registered rules version', () => {
+		const catalog = createRulesDocumentFamilyCatalog({
+			type: 'core-rules',
+			currentVersion: '1.0',
+			documents: { '1.0': { version: '1.0' } },
+			adapt: ({ version }) => ({
+				version,
+				sections: [
+					{
+						heading: { sequence: 1, id: '100', text: 'Rules', label: '100.', depth: 2 },
+						blocks: [
+							{
+								kind: 'rules',
+								rules: [
+									{
+										sequence: 2,
+										id: '100.1',
+										label: '100.1.',
+										diffLabel: '100.1.',
+										content: [{ kind: 'paragraph', text: 'Only rule.' }],
+										children: [],
+									},
+								],
+							},
+						],
+					},
+				],
+			}),
+			diffId: (id) => id ?? '',
+		})
+
+		expect(catalog.current.sections[0].blocks[0].rules[0].changeStatus).toBeUndefined()
+	})
+
+	test('classifies the exact unlabeled Tournament Rules occurrence', () => {
+		const catalog = createRulesDocumentFamilyCatalog({
+			type: 'tournament-rules',
+			currentVersion: '2026-04-29',
+			documents: {
+				'2026-03-30': { version: '2026-03-30', changedText: 'Second rule.' },
+				'2026-04-29': { version: '2026-04-29', changedText: 'Second rule changed.' },
+			},
+			adapt: ({ version, changedText }) => ({
+				version,
+				sections: [
+					{
+						heading: { sequence: 1, id: '100', text: 'Rules', label: '100.', depth: 2 },
+						blocks: [
+							{
+								kind: 'rules',
+								rules: [
+									{
+										sequence: 2,
+										id: null,
+										label: 'First',
+										diffLabel: 'First',
+										content: [{ kind: 'paragraph', text: 'First rule.' }],
+										children: [],
+									},
+									{
+										sequence: 3,
+										id: null,
+										label: 'Second',
+										diffLabel: 'Second',
+										content: [{ kind: 'paragraph', text: changedText }],
+										children: [],
+									},
+								],
+							},
+						],
+					},
+				],
+			}),
+			diffId: (id, occurrence) => `${id ?? 'unnumbered'}::${occurrence}`,
+		})
+		const rules = catalog.current.sections[0].blocks[0].rules
+
+		expect(rules.map((rule) => [rule.anchor, rule.changeStatus])).toEqual([
+			['U2', undefined],
+			['U3', 'changed'],
+		])
+	})
+
+	test('classifies the exact nested duplicate rule occurrence and reuses its comparison', () => {
+		const catalog = createRulesDocumentFamilyCatalog({
+			type: 'core-rules',
+			currentVersion: '1.1',
+			documents: {
+				'1.0': { version: '1.0', changedText: 'Second nested rule.' },
+				'1.1': { version: '1.1', changedText: 'Second nested rule changed.' },
+			},
+			adapt: ({ version, changedText }) => ({
+				version,
+				sections: [
+					{
+						heading: { sequence: 1, id: '100', text: 'Rules', label: '100.', depth: 2 },
+						blocks: [
+							{
+								kind: 'rules',
+								rules: [
+									{
+										sequence: 2,
+										id: '100.1',
+										label: '100.1.',
+										diffLabel: '100.1.',
+										content: [{ kind: 'paragraph', text: 'Parent rule.' }],
+										children: [
+											{
+												sequence: 3,
+												id: '100.1.a',
+												label: '100.1.a.',
+												diffLabel: '100.1.a.',
+												content: [{ kind: 'paragraph', text: 'First nested rule.' }],
+												children: [],
+											},
+											{
+												sequence: 4,
+												id: '100.1.a',
+												label: '100.1.a.',
+												diffLabel: '100.1.a.',
+												content: [{ kind: 'paragraph', text: changedText }],
+												children: [],
+											},
+										],
+									},
+								],
+							},
+						],
+					},
+				],
+			}),
+			diffId: (id) => id ?? '',
+		})
+		const comparison = catalog.difference('1.0', '1.1')
+		const [parent] = catalog.current.sections[0].blocks[0].rules
+
+		expect(catalog.difference('1.0', '1.1')).toBe(comparison)
+		expect(parent.changeStatus).toBeUndefined()
+		expect(parent.children.map((rule) => [rule.anchor, rule.changeStatus])).toEqual([
+			['R100.1.a', undefined],
+			['R100.1.a-2', 'changed'],
+		])
+	})
+
 	test('prepares one immutable older-to-newer adjacent transition', () => {
 		const change = prepareRulesChange(createCatalog('core-rules', ['1.0', '1.1']), {
 			from: '1.0',
