@@ -20,7 +20,6 @@ export type DiffEntry<Rule extends RuleRecord = RuleRecord> =
 export type DiffOptions = {
 	hideRenumbering?: boolean
 	hideReferenceOnlyChanges?: boolean
-	prioritizeTextSimilarity?: boolean
 	referenceSyntax?: 'generic' | 'tournament'
 }
 
@@ -242,12 +241,7 @@ function alignIndices(n: number, m: number, eq: (i: number, j: number) => boolea
 export function diffRuleSets<Rule extends RuleRecord>(
 	oldRules: readonly Rule[],
 	newRules: readonly Rule[],
-	{
-		hideRenumbering = true,
-		hideReferenceOnlyChanges = true,
-		prioritizeTextSimilarity = false,
-		referenceSyntax = 'generic',
-	}: DiffOptions = {},
+	{ hideRenumbering = true, hideReferenceOnlyChanges = true, referenceSyntax = 'generic' }: DiffOptions = {},
 ): DiffEntry<Rule>[] {
 	const oldText = oldRules.map((rule) => normalizedText(rule))
 	const newText = newRules.map((rule) => normalizedText(rule))
@@ -264,9 +258,7 @@ export function diffRuleSets<Rule extends RuleRecord>(
 			if (textsMatch(oldText[gapOld[i]], newText[gapNew[j]])) return 2
 			return oldRule.id === newRule.id ? 1 : 0
 		}
-		const gapOps = prioritizeTextSimilarity
-			? alignIndicesByScore(gapOld.length, gapNew.length, matchScore)
-			: alignIndices(gapOld.length, gapNew.length, (i, j) => matchScore(i, j) > 0)
+		const gapOps = alignIndicesByScore(gapOld.length, gapNew.length, matchScore)
 		for (const op of gapOps) {
 			if (op.type === 'remove') {
 				entries.push({ kind: 'removed', rule: oldRules[gapOld[op.oldIndex]] })

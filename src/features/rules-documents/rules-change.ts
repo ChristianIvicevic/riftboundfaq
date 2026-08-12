@@ -98,7 +98,6 @@ export function prepareRulesChange(
 			? {
 					hideRenumbering: true,
 					hideReferenceOnlyChanges: true,
-					prioritizeTextSimilarity: true,
 					referenceSyntax: 'tournament' as const,
 				}
 			: undefined

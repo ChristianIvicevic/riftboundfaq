@@ -35,6 +35,54 @@ function createCatalog(
 	})
 }
 
+function createCoreRulesCatalog(
+	oldRules: readonly Readonly<{ id: string; text: string }>[],
+	newRules: readonly Readonly<{ id: string; text: string }>[],
+) {
+	return createRulesDocumentFamilyCatalog({
+		type: 'core-rules',
+		currentVersion: '1.1',
+		documents: {
+			'1.0': { version: '1.0', rules: oldRules },
+			'1.1': { version: '1.1', rules: newRules },
+		},
+		adapt: ({ version, rules }) => ({
+			version,
+			sections: [
+				{
+					heading: { sequence: 1, id: '300', text: 'Rules', label: '300.', depth: 2 },
+					blocks: [
+						{
+							kind: 'rules',
+							rules: rules.map(({ id, text }, index) => ({
+								sequence: index + 2,
+								id,
+								label: `${id}.`,
+								diffLabel: `${id}.`,
+								content: [{ kind: 'paragraph' as const, text }],
+								children: [],
+							})),
+						},
+					],
+				},
+			],
+		}),
+		diffId: (id) => id ?? '',
+	})
+}
+
+function changedRuleIds(
+	oldRules: readonly { id: string; text: string }[],
+	newRules: readonly { id: string; text: string }[],
+) {
+	return prepareRulesChange(createCoreRulesCatalog(oldRules, newRules), {
+		from: '1.0',
+		to: '1.1',
+	}).entries.map((entry) =>
+		entry.kind === 'modified' ? `${entry.oldRule.id}->${entry.newRule.id}` : `${entry.kind}:${entry.rule.id}`,
+	)
+}
+
 describe('Change page preparation', () => {
 	test('prepares one immutable older-to-newer adjacent transition', () => {
 		const change = prepareRulesChange(createCatalog('core-rules', ['1.0', '1.1']), {
@@ -105,6 +153,50 @@ describe('Change page preparation', () => {
 		)
 
 		expect(change.entries).toEqual([])
+	})
+
+	test.each([
+		{
+			name: 'inserted legality check',
+			oldRules: [
+				{ id: '358.2', text: 'Ensure that the outcome would not create an illegal state.' },
+				{ id: '358.3', text: 'Ensure that the card has the appropriate timing permissions.' },
+				{ id: '358.4', text: 'If the action is illegal, undo it and cancel the action.' },
+			],
+			newRules: [
+				{ id: '358.2', text: 'Check that all costs were paid.' },
+				{ id: '358.3', text: 'Check that the outcome would not create an illegal state.' },
+				{ id: '358.4', text: 'Check that the card has the appropriate timing permissions.' },
+				{ id: '358.5', text: 'If any check fails, undo it and cancel the action.' },
+			],
+			expected: ['added:358.2', '358.2->358.3', '358.3->358.4', '358.4->358.5'],
+		},
+		{
+			name: 'removed conditional trigger rule',
+			oldRules: [
+				{ id: '383.3.e', text: 'A conditional statement must be true to place the trigger on the Chain.' },
+				{ id: '383.3.f', text: 'Some Triggered Abilities trigger once each turn.' },
+			],
+			newRules: [
+				{ id: '383.3.e', text: 'Some Triggered Abilities trigger once each turn, or N times each turn.' },
+			],
+			expected: ['removed:383.3.e', '383.3.f->383.3.e'],
+		},
+		{
+			name: 'inserted permanent destination',
+			oldRules: [
+				{ id: '439.2.b.1', text: 'Spells will be Created to the Chain.' },
+				{ id: '439.2.b.2', text: 'Runes will be Created to base.' },
+			],
+			newRules: [
+				{ id: '439.2.b.1', text: 'Permanents will be Created at a valid Board location.' },
+				{ id: '439.2.b.2', text: 'Spells will be Created on the Chain.' },
+				{ id: '439.2.b.3', text: 'Runes will be Created at base.' },
+			],
+			expected: ['added:439.2.b.1', '439.2.b.1->439.2.b.2', '439.2.b.2->439.2.b.3'],
+		},
+	] as const)('prioritizes text continuations for $name', ({ oldRules, newRules, expected }) => {
+		expect(changedRuleIds(oldRules, newRules)).toEqual(expected)
 	})
 
 	test('preserves the exact record when duplicate difference identities are removed', () => {
