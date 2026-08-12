@@ -4,6 +4,7 @@ import {
 	type RulesDocumentFamily,
 	type RulesDocumentReference,
 } from '@/features/rules-documents/family-catalog'
+import { prepareRulesChange } from '@/features/rules-documents/rules-change'
 import {
 	adaptTournamentRulesDocument,
 	tournamentRulesDiffId,
@@ -54,6 +55,9 @@ const families = {
 }
 
 export const rulesDocuments = {
+	change({ type, from, to }: { type: RulesDocumentFamily; from: string; to: string }) {
+		return prepareRulesChange(families[type], { from, to })
+	},
 	get(reference: RulesDocumentReference) {
 		return families[reference.type].get(reference.version)
 	},

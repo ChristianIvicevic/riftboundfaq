@@ -8,14 +8,14 @@ export type Token = { type: TokenType; text: string }
  * - `added`   — rule exists only in the new version.
  * - `removed` — rule exists only in the old version.
  * - `modified` — rule exists in both but its text changed; `oldText`/`newText` hold the inline
- *   token diff for the left (old) and right (new) columns, labelled `oldId`/`newId` (which differ
- *   when the rule was renumbered). Each rule is diffed as one continuous line, so source line breaks
+ *   token diff for the left (old) and right (new) columns; their IDs differ when the rule was
+ *   renumbered. Each rule is diffed as one continuous line, so source line breaks
  *   (e.g. an example moved onto its own line) are not treated as edits.
  */
-export type DiffEntry =
-	| { kind: 'added'; rule: RuleRecord }
-	| { kind: 'removed'; rule: RuleRecord }
-	| { kind: 'modified'; oldId: string; newId: string; oldText: Token[]; newText: Token[] }
+export type DiffEntry<Rule extends RuleRecord = RuleRecord> =
+	| { kind: 'added'; rule: Rule }
+	| { kind: 'removed'; rule: Rule }
+	| { kind: 'modified'; oldRule: Rule; newRule: Rule; oldText: Token[]; newText: Token[] }
 
 export type DiffOptions = {
 	hideRenumbering?: boolean
@@ -113,17 +113,16 @@ function sideTokens(ops: Op<string>[], change: 'remove' | 'add'): Token[] {
 }
 
 /** Build a modified entry: word-level diff of the two rules' joined text. */
-function buildModified(
-	oldId: string,
-	newId: string,
-	oldLines: readonly string[],
-	newLines: readonly string[],
-): DiffEntry {
-	const ops = diffSequence(tokenize(oldLines.join(' ')), tokenize(newLines.join(' ')), (x, y) => x === y)
+function buildModified<Rule extends RuleRecord>(oldRule: Rule, newRule: Rule): DiffEntry<Rule> {
+	const ops = diffSequence(
+		tokenize(oldRule.lines.join(' ')),
+		tokenize(newRule.lines.join(' ')),
+		(x, y) => x === y,
+	)
 	return {
 		kind: 'modified',
-		oldId,
-		newId,
+		oldRule,
+		newRule,
 		oldText: sideTokens(ops, 'remove'),
 		newText: sideTokens(ops, 'add'),
 	}
@@ -240,20 +239,20 @@ function alignIndices(n: number, m: number, eq: (i: number, j: number) => boolea
  * gaps are re-aligned by similarity (and, with the default behavior, matching IDs): matched rules
  * become modifications, while the rest are genuine additions/removals. Document order is preserved.
  */
-export function diffRuleSets(
-	oldRules: readonly RuleRecord[],
-	newRules: readonly RuleRecord[],
+export function diffRuleSets<Rule extends RuleRecord>(
+	oldRules: readonly Rule[],
+	newRules: readonly Rule[],
 	{
 		hideRenumbering = true,
 		hideReferenceOnlyChanges = true,
 		prioritizeTextSimilarity = false,
 		referenceSyntax = 'generic',
 	}: DiffOptions = {},
-): DiffEntry[] {
+): DiffEntry<Rule>[] {
 	const oldText = oldRules.map((rule) => normalizedText(rule))
 	const newText = newRules.map((rule) => normalizedText(rule))
 
-	const entries: DiffEntry[] = []
+	const entries: DiffEntry<Rule>[] = []
 	let gapOld: number[] = []
 	let gapNew: number[] = []
 
@@ -289,7 +288,7 @@ export function diffRuleSets(
 				) {
 					continue
 				}
-				entries.push(buildModified(oldRule.id, newRule.id, oldRule.lines, newRule.lines))
+				entries.push(buildModified(oldRule, newRule))
 			}
 		}
 		gapOld = []
@@ -308,7 +307,7 @@ export function diffRuleSets(
 			const oldRule = oldRules[op.oldIndex]
 			const newRule = newRules[op.newIndex]
 			if (!hideRenumbering && oldRule.id !== newRule.id) {
-				entries.push(buildModified(oldRule.id, newRule.id, oldRule.lines, newRule.lines))
+				entries.push(buildModified(oldRule, newRule))
 			}
 		}
 	}
