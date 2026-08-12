@@ -50,7 +50,7 @@
 		"postcss": "8.5.26",
 		"tailwindcss": "4.3.3",
 		"tsx": "4.23.9",
-		"typescript": "6.0.3",
+		"typescript": "7.0.2",
 		"vitest": "4.1.10"
 	},
 	"packageManager": "pnpm@11.20.0"
