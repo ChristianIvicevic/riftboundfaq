@@ -81,6 +81,7 @@ export type TraversedRulesDocument = {
 
 export type RulesDocumentFamilyCatalog = Readonly<{
 	registeredVersions: readonly RegisteredRulesVersionSummary[]
+	currentVersion: CurrentRulesVersionSummary
 	currentTransition: CurrentRulesTransition | undefined
 	readonly current: TraversedRulesDocument
 	get(version: string): TraversedRulesDocument
@@ -186,6 +187,7 @@ export function createRulesDocumentFamilyCatalog<Document extends { readonly ver
 			return find(currentVersion)!
 		},
 		registeredVersions,
+		currentVersion: currentSummary,
 		currentTransition,
 		get(version: string) {
 			const document = find(version)

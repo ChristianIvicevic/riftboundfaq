@@ -9,6 +9,7 @@ import { RelatedRulings } from '@/app/(wiki)/[[...slug]]/_components/related-rul
 import { CoreRulesReviewCallout } from '@/components/core-rules/review-callout'
 import { submitPageFeedback } from '@/features/feedback/actions'
 import { Feedback } from '@/features/feedback/feedback'
+import { resolveCoreRulesReview } from '@/features/rules-documents/core-rules-review'
 import { resolveVersionedRulesRoute } from '@/features/rules-documents/versioned-route'
 import { getRiftboundWikiUrl } from '@/lib/cards/links'
 import { getPagePublication } from '@/lib/content/page-publication'
@@ -27,6 +28,10 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 	const MDX = page.data.body
 	const authors = page.data.authors ?? []
 	const publication = getPagePublication(page)
+	const coreRulesReview = resolveCoreRulesReview({
+		url: page.url,
+		reviewedVersion: page.data.reviewedCoreRulesVersion,
+	})
 	const rulingRelations = getRulingRelations(rulingRelationIndex, page.url)
 	const riftboundWikiUrl = page.url.startsWith('/cards/') ? getRiftboundWikiUrl(page.data.title) : undefined
 	const versionedRulesRoute = resolveVersionedRulesRoute({
@@ -77,14 +82,18 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 			<DocsTitle>{page.data.title}</DocsTitle>
 			<DocsDescription className="mb-0">{publication.description}</DocsDescription>
 			<PageActions galleryLink={page.data.galleryLink} riftboundWikiUrl={riftboundWikiUrl} />
-			{page.data.reviewedCoreRulesVersion && (
-				<CoreRulesReviewCallout reviewedCoreRulesVersion={page.data.reviewedCoreRulesVersion} />
+			{coreRulesReview && (
+				<CoreRulesReviewCallout
+					currentVersion={coreRulesReview.currentVersion}
+					reviewedVersion={coreRulesReview.reviewedVersion}
+					status={coreRulesReview.status}
+				/>
 			)}
 			<CopyableDocsBody>
 				<MDX
 					components={getMDXComponents(
 						createRelativeLink(source, page),
-						page.data.reviewedCoreRulesVersion,
+						coreRulesReview?.document,
 						versionedRulesRoute,
 					)}
 				/>
@@ -108,6 +117,7 @@ export async function generateMetadata(props: PageProps<'/[[...slug]]'>): Promis
 	if (!page) notFound()
 
 	const publication = getPagePublication(page)
+	resolveCoreRulesReview({ url: page.url, reviewedVersion: page.data.reviewedCoreRulesVersion })
 	const url = new URL(page.url, SITE_URL).toString()
 	const image = getPageImage(page).url
 	const authors = page.data.authors ?? []

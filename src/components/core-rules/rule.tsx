@@ -1,14 +1,14 @@
 import { RulePreviewLink } from '@/components/core-rules/rule-preview-link'
-import { rulesDocuments } from '@/features/rules-documents/registry'
+import type { TraversedRulesDocument } from '@/features/rules-documents/registry'
 import { coreRulesLinks } from '@/lib/rules/links'
 
-export function Rule({ number, coreRulesVersion }: { number: string; coreRulesVersion?: string }) {
-	if (!coreRulesVersion) {
+export function Rule({ number, document }: { number: string; document?: TraversedRulesDocument }) {
+	if (!document) {
 		return <sup className="text-nowrap text-fd-muted-foreground">[{number}]</sup>
 	}
 
-	const rulesText = rulesDocuments.find({ type: 'core-rules', version: coreRulesVersion })?.lookupText(number)
-	const href = coreRulesLinks.rule({ number, version: coreRulesVersion })
+	const rulesText = document.lookupText(number)
+	const href = coreRulesLinks.rule({ number, version: document.identity.version })
 
 	return (
 		<sup>

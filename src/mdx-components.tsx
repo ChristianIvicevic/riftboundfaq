@@ -9,6 +9,7 @@ import { Energy, RUNES, Universal } from '@/components/resources'
 import { TournamentRulesDiff } from '@/components/tournament-rules/diff-view'
 import { submitBlockFeedback } from '@/features/feedback/actions'
 import { FeedbackBlock } from '@/features/feedback/feedback'
+import type { TraversedRulesDocument } from '@/features/rules-documents/registry'
 import {
 	renderVersionedRulesDocument,
 	type VersionedRulesRoute,
@@ -31,15 +32,15 @@ const wikiMdxComponents = {
 
 export function getMDXComponents(
 	relativeLink: NonNullable<MDXComponents['a']>,
-	reviewedCoreRulesVersion?: string,
+	reviewedCoreRulesDocument?: TraversedRulesDocument,
 	versionedRulesRoute?: VersionedRulesRoute,
 ): MDXComponents {
 	return {
 		...wikiMdxComponents,
 		a: relativeLink,
 		RulesDocument: () => renderVersionedRulesDocument(versionedRulesRoute),
-		Rule: (props: Omit<ComponentProps<typeof Rule>, 'coreRulesVersion'>) => (
-			<Rule {...props} coreRulesVersion={reviewedCoreRulesVersion} />
+		Rule: (props: Omit<ComponentProps<typeof Rule>, 'document'>) => (
+			<Rule {...props} document={reviewedCoreRulesDocument} />
 		),
 	}
 }
