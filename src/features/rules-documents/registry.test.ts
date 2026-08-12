@@ -74,6 +74,14 @@ describe('rules documents registry', () => {
 		}
 	})
 
+	test('prepares a production Change page through the generated-data composition', () => {
+		const change = rulesDocuments.change({ type: 'core-rules', from: '1.0', to: '1.1' })
+
+		expect(change.from).toMatchObject({ version: '1.0' })
+		expect(change.to).toMatchObject({ version: '1.1' })
+		expect(change.entries.length).toBeGreaterThan(0)
+	})
+
 	test('memoizes immutable documents whose navigation headings are the rendered headings', () => {
 		const family = rulesDocuments.family('core-rules')
 		const document = family.get('1.0')
