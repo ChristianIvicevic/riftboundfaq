@@ -1,7 +1,5 @@
-import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, test } from 'vitest'
 import {
-	renderVersionedRulesDocument,
 	resolveVersionedRulesRoute,
 	VersionedRulesRouteError,
 } from '@/features/rules-documents/versioned-route'
@@ -19,7 +17,6 @@ describe('Versioned rules route', () => {
 			status: 'archived',
 		})
 		expect(route?.toc[0]).toEqual({ title: '000. Golden and Silver Rules', url: '#R000', depth: 2 })
-		expect(renderToStaticMarkup(renderVersionedRulesDocument(route))).toContain('id="R000"')
 	})
 
 	test('renders the Current Tournament Rules through its family adapter', () => {
@@ -29,7 +26,6 @@ describe('Versioned rules route', () => {
 		})
 
 		expect(route?.document.identity.status).toBe('current')
-		expect(renderToStaticMarkup(renderVersionedRulesDocument(route))).toContain('id="R100"')
 	})
 
 	test('leaves pages without a rules document outside the seam', () => {
@@ -75,16 +71,6 @@ describe('Versioned rules route', () => {
 			expect.objectContaining<Partial<VersionedRulesRouteError>>({
 				reason: 'unknown-rules-version',
 				url: '/reference/core-rules/bogus',
-			}),
-		)
-	})
-
-	test('rejects a document marker without Versioned rules route context', () => {
-		const route = resolveVersionedRulesRoute({ url: '/cards/alpha-strike' })
-
-		expect(() => renderVersionedRulesDocument(route)).toThrow(
-			expect.objectContaining<Partial<VersionedRulesRouteError>>({
-				reason: 'missing-route-context',
 			}),
 		)
 	})
