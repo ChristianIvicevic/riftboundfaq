@@ -1,10 +1,10 @@
-import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, test } from 'vitest'
+import { render } from 'vitest-browser-react'
 import { RulesDocumentRuleList } from '@/components/rules/document'
 
 describe('RulesDocumentRuleList', () => {
-	test('renders responsive change badges for numbered, unlabeled, and nested rules', () => {
-		const html = renderToStaticMarkup(
+	test('renders responsive change badges for numbered, unlabeled, and nested rules', async () => {
+		const screen = await render(
 			<RulesDocumentRuleList
 				findReferences={() => []}
 				labelMode="id-with-period"
@@ -39,15 +39,23 @@ describe('RulesDocumentRuleList', () => {
 			/>,
 		)
 
-		expect(html.match(/>New<\/span>/gu)).toHaveLength(4)
-		expect(html.match(/>Changed<\/span>/gu)).toHaveLength(2)
-		expect(html.match(/class="[^"]*sm:hidden[^"]*"[^>]*>New<\/span>/gu)).toHaveLength(2)
-		expect(html.match(/class="[^"]*hidden[^"]*sm:inline-flex[^"]*"[^>]*>New<\/span>/gu)).toHaveLength(2)
-		expect(html).toMatch(/sm:grid-cols-\[max-content_minmax\(0,1fr\)_max-content\]/u)
+		const newBadges = screen.getByText('New', { exact: true }).all()
+		const changedBadges = screen.getByText('Changed', { exact: true }).all()
+		expect(newBadges).toHaveLength(4)
+		expect(changedBadges).toHaveLength(2)
+		await expect.element(newBadges[0]).toHaveClass('sm:hidden')
+		await expect.element(newBadges[1]).toHaveClass('sm:inline-flex')
+		await expect.element(newBadges[2]).toHaveClass('sm:hidden')
+		await expect.element(newBadges[3]).toHaveClass('sm:inline-flex')
+		expect(
+			[...screen.container.querySelectorAll('div')].some((element) =>
+				element.classList.contains('sm:grid-cols-[max-content_minmax(0,1fr)_max-content]'),
+			),
+		).toBe(true)
 	})
 
-	test('uses the conventional link color for card preview triggers in rules examples', () => {
-		const html = renderToStaticMarkup(
+	test('uses the conventional link color for card preview triggers in rules examples', async () => {
+		const screen = await render(
 			<RulesDocumentRuleList
 				findReferences={() => []}
 				labelMode="id-with-period"
@@ -64,6 +72,8 @@ describe('RulesDocumentRuleList', () => {
 			/>,
 		)
 
-		expect(html).toMatch(/<button[^>]*class="[^"]*text-fd-primary[^"]*"[^>]*>Loose Cannon<\/button>/u)
+		const trigger = screen.getByRole('button', { name: 'Preview Loose Cannon' })
+		await expect.element(trigger).toHaveTextContent('Loose Cannon')
+		await expect.element(trigger).toHaveClass('text-fd-primary')
 	})
 })
