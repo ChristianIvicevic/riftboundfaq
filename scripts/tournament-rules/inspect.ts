@@ -5,13 +5,13 @@ import {
 	recognizeRulesSourceFilename,
 	tournamentRulesConventions,
 } from '@/lib/rules/document-family-conventions'
-import { reconstructPhysicalLines, type PdfTextItem } from '../core-rules/lines.ts'
-import { inspectDrawings } from './drawings.ts'
+import { reconstructPhysicalLines, type PdfTextItem } from '../core-rules/lines'
+import { inspectDrawings } from './drawings'
 import {
 	reconstructTournamentRulesSourceRows,
 	type TournamentRulesForensicRow,
 	type TournamentRulesSourceRow,
-} from './source-rows.ts'
+} from './source-rows'
 
 const SOURCES_DIRECTORY = resolve(import.meta.dirname, '..', '..', 'sources')
 const FORENSIC_PDF_FILENAME = /^Tournament-Rules-(\d{4}-\d{2}-\d{2})\.pdf$/u

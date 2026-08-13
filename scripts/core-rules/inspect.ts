@@ -4,9 +4,9 @@ import { readFile, readdir, stat } from 'node:fs/promises'
 import { basename, join, resolve } from 'node:path'
 import { getDocument } from 'pdfjs-dist/legacy/build/pdf.mjs'
 import { coreRulesConventions, recognizeRulesSourceFilename } from '@/lib/rules/document-family-conventions'
-import { assembleRuleBlocks, type RuleBlock } from './blocks.ts'
-import { reconstructPhysicalLines } from './lines.ts'
-import { structureRuleBlocks, type StructuredRuleNode } from './structure.ts'
+import { assembleRuleBlocks, type RuleBlock } from './blocks'
+import { reconstructPhysicalLines } from './lines'
+import { structureRuleBlocks, type StructuredRuleNode } from './structure'
 
 const SOURCES_DIRECTORY = resolve(import.meta.dirname, '..', '..', 'sources')
 

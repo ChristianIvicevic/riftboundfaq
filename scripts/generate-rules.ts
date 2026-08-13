@@ -1,4 +1,4 @@
-import { publishRules } from './rules-publication.ts'
+import { publishRules } from './rules-publication'
 
 const { coreRules, tournamentRules, reference } = await publishRules()
 

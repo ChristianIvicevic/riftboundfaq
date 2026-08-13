@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { normalizeRulesDate } from './rules-date.ts'
+import { normalizeRulesDate } from './rules-date'
 
 describe('normalizeRulesDate', () => {
 	test.each([

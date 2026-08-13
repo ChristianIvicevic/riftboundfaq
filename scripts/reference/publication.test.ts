@@ -2,9 +2,9 @@ import { access, mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, onTestFinished, test } from 'vitest'
-import type { ExtractedCoreRulesFamily, ExtractedTournamentRulesFamily } from '../rules-document-family.ts'
-import { parseRulesManifest } from '../rules-manifest.ts'
-import { prepareReferencePublication, ReferencePublicationError } from './publication.ts'
+import type { ExtractedCoreRulesFamily, ExtractedTournamentRulesFamily } from '../rules-document-family'
+import { parseRulesManifest } from '../rules-manifest'
+import { prepareReferencePublication, ReferencePublicationError } from './publication'
 
 const PROJECT_DIRECTORY = join(import.meta.dirname, '..', '..')
 

@@ -5,7 +5,7 @@ import type {
 	RegisteredCoreRulesVersion,
 	RegisteredTournamentRulesVersion,
 	TournamentRulesFamily,
-} from './rules-manifest.ts'
+} from './rules-manifest'
 
 export type ExtractedRulesDiagnostic = Readonly<{
 	severity: 'warning'
@@ -49,5 +49,5 @@ export type TournamentRulesFamilyAdapter = RulesDocumentFamilyAdapter<
 	ExtractedTournamentRulesFamily
 >
 
-export { coreRulesFamilyAdapter } from './core-rules/extract.ts'
-export { tournamentRulesFamilyAdapter } from './tournament-rules/extract.ts'
+export { coreRulesFamilyAdapter } from './core-rules/extract'
+export { tournamentRulesFamilyAdapter } from './tournament-rules/extract'

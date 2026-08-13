@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { coreRulesLinks, tournamentRulesLinks } from './links.ts'
+import { coreRulesLinks, tournamentRulesLinks } from './links'
 
 describe('rules links', () => {
 	test('links every Core Rules version through its versioned route', () => {

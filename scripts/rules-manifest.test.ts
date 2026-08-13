@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { describe, expect, test } from 'vitest'
-import { parseRulesManifest } from './rules-manifest.ts'
+import { parseRulesManifest } from './rules-manifest'
 
 const VALID_MANIFEST = {
 	coreRules: {

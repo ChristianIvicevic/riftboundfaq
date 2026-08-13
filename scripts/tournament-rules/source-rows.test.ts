@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
-import type { PdfTextItem } from '../core-rules/lines.ts'
-import { reconstructTournamentRulesSourceRows, type TournamentRulesSourcePage } from './source-rows.ts'
+import type { PdfTextItem } from '../core-rules/lines'
+import { reconstructTournamentRulesSourceRows, type TournamentRulesSourcePage } from './source-rows'
 
 function textItem(str: string, x: number, y: number, fontSize = 8): PdfTextItem {
 	return { str, transform: [fontSize, 0, 0, fontSize, x, y], width: str.length * 4, height: fontSize }

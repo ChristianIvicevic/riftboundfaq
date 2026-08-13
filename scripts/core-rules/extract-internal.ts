@@ -6,9 +6,9 @@ import type {
 	RulesHeading,
 } from '@/lib/rules/core-rules-document'
 import { coreRulesConventions } from '@/lib/rules/document-family-conventions'
-import { normalizeRulesDate } from '../rules-date.ts'
-import type { CoreRulesFamilyAdapter, ExtractedCoreRulesVersion } from '../rules-document-family.ts'
-import type { CoreRulesReport } from './inspect.ts'
+import { normalizeRulesDate } from '../rules-date'
+import type { CoreRulesFamilyAdapter, ExtractedCoreRulesVersion } from '../rules-document-family'
+import type { CoreRulesReport } from './inspect'
 
 export type CoreRulesExtractionDependencies = Readonly<{
 	inspectSource: (path: string) => Promise<CoreRulesReport>

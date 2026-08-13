@@ -1,14 +1,14 @@
 import { join } from 'node:path'
 import { tournamentRulesConventions } from '@/lib/rules/document-family-conventions'
 import type { TournamentRulesDocument, TournamentRulesSection } from '@/lib/rules/tournament-rules-document'
-import { normalizeRulesDate } from '../rules-date.ts'
+import { normalizeRulesDate } from '../rules-date'
 import type {
 	ExtractedRulesDiagnostic,
 	ExtractedTournamentRulesVersion,
 	TournamentRulesFamilyAdapter,
-} from '../rules-document-family.ts'
-import type { TournamentRulesSource } from './inspect.ts'
-import { structureTournamentRows, type TournamentStructureDiagnostic } from './structure.ts'
+} from '../rules-document-family'
+import type { TournamentRulesSource } from './inspect'
+import { structureTournamentRows, type TournamentStructureDiagnostic } from './structure'
 const TITLE = 'Riftbound Tournament Rules'
 
 export type TournamentRulesExtractionDependencies = Readonly<{

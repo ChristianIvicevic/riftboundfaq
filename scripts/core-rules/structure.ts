@@ -1,5 +1,5 @@
 import type { RuleContent } from '@/lib/rules/core-rules-document'
-import type { RuleBlock } from './blocks.ts'
+import type { RuleBlock } from './blocks'
 
 export type RuleSourceLocation = {
 	sequence: number

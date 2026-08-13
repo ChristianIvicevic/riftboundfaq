@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 import type { TournamentRuleNode, TournamentRulesSection } from '@/lib/rules/tournament-rules-document'
-import type { TournamentRulesSourceRow } from './source-rows.ts'
-import { structureTournamentRows } from './structure.ts'
+import type { TournamentRulesSourceRow } from './source-rows'
+import { structureTournamentRows } from './structure'
 
 function row(
 	sequence: number,

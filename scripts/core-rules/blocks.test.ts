@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
-import { assembleRuleBlocks, type RulePage } from './blocks.ts'
-import type { PdfTextItem } from './lines.ts'
+import { assembleRuleBlocks, type RulePage } from './blocks'
+import type { PdfTextItem } from './lines'
 
 function textItem(str: string, x: number, y: number, size = 8, width = str.length * 4): PdfTextItem {
 	return { str, transform: [size, 0, 0, size, x, y], width, height: size }

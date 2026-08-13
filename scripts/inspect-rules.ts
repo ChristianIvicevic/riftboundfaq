@@ -1,10 +1,10 @@
 import { basename } from 'node:path'
-import { defaultPdfPaths, inspectPdf, printReport } from './core-rules/inspect.ts'
+import { defaultPdfPaths, inspectPdf, printReport } from './core-rules/inspect'
 import {
 	defaultTournamentPdfPaths,
 	inspectTournamentPdf,
 	printTournamentReport,
-} from './tournament-rules/inspect.ts'
+} from './tournament-rules/inspect'
 
 const cliArguments = process.argv.slice(2)
 const json = cliArguments.includes('--json')

@@ -6,7 +6,7 @@ import {
 	createRulesPublisher,
 	type PreparedRulesPublication,
 	simulatedPublicationCrash,
-} from './rules-publication-internal.ts'
+} from './rules-publication-internal'
 
 const PRIOR_FILES = new Map([
 	['src/generated/rules-metadata.ts', 'prior metadata'],

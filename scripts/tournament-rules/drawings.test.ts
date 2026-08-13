@@ -1,6 +1,6 @@
 import { OPS } from 'pdfjs-dist/legacy/build/pdf.mjs'
 import { describe, expect, test } from 'vitest'
-import { inspectDrawings } from './drawings.ts'
+import { inspectDrawings } from './drawings'
 
 describe('inspectDrawings', () => {
 	test('tolerates unmatched state restoration', () => {

@@ -1,6 +1,6 @@
 import { join } from 'node:path'
-import { createTournamentRulesFamilyAdapter } from './extract-internal.ts'
-import { readTournamentRulesSource } from './inspect.ts'
+import { createTournamentRulesFamilyAdapter } from './extract-internal'
+import { readTournamentRulesSource } from './inspect'
 
 const DEFAULT_SOURCES_DIRECTORY = join(import.meta.dirname, '..', '..', 'sources')
 

@@ -1,4 +1,4 @@
-import type { RulesManifest } from './rules-manifest.ts'
+import type { RulesManifest } from './rules-manifest'
 
 const GENERATED_HEADER = '// Generated from sources/rules-manifest.json. Do not edit.\n\n'
 

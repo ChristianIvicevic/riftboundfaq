@@ -1,27 +1,27 @@
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import { createCoreRulesFamilyAdapter } from './core-rules/extract-internal.ts'
-import { prepareCoreRulesArtifacts } from './core-rules/generate.ts'
-import { inspectPdf } from './core-rules/inspect.ts'
-import { prepareReferencePublication } from './reference/publication.ts'
-import { parseRulesManifest } from './rules-manifest.ts'
-import { prepareRulesMetadata } from './rules-metadata.ts'
+import { createCoreRulesFamilyAdapter } from './core-rules/extract-internal'
+import { prepareCoreRulesArtifacts } from './core-rules/generate'
+import { inspectPdf } from './core-rules/inspect'
+import { prepareReferencePublication } from './reference/publication'
+import { parseRulesManifest } from './rules-manifest'
+import { prepareRulesMetadata } from './rules-metadata'
 import {
 	createRulesPublisher,
 	type PreparedRulesPublication,
 	type RulesPublicationOptions,
 	type RulesPublicationSummary,
-} from './rules-publication-internal.ts'
-import { createTournamentRulesFamilyAdapter } from './tournament-rules/extract-internal.ts'
-import { prepareTournamentRulesArtifacts } from './tournament-rules/generate.ts'
-import { readTournamentRulesSource } from './tournament-rules/inspect.ts'
+} from './rules-publication-internal'
+import { createTournamentRulesFamilyAdapter } from './tournament-rules/extract-internal'
+import { prepareTournamentRulesArtifacts } from './tournament-rules/generate'
+import { readTournamentRulesSource } from './tournament-rules/inspect'
 
-export { RulesPublicationError } from './rules-publication-internal.ts'
+export { RulesPublicationError } from './rules-publication-internal'
 export type {
 	RulesPublicationOptions,
 	RulesPublicationState,
 	RulesPublicationSummary,
-} from './rules-publication-internal.ts'
+} from './rules-publication-internal'
 
 const DEFAULT_PROJECT_DIRECTORY = join(import.meta.dirname, '..')
 

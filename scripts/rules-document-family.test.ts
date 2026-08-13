@@ -1,13 +1,13 @@
 import { describe, expect, test, vi } from 'vitest'
-import { assembleRuleBlocks, type RulePage } from './core-rules/blocks.ts'
-import { createCoreRulesFamilyAdapter } from './core-rules/extract-internal.ts'
-import type { CoreRulesReport } from './core-rules/inspect.ts'
-import type { PdfTextItem } from './core-rules/lines.ts'
-import { structureRuleBlocks } from './core-rules/structure.ts'
-import { parseRulesManifest } from './rules-manifest.ts'
-import { createTournamentRulesFamilyAdapter } from './tournament-rules/extract-internal.ts'
-import type { TournamentRulesSource } from './tournament-rules/inspect.ts'
-import type { TournamentRulesSourceRow } from './tournament-rules/source-rows.ts'
+import { assembleRuleBlocks, type RulePage } from './core-rules/blocks'
+import { createCoreRulesFamilyAdapter } from './core-rules/extract-internal'
+import type { CoreRulesReport } from './core-rules/inspect'
+import type { PdfTextItem } from './core-rules/lines'
+import { structureRuleBlocks } from './core-rules/structure'
+import { parseRulesManifest } from './rules-manifest'
+import { createTournamentRulesFamilyAdapter } from './tournament-rules/extract-internal'
+import type { TournamentRulesSource } from './tournament-rules/inspect'
+import type { TournamentRulesSourceRow } from './tournament-rules/source-rows'
 
 function textItem(str: string, x: number, y: number, size = 8, width = str.length * 4): PdfTextItem {
 	return { str, transform: [size, 0, 0, size, x, y], width, height: size }

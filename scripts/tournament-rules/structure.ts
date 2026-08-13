@@ -5,7 +5,7 @@ import type {
 	TournamentRulesSection,
 	TournamentRulesSectionBlock,
 } from '@/lib/rules/tournament-rules-document'
-import type { TournamentRulesSourceRow } from './source-rows.ts'
+import type { TournamentRulesSourceRow } from './source-rows'
 
 export type TournamentStructureDiagnostic =
 	| {

@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
-import { prepareCoreRulesArtifacts } from './core-rules/generate.ts'
-import type { ExtractedCoreRulesFamily, ExtractedTournamentRulesFamily } from './rules-document-family.ts'
-import { prepareTournamentRulesArtifacts } from './tournament-rules/generate.ts'
+import { prepareCoreRulesArtifacts } from './core-rules/generate'
+import type { ExtractedCoreRulesFamily, ExtractedTournamentRulesFamily } from './rules-document-family'
+import { prepareTournamentRulesArtifacts } from './tournament-rules/generate'
 
 describe('rules document artifact preparation', () => {
 	test('serializes Core Rules extraction without source knowledge', () => {

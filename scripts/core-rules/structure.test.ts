@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
-import type { RuleBlock } from './blocks.ts'
-import { structureRuleBlocks } from './structure.ts'
+import type { RuleBlock } from './blocks'
+import { structureRuleBlocks } from './structure'
 
 function block({
 	sequence,

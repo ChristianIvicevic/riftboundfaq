@@ -1,6 +1,6 @@
-import type { PdfTextItem } from '../core-rules/lines.ts'
-import { reconstructPhysicalLines, reconstructText } from '../core-rules/lines.ts'
-import type { DrawingBounds, DrawingInspection, DrawingStroke } from './drawings.ts'
+import type { PdfTextItem } from '../core-rules/lines'
+import { reconstructPhysicalLines, reconstructText } from '../core-rules/lines'
+import type { DrawingBounds, DrawingInspection, DrawingStroke } from './drawings'
 
 const LABEL_CELL_LEFT_MAXIMUM = 50
 const LABEL_CELL_RIGHT = 126

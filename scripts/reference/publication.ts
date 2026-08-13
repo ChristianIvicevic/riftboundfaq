@@ -2,8 +2,8 @@ import { readFile } from 'node:fs/promises'
 import { isAbsolute, join } from 'node:path'
 import { coreRulesConventions, tournamentRulesConventions } from '@/lib/rules/document-family-conventions'
 import type { RulesDocumentFamilyId } from '@/lib/rules/document-family-identity'
-import { normalizeRulesDate } from '../rules-date.ts'
-import type { ExtractedCoreRulesFamily, ExtractedTournamentRulesFamily } from '../rules-document-family.ts'
+import { normalizeRulesDate } from '../rules-date'
+import type { ExtractedCoreRulesFamily, ExtractedTournamentRulesFamily } from '../rules-document-family'
 
 const PLACEHOLDER = /\{\{([A-Z_]+)\}\}/gu
 

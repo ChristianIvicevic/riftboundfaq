@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
-import { parseRulesManifest } from './rules-manifest.ts'
-import { prepareRulesMetadata } from './rules-metadata.ts'
+import { parseRulesManifest } from './rules-manifest'
+import { prepareRulesMetadata } from './rules-metadata'
 
 const MANIFEST = parseRulesManifest({
 	coreRules: { current: '1.4', versions: { '1.3': {}, '1.4': { name: 'Spiritforged' } } },
