@@ -28,4 +28,4 @@ jobs:
       - run: pnpm lint:github
       - run: pnpm test
       - run: pnpm types:check
-      - run: pnpm build
+      - run: pnpm build:app

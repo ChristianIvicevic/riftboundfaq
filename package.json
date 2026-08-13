@@ -4,7 +4,8 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"build": "pnpm rules:generate && next build",
+		"build": "pnpm rules:generate && pnpm build:app",
+		"build:app": "next build",
 		"dev": "next dev",
 		"start": "next start",
 		"types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
