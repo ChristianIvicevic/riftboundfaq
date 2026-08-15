@@ -81,6 +81,20 @@ That pending item goes through the full finalization process once it's ready to 
 Playing a card "ignoring its cost" only sets its base Energy and base Power cost to zero;<Rule number="356.1.b.1" /> further additional costs applied in later steps can still raise the total cost back above zero.<Rule number="356.1.b.3" />
 <Accelerate /> is one such optional additional cost, paid as a player plays the unit with the ability,<Rule number="805.2" /> so its owner may still declare their intent to pay it during finalization<Rule number="356.2.b.1" /> and pay it as usual, unaffected by Temporal Breach ignoring the unit's base cost.
 
+## What happens if the replayed unit has a mandatory additional cost its owner can't pay? [#mandatory-additional-cost]
+
+The attempted play is cancelled, and the unit returns to its owner's banishment.
+
+Temporal Breach's instruction to play the unit "ignoring its cost" sets only its base Energy and base Power cost to zero.<Rule number="356.1.b.1" />
+Mandatory additional costs must still be paid to complete playing the unit.<Rule number="356.1.b.3" /><Rule number="356.2.a.1" />
+If the owner can't pay one, the unit fails the check that all costs were paid, so the actions taken during its play process are undone and the play is cancelled.<Rule number="358.2" /><Rule number="358.5" />
+This rewind returns the unit from the chain,<Rule number="354" /> to banishment; it does not undo Temporal Breach's earlier, completed instruction that banished it.
+
+<Callout type="idea" title="Example">
+  If Temporal Breach banishes <Card name="Cruel Patron" /> and its owner has no other friendly unit, they can't pay Cruel Patron's mandatory additional cost to kill a friendly unit.
+  Cruel Patron cannot finish finalizing and returns to its owner's banishment.
+</Callout>
+
 ## If the unit banished by Temporal Breach has Hidden, can its owner hide it instead of playing it? [#hide-instead-of-play]
 
 No, hiding the unit does not fulfill Temporal Breach's instruction to play it.
