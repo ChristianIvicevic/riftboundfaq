@@ -30,7 +30,7 @@ By the time a normal priority window opens, the cost has been paid and the unit 
 
 ## Does the Deathknell of the unit killed as the cost resolve before Sacrifice draws and channels? [#deathknell-before-spell]
 
-Yes.
+If the killed unit's <Deathknell /> is finalized and resolves, yes.
 The kill is a non-standard additional cost, not a resolution instruction, so it happens during finalization.
 That puts the <Deathknell /> on top of Sacrifice on the chain, where it resolves first.
 
@@ -48,5 +48,6 @@ The <Deathknell /> was added last, so it resolves first.
 
 <Callout type="idea" title="Example">
   You kill <Card name="Rift Herald" />, whose <Deathknell /> reads "Play a unit from your hand to your base, ignoring its Energy cost," to pay Sacrifice's cost.
-  The <Deathknell /> resolves first — you play a free unit from your pre-draw hand — then Sacrifice resolves and you draw 2 and channel 1 rune exhausted.
+  If Rift Herald's <Deathknell /> resolves and the instructed play succeeds, you play a unit from your pre-draw hand while ignoring its energy cost but still paying its power cost.
+  Sacrifice resolves afterward, so you then draw 2 and channel 1 rune exhausted.
 </Callout>
