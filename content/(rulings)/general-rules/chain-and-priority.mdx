@@ -21,43 +21,28 @@ rulingRelations:
 
 ## Can I react to units being played? [#unit-play-reactions]
 
-No, as units enter the board immediately without priority being passed to other players.
+Only the unit's controller can react before it enters, and only by activating an ability with <Reaction /> that uses <Add /> while paying the unit's costs.<Rule number="357.1.a" /><Rule number="429.3" />
+That ability finalizes and resolves immediately during the payment step.<Rule number="429.3.a" />
+Otherwise, a unit's finalization does not pass priority.<Rule number="337.1.a" />
+It then resolves immediately and enters the board as part of that resolution.<Rule number="337.2" /><Rule number="359.2.c" />
 
-Unlike spells, units resolve the moment they are finalized and do not open a window of opportunity for reactions.<Rule number="337.2" /><Rule number="359.2" />
-
-If the unit has a play effect ("When you play me…"), or if another permanent's triggered ability fires as it enters the board, those triggered abilities are placed on the chain as pending items *after* the unit has already entered.<Rule number="383.4.a.2" /><Rule number="383.2.c" /><Rule number="383.3" />
-Once those pending items are finalized with no further items pending, priority passes and players may react<Rule number="337.4" /> — but by that point, the unit is already in play.
+If the unit has a play effect ("When you play me..."), that ability is put on the chain only after the unit has finalized and entered the board.<Rule number="383.4.a.2" />
+Likewise, another permanent's trigger condition is evaluated after the unit enters.<Rule number="383.2.c" />
+If that condition is fulfilled, the triggered ability is then put on the chain.<Rule number="383.3" />
+If a triggered ability is put on the chain, the player granted priority may play a <Reaction /> after no pending items remain.<Rule number="337.4" /><Rule number="338.1.a.2" />
+By then, the unit is already on the board.
 
 ## In what order are multiple pending chain items finalized and resolved? [#pending-item-order]
 
-Pending items are finalized in the order they were added, starting with the oldest.<Rule number="337.1" /><Rule number="337.1.b" />
-A unit, gear, or ability that adds resources resolves immediately when it finalizes.<Rule number="337.2" />
-Other finalized items remain on the chain while the remaining pending items are processed.
-
-Players do not receive priority until no pending items remain.<Rule number="337.3" /><Rule number="337.4" />
-After players pass priority, finalized chain items resolve in the opposite direction, starting with the newest.<Rule number="340.1" />
+Pending chain items finalize in the order they were added, starting with the oldest;<Rule number="337.1" /><Rule number="337.1.b" /> finalized chain items resolve in the reverse order, starting with the newest;<Rule number="340.1" /> but units, gear, and abilities that use <Add /> resolve immediately when they finalize, even if other pending items still need to finalize.<Rule number="337.2" /><Rule number="337.3" />
 
 ## Can I play a reaction after one, but not all, items on the chain have resolved? [#partial-chain-reactions]
 
-Yes, once you have gained priority.
-The chain does not have to resolve in its entirety prior to (re)gaining priority, unlike in some other TCGs.
-
-Any time the most recent item on the chain resolves and there are no pending items, the controller of the newest item on the chain gains priority.<Rule number="340.4" />
-
-<Callout type="idea" title="Example">
-	You put <Card name="Singularity" /> on the chain targeting an opponent's unit.
-	Your opponent reacts by putting their <Card name="Wind Wall" /> on the chain, attempting to counter the Singularity.
-	In response, you play <Card name="Stupefy" />, in the hopes of drawing into a counterspell of your own.
-	Once Stupefy resolves and you draw a card, priority is back to your opponent as the most recent item is their Wind Wall.
-	After they pass priority, you can react once again and play your own counterspell, assuming you drew it off of the Stupefy.
-</Callout>
+Yes, resolving one item does not commit the rest of the chain to resolve.
+Before the next finalized item resolves, players receive priority and may add new <Reaction /> cards or abilities to the chain.<Rule number="340.4" /><Rule number="338.1.a" />
+The next item resolves only after all players pass in sequence without adding another item.<Rule number="339.1" />
 
 ## Outside a showdown, do I lose control of a battlefield as soon as my last unit leaves it? [#empty-battlefield-control]
 
-No, not immediately.
-
-Outside a showdown, control of an empty battlefield is checked during a cleanup, not at the moment the last unit leaves.
-You lose control only if the battlefield is still empty and the turn is in an open state.<Rule number="190.4.c" /><Rule number="323.6" />
-
-If the chain still contains an item when a cleanup occurs, the turn is in a closed state and you keep control through that cleanup.<Rule number="309.1" />
-You can lose control during a later cleanup after the turn returns to an open state if the battlefield remains empty.
+No, you lose control during the next cleanup if the battlefield is still empty and the chain is empty, making the turn open.<Rule number="190.4.c" /><Rule number="309.2" /><Rule number="323.6" />
+If the chain still contains an item, the turn is closed and you keep control through that cleanup.<Rule number="309.1" /><Rule number="323.6" />
