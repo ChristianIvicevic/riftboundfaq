@@ -9,30 +9,35 @@ authors:
 ## Can I use Ambush to play a unit to my base? [#ambush-base]
 
 No.
-<Ambush /> only permits playing a unit to a battlefield; it has no effect on your base.
+Choosing your base uses the normal unit-play permission.<Rule number="355.2.a" />
 
 <Ambush /> is shorthand for "I may be played to a battlefield where you control units" and "I have <Reaction /> as long as I'm being played to a battlefield where you control units."<Rule number="822.1.b" />
-The permission <Ambush /> grants is strictly limited to battlefields — a base is not a battlefield, so <Ambush /> never makes it a valid destination.<Rule number="822.1.c" />
-Playing a unit to your base is already permitted by the default rules for valid locations,<Rule number="355.2.a" /> but choosing base does not grant the unit <Reaction />.
-It can be played there only at its normal timing.
+Both the additional location permission and the conditional <Reaction /> apply only while the unit is being played to a battlefield where you control units.<Rule number="822.1.c" />
 
 ## Can opponents react to a unit being played with Ambush? [#unit-play-reactions]
 
 No.
-<Ambush /> grants the unit <Reaction /> speed, which determines when it can be played — it does not create a window for opponents to respond before the unit enters.
+<Ambush /> grants the unit <Reaction /> timing, which determines when it can be played but does not give opponents priority before it enters.
 
-Units resolve the moment they are finalized without entering the Execute step,<Rule number="337.2" /> and finalization does not pass priority.<Rule number="337.1.a" />
-The unit enters the board immediately, just as any unit played during an open state would (see also [Can I react to units being played?](/general-rules/chain-and-priority#unit-play-reactions)).
+Only the unit's controller can act before entry, and only by activating a <Reaction /> ability that uses <Add /> while paying the unit's costs.<Rule number="357.1.a" /><Rule number="429.3" />
+Otherwise, finalizing the unit does not pass priority.<Rule number="337.1.a" />
+The unit then resolves immediately and enters the board.<Rule number="337.2" /><Rule number="359.2.c" />
+See [Can I react to units being played?](/general-rules/chain-and-priority#unit-play-reactions) for the complete unit-entry and trigger procedure.
 
 This is a common point of confusion with cards like <Card name="Kha'Zix, Mutating Horror" />, which has <Ambush /> and triggers if an enemy unit is alone when he attacks or defends.
 An opponent cannot play a unit in response to Kha'Zix being placed on the chain in an attempt to break the "alone" condition before he enters.
 
 ## Who gets to act after I Ambush a unit during a showdown? [#ambush-showdown-focus]
 
-It depends on whether anything else remains on the chain once the unit enters.
+After the <Ambush /> unit enters, the game processes the resulting cleanup and any pending items, cards or abilities waiting to finalize, before a player acts.
+If the chain then empties and the unit started it, focus passes to the next player; if a finalized item, an item waiting to resolve, remains, its controller gains priority and focus does not pass.
 
-When played onto an empty chain, the unit enters immediately, the chain empties, and the turn returns to an open state during the showdown — focus passes to the next player in turn order.<Rule number="340.2.a" />
-This catches many players off guard — you move in to attack, <Ambush /> a unit, and expect to retain focus, but your opponent gets to act first.
+Unit entry makes a cleanup outstanding, and abilities triggered by that entry can become pending items.<Rule number="319.6" /><Rule number="383.2.c" /><Rule number="383.3" />
+Priority is not granted during the cleanup, and pending items are processed after it finishes.<Rule number="320" /><Rule number="334.2" />
 
-When played in response to something already on the chain — such as attack or defend triggers, or a spell — the turn does not return to an open state after the unit resolves, so focus does not pass.<Rule number="346" />
-Priority instead passes to the controller of the newest remaining item on the chain.<Rule number="340.4" />
+If this processing leaves the chain empty and the <Ambush /> unit started it, the showdown returns to an open state and focus passes.<Rule number="340.2" /><Rule number="340.2.a" />
+
+If a finalized item remains, including an older item that the unit was played in response to, the chain stays closed.<Rule number="309.1" />
+The controller of the newest remaining item gains priority instead.<Rule number="337.4" /><Rule number="340.4" />
+
+After the chain eventually empties, the showdown continues until every player passes focus in sequence; see [When does a showdown close?](/general-rules/showdowns#showdown-close).
