@@ -66,14 +66,13 @@ If the source is no longer on the board, information such as its location is una
 
 ## When does the game check an "if" condition in a triggered ability? [#trigger-time-conditions]
 
-It depends on where the "if" condition appears in the ability's text.
+Conditions immediately after a trigger condition are checked after the triggering event<Rule number="383.2.a.1" /><Rule number="383.2.c" />, whereas conditions after an effect instruction are checked during resolution.<Rule number="383.2.b" /><Rule number="359.3.d" /><Rule number="406.5" />
 
 A triggered ability's condition begins with "When," "At," or "The [Nth] time," and an additional conditional statement immediately following that condition is also part of it.<Rule number="383.2.a" /><Rule number="383.2.a.1" />
 Those requirements are checked after the triggering event has been processed.
 If they are not satisfied then, the ability is not placed on the chain.<Rule number="383.2.c" /><Rule number="383.3" />
 
-An "if" condition that comes after an effect instruction is instead part of the effect.
-It is checked when that instruction executes as the ability resolves.<Rule number="383.2.b" /><Rule number="359.3.d" /><Rule number="406.5" />
+An "if" condition that comes after an effect instruction is instead part of the effect.<Rule number="383.2.b" />
 
 <Callout type="idea" title="Example">
 	<Card name="Sunken Temple" /> reads "When you conquer here with one or more <Mighty /> units, you may pay <Energy value={1} /> to draw 1."
@@ -89,23 +88,18 @@ It is checked when that instruction executes as the ability resolves.<Rule numbe
 
 ## When do I choose whether to use a triggered ability that says "you may"? [#optional-trigger-decision]
 
-It depends on where "you may" appears in the ability's effect.
+Choose whether to use an initial "you may" instruction during finalization<Rule number="383.3.a" /><Rule number="402.1" />, whereas you choose whether to use a later one during resolution.<Rule number="383.3.a.3" />
 
-If "you may" is the first part of the effect, you decide whether to perform the ability during finalization.<Rule number="383.3.a" /><Rule number="402.1" />
 If you decline, the pending ability is removed from the chain and considered not to have triggered.<Rule number="383.3.a.2" /><Rule number="402.1.a" />
 If you proceed, you make its required choices and pay costs incurred during finalization before the ability becomes a finalized chain item.<Rule number="402.2" /><Rule number="404.1" /><Rule number="406.2" />
 
-If "you may" appears later in the effect, you decide whether to perform that instruction when the ability resolves.<Rule number="383.3.a.3" />
-
 ## When do I pay a cost in a triggered ability that says "you may"? [#costs-within-instructions]
 
-It depends on where the cost appears in the triggered ability's effect.
+Pay a cost at the beginning of a triggered effect or immediately after an initial "you may" during finalization<Rule number="383.3.b" /><Rule number="383.3.b.1" /><Rule number="740.4.a.2" />, whereas you pay a later cost during resolution.<Rule number="740.4.a.2.a" />
 
 In rules text phrased as "[do X] to [do Y]," the [do X] instruction is a cost within instructions and [do Y] is its effect.<Rule number="740.4.a" />
-If that cost appears at the beginning of a triggered effect or immediately after an initial "you may," it becomes the ability's base cost and must be paid during finalization.<Rule number="383.3.b" /><Rule number="383.3.b.1" /><Rule number="740.4.a.2" />
+If that cost appears at the beginning of a triggered effect or immediately after an initial "you may," it becomes the ability's base cost.<Rule number="383.3.b" /><Rule number="383.3.b.1" /><Rule number="740.4.a.2" />
 If you decline to pay it, the pending ability is removed from the chain without finalizing.<Rule number="404.2" />
-
-If the cost appears later in the triggered effect, you pay it when the ability resolves.<Rule number="740.4.a.2.a" />
 
 <Callout type="idea" title="Example">
 	<Card name="Vayne, Hunter" /> reads "When I conquer, you may pay <Energy value={1} /> to return me to my owner's hand."
