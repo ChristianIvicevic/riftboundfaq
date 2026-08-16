@@ -24,45 +24,41 @@ rulingRelations:
 
 ## What makes something a target? [#target-definition]
 
-Unless one of the exceptions below applies, a game object, player, or zone mentioned by a spell or ability is a target.<Rule number="355.7" /><Rule number="355.10" />
-All targets are declared during finalization.<Rule number="355.8" />
+Unless one of the exceptions below applies, a game object, player, or zone mentioned by a spell, activated ability, or triggered ability is a target.<Rule number="355.10" />
+Card text does not need to say "target" or "choose"; for example, "Kill a unit" targets a unit.<Rule number="355.9.a" />
 
-Card text does not need to use the word "target" or "choose" explicitly — targeting can be implied, as in "Kill a unit" or "Move a friendly unit."
-Abilities that reference "when you choose" a game object, such as <Card name="Irelia, Fervent" />'s "When you choose or ready me, give me +1 Might this turn," are specifically triggered when being targeted.<Rule number="383.4.b.3" />
+The only exceptions are:
 
-When in doubt, assume it is a target — the list below covers the only situations where it is not:
-
-- **It is in a non-public zone** (hand, main deck, etc.)<Rule number="355.10.a" /> e.g., "You may play a unit from your hand" does not target a unit — it merely lets you play one.
-- **It is only a location requirement for another target**.<Rule number="355.10.b" />
-Words like "at a battlefield" narrow down which objects are valid targets; the battlefield itself is not a target — unless the effect lets you choose *which* of several battlefields to affect, as in "Kill all units at a battlefield."
-- **It is part of a trigger condition, cost, or replacement effect**.<Rule number="355.10.c" /><Rule number="355.10.c.1" />
-Objects referenced in "when X happens" conditions, payment costs (see also [When do I pay a cost in a triggered ability that says "you may"?](/general-rules/abilities#costs-within-instructions)), or "instead" effects are not targets.
-e.g., the dying unit in "When a friendly unit dies, kill a gear" is not a target — only the gear is.
-- **There is no real choice involved**.<Rule number="355.10.d" />
-If an effect applies to every object meeting a description rather than a specific one you pick, nothing is targeted.
-e.g., "Kill all units at battlefields" targets nothing because you are not choosing among individual units.
-This applies only when a choice is *never* possible — not when an object merely happens to be the only valid choice right now: "Kill a unit at a battlefield" still targets a unit even if only one unit is there.<Rule number="355.10.d.1" /><Rule number="355.10.d.2" />
-- **It is part of a set chosen wholly or partly by other players**.<Rule number="355.10.e" />
-Objects chosen this way are not targets, even if the spell or ability's controller also chooses part of the set.
-e.g., "Each player kills a unit they control" targets nothing — each player chooses their unit as the effect resolves.
-- **The instruction uses "must"**.<Rule number="355.10.f" />
-This signals the choice is made on resolution rather than upfront.
-e.g., "You must recycle one of your runes" does not target, whereas "Recycle a rune you control" does.
+- **It is in a non-public zone.**<Rule number="355.10.a" />
+  For example, "You may play a unit from your hand" does not target a card in hand.
+- **It is mentioned only as a targeting restriction or as a restriction or permission for another game action.**<Rule number="355.10.b" />
+  "Kill a unit at a battlefield" targets the unit but not the battlefield, while "Play a unit from your hand to a battlefield" does not target the battlefield.
+- **It is included only as part of a cost, trigger condition, or replacement effect.**<Rule number="355.10.c" /><Rule number="355.10.c.1" />
+  The dying unit in "When a friendly unit dies, kill a gear" is not a target, but the gear is.
+  See [When do I pay a cost in a triggered ability that says "you may"?](/general-rules/abilities#costs-within-instructions) for how costs within instructions are identified and paid.
+- **It is programmatically selected from its characteristics rather than chosen by the spell or ability's controller.**<Rule number="355.10.d" />
+  In "Kill all units at a battlefield," the units are not targets, but the battlefield is.
+  This exception applies only when no choice among those objects is ever possible.<Rule number="355.10.d.1" />
+  An instruction to "Kill a unit at a battlefield" still targets a unit when only one is legal.<Rule number="355.10.d.2" />
+- **It is part of a set chosen wholly or partly by other players.**<Rule number="355.10.e" />
+  "Each player kills a unit they control" targets nothing.
+- **It is identified by an instruction a player "must" complete.**<Rule number="355.10.f" />
+  "You must recycle one of your runes" does not target, while "Recycle a rune you control" does.
 
 ## Does "Kill a unit if it has 3 might or less" mean I can only choose a unit with 3 might or less? [#target-restrictions]
 
-No.
-Only words that describe the target restrict which objects can be chosen.
+No; it can target any otherwise legal unit, and the might condition controls only whether the kill instruction is performed.
 
-For example, "Kill a unit with 3 might or less" can target only a unit meeting that description.<Rule number="355.9.b" />
-
-A separate condition on an effect does not restrict its targets.
-"Kill a unit if it has 3 might or less" can target any otherwise legal unit; the might condition is checked when that instruction resolves.
+Targeting restrictions describe the target, as in "Kill a unit with 3 might or less."<Rule number="355.9.b" />
+In "Kill a unit if it has 3 might or less," the later "if" condition is instead part of the effect executed when the spell or ability resolves.<Rule number="359.3.d" /><Rule number="406.5" />
 
 ## What happens if a target becomes illegal before a spell or ability resolves? [#illegal-targets]
 
-The illegal target is unaffected, but the spell or ability still resolves.
-Instructions related to that target cannot be followed, while independent instructions continue normally.<Rule number="359.3.e.5" /><Rule number="359.3.e.6" />
+The spell or ability still resolves.<Rule number="359.3.e.1" /><Rule number="406.5" />
+The illegal target is unaffected and instructions related to it cannot be followed, while independent instructions continue normally.<Rule number="359.3.e.5" /><Rule number="359.3.e.6" />
+
+A target is illegal when the spell or ability resolves if it no longer meets the targeting requirements or has changed zones to or from a non-board zone.<Rule number="359.3.e.2" />
+A target that stops meeting a requirement and then meets it again is legal, but a target that changes to or from a non-board zone is a new object and remains illegal even if it returns.<Rule number="359.3.e.3" /><Rule number="359.3.e.4" />
 
 If an instruction needs information from the illegal target, that information is null and calculations using it are ignored.<Rule number="359.3.e.12" />
 If a later instruction is linked to an earlier instruction that was ignored, the later instruction is also ignored.<Rule number="359.3.e.14.a" />
