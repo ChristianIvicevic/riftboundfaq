@@ -7,88 +7,71 @@ authors:
 - "Christian I. (Near)"
 ---
 
-## Can Temporal Breach banish a unit at a different battlefield if played from Hidden? [#hidden-targeting-restriction]
+## When I play Temporal Breach from Hidden, can it banish a unit at a different battlefield? [#hidden-targeting-restriction]
 
-No, when Temporal Breach is played from Hidden, the unit it banishes must be chosen from among units at the battlefield where it was hidden.
+No.
+"Banish a unit" targets the mentioned unit,<Rule number="355.10" /> and when you play Temporal Breach from <Hidden />, you must choose its targets from the battlefield where it was hidden.<Rule number="811.1.d.2" />
+A unit at another battlefield or a base is therefore not a legal target.
 
-"Banish a unit" chooses a specific game object to affect, making it a target, declared as Temporal Breach is put on the chain.<Rule number="355.5" /><Rule number="355.7" /><Rule number="355.8" />
-Choices made while playing a card from Hidden are restricted to the battlefield where it was hidden.<Rule number="811.1.d" />
-Specifically, if a Hidden spell chooses any targets, those targets must be chosen from among options at that battlefield, unless the ability explicitly restricts targeting in a way that makes this impossible.<Rule number="811.1.d.2" />
-Temporal Breach's own wording doesn't restrict its target to a location, so this Hidden restriction applies in full — a unit at another battlefield, or in base, isn't a legal target when it's played from Hidden.
+If you play Temporal Breach normally, the <Hidden /> restriction does not apply.
+You may target an otherwise legal unit at any battlefield or base.<Rule number="355.9.a" /><Rule number="811.3" />
 
-If Temporal Breach is played normally, the Hidden restriction does not apply.
-It may target an otherwise legal unit at any board location, including a base or battlefield.<Rule number="811.3" />
+## Does a unit keep temporary modifications or statuses when Temporal Breach banishes it and its owner plays it again? [#replayed-unit-state]
 
-## Does a unit replayed by Temporal Breach keep temporary modifications or statuses? [#replayed-unit-state]
+No.
+Moving from the board to banishment makes the unit a new game object and clears its temporary modifications and statuses.<Rule number="056.1" /><Rule number="124" /><Rule number="124.1" />
+For example, <Card name="Stupefy" />'s might reduction no longer applies, and the unit is no longer <Empowered />.<Rule number="124.2" />
 
-No, the replayed unit does not keep temporary modifications or statuses it had before Temporal Breach banished it.
+## What happens to equipment attached to a unit banished by Temporal Breach? [#attached-equipment]
 
-Banishment is a non-board zone,<Rule number="056.1" /> and a game object that changes zones to or from a non-board zone becomes a new object for tracking purposes.<Rule number="124" />
-When the unit enters banishment, all temporary modifications and statuses on it are cleared.<Rule number="124.1" />
-This means effects such as <Card name="Stupefy" />'s might reduction no longer apply, and a unit that was <Empowered /> is no longer <Empowered /> when it is replayed.<Rule number="124.2" />
+The equipment detaches at the unit's previous location and does not reattach when the unit is played again.
+Moving the unit from the board to banishment detaches its attached cards at that last location.<Rule number="719.5" /><Rule number="435.4.b" />
+The unit entering the board is a new game object, and Temporal Breach does not instruct the equipment to attach again.<Rule number="124" />
 
-## What happens to equipment attached to a unit replayed by Temporal Breach? [#attached-equipment]
+Detached equipment at a battlefield is recalled to its controller's base during the next cleanup.<Rule number="435.4.a" />
+Detached equipment at a base its controller does not control is recalled to its controller's base during cleanup.<Rule number="323.7" />
+Equipment already at its controller's base remains there.<Rule number="323.7" />
 
-The equipment detaches and remains at the unit's previous location because Temporal Breach moves the unit from the board to banishment.
+## Can Temporal Breach cause a unit's attack or defend ability to trigger again during the same combat? [#replayed-combat-triggers]
 
-When Temporal Breach moves the unit from the board to banishment, all cards attached to that unit detach and remain at the unit's previous location.<Rule number="719.5" /><Rule number="435.4.b" />
-The replayed unit is a new game object,<Rule number="124" /> and nothing instructs the equipment to attach to it again.
-
-If the unit was at a battlefield, the unattached equipment is recalled to its controller's base during the next cleanup.<Rule number="435.4.a" />
-If the unit was at a base, the equipment instead remains unattached at that base.
-
-## Does a replayed unit trigger its attack or defend ability again during the same combat? [#replayed-combat-triggers]
-
-Yes, if the unit is replayed to the battlefield where combat is in progress, its attack or defend ability can trigger again because it becomes a new game object.
-
-The unit becomes a new game object when it enters banishment,<Rule number="124" /> and that new object has not yet had its attack or defend trigger condition checked during that combat.
-After the replayed unit enters the battlefield, the next cleanup gives it the same attacker or defender designation as its controller.<Rule number="323.2.a" />
-Gaining that designation causes its corresponding attack or defend ability to trigger.<Rule number="383.4.e" /><Rule number="383.4.f" />
-The normal once-per-combat limit does not prevent this trigger because it applied to the previous game object, not the newly replayed one.<Rule number="383.4.e.2.a" /><Rule number="383.4.f.2.a" />
+Yes, if the unit enters the battlefield where combat is occurring and its attack or defend condition is otherwise fulfilled.<Rule number="383.4.e.2.b" /><Rule number="383.4.f.2.b" />
+The unit entering the battlefield is a new game object, so its attack or defend condition has not been checked during that combat.<Rule number="124" /><Rule number="383.4.e.2.a" /><Rule number="383.4.f.2.a" />
+During the cleanup after it re-enters, it gains the same attacker or defender designation as its controller.<Rule number="464.2.c.3.a" />
+Gaining that designation checks the corresponding attack or defend trigger.<Rule number="383.4.e" /><Rule number="383.4.f" />
 
 <Callout type="idea" title="Example">
-  <Card name="Ahri, Inquisitive" />'s "When I attack or defend" ability can trigger when she gains the defender designation at the start of combat.
-  After that ability resolves, Temporal Breach can banish and replay her to the same battlefield.
-  The replayed Ahri is a new game object and gains the defender designation during the next cleanup, triggering her ability a second time in the same combat.
+  <Card name="Ahri, Inquisitive" />'s "When I attack or defend" ability triggers when she first gains the defender designation.
+  If Temporal Breach then banishes her and her owner plays her again at that battlefield, the new Ahri object gains the designation during cleanup and can trigger the ability again.
 </Callout>
 
-## Does Ravenbloom Conservatory trigger again if Temporal Breach replays my only defending unit? [#ravenbloom-conservatory]
+## Does Ravenbloom Conservatory trigger again if Temporal Breach banishes my only defending unit and I play it again? [#ravenbloom-conservatory]
 
-No, <Card name="Ravenbloom Conservatory" /> does not trigger a second time because it remains the same game object, and its defend trigger has already checked its condition during that combat.
+No.
+"You" in <Card name="Ravenbloom Conservatory" />'s ability means its controller, so if you control Ravenbloom Conservatory, it checks its "When you defend here" condition when you gain the defender designation as combat opens.<Rule number="190.6.d" /><Rule number="383.4.f" /><Rule number="464.2.c.3" />
+That defend condition is checked only once per combat.<Rule number="383.4.f.2.a" />
 
-Ravenbloom Conservatory's "When you defend here" ability is a defend trigger whose condition is fulfilled when its controller gains the defender designation.<Rule number="383.4.f" />
-When combat opens, the defending player and their units separately gain that designation,<Rule number="464.2.c.3" /> so Ravenbloom Conservatory checks its trigger condition then.
-A defend triggered ability can have its condition checked only once per combat.<Rule number="383.4.f.2.a" />
-
-Temporal Breach makes the replayed unit a new game object,<Rule number="124" /> which allows that new unit's own defend ability to receive its first condition check during the same combat.
-It does not make Ravenbloom Conservatory a new object or begin a new combat, so Ravenbloom Conservatory's ability does not receive another condition check.
-The defending player also keeps the defender designation until combat ends,<Rule number="466.7.a" /> and therefore does not gain it again when the replayed unit gains its separate designation during cleanup.
+The unit becomes a new game object, but Ravenbloom Conservatory does not.<Rule number="124" />
+As the defending player, you keep the defender designation until combat ends, so the unit's return does not cause you to gain it again.<Rule number="466.7.a" />
 
 ## What happens if Temporal Breach banishes a token unit? [#token-unit]
 
-The token stops existing the moment it's banished, so there's nothing left for its owner to replay.
+The token ceases to exist in banishment, so its owner cannot play it again.
+Tokens can exist only on the board or the chain and cease to exist immediately after entering another non-board zone.<Rule number="056.1" /><Rule number="186" /><Rule number="186.1" />
 
-Temporal Breach puts the token into its owner's banishment, which is a non-board zone.<Rule number="056.1" />
-Tokens can only exist on the board or the chain — if a token enters any other zone, it ceases to exist immediately upon arriving there.<Rule number="186" /><Rule number="186.1" />
-So by the time Temporal Breach's "then its owner plays it to the same location" instruction would apply, the token is already gone, and that part of the spell does nothing for it.<Rule number="055" />
+## Can I pay optional additional costs, like Accelerate, when playing a unit banished by Temporal Breach? [#optional-additional-costs]
 
-## Can I pay optional additional costs, like Accelerate, when replaying a unit banished by Temporal Breach? [#optional-additional-costs]
+Yes.
+Playing the unit "ignoring its cost" sets only its base energy and power costs to zero.<Rule number="356.1.b.1" />
+Additional costs apply afterward and can raise the total cost above zero.<Rule number="356.1.b.3" />
+As the unit's owner, you may therefore choose and pay an optional additional cost during finalization.<Rule number="355.1.a" /><Rule number="356.2.b.1" />
+For example, <Accelerate /> remains available because it is an optional additional cost paid while playing the unit.<Rule number="805.2" />
 
-Yes, since the replayed unit still goes through the complete, normal process of playing a card, and "ignoring its cost" only narrows one part of that process — the base cost — leaving everything else, including optional additional costs, unaffected.
-
-"Its owner plays it" instructs the normal process of playing a card — the unit is removed from banishment and put onto the chain as a pending item,<Rule number="354" /><Rule number="354.2" /> it isn't placed directly onto the board.
-That pending item goes through the full finalization process once it's ready to be finalized, including making relevant choices<Rule number="355" /> and determining total cost.<Rule number="356" />
-Playing a card "ignoring its cost" only sets its base Energy and base Power cost to zero;<Rule number="356.1.b.1" /> further additional costs applied in later steps can still raise the total cost back above zero.<Rule number="356.1.b.3" />
-<Accelerate /> is one such optional additional cost, paid as a player plays the unit with the ability,<Rule number="805.2" /> so its owner may still declare their intent to pay it during finalization<Rule number="356.2.b.1" /> and pay it as usual, unaffected by Temporal Breach ignoring the unit's base cost.
-
-## What happens if the replayed unit has a mandatory additional cost its owner can't pay? [#mandatory-additional-cost]
+## What happens if a unit's owner can't pay a mandatory additional cost when Temporal Breach instructs them to play it? [#mandatory-additional-cost]
 
 The attempted play is cancelled, and the unit returns to its owner's banishment.
-
-Temporal Breach's instruction to play the unit "ignoring its cost" sets only its base Energy and base Power cost to zero.<Rule number="356.1.b.1" />
-Mandatory additional costs must still be paid to complete playing the unit.<Rule number="356.1.b.3" /><Rule number="356.2.a.1" />
-If the owner can't pay one, the unit fails the check that all costs were paid, so the actions taken during its play process are undone and the play is cancelled.<Rule number="358.2" /><Rule number="358.5" />
-This rewind returns the unit from the chain,<Rule number="354" /> to banishment; it does not undo Temporal Breach's earlier, completed instruction that banished it.
+Temporal Breach sets only the unit's base energy and power costs to zero, so mandatory additional costs must still be paid.<Rule number="356.1.b.1" /><Rule number="356.2.a.1" />
+If the owner cannot pay one, the play fails its cost check.<Rule number="358.2" />
+The play is then cancelled and its actions are undone, returning the unit from the chain to its owner's banishment without undoing Temporal Breach's earlier, completed instruction.<Rule number="354" /><Rule number="358.5" />
 
 <Callout type="idea" title="Example">
   If Temporal Breach banishes <Card name="Cruel Patron" /> and its owner has no other friendly unit, they can't pay Cruel Patron's mandatory additional cost to kill a friendly unit.
@@ -97,39 +80,39 @@ This rewind returns the unit from the chain,<Rule number="354" /> to banishment;
 
 ## If the unit banished by Temporal Breach has Hidden, can its owner hide it instead of playing it? [#hide-instead-of-play]
 
-No, hiding the unit does not fulfill Temporal Breach's instruction to play it.
+No.
+Hide is a separate action, not a way to play a card.<Rule number="811.1.c.1" />
+Playing puts the unit on the chain for finalization, while hiding would put it facedown at a battlefield.<Rule number="419.1" /><Rule number="421.1" />
+The unit is also in banishment, but <Hidden /> permits hiding only from hand or the champion zone.<Rule number="811.1.b" />
 
-Hide is a separate action, not a subset of play.<Rule number="811.1.c.1" />
-Playing the unit puts it on the chain and queues it for finalization,<Rule number="419.1" /> whereas hiding would put it facedown at a battlefield.<Rule number="421.1" />
-Moreover, the unit is in banishment when its owner is instructed to play it, and <Hidden /> only permits a card to be hidden from hand or the champion zone.<Rule number="811.1.b" />
-Hiding is therefore not an alternative to the instructed play.
+## Can Temporal Breach make me conquer the same battlefield again on my opponent's turn? [#score-on-opponents-turn]
 
-## If Temporal Breach banishes and replays my only unit at a battlefield, can I score there on my opponent's turn? [#score-on-opponents-turn]
+No.
+You retain control of the battlefield while Temporal Breach banishes your only unit there and that unit is played again, so you do not conquer it again.<Rule number="469.1" />
+The unit remains pending on the chain through cleanup, so you do not lose and regain control of the battlefield.<Rule number="323.6" /><Rule number="330" /><Rule number="334.2" />
+Cleanup can remove your control of an empty battlefield only when no chain exists.<Rule number="190.4.c" /><Rule number="309.1" />
 
-No, as control of the battlefield is never lost during this sequence.
+### Resolution Sequence [#conquer-sequence]
 
-When Temporal Breach resolves, the replayed unit is added to the chain as a pending item,<Rule number="354.2" /> with its play process held until the spell has fully resolved.<Rule number="354.3" />
-Once the spell finishes resolving, a cleanup runs — but the pending unit keeps the chain alive throughout it.<Rule number="330" /><Rule number="331" />
-Because the chain is not empty, the turn remains in a closed state, and cleanup step 4 — which would make the battlefield uncontrolled — only applies during an open state.<Rule number="190.4.c" /><Rule number="323.6" />
-Control is never lost, so there is no opportunity to score a point.<Rule number="469.1" />
-When all outstanding tasks are complete, the pending unit is finalized<Rule number="334.2" /><Rule number="337.1" /> and replayed to the same battlefield you still control, as dictated by Temporal Breach's own text.<Rule number="359.2" />
+<Steps>
+<Step>
+Banishment leaves you with no units at the battlefield and incurs a cleanup, but that cleanup waits for Temporal Breach to finish resolving.<Rule number="319.6" /><Rule number="321.1" />
+</Step>
+<Step>
+The unit's owner begins playing it by moving it to the chain, where it remains pending while Temporal Breach finishes resolving.<Rule number="354" /><Rule number="354.2" /><Rule number="354.3" />
+</Step>
+<Step>
+The pending unit remains on the chain throughout the cleanup, so you retain control.
+</Step>
+<Step>
+The unit then finalizes and enters the same battlefield under its owner's control.<Rule number="191.1" /><Rule number="191.3" /><Rule number="334.2" /><Rule number="337.1" /><Rule number="359.2.c" />
+</Step>
+</Steps>
 
-## What happens if Temporal Breach banishes a unit at Rockfall Path? [#rockfall-path]
+## Can Rockfall Path or Brynhir Thundersong stop the unit from being played after Temporal Breach banishes it? [#prevented-replay]
 
-Temporal Breach banishes the unit, but its owner cannot play it back to <Card name="Rockfall Path" />.
-The unit remains in its owner's banishment.
-
-Rockfall Path prevents the instructed play action.
-This does not stop Temporal Breach from resolving; when it reaches the replay instruction, that game action is skipped as impossible.<Rule number="358.3.a" />
-The earlier banish instruction is unaffected, so the unit remains banished.
-
-## What happens if Brynhir Thundersong prevents the owner of a unit banished by Temporal Breach from playing cards? [#brynhir-thundersong]
-
-The unit remains banished.
-
-If <Card name="Brynhir Thundersong" />'s play effect has resolved, opponents cannot play cards for the rest of that turn.
-Temporal Breach can still banish an opponent's unit, but that opponent cannot perform the instruction to play it back.
-
-This does not stop Temporal Breach from resolving.
-The replay is an impossible game action and is skipped,<Rule number="358.3.a" /> just as it is when Rockfall Path prevents the unit from being played to its previous location.
-Because the earlier banish instruction was completed normally, the unit remains in its owner's banishment.
+The unit remains banished if either effect prevents its owner from playing it.
+Temporal Breach still resolves, but the applicable effect prevents the instructed play.<Rule number="358.3.a" />
+The earlier banish instruction remains completed.
+The unit remains banished because <Card name="Rockfall Path" /> prevents its owner from playing it back to that location.
+If <Card name="Brynhir Thundersong" />'s play effect has resolved and prevents the unit's owner from playing cards, the unit remains banished.

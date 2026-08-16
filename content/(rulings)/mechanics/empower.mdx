@@ -10,46 +10,48 @@ authors:
 
 Yes.
 <Empower /> is an activated ability keyword,<Rule number="827.1" /> and activated abilities use the chain.<Rule number="377.3" />
-After the ability is finalized, opponents have an opportunity to react before it resolves.<Rule number="377.3.b.2" />
-
-This differs from activated abilities that use <Add />, which resolve immediately when finalized and cannot be reacted to.<Rule number="337.2" /><Rule number="429.2" />
-See also [Can I react to triggered and activated abilities?](/general-rules/abilities#ability-reactions).
+After the ability is finalized and no other cards or abilities are waiting to finalize, opponents have an opportunity to play Reactions before it resolves.<Rule number="337.4" /><Rule number="406.4" />
 
 ## When can I activate an Empower ability? [#empower-timing]
 
-By default, only during your own Main Phase while the turn is in a neutral open state.
+By default, you can activate it only while its source is not <Empowered /> and during your own Main Phase while no showdown, combat, or chain is in progress.<Rule number="310.1" /><Rule number="310.1.a" /><Rule number="312.2.a" /><Rule number="381" /><Rule number="827.1.c.1" />
+<Empower /> follows these restrictions because it is an activated ability.<Rule number="827.1" />
 
-An <Empower /> ability is an activated ability,<Rule number="827.1" /> and activated abilities can normally be activated only on their controller's turn during an open state.<Rule number="381" />
-Because <Empower /> has neither <Action /> nor <Reaction /> by default, it cannot be activated during a showdown or in response to another chain item.<Rule number="308.1.a" /><Rule number="309.1.a" />
-
-An <Empower /> ability may have text that changes its timing.<Rule number="827.1.c.4" />
-If it explicitly has <Action /> or <Reaction />, follow the permissions of that keyword instead.
+Card text may override the default activation restriction or change an <Empower /> ability's timing.<Rule number="002" /><Rule number="827.1.c.4" />
+If it explicitly has <Action />, you may activate it during showdowns on any player's turn.<Rule number="806.1.c.2" />
+If it has <Reaction />, you may also activate it on any player's turn during closed states, while a chain exists.<Rule number="309.1" /><Rule number="813.1.b" /><Rule number="813.1.c.2" />
 
 ## Does a "When I become Empowered" ability trigger if the unit leaves the board before its Empower ability resolves? [#removed-source-trigger]
 
 No.
-If the unit is killed, returned to hand, or otherwise leaves the board before its <Empower /> ability resolves, it does not become <Empowered /> and its "When I become <Empowered />" ability does not trigger.
+If the unit leaves the board before its <Empower /> ability resolves, it does not become <Empowered />, so its "When I become <Empowered />" ability does not trigger.<Rule number="441.2" /><Rule number="828.1.d" />
 
-The <Empower /> ability remains on the chain, but the <Empowered /> state exists only for game objects on the board.<Rule number="441.2" />
-Because triggered abilities of permanents can evaluate their conditions only while their source is on the board, its dependent "When I become <Empowered />" ability is not active and does not trigger.<Rule number="384.2" /><Rule number="828.1.c" /><Rule number="828.1.d" />
+Removing the unit does not counter its already-finalized <Empower /> ability, so that ability remains on the chain.<Rule number="406.2" /><Rule number="425.1" /><Rule number="425.2.a" />
 
 <Callout type="idea" title="Example">
-	A player activates <Card name="Mel, Defiant Soul" />'s <Empower /> ability by discarding a spell.
-	An opponent responds with <Card name="Star-Crossed" /> and returns Mel to her owner's hand.
-	When the <Empower /> ability resolves, Mel is no longer a game object on the board and does not become <Empowered />.
-	Her "When I become <Empowered />" ability does not trigger, so no enemy unit is banished.
+	You activate <Card name="Mel, Defiant Soul" />'s <Empower /> ability and discard a spell to pay its cost.
+	Your opponent responds with <Card name="Star-Crossed" />, returning Mel and one of their own units, each to its owner's hand.
+	Star-Crossed resolves first, so Mel leaves the board while her <Empower /> ability remains on the chain.<Rule number="340.1" />
+	Mel's <Empower /> ability then resolves, but Mel cannot become <Empowered /> while she is off the board, so her banish ability does not trigger.
 </Callout>
+
+When the <Empower /> ability resolves, it tries to empower the unit whose ability was activated.<Rule number="406.5" /><Rule number="827.1.c.1" />
+Only a game object on the board can become <Empowered />.
+While the original unit is off the board, it cannot become <Empowered /> or evaluate its triggered ability's condition.<Rule number="384.2" />
+
+If the card returns from a non-board zone before the <Empower /> ability resolves, the returned card is a new object rather than the original unit.<Rule number="124" />
 
 ## Can a unit or gear without an Empower or Empowered ability become Empowered? [#empower-other-objects]
 
-Yes, if a game effect instructs a player to empower it.
+Yes.
+A unit or gear does not need a printed <Empower /> or <Empowered /> ability to become <Empowered />.
 
-The <Empowered /> state can apply to game objects on the board; it is not restricted to cards with printed <Empower /> or <Empowered /> abilities.<Rule number="441.1" /><Rule number="441.2" />
-Players cannot empower a game object at will, however; they may do so only when directed by a game effect.<Rule number="441.3" /><Rule number="441.3.a" />
+You can empower an object only when a game effect instructs you to do so.<Rule number="441.3.a" />
+The <Empowered /> state can apply to any game object on the board.<Rule number="441.2" />
 
-<Callout type="idea" title="Examples">
-	<Card name="Sanction" /> can empower any unit that is a legal choice, even if that unit has no printed reference to <Empower /> or <Empowered />.
-	Once that unit is <Empowered />, effects such as <Card name="Aurok General" />'s ability can identify and affect it normally.
+Normally, an object that is already <Empowered /> cannot become <Empowered /> again.<Rule number="441.1.b" />
+An effect can permit an already <Empowered /> object to be empowered again, subject to the limits of that effect.<Rule number="441.1.c.1" />
 
-	<Card name="Hextech Formula" /> can empower another gear, even if that gear has no printed reference to <Empower /> or <Empowered />.
+<Callout type="idea" title="Example">
+	<Card name="Sanction" /> can empower an unempowered legal unit and <Card name="Hextech Formula" /> can empower another gear; neither object needs a printed reference to <Empower /> or <Empowered />.
 </Callout>

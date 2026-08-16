@@ -9,19 +9,29 @@ authors:
 
 ## When do I choose whether to pay the power for Rebuttal? [#power-payment-timing]
 
-You choose whether to pay <Universal /> when Rebuttal resolves because the optional payment is a cost within the spell's instructions, not an additional cost to play it.
+You choose the affected spell during Rebuttal's finalization, before opponents can react<Rule number="355.5" /><Rule number="359.3.c" />, but you do not decide whether to pay <Universal /> until Rebuttal resolves.
+The optional payment is not a cost paid to play Rebuttal; it is a game action Rebuttal instructs you to perform during resolution.<Rule number="135.2.b.3" /><Rule number="205" />
+Opponents therefore know which spell you chose, but not whether you will pay to gain control of it or decline and have Rebuttal attempt to counter it.
 
-When Rebuttal is finalized, you choose the spell with energy cost no more than <Energy value={4} />.<Rule number="355.5" />
-The optional power payment is not an additional cost to play Rebuttal; it is a cost within the spell's instructions.<Rule number="204.2" /><Rule number="204.3" />
-Costs within a spell's instructions are paid during that spell's resolution.<Rule number="204.3.b" />
+## What choices can I remake when Rebuttal takes control of a spell? [#new-choices]
 
-Opponents can therefore react to Rebuttal knowing which spell it chose, but without knowing whether you will pay <Universal /> to gain control of that spell or decline to pay and counter it.
+Under the August 2026 [Vendetta FAQ](https://playriftbound.com/en-us/news/rules-and-releases/vendetta-rules-faq-and-clarifications), you may either leave every target and mode unchanged or remake any subset.
+If you change nothing, existing choices may remain illegal.
+If you remake at least one choice, every resulting choice must be legal, including choices you left unchanged.
+Targets and modes are among the choices normally made during finalization.<Rule number="752" /><Rule number="752.1" />
+The Core Rules permit remaking any subset and prohibit illegal new choices, but they do not expressly address the unchanged choices.<Rule number="753" /><Rule number="753.1" />
+
+<Callout type="warn" title="Rules citation needed">
+	Core Rules 1.4 does not independently supply the distinction between remaking at least one choice and leaving every choice unchanged.
+	The cited FAQ notes that this Core Rules section will be revised in a future update.
+</Callout>
 
 ## Can Rebuttal redirect a spell played from Hidden to another location? [#hidden-target-restriction]
 
-No — taking control of the spell and making new choices for it does not remove the targeting restriction imposed by <Hidden />.
+No.
+Taking control of the spell and making new choices for it does not remove the targeting restriction imposed by <Hidden />.
 
-Rebuttal allows its controller to remake a finalized spell's targets,<Rule number="752.1" /> but every new choice must still be legal.<Rule number="753.1" />
+Rebuttal allows you to remake a finalized spell's targets,<Rule number="752.1" /> but every new target must still be legal.<Rule number="753.1" />
 When a spell is played from <Hidden />, its targets must be chosen from among the options at the battlefield where it was hidden unless the spell's own targeting restriction makes that impossible.<Rule number="811.1.d.2" />
 Changing the spell's controller does not change where it was played from, so this restriction continues to apply.
 
@@ -33,26 +43,17 @@ Changing the spell's controller does not change where it was played from, so thi
 
 ## Whose "when you play a spell" abilities trigger for a spell Rebuttal takes control of? [#play-trigger-controller]
 
-The abilities controlled by the spell's new controller trigger because the act of playing the spell is completed when it resolves under that player's control.
+Under the August 2026 [Vendetta FAQ](https://playriftbound.com/en-us/news/rules-and-releases/vendetta-rules-faq-and-clarifications), if the spell resolves after Rebuttal takes control of it, the spell's new controller's applicable "when you play a spell" abilities trigger; the original player's abilities do not.
+These abilities trigger once the spell has finished resolving.<Rule number="419.4.a" />
+Rebuttal has made the player who gained control of the spell its controller by then.
 
-Abilities such as <Card name="Ravenbloom Student" />'s do not trigger when a spell is first placed on or finalized to the chain.
-They trigger when the act of playing that spell is completed by its resolution.<Rule number="419.4.a" />
-At that point, the player who gained control of the spell with Rebuttal is its controller.<Rule number="191.2" />
-
-<Callout type="idea" title="Example">
-	You control Ravenbloom Student and use Rebuttal to gain control of an opponent's <Card name="Gust" />.
-	Your Student triggers when Rebuttal resolves.
-	When Gust resolves afterward, your Student triggers again because you now control Gust.
-	Your opponent's "when you play a spell" abilities do not trigger for Gust.
+<Callout type="warn" title="Rules citation needed">
+	Core Rules 1.4 establishes when "when you play" abilities trigger, but it does not independently establish responsibility for completing a spell's play after its control changes.
+	The outcome above follows the official FAQ ruling.
 </Callout>
 
-## Do I draw a card if I take control of Back Off? [#back-off-draw]
-
-No — you did not play <Card name="Back Off" /> from your hand merely by taking control of it.
-
-To play a card, a player places it on the chain and queues it for finalization.<Rule number="419.1" />
-Back Off's "if you played this from your hand" clause is a non-triggered condition, so it checks whether the card was finalized by that player.<Rule number="419.4.b" /><Rule number="329.3" />
-Gaining control of an already-finalized spell does not repeat that process or change which player performed it.
-
-When Back Off resolves under your control, "you" refers to you, but you did not play it from your hand, so you do not draw a card.
-The opponent who originally played Back Off does not draw either because they no longer control the resolving spell.
+<Callout type="idea" title="Example">
+	Suppose you and your opponent each control <Card name="Ravenbloom Student" />, and you use Rebuttal to gain control of your opponent's <Card name="Gust" />.
+	Your Ravenbloom Student triggers when Rebuttal resolves under your control.
+	If Gust then resolves under your control, your Ravenbloom Student triggers again, while your opponent's Ravenbloom Student does not trigger for Gust.
+</Callout>

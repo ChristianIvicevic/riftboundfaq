@@ -9,33 +9,54 @@ authors:
 
 ## Can Glasc Mixologist's Deathknell target a unit that died from the same event? [#same-event-target]
 
-Yes, because targets are not chosen until the ability is finalized — by which point all units that died in the same event are already in the trash.
+Yes, if it is a non-token unit card in your trash that meets Glasc's cost and rune restrictions.
+Glasc's <Deathknell /> chooses its target when the ability finalizes, not when the ability first becomes pending.<Rule number="402.2" />
+By then, every non-token unit killed by the same event has moved to its owner's trash.<Rule number="428.2" />
+A killed token instead ceases to exist immediately after entering the trash, so it cannot be targeted.<Rule number="186.1" />
 
-Whenever a unit with <Deathknell /> dies, its trigger is placed on the chain as a pending item.<Rule number="808.1.d.2" />
-During a cleanup, this ordering is enforced system-wide: step 3a queues all <Deathknell /> triggers from every unit with lethal damage<Rule number="323.4" /> and only then does step 3b move those units to the trash.<Rule number="323.5" />
+During a cleanup, relevant death triggers from units with lethal damage become pending before those units move to the trash.<Rule number="323.4" /><Rule number="323.5" />
+Those pending abilities cannot be finalized until the cleanup is complete, so Glasc's target is chosen only after the killed unit cards have moved to the trash.<Rule number="334.2" />
 
-The same result applies when one kill instruction kills multiple units.
-Their deaths are simultaneous because they result from the same game action,<Rule number="370.1.a.2" /> and each relevant <Deathknell /> becomes pending before its unit moves to the trash.<Rule number="428.1.a.1.b" /><Rule number="808.1.d.2" />
-
-In either case, all units that died from that event are in the trash before the pending ability is finalized and its target is chosen.<Rule number="334.2" /><Rule number="355.8" />
+When one effect instruction of a resolving spell or ability kills multiple units, their deaths are simultaneous.<Rule number="370.1.a.2" />
+Each relevant <Deathknell /> becomes pending before its unit moves to the trash.<Rule number="808.1.d.2" />
+No pending ability can finalize until the current spell or ability finishes resolving.<Rule number="158.3" />
 
 ## Can Glasc Mixologist's Deathknell play a unit to the battlefield where he died? [#play-to-same-battlefield]
 
 Yes, as long as you controlled that battlefield when Glasc Mixologist died.
 
-**Outside a showdown**, the <Deathknell /> trigger remains on the chain as a pending item from the moment it is queued.
-Because a chain exists, the turn remains in a closed state,<Rule number="309.1" /> and cleanup step 4 — which makes unoccupied battlefields uncontrolled — only applies during an open state.<Rule number="323.6" />
-The battlefield stays under your control, so when the unit is finalized you can choose it as a valid destination.<Rule number="355.2.a" />
+**Outside a showdown**, Glasc's <Deathknell /> is added as a pending item before he moves to the trash and remains pending throughout that cleanup.<Rule number="808.1.d.2" /><Rule number="334.2" />
+That pending ability keeps the chain in progress throughout the cleanup, so you do not lose control of the battlefield even if Glasc's death leaves it empty.<Rule number="330" /><Rule number="309.1" /><Rule number="323.6" />
+You can therefore choose that battlefield as a valid destination when the unit is finalized.<Rule number="355.2.a" />
 
 **During a showdown**, control of the battlefield cannot change until instructed by the steps of the combat or showdown,<Rule number="190.4.b" /> so the question does not arise.
 
 ## What happens when Glasc Mixologist is my only defender and his Deathknell plays a unit where he died? [#deathknell-combat-result]
 
-Several things here commonly catch players off guard: surviving enemy units heal to full before the new unit arrives, neither player wins the original combat, and a second combat immediately follows.
+The original combat result is determined only after Glasc's chosen unit enters and every associated chain item finishes.<Rule number="466.2" />
+At that point, the result depends on which players have units at the battlefield:
 
-The combat cleanup heals all units before any pending trigger can resolve,<Rule number="466.1.a.1" /><Rule number="334" /> so by the time Glasc's <Deathknell /> finalizes and the new unit reaches the battlefield, the enemy is already back to full health.
-Because Glasc was your only defender, no defenders remain during cleanup step 3d, so the surviving attackers are not recalled.<Rule number="466.1.a.2" />
+- **Only your units remain:** You win the original combat.<Rule number="466.3.a" />
+- **Only your opponent's units remain:** Your opponent wins the original combat.<Rule number="466.3.a" />
+- **Both players have units there:** Neither player wins, and a second combat is staged.<Rule number="466.3.d" /><Rule number="466.3.d.1" />
+- **Neither player has units there:** Neither player wins, and no second combat is staged.<Rule number="466.3.d" /><Rule number="466.3.d.1" />
 
-With units from both players now present, combat result is determined.
-Because both players have units there, the result is "No Result."<Rule number="466.3.d" />
-A fresh combat is immediately staged at that battlefield.<Rule number="466.3.d.1" />
+### Resolution Sequence [#combat-result-sequence]
+
+<Steps>
+<Step>
+The combat cleanup heals all units before Glasc's pending <Deathknell /> can be finalized.<Rule number="466.1.a.1" /><Rule number="334.2" />
+Because Glasc was your only defender, no defenders remain during cleanup, so the surviving attackers are not recalled.<Rule number="466.1.a.2" />
+</Step>
+<Step>
+After the cleanup, Glasc's <Deathknell /> resolves and begins playing the chosen unit.
+The unit becomes pending while the ability finishes.<Rule number="354.2" /><Rule number="354.3" />
+</Step>
+<Step>
+The unit then finalizes and enters the battlefield exhausted.<Rule number="359.2.c" />
+Any play effect and other resulting chain items also finish before combat result is determined.<Rule number="383.4.a.2" />
+</Step>
+<Step>
+The players' units then determine who won the original combat and whether another combat is staged.
+</Step>
+</Steps>

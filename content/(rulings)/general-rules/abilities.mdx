@@ -4,123 +4,79 @@ createdAt: "2026-01-25"
 reviewedCoreRulesVersion: "1.4"
 authors:
 - "Christian I. (Near)"
-rulingRelations:
-  source-removal:
-  - "/cards/azir-sovereign"
-  - "/cards/astral-heron"
-  - "/cards/irresistible-faefolk"
-  trigger-time-conditions:
-  - "/cards/sunken-temple"
-  - "/cards/astral-heron"
-  - "/cards/khazix-mutating-horror"
-  costs-within-instructions:
-  - "/cards/diana-lunari"
-  - "/cards/emperors-dais"
-  ability-reactions:
-  - "/mechanics/equipment"
-  - "/mechanics/empower"
 ---
 
 ## Can triggered abilities trigger on an opponent's turn without Reaction? [#triggered-ability-timing]
 
 Yes.
-Whenever their condition is met, triggered abilities are added to the chain as pending items, regardless of whose turn it is.<Rule number="383.3" /><Rule number="383.3.c" />
+A triggered ability is put on the chain whenever its condition is met, regardless of whose turn it is, so it does not need <Reaction />.<Rule number="383.3" /><Rule number="383.3.c" />
 
-The <Reaction /> keyword is not required for this to work on an opponent's turn.
-Unlike spells and activated abilities which require <Reaction /> to be played outside your turn, satisfying a trigger condition automatically creates the pending ability.
-That ability must still finalize: it may be removed if its controller declines an initial "you may," if legal choices are unavailable, or if a required trigger cost is not paid.<Rule number="383.3.a.2" /><Rule number="402.4" /><Rule number="404.2" />
+It first enters as a pending item: it has triggered but must still complete the required choices and costs before it finalizes and can resolve.<Rule number="400" /><Rule number="400.1" />
+If its controller declines an initial "you may," that pending ability is removed from the chain and considered not to have triggered.<Rule number="383.3.a.2" />
 
 <Callout type="idea" title="Example">
-	<Card name="Blade Dancer" /> triggers when you choose a friendly unit.
-	This can happen on your opponent's turn, for example when you play a <Reaction /> spell that targets one of your own units.
+	<Card name="Blade Dancer" /> triggers whenever you choose a friendly unit.
+	This can happen on an opponent's turn when you play a <Reaction /> spell that chooses one of your units.
 </Callout>
 
 ## Can I react to triggered and activated abilities? [#ability-reactions]
 
-Yes, with one important exception: abilities that use the <Add /> keyword.
+Yes, except for triggered and activated abilities that use <Add />.
 
-All triggered and activated abilities are placed on the chain.<Rule number="377.3" /><Rule number="383.3" />
-However, abilities that add resources resolve immediately when finalized, which means players do not receive priority to react to them.<Rule number="337.2" /><Rule number="429.2" /><Rule number="429.2.a" />
+Triggered and activated abilities use the chain and become finalized chain items.<Rule number="377.3" /><Rule number="383.3" /><Rule number="406.2" />
+Once no pending items remain, you have an opportunity to play Reactions before those abilities resolve.<Rule number="337.4" /><Rule number="406.4" />
+
+An ability that adds resources instead resolves immediately after finalization without passing priority.<Rule number="429.2" /><Rule number="429.2.a" />
 
 ## Does removing a triggered ability's source stop that ability? [#source-removal]
 
-Usually no — once a triggered ability has finalized, removing its source does not remove or counter the ability on the chain.<Rule number="383.3" /><Rule number="406.2" />
-The ability still resolves and executes its instructions like a spell.<Rule number="406.5" />
-To stop the chain item itself, an effect must specifically instruct a player to counter it.<Rule number="425.2.a" /><Rule number="425.3" />
+No.
+A triggered ability finalizes before opponents can react to it.<Rule number="406.2" /><Rule number="406.4" />
+Removing its source is not a counter instruction, so the ability remains on the chain and executes like a spell.<Rule number="425.1" /><Rule number="425.2.a" /><Rule number="406.5" />
 
-However, removing the source can prevent an instruction from working if it needs information from that source.
-Source referents such as "here," "my," or "this battlefield" are checked when the instruction executes.<Rule number="359.3.f.1" /><Rule number="359.3.f.2" />
-If the source is no longer on the board, information such as its location is unavailable, and an instruction that needs that information is ignored.<Rule number="359.3.e.6" /><Rule number="359.3.e.12" />
+An instruction can still do nothing if it needs current information from the missing source.
+Source referents such as "here," "my," or "this battlefield" are normally checked when that instruction executes.<Rule number="359.3.f.1" /><Rule number="359.3.f.2" />
+Information referenced from a triggered ability's trigger condition is instead recorded when the condition is fulfilled and remains available if the source later moves or leaves.<Rule number="359.3.f.3" />
+If an instruction instead needs the source's current location and the source is no longer on the board, that information is unavailable, so the instruction cannot execute.<Rule number="359.3.e.12" />
 
-<Callout type="idea" title="Examples">
-	If an opponent responds to <Card name="Ashe, Focused" />'s play effect with <Card name="Star-Crossed" /> and returns Ashe to her owner's hand, her ability still resolves.
-	Nothing in its instructions requires Ashe to remain on the board.
-
-	If Star-Crossed returns <Card name="Vi, Peacekeeper" /> before her attack trigger resolves, Vi cannot <Stun /> an enemy unit "here."
-	Because Vi is no longer on the board, she has no location for "here" to reference, so that instruction is ignored.
-
-	The same applies to <Card name="Azir, Sovereign" />: if Azir leaves the board before his attack trigger resolves, there is no "this battlefield" to which his token units can move.
-</Callout>
+For example, if an opponent responds to <Card name="Ashe, Focused" />'s play effect with <Card name="Star-Crossed" /> and returns Ashe to her owner's hand, her ability still resolves because none of its instructions needs Ashe to remain on the board.
+By contrast, if Star-Crossed returns <Card name="Vi, Peacekeeper" /> before her attack trigger resolves, Vi cannot <Stun /> an enemy unit "here" because she no longer has a location for "here" to reference.
 
 ## When does the game check an "if" condition in a triggered ability? [#trigger-time-conditions]
 
-It depends on where the condition appears in the ability's text.
+An "if" condition immediately after the trigger condition is checked after the triggering event, while one after an effect instruction is checked during resolution.
 
-The trigger condition begins with "When," "At," or "The [Nth] time" and includes the event and any qualifiers attached to it.<Rule number="383.2.a" />
-An additional conditional statement immediately following that condition is also part of the trigger condition, even if it appears after a comma.<Rule number="383.2.a.1" />
-The remaining instructions form the ability's effect.<Rule number="383.2.b" />
-
-Every requirement in the trigger condition must be satisfied for the ability to be placed on the chain.
-For example, <Card name="Sunken Temple" /> reads "When you conquer here with one or more <Mighty /> units, you may pay <Energy value={1} /> to draw 1."
-The requirement that the conquering units be <Mighty /> is embedded in the trigger condition; if no <Mighty /> unit participated in the conquer, the ability does not trigger.
-
-An "if" clause that immediately follows the trigger condition is therefore part of that condition and checked when the triggering event occurs.
-If the condition is not satisfied at the moment the triggering event occurs, the ability is never placed on the chain at all.<Rule number="383.2.a.1" />
-
-However, "if" clauses embedded within the effect text — coming after an effect instruction rather than immediately following the trigger condition — are only checked on resolution.
-The ability goes on the chain regardless, and the condition is only evaluated when it resolves.
-
-<Callout type="idea" title="Example">
-	<Card name="Gutter Palace" /> reads "At the start of your Beginning Phase, if you have exactly 4 cards in hand and exactly 4 units at battlefields, you win the game."
-
-	The "if" clause immediately follows the trigger condition, so it is part of that condition and checked when the triggering event occurs.
-	This ability is only placed on the chain if you already have exactly 4 cards in hand and exactly 4 units at battlefields at the start of your Beginning Phase.
-	If the condition is not satisfied at that moment, the ability does not trigger at all.
-</Callout>
-
-<Callout type="idea" title="Example">
-	<Card name="Loose Cannon" /> reads "At start of your Beginning Phase, draw 1 if you have one or fewer cards in your hand."
-
-	Here the "if" clause does not immediately follow the trigger condition — it comes after the effect instruction "draw 1".
-	This means it is part of the effect and is checked on resolution.
-	The ability goes on the chain at the start of every one of your Beginning Phases, regardless of how many cards are in your hand.
-	Only when the ability resolves is the hand size checked; if you have more than one card at that point, the draw does not happen.
-</Callout>
+- **Immediately after the trigger condition:** A trigger condition begins with "When," "At," or "The [Nth] time," and an additional conditional statement immediately following it is part of that condition.<Rule number="383.2.a" /><Rule number="383.2.a.1" />
+  The game checks those requirements after the triggering event has been processed.<Rule number="383.2.c" />
+  If they are not satisfied then, the ability is not placed on the chain.<Rule number="383.3" />
+  For example, <Card name="Gutter Palace" /> checks the hand and battlefield quantities in its "if" condition at the start of the Beginning Phase; if either is wrong then, its ability is not placed on the chain.
+- **After an effect instruction:** The "if" condition is part of the effect, so the ability is placed on the chain and checks that condition when it resolves.<Rule number="383.2.b" /><Rule number="359.3.d" /><Rule number="406.5" />
+  For example, <Card name="Loose Cannon" /> first instructs its controller to draw 1 and then checks hand size, so its ability is placed on the chain at the start of every Beginning Phase and checks the "if" condition during resolution.
 
 ## When do I choose whether to use a triggered ability that says "you may"? [#optional-trigger-decision]
 
-It depends on where "you may" appears in the ability's effect.
+If "you may" begins the effect, choose during finalization; if it appears later, choose during resolution.
 
-If "you may" is the first part of the effect, you decide whether to perform the ability during finalization.<Rule number="383.3.a" /><Rule number="402.1" />
-If you decline, the pending ability is removed from the chain and considered not to have triggered.<Rule number="383.3.a.2" /><Rule number="402.1.a" />
-If you accept, you make all choices required for finalization and pay any costs incurred during finalization before the ability can finalize.<Rule number="402.2" /><Rule number="404" />
+- **Initial "you may":** Choose while the pending ability is being finalized.<Rule number="383.3.a" />
+  If you decline, the ability is removed from the chain and considered not to have triggered.<Rule number="383.3.a.2" />
+  If you proceed, make its required choices and pay any costs incurred during finalization before the ability becomes a finalized chain item.<Rule number="402.2" /><Rule number="404.1" /><Rule number="406.2" />
+  For example, <Card name="Tideturner" /> begins its effect with "you may," so its controller decides whether to use the ability during finalization.
+- **Later "you may":** If another effect instruction comes first, make the optional choice when resolution reaches that later instruction.<Rule number="383.3.a.3" />
+  For example, <Card name="Ornn, Blacksmith" /> first instructs its controller to look at cards, then says "You may reveal a gear," so that choice is made during resolution.
 
-If "you may" appears later in the effect, you decide whether to perform that instruction when the ability resolves.<Rule number="383.3.a.3" />
+## When do I pay costs in a triggered ability? [#costs-within-instructions]
 
-## When do I pay a cost in a triggered ability that says "you may"? [#costs-within-instructions]
+The "[do X] to [do Y]" form creates a cost within instructions: [do X] is the cost and [do Y] is its effect.<Rule number="740.4.a" />
+Pay [do X] during finalization if it begins the triggered effect or immediately follows an initial "you may."<Rule number="383.3.b" /><Rule number="383.3.b.1" /><Rule number="740.4.a.2" />
+Pay it during resolution if it appears later.<Rule number="740.4.a.2.a" />
 
-It depends on where the cost appears in the triggered ability's effect.
+If that cost is due during finalization and you decline to pay it, the pending ability is removed from the chain without finalizing.<Rule number="404.2" />
 
-In rules text phrased as "[do X] to [do Y]," the [do X] part is considered a cost within instructions.
-If that cost appears at the beginning of a triggered effect or immediately after an initial "you may," it becomes the ability's base cost and must be paid during finalization.<Rule number="383.3.b" /><Rule number="383.3.b.1" /><Rule number="740.4.a.2" /><Rule number="403.1.b.1" />
-If you decline to pay, the pending ability is removed from the chain without finalizing.<Rule number="404.2" />
+The "[do X]. If you do, [do Y]" form does not create a cost within instructions.
+The [do X] instruction is executed during resolution.<Rule number="406.5" />
 
-If the cost appears later in the triggered effect, you pay it when the ability resolves.<Rule number="740.4.a.2.a" />
+For example, <Card name="Vayne, Hunter" /> says "When I conquer, you may pay <Energy value={1} /> to return me to my owner's hand."
+The "pay <Energy value={1} /> to return me" form creates a cost within instructions immediately after the initial "you may," so you pay it during finalization.
+If you pay, the ability finalizes and opponents may react before it resolves.<Rule number="406.4" />
 
-<Callout type="idea" title="Example">
-	<Card name="Vayne, Hunter" />'s ability reads "When I conquer, you may pay <Energy value={1} /> to return me to my owner's hand."
-	It will trigger when you conquer.
-	At finalization, you must decide whether to pay the <Energy value={1} /> cost.
-	If you decline, the pending ability is removed from the chain.
-	If you pay, the ability finalizes and opponents have the opportunity to react before it resolves.
-</Callout>
+By contrast, <Card name="Insightful Investigator" /> first has an opponent reveal their hand and only then offers a payment, so that cost within instructions appears later and you pay it during resolution.

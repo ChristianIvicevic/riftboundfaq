@@ -5,7 +5,6 @@ import { notFound } from 'next/navigation'
 import { CopyableDocsBody } from '@/app/(wiki)/[[...slug]]/_components/copyable-docs-body'
 import { PageActions } from '@/app/(wiki)/[[...slug]]/_components/page-actions'
 import { PageAttribution } from '@/app/(wiki)/[[...slug]]/_components/page-attribution'
-import { RelatedRulings } from '@/app/(wiki)/[[...slug]]/_components/related-rulings'
 import { CoreRulesReviewCallout } from '@/components/core-rules/review-callout'
 import { submitBlockFeedback, submitPageFeedback } from '@/features/feedback/actions'
 import { Feedback, FeedbackText } from '@/features/feedback/feedback'
@@ -13,12 +12,9 @@ import { resolveCoreRulesReview } from '@/features/rules-documents/core-rules-re
 import { resolveVersionedRulesRoute } from '@/features/rules-documents/versioned-route'
 import { getRiftboundWikiUrl } from '@/lib/cards/links'
 import { getPagePublication } from '@/lib/content/page-publication'
-import { buildRulingRelationIndex, getRulingRelations } from '@/lib/content/ruling-relations'
 import { getPageImage, PAGE_IMAGE_SIZE, source } from '@/lib/content/source'
 import { SITE_NAME, SITE_URL, X_HANDLE } from '@/lib/site'
 import { getMDXComponents } from '@/mdx-components'
-
-const rulingRelationIndex = buildRulingRelationIndex(source.getPages())
 
 export default async function Page(props: PageProps<'/[[...slug]]'>) {
 	const params = await props.params
@@ -32,7 +28,6 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 		url: page.url,
 		reviewedVersion: page.data.reviewedCoreRulesVersion,
 	})
-	const rulingRelations = getRulingRelations(rulingRelationIndex, page.url)
 	const riftboundWikiUrl = page.url.startsWith('/cards/') ? getRiftboundWikiUrl(page.data.title) : undefined
 	const versionedRulesRoute = resolveVersionedRulesRoute({
 		url: page.url,
@@ -100,7 +95,6 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 					/>
 				</CopyableDocsBody>
 			</FeedbackText>
-			<RelatedRulings relations={rulingRelations} />
 			<Feedback onSendAction={submitPageFeedback} />
 			{publication.isSourceAttributionEligible && (
 				<PageAttribution authors={authors} lastModified={page.data.lastModified} />

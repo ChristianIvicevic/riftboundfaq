@@ -1,6 +1,7 @@
 import { loader } from 'fumadocs-core/source'
 import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons'
 import { docs } from 'fumadocs-mdx:collections/server'
+import { getGameTermComponentByLabel } from '@/components/game-terms'
 
 const NEW_PAGE_WINDOW_MS = 21 * 24 * 60 * 60 * 1000
 const BUILD_TIMESTAMP = Date.now()
@@ -26,7 +27,12 @@ export const source = loader({
 					if (!file) return node
 					const content = this.storage.read(file)
 					if (!content || content.format !== 'page') return node
-					node.name = content.data.sidebarTitle ?? node.name
+					const sidebarTitle = content.data.sidebarTitle ?? node.name
+					const GameTerm =
+						node.url.startsWith('/mechanics/') && typeof sidebarTitle === 'string'
+							? getGameTermComponentByLabel(sidebarTitle)
+							: undefined
+					node.name = GameTerm ? <GameTerm /> : sidebarTitle
 					if (isNewPage(content.data.createdAt))
 						node.name = (
 							<div key={content.path} className="flex w-full items-center gap-3">

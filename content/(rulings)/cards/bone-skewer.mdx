@@ -9,50 +9,52 @@ authors:
 
 ## Can Bone Skewer choose a unit that says it "can't be chosen by enemy spells and abilities"? [#targeting-protection]
 
-Yes, as the untargetability is inactive in hand and hand cards cannot be targeted in any case.
+Yes.
+The unit's untargetability ability is inactive while the card is in hand, and Bone Skewer's choice does not target it.
 
-<Card name="Ruin Runner" /> and <Card name="Baron Nashor" /> are made untargetable by passive abilities declaring that they can't be chosen by some category of spells and abilities.<Rule number="757" /><Rule number="757.1" />
-Passive abilities of permanents are typically active only while on the board.<Rule number="365.1" />
-Abilities that function in another zone self-describe that context,<Rule number="366.1" /> which these untargetability abilities do not.
-They therefore have no effect while the unit is in hand.
-Beyond that, Bone Skewer never targets the chosen unit in the first place — cards in hand are never targets because the hand is not a public zone,<Rule number="355.10.a" /> so there is no finalization step at which a unit there could be declared as a target.<Rule number="355.5" />
+"I can't be chosen by enemy spells and abilities" is a passive untargetability ability.<Rule number="757" /><Rule number="757.1" />
+Passive abilities of permanents are typically active only while they are on the board.<Rule number="365.1" />
+An ability that functions in another zone describes that context itself,<Rule number="366.1" /> which this ability does not, so it has no effect in hand.
+Separately, a card in hand is not a target because the hand is not a public zone.<Rule number="355.10.a" />
 
 ## Does Bone Skewer stun a unit that can't be chosen by enemy spells or abilities? [#stun-targeting]
 
-Yes, because the reflexive trigger that stuns the unit does not ask its controller to choose anything.
+Yes.
+The reflexive trigger that stuns the unit does not ask its controller to choose anything.
 
-If the opponent plays the unit, Bone Skewer's "then do this" wording creates a reflexive trigger as a pending item on the chain.<Rule number="387.1" /><Rule number="387.2" /><Rule number="388.1" />
+If the opponent plays the unit, Bone Skewer's "then do this" wording creates a reflexive trigger.<Rule number="387.1" /><Rule number="387.2" />
 The trigger is linked to the preceding ability, and "it" can only refer to the unit played by that ability.<Rule number="394.1" /><Rule number="397" />
-When the trigger is finalized, no choice is made about which unit will be stunned; it is always and only that unit.
-Because the unit is programmatically determined rather than chosen, it is not a target.<Rule number="355.10.d" /><Rule number="355.10.d.1" />
+The unit is therefore programmatically determined rather than chosen by the trigger's controller, so it is not a target.<Rule number="355.10.d" /><Rule number="355.10.d.1" />
 
-This means untargetability — the "can't be chosen by enemy spells and abilities" passive on units like <Card name="Ruin Runner" /> and <Card name="Baron Nashor" /> — does not prevent the stun, since it only stops a unit from being chosen as a target and the stun targets nothing.<Rule number="758" />
-<Deflect /> is similarly irrelevant, since <Deflect /> is only added as a cost when a spell or ability chooses an opponent's permanent,<Rule number="809.1.d" /> which is not the case here.
+Untargetability does not prevent the stun because it only prevents the unit from being a legal target.<Rule number="758" />
 
 ## If a unit chosen by Bone Skewer has Hidden, can the opponent hide it instead of playing it? [#hide-instead-of-play]
 
-No, hiding the unit does not fulfill Bone Skewer's instruction to play it.
-
-Hide is a separate action, not a subset of play.<Rule number="811.1.c.1" />
-Even though the chosen unit is in hand and may have <Hidden />, Bone Skewer instructs the opponent to play it as a limited action.<Rule number="419.3" />
-That play follows the normal process unless Bone Skewer says otherwise,<Rule number="419.3.b" /> so the unit is put on the chain and queued for finalization.<Rule number="419.1" />
-The opponent cannot choose to hide it instead.
+No.
+Hide is a separate action, not a way to fulfill Bone Skewer's instruction to play the unit.<Rule number="811.1.c.1" />
+Bone Skewer instructs the opponent to play the unit as a limited action, following the normal play process except where the effect says otherwise.<Rule number="419.3" /><Rule number="419.3.b" />
 
 ## Can a unit played for free by Bone Skewer still get an effect for paying an optional additional cost? [#optional-additional-costs]
 
-Yes, as declaring the intent to pay is what satisfies the condition, not the amount actually spent.
+Yes.
 
-The phrase "any and all costs" in Bone Skewer's text is intentionally broader than the standard "ignoring its cost" wording.
-Standard cost-ignoring only zeroes out a card's base energy and power costs,<Rule number="356.1.b.1" /> whereas "any and all costs" sets the card's total cost to zero, including non-standard costs like additional costs.<Rule number="356.5.a" />
-Despite this, the opponent may still declare their intention to pay an optional additional cost during step 2 of playing the card — the decision to pay is made before costs are determined.
-Once declared, that additional cost is folded into the total cost, which "any and all costs" then sets to zero, so it's already 0 when it comes time to pay.<Rule number="356.5.a" />
-An optional additional cost is considered paid based on the decision to pay, not the amount actually spent,<Rule number="356.4.f.1" /> so the condition is fully satisfied.
-Any conditional effect tied to "if you paid the additional cost" therefore triggers normally.
+The phrase "any and all costs" in Bone Skewer's text is broader than the standard "ignoring its cost" wording.
+Standard cost-ignoring only zeroes out a card's base energy and power costs.<Rule number="356.1.b.1" />
+
+<Steps>
+<Step>
+The opponent chooses whether to pay an optional additional cost while making the relevant choices for the unit.<Rule number="355.1.a" />
+</Step>
+<Step>
+A chosen additional cost is included when determining the unit's total cost, which Bone Skewer then sets to zero.<Rule number="356.2" /><Rule number="356.5.a" />
+</Step>
+<Step>
+The optional additional cost counts as paid based on that decision, regardless of the amount actually spent.<Rule number="356.4.f.1" />
+</Step>
+</Steps>
 
 <Callout type="idea" title="Example">
 	You play Bone Skewer and choose <Card name="Nami, Headstrong" /> from your opponent's hand.
-	Your opponent is instructed to play Nami to the chosen battlefield, ignoring any and all costs.
-	As part of that process, they declare their intention to pay the optional additional cost of <Calm />.
-	That cost is already 0, so nothing is actually paid — but because they chose to pay it, the condition is met.
-	Nami's triggered ability fires, stunning an enemy unit.
+	Your opponent chooses to pay Nami's optional additional cost of <Calm />, and Bone Skewer sets the resulting total cost to zero.
+	When Nami completes being played, her play effect triggers because the additional cost counts as paid, allowing your opponent to stun an enemy unit.<Rule number="419.4.a" />
 </Callout>
