@@ -4,7 +4,6 @@ import { pageSchema, metaSchema } from 'fumadocs-core/source/schema'
 import { defineConfig, defineDocs } from 'fumadocs-mdx/config'
 import lastModified from 'fumadocs-mdx/plugins/last-modified'
 import { z } from 'zod'
-import { rulingRelationsSchema } from '@/lib/content/ruling-relations-schema'
 import { RUNE_NAMES, TERM_DEFINITIONS } from '@/lib/mdx-vocabulary'
 import { coreRulesConventions, tournamentRulesConventions } from '@/lib/rules/document-family-conventions'
 
@@ -33,7 +32,6 @@ export const docs = defineDocs({
 			authors: z.array(z.string()).optional(),
 			createdAt: z.iso.date().optional(),
 			noindex: z.boolean().optional(),
-			rulingRelations: rulingRelationsSchema.optional(),
 		}),
 	},
 	meta: { schema: metaSchema },

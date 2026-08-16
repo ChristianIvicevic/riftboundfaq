@@ -10,36 +10,25 @@ authors:
 ## Does Abandoned Hall's ability trigger if the spell is countered? [#countered-spell]
 
 No.
-Abandoned Hall's ability triggers "when a player plays a spell," and a countered spell is not considered played.
+Abandoned Hall's "when a player plays a spell" condition is fulfilled only when that spell finishes resolving.<Rule number="419.4.a" />
+A countered spell does not resolve and is not considered played for triggered abilities, so Abandoned Hall's ability is not put on the chain.<Rule number="419.4.a.1" />
 
-A card is only played once the entire play process has finished in its entirety.<Rule number="350.1" />
-Abilities that trigger on playing a card fire when that act has been completed by the card's resolution;<Rule number="419.4.a" /> if a game effect prevents resolution — for example because the spell was countered — the card is not considered to have been played and no abilities that trigger on playing cards fire.<Rule number="419.4.a.1" />
-This follows directly from what countering does: a countered card is cleared from the chain and is not considered to have been played.<Rule number="425.1.b" />
+## Can a unit moved into or away from Abandoned Hall by a spell be targeted? [#movement-eligibility]
 
-## Can a unit moved into or away from Abandoned Hall by a spell be chosen? [#movement-eligibility]
+After the spell resolves, Abandoned Hall can choose only a unit at Abandoned Hall controlled by the player who played that spell.<Rule number="190.6.c" /><Rule number="355.9.b" /><Rule number="355.10" />
 
-Only if it is at Abandoned Hall after the spell fully resolves.
+- **Moved into Abandoned Hall:** The unit can be chosen if the spell's player controls the unit when Abandoned Hall's triggered ability finalizes.
+- **Moved away from Abandoned Hall:** The unit cannot be chosen, even if the spell's player controls the unit, because the unit is no longer at Abandoned Hall.
 
-A card is only considered "played" once the entire play process has finished,<Rule number="350.1" /> which for spells means after all instructions have been executed and the card is placed in the trash.
-Abandoned Hall's triggered ability therefore fires after the spell resolves, not when it is placed on the chain.<Rule number="419.4.a" /><Rule number="383.2.c" />
-By then, a unit moved into Abandoned Hall is present and can be chosen, while a unit moved away no longer qualifies as "a unit they control here."
+Abandoned Hall's trigger condition is not fulfilled until the spell has finished resolving.<Rule number="419.4.a" />
+The resulting ability is then added as a pending item.<Rule number="383.3" /><Rule number="401.1" />
+Abandoned Hall's triggered ability chooses its target when the ability finalizes.<Rule number="402.2" />
 
-## Can a unit replayed here by a spell be chosen by Abandoned Hall's triggered ability? [#replay]
+## Can Abandoned Hall's triggered ability choose a unit that a spell plays there? [#replay]
 
-Yes.
-Spells like <Card name="Arcane Shift" /> and <Card name="Thrill of the Hunt" /> add the unit to the chain as a pending item during their own resolution, pausing its play process while the spell continues.<Rule number="354.2" /><Rule number="354.3" />
-When the spell finishes resolving, it is fully played and Abandoned Hall's triggered ability becomes pending after the unit.<Rule number="350.1" /><Rule number="419.4.a" /><Rule number="383.2.c" />
-Because pending items are finalized in the order they were appended,<Rule number="337.1.b" /> the unit is finalized and placed on the board first — resolving immediately on finalization<Rule number="337.2" /> — before the triggered ability's target is chosen.
-By that point the unit is already present at Abandoned Hall and is a valid choice for the buff.
-
-### Resolution Sequence [#replay-sequence]
-
-Taking <Card name="Arcane Shift" /> as an example:
-
-1. "Banish a friendly unit" — the unit leaves the board.
-2. "then its owner plays it, ignoring its cost" — the unit is added to the chain as a pending item,<Rule number="354.2" /> but its play process pauses while Arcane Shift continues resolving.<Rule number="354.3" />
-3. Arcane Shift finishes resolving and is banished; the spell is now fully played,<Rule number="350.1" /> so Abandoned Hall's triggered ability becomes pending after the unit.<Rule number="419.4.a" /><Rule number="383.2.c" />
-4. Required cleanups run before either pending item can be finalized.<Rule number="334.1" />
-5. Once those outstanding tasks are complete, pending items are finalized in the order they were appended.<Rule number="337.1.b" />
-The unit comes first, resolves immediately upon finalization,<Rule number="337.2" /> and is placed at Abandoned Hall.
-6. Abandoned Hall's triggered ability is finalized next; you choose a target, and the replayed unit is now present here as a valid choice.
+Yes, if the player who played the spell controls that unit when the ability finalizes.
+The spell starts playing the unit during its own resolution, so the unit waits on the chain as a pending item.<Rule number="354.2" /><Rule number="354.3" />
+When the spell finishes resolving, Abandoned Hall's triggered ability is added as a newer pending item.<Rule number="419.4.a" /><Rule number="383.3" /><Rule number="401.1" />
+The unit finalizes before that newer ability because pending items finalize in append order.<Rule number="337.1.b" />
+It immediately resolves and enters Abandoned Hall.<Rule number="337.2" /><Rule number="359.2.c" />
+When the triggered ability later finalizes, it can select the unit played by the spell as its target.<Rule number="190.6.c" /><Rule number="355.9.b" /><Rule number="355.10" /><Rule number="402.2" />

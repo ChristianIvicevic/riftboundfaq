@@ -3,6 +3,8 @@ import type { ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { TERM_DEFINITIONS, type TermName, type TermVariant } from '@/lib/mdx-vocabulary'
 
+const TERM_NAMES = Object.keys(TERM_DEFINITIONS) as TermName[]
+
 const termVariants = cva(
 	'mx-0.5 inline-flex -skew-x-12 items-center justify-center px-2 text-sm font-bold uppercase tracking-tight',
 	{
@@ -58,5 +60,13 @@ function createGameTermComponent(name: TermName) {
 }
 
 export const MDX_TERMS = Object.fromEntries(
-	(Object.keys(TERM_DEFINITIONS) as TermName[]).map((name) => [name, createGameTermComponent(name)]),
+	TERM_NAMES.map((name) => [name, createGameTermComponent(name)]),
 ) as { [K in TermName]: ReturnType<typeof createGameTermComponent> }
+
+const GAME_TERM_COMPONENTS_BY_LABEL = new Map<string, (typeof MDX_TERMS)[TermName]>(
+	TERM_NAMES.map((name) => [TERM_DEFINITIONS[name].label, MDX_TERMS[name]] as const),
+)
+
+export function getGameTermComponentByLabel(label: string) {
+	return GAME_TERM_COMPONENTS_BY_LABEL.get(label)
+}

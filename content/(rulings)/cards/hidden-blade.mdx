@@ -7,28 +7,28 @@ authors:
 - "Christian I. (Near)"
 ---
 
-## If Hidden Blade's kill is replaced, does the target's controller draw? [#draw-if-not-killed]
+## If Hidden Blade's kill is prevented or replaced, does the target's controller draw? [#draw-if-not-killed]
 
-Yes.
-Replacing Hidden Blade's kill does not prevent its linked draw instruction from executing.
-
+If the targeted unit remains on the board, its controller draws 2; if a replacement moves it off the board, no player draws.
 The phrase "its controller" links the draw to the unit affected by the preceding kill instruction.<Rule number="359.3.e.14" />
-Replacing that kill action does not stop the later linked instruction unless it directly references the action itself.<Rule number="359.3.e.14.b" />
-Hidden Blade's draw references the targeted unit's controller, not whether the unit was killed, so the draw still executes.
+If the legal target can't be killed, the [Vendetta FAQ](https://playriftbound.com/en-us/news/rules-and-releases/vendetta-rules-faq-and-clarifications) classifies the kill instruction as negated rather than ignored, so the linked draw still executes.
+Replacing that kill does not itself stop the linked draw because the draw instruction does not refer to the kill action.<Rule number="359.3.e.14.b" />
 
-<Callout type="idea" title="Example">
-	You play Hidden Blade targeting an opponent's unit.
-	They respond with <Card name="Zhonya's Hourglass" />, which replaces the unit's death.
-	The unit is not killed.
-	Because it was still a legal target when Hidden Blade resolved, the opponent draws 2.
+<Callout type="warn" title="Rules citation needed">
+	Core Rules 1.4 still calls instructions prevented by other circumstances "ignored."<Rule number="359.3.e.6" />
+	The linked Vendetta FAQ narrows that term to mistargeting and expressly takes precedence on this point until a later Core Rules Document says otherwise.
 </Callout>
+
+- **The unit remains on the board:** Hidden Blade can identify its controller, and that player draws 2.<Rule number="359.3.e.12.a" />
+  For example, <Card name="Zhonya's Hourglass" /> recalls the unit to base, where it remains on the board under its controller.
+- **The unit moves off the board:** Hidden Blade can no longer identify a controller for that card, so no player draws.<Rule number="359.3.e.12" />
+  For example, a unit previously affected by <Card name="Smite" /> is banished instead when Hidden Blade would kill it.
 
 ## If Hidden Blade's target becomes illegal, does that target's controller draw? [#draw-if-illegal]
 
 No.
-An illegal target is entirely unaffected by the spell, and the draw is no exception.
-
-An illegal target is unaffected by the spell, so Hidden Blade's kill instruction is ignored.<Rule number="359.3.e.5" />
+An illegal target is unaffected by Hidden Blade, so the kill instruction is ignored.<Rule number="359.3.e.5" />
+Hidden Blade's draw is linked to its kill instruction because "its controller" refers to the unit affected by that instruction.<Rule number="359.3.e.14" />
 When an earlier linked instruction is ignored, its later linked instructions are also ignored, so the controller does not draw.<Rule number="359.3.e.14.a" />
 
 <Callout type="idea" title="Example">

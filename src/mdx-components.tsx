@@ -1,3 +1,4 @@
+import { Step, Steps } from 'fumadocs-ui/components/steps'
 import defaultMdxComponents from 'fumadocs-ui/mdx'
 import type { MDXComponents } from 'mdx/types'
 import type { ComponentProps } from 'react'
@@ -17,6 +18,8 @@ const wikiMdxComponents = {
 	// Preserve Fumadocs' card layout components before replacing `Card` below.
 	Tiles: defaultMdxComponents.Cards,
 	Tile: defaultMdxComponents.Card,
+	Steps,
+	Step,
 	Card,
 	CoreRulesDiff,
 	TournamentRulesDiff,

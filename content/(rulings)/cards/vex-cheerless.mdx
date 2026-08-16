@@ -7,27 +7,20 @@ authors:
 - "Christian I. (Near)"
 ---
 
-## Do opponents have to pay resources to play cards from Hidden while Vex, Cheerless is in combat? [#hidden-cost-increase]
+## Does Vex, Cheerless increase the cost of enemy spells played from Hidden? [#hidden-cost-increase]
 
-Yes, cards played from Hidden by your opponents still cost <Energy value={1} /><Universal /> when Vex is in combat.
+Yes, while Vex is in combat, she adds <Energy value={1} /><Universal /> to an enemy spell played from Hidden before discounts are applied.
 
-When a card with Hidden is played from its facedown state, it is played "ignoring its base cost".<Rule number="811.1.b" />
-During step 3 of playing a card ("Determine Total Cost"), the following happens in order:
+Playing a card from Hidden ignores its base cost,<Rule number="811.1.b" /> but Vex's increase is applied afterward.<Rule number="356.1.b.3" />
+Additional costs or other increases can raise the spell's cost further, and later discounts can reduce it.<Rule number="356.2" /><Rule number="356.3" /><Rule number="356.4" />
+This increase does not apply to units or gear played from Hidden because Vex modifies only spell costs.
 
-1. Set base costs to zero.<Rule number="356.1" />
-If an ability or instruction allows you to "ignore" costs, set the base costs to zero.
-Hidden cards played from facedown have their base cost set to <Energy value={0} />.
-2. Apply cost increases.<Rule number="356.3" />
-Vex's ability increases enemy spell costs by <Energy value={1} /><Universal />, which is applied to the total cost even though the base cost is zero.
-3. Apply discounts.<Rule number="356.4" />
-No discounts apply in this scenario.
+## Does Vex, Cheerless reduce Deflect costs when I play spells? [#deflect-cost-reduction]
 
-## Does Vex, Cheerless reduce Deflect costs when you play spells? [#deflect-cost-reduction]
+Yes, while Vex is in combat, her discount applies to <Deflect /> costs when your spell targets an opponent's permanent.
 
-Yes, the cost reduction applies to <Deflect /> costs when you target an opponent's permanent while she's in combat.
-
-<Deflect /> is a mandatory additional cost.<Rule number="356.2.a.2" /><Rule number="809.1.d" />
-When you play a friendly spell that targets an opponent's permanent with <Deflect />, that additional cost is added before Vex's discount is applied.<Rule number="356.2" /><Rule number="356.4" />
+<Deflect /> is a mandatory additional cost.<Rule number="356.2.a.2" />
+When your spell targets an opponent's permanent with <Deflect />, that additional cost is added before Vex's discount is applied.<Rule number="809.1.d" /><Rule number="356.2" /><Rule number="356.4" />
 
 Vex's discount can offset resources added by <Deflect /> because discounts can reduce additional costs.<Rule number="356.4.f" />
-However, her discount cannot reduce the spell's resulting cost below her printed minimum of <Energy value={1} />.<Rule number="356.4.e" />
+Vex's discount cannot reduce the spell's cost below Vex's printed minimum of <Energy value={1} />, but another total-cost discount applied afterward can reduce it further.<Rule number="356.4.d.1" /><Rule number="356.4.e" />

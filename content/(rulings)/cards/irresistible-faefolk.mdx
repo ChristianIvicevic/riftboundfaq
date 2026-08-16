@@ -7,35 +7,27 @@ authors:
 - "Christian I. (Near)"
 ---
 
-## If I move Irresistible Faefolk to an open battlefield and pull an enemy unit there, who is the attacker? [#combat-attacker]
+## If Irresistible Faefolk moves to an uncontested, uncontrolled battlefield outside a showdown and pulls an enemy unit there, who is the attacker? [#combat-attacker]
 
-You — the Irresistible Faefolk player — are the attacker.
+Irresistible Faefolk's controller is the attacker.
+Irresistible Faefolk reaches the battlefield before its triggered ability can pull the enemy unit.<Rule number="383.2.c" />
+It contests that battlefield for its controller because no one controls it and it was not already contested.<Rule number="190.3.a.1" />
 
-When Irresistible Faefolk moves to an open (uncontrolled) battlefield, that move applies the contested status to the battlefield.<Rule number="450" /><Rule number="190.3.a" />
-Irresistible Faefolk's trigger resolves after the cleanup caused by its own move, moving the enemy unit to that battlefield.
-During the cleanup following the enemy unit's move, combat is staged because opposing units are now present at the contested battlefield.<Rule number="319.8" /><Rule number="323.9" />
-When combat opens, the attacker is defined as the player whose unit(s) applied the contested status.<Rule number="464.2.c.1" />
-That is you — the player who moved Irresistible Faefolk.
-The opponent whose unit was pulled in is the defender.<Rule number="464.2.c.2" />
+Its ability then pulls the enemy unit there.
+With opposing units now at the contested battlefield, the next cleanup marks it for combat.<Rule number="319.8" /><Rule number="323.9" />
+When that combat begins, Irresistible Faefolk's controller is the attacker and the pulled unit's controller is the defender because Irresistible Faefolk was the unit that contested the battlefield.<Rule number="464.2.c.1" /><Rule number="464.2.c.2" />
 
 ## If I play Irresistible Faefolk directly to a battlefield, does its ability trigger? [#playing-vs-moving]
 
-No — playing a unit to a battlefield is not a move, so the ability does not trigger.
-
+No.
 A move is defined as a permanent changing its position from one location on the board to another.<Rule number="446.1" />
-Playing a card involves it entering the board from a non-board zone (such as your hand), which is a zone change, not a move.<Rule number="446.2" />
-Because Irresistible Faefolk's ability specifically triggers when it *moves* to a battlefield, playing it directly there does not satisfy that trigger condition.
+When you play Irresistible Faefolk, it enters the board from a non-board zone (such as your hand), which is a zone change, not a move.<Rule number="446.2" />
 
 ## If an opponent responds to my move trigger by removing Irresistible Faefolk from the battlefield, does the enemy unit still move? [#removed-in-response]
 
-Yes — the enemy unit still moves to that battlefield.
+Yes, removing Irresistible Faefolk by itself does not stop the enemy unit from moving.
+Removing Irresistible Faefolk is not a counter instruction.<Rule number="425.1" /><Rule number="425.2.a" />
+Its already-finalized ability remains on the chain and executes like a spell.<Rule number="406.5" />
 
-Irresistible Faefolk's trigger condition is moving to a battlefield, and "that battlefield" in the effect is a referent to the battlefield named in that trigger condition.
-Information referenced from a trigger condition is checked when the trigger condition is fulfilled, not when the ability resolves.<Rule number="359.3.f.3" />
-That means "that battlefield" was already fixed the moment Irresistible Faefolk moved there and placed the ability on the chain.
-
-Suppose an opponent responds to the triggered ability by playing <Card name="Gust" /> (or similarly, <Card name="Star-Crossed" />), targeting Irresistible Faefolk itself to return it to your hand.
-Irresistible Faefolk returns to your hand, but the triggered ability is unaffected — it's already an independent item on the chain, and the battlefield it references was fixed at trigger time.
-When it resolves, it moves an enemy unit to that battlefield, even though Irresistible Faefolk is no longer there.
-
-This differs from information derived from an ability's source or targets, which is generally checked when the referencing instruction executes and may become unavailable before resolution.<Rule number="359.3.f.1" /><Rule number="359.3.f.2" />
+Irresistible Faefolk's trigger condition identifies the battlefield it moved to, so the ability records that battlefield when it triggers.<Rule number="359.3.f.3" />
+Removing Irresistible Faefolk later does not erase that destination, so the chosen enemy unit can still move there when the ability resolves.

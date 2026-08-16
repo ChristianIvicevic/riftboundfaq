@@ -4,60 +4,39 @@ createdAt: "2026-01-23"
 reviewedCoreRulesVersion: "1.4"
 authors:
 - "Christian I. (Near)"
-rulingRelations:
-  unit-play-reactions:
-  - "/mechanics/ambush"
-  empty-battlefield-control:
-  - "/cards/arcane-shift"
-  - "/cards/temporal-breach"
-  - "/cards/thrill-of-the-hunt"
-  - "/cards/glasc-mixologist"
-  pending-item-order:
-  - "/cards/promising-future"
-  - "/cards/abandoned-hall"
-  - "/cards/baited-hook"
-  - "/cards/ruined-rex"
 ---
 
 ## Can I react to units being played? [#unit-play-reactions]
 
-No, as units enter the board immediately without priority being passed to other players.
+You cannot react to another player's unit before it enters the board.
+Finalizing the unit does not pass priority; the unit instead resolves immediately and enters the board.<Rule number="337.1.a" /><Rule number="337.2" /><Rule number="359.2.c" />
 
-Unlike spells, units resolve the moment they are finalized and do not open a window of opportunity for reactions.<Rule number="337.2" /><Rule number="359.2" />
+The unit's controller has one exception: while paying the unit's costs, they may activate an ability with <Reaction /> that uses <Add />.<Rule number="357.1.a" />
+That ability finalizes and resolves immediately during payment.<Rule number="444.2.c" />
 
-If the unit has a play effect ("When you play me…"), or if another permanent's triggered ability fires as it enters the board, those triggered abilities are placed on the chain as pending items *after* the unit has already entered.<Rule number="383.4.a.2" /><Rule number="383.2.c" /><Rule number="383.3" />
-Once those pending items are finalized with no further items pending, priority passes and players may react<Rule number="337.4" /> — but by that point, the unit is already in play.
+After the unit enters, its play effect and any other fulfilled triggered abilities are put on the chain.<Rule number="383.2.c" /><Rule number="383.3" /><Rule number="383.4.a.2" />
+You may react once those abilities finalize and priority is granted, but the unit is already on the board by then.<Rule number="337.4" /><Rule number="338.1.a" /><Rule number="338.1.a.2" />
 
 ## In what order are multiple pending chain items finalized and resolved? [#pending-item-order]
 
-Pending items are finalized in the order they were added, starting with the oldest.<Rule number="337.1" /><Rule number="337.1.b" />
-A unit, gear, or ability that adds resources resolves immediately when it finalizes.<Rule number="337.2" />
-Other finalized items remain on the chain while the remaining pending items are processed.
+Pending items undergo finalization from oldest to newest, finalized items still waiting on the chain resolve from newest to oldest, and units, gear, and <Add /> abilities resolve as soon as they finalize.
 
-Players do not receive priority until no pending items remain.<Rule number="337.3" /><Rule number="337.4" />
-After players pass priority, finalized chain items resolve in the opposite direction, starting with the newest.<Rule number="340.1" />
+- **Pending items:** Take them through finalization in the order they were added, from oldest to newest, until each item finalizes or leaves the chain.<Rule number="337.1" /><Rule number="337.1.b" />
+- **Finalized items:** Among those that remain on the chain, the newest resolves first.<Rule number="340.1" />
+- **Immediate resolution:** Units, gear, and abilities that use <Add /> resolve when they finalize, even if other pending items still need to finalize.<Rule number="337.2" />
 
 ## Can I play a reaction after one, but not all, items on the chain have resolved? [#partial-chain-reactions]
 
-Yes, once you have gained priority.
-The chain does not have to resolve in its entirety prior to (re)gaining priority, unlike in some other TCGs.
-
-Any time the most recent item on the chain resolves and there are no pending items, the controller of the newest item on the chain gains priority.<Rule number="340.4" />
-
-<Callout type="idea" title="Example">
-	You put <Card name="Singularity" /> on the chain targeting an opponent's unit.
-	Your opponent reacts by putting their <Card name="Wind Wall" /> on the chain, attempting to counter the Singularity.
-	In response, you play <Card name="Stupefy" />, in the hopes of drawing into a counterspell of your own.
-	Once Stupefy resolves and you draw a card, priority is back to your opponent as the most recent item is their Wind Wall.
-	After they pass priority, you can react once again and play your own counterspell, assuming you drew it off of the Stupefy.
-</Callout>
+Yes.
+If another finalized item remains after one item resolves, the newest remaining item's controller receives priority before it resolves once any pending items have finalized or left the chain.<Rule number="337.1" /><Rule number="340.3" /><Rule number="340.4" />
+That player may use this priority to play a legally timed <Reaction />.<Rule number="338.1.a" /><Rule number="338.1.a.2" />
+The chain therefore does not have to resolve in its entirety once resolution begins; a new item can be added between two resolutions.
 
 ## Outside a showdown, do I lose control of a battlefield as soon as my last unit leaves it? [#empty-battlefield-control]
 
-No, not immediately.
+If a chain is still in progress or combat is ongoing at that battlefield, your last unit leaving does not make you lose control during the resulting cleanup.
 
-Outside a showdown, control of an empty battlefield is checked during a cleanup, not at the moment the last unit leaves.
-You lose control only if the battlefield is still empty and the turn is in an open state.<Rule number="190.4.c" /><Rule number="323.6" />
-
-If the chain still contains an item when a cleanup occurs, the turn is in a closed state and you keep control through that cleanup.<Rule number="309.1" />
-You can lose control during a later cleanup after the turn returns to an open state if the battlefield remains empty.
+Battlefield control is checked during cleanup.
+An item remaining on the chain keeps the empty battlefield under your control.<Rule number="323.6" /><Rule number="330" /><Rule number="309.1" />
+An ongoing combat at that battlefield also prevents control of that battlefield from changing.<Rule number="190.4.b" />
+Removing the chain's final item causes a later cleanup to check again; if the battlefield is still empty and no combat is ongoing there, you lose control then.<Rule number="190.4.c" /><Rule number="319.5" /><Rule number="309.2" />

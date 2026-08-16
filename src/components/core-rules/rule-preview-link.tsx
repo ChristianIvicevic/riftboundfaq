@@ -40,7 +40,7 @@ export function RulePreviewLink({
 		<Popover.Root onOpenChange={handleOpenChange}>
 			<Popover.Trigger
 				aria-label={`Preview rule ${number}`}
-				className="cursor-pointer border-0 bg-transparent p-0 text-nowrap text-fd-primary no-underline"
+				className="cursor-pointer border-0 bg-transparent p-0 text-nowrap text-fd-muted-foreground no-underline hover:text-fd-primary focus-visible:text-fd-primary"
 				openOnHover
 			>
 				[{number}]

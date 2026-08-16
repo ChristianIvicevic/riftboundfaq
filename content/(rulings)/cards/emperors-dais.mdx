@@ -9,18 +9,22 @@ authors:
 
 ## When do I pay 1 energy and return a unit for Emperor's Dais? [#ability-finalization-cost]
 
-You pay the energy and return the unit while the triggered ability is being finalized, before opponents can react.
+During finalization, you decide whether to use the ability<Rule number="383.3.a" /> and, if you do, pay <Energy value={1} /> and return the unit.<Rule number="383.3.b" /><Rule number="383.3.b.1" />
+Both actions form one inseparable base cost, so you must complete them together for the ability to finalize.<Rule number="740.4.a" />
+The pending ability is removed without finalizing if no legal unit can be chosen<Rule number="402.4" /> or if you decline the complete cost.<Rule number="404.2" />
+While paying the energy, you may activate an eligible <Add /> ability with <Reaction /> to provide it.<Rule number="444.2.c" />
 
-<Callout type="info" title="Core Rules 1.4 errata">
-	Emperor's Dais received a functional errata alongside the Core Rules 1.4 update.
-	Older printings separate "pay <Energy value={1} /> and return a unit" from "If you do, play a 2 Might Sand Soldier unit token"; its updated text joins them using "to" instead.
-	This makes the energy payment and unit return parts of a single cost performed while finalizing the ability, so the unit can no longer be returned without also paying the energy.
+The unit you return is part of the cost rather than a target, and it returns to its owner's hand during finalization.<Rule number="355.10.c" /><Rule number="355.10.c.1" />
+If you have paid the cost, the ability finalizes and opponents may then react before it resolves.<Rule number="406.2" /><Rule number="406.4" />
+
+<Callout type="warn" title="Errata">
+	Emperor's Dais received functional errata.
+	Older printings connect the Sand Soldier instruction with "If you do, play"; the current text uses "to play" instead.
+	This changes the energy payment and unit return from instructions performed during resolution into one cost completed while finalizing the ability.
 </Callout>
 
-Because "you may" is the first part of the effect, you choose whether to perform the ability during finalization.<Rule number="383.3.a" />
-The immediately following "pay <Energy value={1} /> and return a unit ... to play" is a cost within instructions, so both actions form the triggered ability's base cost and must be completed for the ability to finalize.<Rule number="383.3.b" /><Rule number="383.3.b.1" /><Rule number="404.1" />
-You may activate <Add /> reactions while paying the energy portion of this cost.<Rule number="444.2.c" />
+## What happens if Emperor's Dais leaves before its ability resolves? [#source-location]
 
-Returning the unit is part of the cost, so that unit is not a target and returns to its owner's hand during finalization rather than resolution.<Rule number="355.10.c.1" />
-If you cannot or choose not to pay the entire cost, the ability does not finalize; you cannot return the unit without also paying the energy.<Rule number="404.2" />
-If you complete the cost, the ability is placed on the chain; when it resolves, you play a 2 Might Sand Soldier unit token at Emperor's Dais.
+A battlefield token that replaces Emperor's Dais still supplies the "here" location for its Sand Soldier, but if Emperor's Dais leaves without replacement, the Sand Soldier cannot be played because "here" no longer identifies a location.
+The replacing token is treated as the same game object as Emperor's Dais.<Rule number="438.1.a" />
+Without a replacement, Emperor's Dais has no location when "here" is checked as the instruction executes.<Rule number="359.3.e.12" /><Rule number="359.3.f.1" /><Rule number="359.3.f.2" />
