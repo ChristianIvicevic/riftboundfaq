@@ -72,7 +72,7 @@ For example, <Accelerate /> remains available because it is an optional addition
 The attempted play is cancelled, and the unit returns to its owner's banishment.
 Temporal Breach sets only the unit's base energy and power costs to zero, so mandatory additional costs must still be paid.<Rule number="356.1.b.1" /><Rule number="356.1.b.3" /><Rule number="356.2.a.1" />
 If the owner cannot pay one, the play fails its cost check.<Rule number="358.2" />
-The play is then cancelled and its actions are undone, returning the unit from the chain to its owner's banishment without undoing Temporal Breach's earlier, completed instruction.<Rule number="056.2" /><Rule number="354" /><Rule number="358.5" />
+The play is then cancelled and its actions are undone, returning the unit from the chain to its owner's banishment without undoing Temporal Breach's earlier, completed instruction.<Rule number="354" /><Rule number="358.5" />
 
 <Callout type="idea" title="Example">
   If Temporal Breach banishes <Card name="Cruel Patron" /> and its owner has no other friendly unit, they can't pay Cruel Patron's mandatory additional cost to kill a friendly unit.
@@ -86,15 +86,15 @@ Hide is a separate action, not a way to play a card.<Rule number="811.1.c.1" />
 Playing puts the unit on the chain for finalization, while hiding would put it facedown at a battlefield.<Rule number="419.1" /><Rule number="421.1" />
 The unit is also in banishment, but <Hidden /> permits hiding only from hand or the champion zone.<Rule number="811.1.b" />
 
-## If Temporal Breach banishes and replays my only unit at a battlefield, can I score there on my opponent's turn? [#score-on-opponents-turn]
+## Can I conquer a battlefield again on my opponent's turn if Temporal Breach replays the only unit I control there and I own that unit? [#score-on-opponents-turn]
 
-No, because the pending replay keeps the chain in a closed state through cleanup, so you do not lose control of the battlefield.
+No. The pending replay remains on the chain through cleanup and keeps the turn in a closed state, so you do not lose and regain control of the battlefield.<Rule number="330" /><Rule number="331.1" /><Rule number="334.1" />
 Losing control of an empty battlefield during cleanup requires the turn to be in an open state.<Rule number="190.4.c" /><Rule number="323.6" />
 
-1. Banishment makes the battlefield empty and incurs a cleanup, but that cleanup waits for Temporal Breach to finish resolving.<Rule number="319.6" /><Rule number="321.1" />
+1. Banishment leaves you with no units at the battlefield and incurs a cleanup, but that cleanup waits for Temporal Breach to finish resolving.<Rule number="319.6" /><Rule number="321.1" />
 2. The replay instruction moves the unit to the chain as a pending item, where its play process also waits for Temporal Breach to finish.<Rule number="354" /><Rule number="354.2" /><Rule number="354.3" />
-3. The pending unit keeps the chain in existence and the turn closed throughout the cleanup, so you retain control.<Rule number="330" /><Rule number="331.1" />
-4. After outstanding tasks finish, the unit finalizes and returns to the same battlefield.<Rule number="334.2" /><Rule number="337.1" /><Rule number="359.2.c" />
+3. The pending unit remains on the chain and keeps the turn closed throughout the cleanup, so you retain control.<Rule number="330" /><Rule number="331.1" /><Rule number="334.1" />
+4. After outstanding tasks finish, you play and control the new unit as it returns to the same battlefield.<Rule number="124" /><Rule number="191.1" /><Rule number="191.3" /><Rule number="334.2" /><Rule number="337.1" /><Rule number="359.2.c" />
 
 Because you never lose and regain control, this sequence does not let you conquer the battlefield.<Rule number="469.1" />
 
