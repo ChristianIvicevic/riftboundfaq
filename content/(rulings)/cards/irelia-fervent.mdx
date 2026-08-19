@@ -40,17 +40,18 @@ An already-ready Irelia cannot be readied again, so no readying event occurs and
 
 ## Does a Repeat spell targeting Irelia, Fervent for both instructions give her +1 might twice? [#repeat-targeting-twice]
 
-Yes, if both Repeat choices target Irelia, each choice triggers her ability separately.
+Yes, if Irelia's controller chooses her for both Repeat executions, both resulting abilities resolve, and neither +1 might instruction is ignored.
 Paying <Repeat /> makes the spell execute its instructions an additional time, with choices made separately for each execution.<Rule number="820.1.d" /><Rule number="820.2" /><Rule number="820.2.a" />
-Choosing Irelia for both executions therefore targets her twice.<Rule number="355.7" />
+Irelia's ability triggers only when her controller is responsible for choosing her.<Rule number="411.1" /><Rule number="411.4" />
+The spell targets Irelia separately each time its controller chooses her.<Rule number="355.7" />
 After the spell finalizes, one instance of Irelia's triggered ability is added as a pending item for each targeting event.<Rule number="383.4.b.2" /><Rule number="383.4.b.3" />
+If both resulting abilities resolve and can execute their instructions, each gives Irelia +1 might this turn.<Rule number="406.5" /><Rule number="359.3.e.6" />
 
 See [What does Repeat repeat?](/mechanics/repeat#repeated-instructions) for the complete repeated-instruction and choice procedure.
 
 <Callout type="idea" title="Example">
-	You play <Card name="Feral Strength" /> and pay its <Repeat /> cost, choosing Irelia for both instructions.
+	You control Irelia, play <Card name="Feral Strength" />, and pay its <Repeat /> cost, choosing her for both instructions.
 	After Feral Strength finalizes, Irelia's ability triggers twice — once per targeting event — and both triggers are added to the chain.
-	When her triggers resolve, she receives +1 and +1 from her own ability.
-	When the spell resolves, Irelia receives +2 and +2 from the spell's two instructions.
-	She gets +6 might total this turn.
+	If both triggers resolve and their instructions aren't ignored, she receives +1 and +1 from her own ability.
+	If the spell also resolves and Irelia is a legal target for both instructions, she receives +2 and +2 from those instructions, for +6 might total this turn.
 </Callout>
