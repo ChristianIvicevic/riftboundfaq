@@ -38,7 +38,8 @@ See [In what order are multiple pending chain items finalized and resolved?](/ge
 Taking <Card name="Arcane Shift" /> replaying its controller's own unit as an example:
 
 1. Arcane Shift banishes the friendly unit.
-2. Its replay instruction moves the unit to the chain as a pending item, but the play process waits while Arcane Shift continues resolving.<Rule number="354.2" /><Rule number="354.3" />
+2. The card's owner starts playing it, moving it to the chain as a pending item.<Rule number="354.2" /><Rule number="419.3" />
+   The play process waits while Arcane Shift continues resolving.<Rule number="354.3" />
 3. Arcane Shift deals its damage, banishes itself, and finishes resolving.
 4. Abandoned Hall's trigger condition is now fulfilled, so its ability is added after the unit as another pending item.<Rule number="383.2.c" /><Rule number="383.3" /><Rule number="419.4.a" />
 5. After outstanding tasks finish, the unit finalizes before Abandoned Hall's newer pending ability.<Rule number="334.2" /><Rule number="337.1.b" />
