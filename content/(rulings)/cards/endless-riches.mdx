@@ -5,6 +5,9 @@ reviewedCoreRulesVersion: "1.4"
 galleryLink: "https://playriftbound.com/en-us/card-gallery/#card-gallery--ven-022-166"
 authors:
 - "Christian I. (Near)"
+rulingRelations:
+  hide-from-trash:
+  - "/general-rules/playing-cards"
 ---
 
 ## How long does Endless Riches make you skip your Draw Phase? [#draw-phase-duration]
@@ -15,21 +18,22 @@ You skip every Draw Phase you would have for as long as Endless Riches remains o
 Passive abilities of permanents become active when the permanent enters the board and are typically active only while it remains there.<Rule number="359.2.a" /><Rule number="365.1" />
 Once Endless Riches leaves the board, this ability is no longer active, so your later Draw Phases occur normally.
 
-This is not a delayed ability that applies only to your next Draw Phase or only during a particular turn.
-Delayed abilities specify the window during which they apply,<Rule number="390" /> but Endless Riches specifies no such window.
-
 ## Can I hide cards from my trash while Endless Riches is on the board? [#hide-from-trash]
 
 No, Endless Riches does not allow you to hide cards from your trash.
 
-Endless Riches grants permission only to play cards from your trash, and hiding a card is not a subset of playing it.<Rule number="811.1.c.1" />
+Endless Riches grants permission only to play cards from your trash.
+Hiding is a separate action that is normally available only from your hand or Chosen Champion zone.<Rule number="811.1.b" /><Rule number="811.1.c.1" />
+
+See [What does "play" mean on a card?](/general-rules/playing-cards#play-definition) for the complete distinction between playing and hiding.
 
 ## Where does a spell played by Fizz, Trickster or Kai'Sa, Evolutionary go while Endless Riches is in play? [#recycle-destination]
 
-It is recycled.
-The "then recycle it" text on <Card name="Fizz, Trickster" /> and <Card name="Kai'Sa, Evolutionary" /> creates a delayed replacement effect that replaces the spell leaving the chain with recycling it.<Rule number="390.3.a" />
-Endless Riches also creates a replacement effect that would replace the spell going to the trash with banishing it.
+If the spell's own effect instructs it to leave the chain during resolution, follow that instruction, except Endless Riches banishes the spell if it would go to the trash; otherwise, if the finalized spell leaves the chain for any reason, it is recycled to the bottom of its owner's main deck.<Rule number="416.1" /><Rule number="416.1.a" /><Rule number="416.1.c" />
+The "then recycle it" text on <Card name="Fizz, Trickster" /> and <Card name="Kai'Sa, Evolutionary" /> creates a delayed replacement effect for a finalized spell leaving the chain other than through its own effect.<Rule number="390.3.a" />
+Endless Riches creates another replacement effect that would replace the spell going to the trash with banishing it.<Rule number="369.1" />
 
-The result is the same regardless of the order in which the spell's controller applies these replacement effects.<Rule number="372" />
+When both replacement effects apply to a spell that would go to the trash, the spell's controller chooses the order in which to apply them.<Rule number="372" />
+Either order recycles the spell.
 If the delayed replacement is applied first, the spell is recycled instead of going to the trash, so Endless Riches no longer applies.
 If Endless Riches is applied first, the spell would be banished instead of going to the trash, but it is still leaving the chain, so the delayed replacement replaces that event with recycling it.<Rule number="370.2" />
