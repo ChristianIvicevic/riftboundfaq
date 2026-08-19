@@ -9,37 +9,33 @@ authors:
 
 ## If Heedless Resurrection is countered, is the killed unit returned? [#countered-additional-cost]
 
-No, as the kill is an additional cost and countering a spell never refunds costs already paid.
-
-Killing a friendly unit is an additional cost required to play Heedless Resurrection.
-A countered spell does nothing and is cleared from the chain.<Rule number="425.1.a" />
-Countering does not refund any costs paid to play a card, including additional costs.<Rule number="425.1.c" /><Rule number="425.1.c.1" />
-That cost is paid before the spell resolves, so the killed unit is not returned.
+No.
+Killing a friendly unit is an additional cost paid while playing Heedless Resurrection.<Rule number="356.7" /><Rule number="357.2" />
+Countering the spell later does not refund that cost, so the killed unit is not returned.<Rule number="425.1.c" /><Rule number="425.1.c.1" />
+See [Are paid costs refunded if a card or ability is countered?](/general-rules/costs-and-payments#countered-costs) for the general rule.
 
 ## Can I kill a unit with Heedless Resurrection's cost and then resurrect that same unit? [#self-resurrection]
 
-No, as the resurrection target must already be in your trash when you choose it, before the kill cost is paid.
+No.
+The resurrection target must already be a valid unit in a trash when you choose it during step 2 of finalization.<Rule number="355.5" /><Rule number="355.8" /><Rule number="355.9.a" />
 
-When playing Heedless Resurrection, you must choose the unit to resurrect during step 2 of finalization — the "Make relevant choices" step.<Rule number="355.5" />
-At that point, the unit you intend to kill is still on the board, not yet in your trash.
-"A unit from your trash" must be in your trash to be a valid target,<Rule number="355.9.a" /> so a living unit on the board cannot be chosen.
-The additional cost — killing a friendly unit — is paid in step 4,<Rule number="357.2" /> after all choices are already locked in.<Rule number="355.15" />
+At that point, the unit you intend to kill is still on the board because the additional cost is not paid until step 4.<Rule number="357.2" />
+The target choice is already locked in before that payment, so you cannot switch to the killed unit afterward.<Rule number="355.15" />
+See [What is the process for playing a card?](/general-rules/playing-cards#play-process) for the complete play sequence.
 
 ## Does Heedless Resurrection's "ignoring its cost" instruction also ignore the resurrected unit's additional costs, such as Accelerate? [#ignore-additional-costs]
 
 No.
 "Ignoring its cost" only sets the resurrected unit's base energy and power costs to zero; additional costs are not waived.
 
-When Heedless Resurrection instructs you to play a unit from your trash "ignoring its cost," that instruction sets the resurrected unit's base energy cost and base power cost to zero.<Rule number="356.1.b.1" />
-Additional costs — such as the optional <Accelerate /> cost — are applied in a separate step after the base cost is zeroed out and are unaffected by the "ignoring its cost" instruction.<Rule number="356.1.b.3" />
+When Heedless Resurrection instructs you to play a unit from the trash "ignoring its cost," that instruction sets the resurrected unit's base energy cost and base power cost to zero.<Rule number="356.1.b.1" />
+Additional costs, such as the optional <Accelerate /> cost, are applied in a separate step after the base cost is zeroed out and are unaffected by the instruction.<Rule number="356.1.b.3" /><Rule number="805.2" />
 If the resurrected unit has an optional additional cost you may choose whether to pay it;<Rule number="356.2.b.1" /> if it has a mandatory additional cost you must pay it.<Rule number="356.2.a.1" />
+See [What costs still apply when I play a card ignoring one or more of its costs?](/general-rules/costs-and-payments#ignored-costs) and [What are optional additional costs?](/general-rules/costs-and-payments#optional-additional-costs) for the general procedures.
 
 ## If Heedless Resurrection gains Repeat, do I need to kill a friendly unit for each repetition? [#repeat-cost]
 
 No.
-The additional cost to kill a friendly unit is paid once, as part of playing the spell.
-
-Additional costs like this are paid during step 4 of playing the card,<Rule number="357.2" /> not during resolution.
-<Repeat /> makes the spell's instructions execute an additional time upon resolution,<Rule number="820.1.d.1" /> but does not re-run costs that were already paid while playing — "as you play me" instructions execute once, before the <Repeat /> execution ever occurs.<Rule number="135.2.b.3" />
-
-No matter how many times <Repeat /> is paid, the spell is only played once,<Rule number="820.3.a" /> so you kill only one friendly unit.
+The additional cost to kill a friendly unit is paid once while playing Heedless Resurrection.<Rule number="357.2" />
+<Repeat /> executes the spell's effect instructions additional times during resolution, but the spell is still played only once.<Rule number="820.1.d.1" /><Rule number="820.3.a" />
+It therefore does not repeat the earlier kill cost.

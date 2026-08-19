@@ -10,51 +10,48 @@ authors:
 ## If I target Irelia, Fervent with a spell or ability and it gets countered, does she still get +1 might? [#targeting-before-counter]
 
 Yes.
+Irelia becomes a target while the spell or ability is making its relevant choices during finalization.<Rule number="355.5" /><Rule number="355.7" />
+After that item finalizes, her triggered ability is added as a pending item and finalized before players receive priority.<Rule number="383.4.b.2" /><Rule number="383.4.b.3" /><Rule number="337.3" /><Rule number="337.4" />
+Countering the original spell or ability afterward prevents only that item from resolving, not Irelia's already-triggered ability.<Rule number="425.1.a" />
 
-Irelia is chosen as a target during step 2 of playing the spell or ability — the "Make relevant choices" step.<Rule number="355.5" /><Rule number="355.7" />
-This happens before the spell or ability is finalized on the chain and before opponents have any opportunity to react.
-After the spell or ability finishes finalizing, her targeting effect is added to the chain as a pending item.<Rule number="383.4.b.2" /><Rule number="383.4.b.3" />
-That trigger is finalized before opponents receive an opportunity to react.<Rule number="337.3" /><Rule number="337.4" />
-The trigger is not contingent on the spell or ability that caused it successfully resolving.
-Countering the spell or ability only prevents it from resolving<Rule number="425.1.a" /> — it has no bearing on Irelia's already-triggered ability.
+See [Can triggered abilities trigger on an opponent's turn without Reaction?](/general-rules/abilities#triggered-ability-timing) for the choices and costs that a pending triggered ability must complete before it finalizes.
 
-<Callout type="info">
+<Callout type="idea" title="Example">
 	<Card name="Blade Dancer" /> works the same way.
 	Her triggered ability reads "When you choose a friendly unit, you may exhaust me and pay <Universal /> to ready it."
-	It ends up on the chain before the original spell can be countered.
+	The ability is added before the original spell can be countered.
+	If Blade Dancer's controller chooses to perform the ability and pays its costs, it also finalizes before the original spell can be countered.
 </Callout>
 
 ## Does Blade Dancer's ability trigger Irelia, Fervent's +1 might? [#blade-dancer]
 
-Not from choosing — but she can still trigger from being readied if she was exhausted.
-
-<Card name="Blade Dancer" /> does not choose a unit — it does not target.<Rule number="355.10.d" /><Rule number="355.10.d.1" />
-"It" in "ready it" deterministically refers back to the unit already identified as Blade Dancer's trigger condition, with no separate choice made by the player.
-Irelia's ability can only trigger from Blade Dancer if she was exhausted and is readied by it — and only through the readying half of her ability, not the choosing half.<Rule number="415.1" />
+Only if Blade Dancer's ability successfully readies Irelia; it does not trigger her by choosing her.
+"It" in "ready it" automatically identifies the friendly unit from Blade Dancer's trigger condition instead of making another choice, so that unit is not a target of the ability.<Rule number="355.10.d" /><Rule number="355.10.d.1" />
+Blade Dancer's controller must choose to perform the ability and pay its costs before it can finalize.<Rule number="383.3.a" /><Rule number="404.1" />
+If the ability resolves and successfully readies an exhausted Irelia, that action fulfills the other half of her trigger condition.<Rule number="415.1" />
+An already-ready Irelia cannot be readied again, so her ability does not trigger.<Rule number="415.1.b" /><Rule number="415.1.c" />
 
 ## Does Irelia, Fervent get +1 might when she readies during the Awaken Phase? [#awaken-phase-readying]
 
-Yes, but only if she was exhausted and actually transitions to the ready state.
-
-During the Awaken Phase at the start of each turn, the turn player readies all game objects they control that are able to be readied.<Rule number="315.1.b" />
-Readying is the action of marking a game object as available for action.<Rule number="415.1" />
-If Irelia was exhausted, she transitions to ready and her trigger fires.
-
-If she is already ready at the start of your turn, she cannot be readied again<Rule number="415.1.b" /> — no readying event occurs and the trigger does not fire.
+Yes, but only if she was exhausted and becomes ready.
+During the Awaken Phase, the turn player readies every game object they control that can be readied.<Rule number="315.1.b" />
+That action fulfills Irelia's trigger condition when it changes her from exhausted to ready.<Rule number="415.1" />
+An already-ready Irelia cannot be readied again, so no readying event occurs and her ability does not trigger.<Rule number="415.1.b" /><Rule number="415.1.c" />
 
 ## Does a Repeat spell targeting Irelia, Fervent for both instructions give her +1 might twice? [#repeat-targeting-twice]
 
-Yes, as choosing her for each instruction is a separate triggering event.
+Yes, if Irelia's controller chooses her for both Repeat executions, both resulting abilities resolve, and neither +1 might instruction is ignored.
+Paying <Repeat /> makes the spell execute its instructions an additional time, with choices made separately for each execution.<Rule number="820.1.d" /><Rule number="820.2" /><Rule number="820.2.a" />
+Irelia's ability triggers only when her controller is responsible for choosing her.<Rule number="411.1" /><Rule number="411.4" />
+The spell targets Irelia separately each time its controller chooses her.<Rule number="355.7" />
+After the spell finalizes, one instance of Irelia's triggered ability is added as a pending item for each targeting event.<Rule number="383.4.b.2" /><Rule number="383.4.b.3" />
+If both resulting abilities resolve and can execute their instructions, each gives Irelia +1 might this turn.<Rule number="406.5" /><Rule number="359.3.e.6" />
 
-<Repeat /> is functionally "execute the spell's instructions one additional time".<Rule number="820.1.d" />
-When the Repeat cost is paid, choices for both executions are made during the same "Make relevant choices" step of playing the card.<Rule number="820.2" /><Rule number="820.2.a" />
-Choosing Irelia for the first instruction and choosing her for the second target her twice.
-After the spell finalizes, her targeting effect is added to the chain as a pending item once for each targeting event.<Rule number="383.4.b.2" /><Rule number="383.4.b.3" />
+See [What does Repeat repeat?](/mechanics/repeat#repeated-instructions) for the complete repeated-instruction and choice procedure.
 
 <Callout type="idea" title="Example">
-	You play <Card name="Feral Strength" /> and pay its <Repeat /> cost, choosing Irelia for both instructions.
+	You control Irelia, play <Card name="Feral Strength" />, and pay its <Repeat /> cost, choosing her for both instructions.
 	After Feral Strength finalizes, Irelia's ability triggers twice — once per targeting event — and both triggers are added to the chain.
-	When her triggers resolve, she receives +1 and +1 from her own ability.
-	When the spell resolves, Irelia receives +2 and +2 from the spell's two instructions.
-	That's +6 might total this turn.
+	If both triggers resolve and their instructions aren't ignored, she receives +1 and +1 from her own ability.
+	If the spell also resolves and Irelia is a legal target for both instructions, she receives +2 and +2 from those instructions, for +6 might total this turn.
 </Callout>

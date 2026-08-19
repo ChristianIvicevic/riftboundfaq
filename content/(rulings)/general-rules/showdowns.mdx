@@ -16,8 +16,8 @@ rulingRelations:
 
 ## When does a showdown close? [#showdown-close]
 
-Under normal game procedure, a showdown does not close abruptly.
-It ends once all players have consecutively passed focus on an empty chain.<Rule number="348" />
+A showdown closes only after every player passes focus in sequence without playing a spell or activating an ability.<Rule number="347.2.a" /><Rule number="348" />
+It does not close merely because a unit leaves or is killed.
 
 <Callout type="idea" title="Example">
 	You control a battlefield with a 2 might <Card name="Stalwart Poro" /> on it.
@@ -26,34 +26,32 @@ It ends once all players have consecutively passed focus on an empty chain.<Rule
 	Once your opponent gains focus, they play <Card name="Hextech Ray" /> targeting Stalwart Poro.
 	Hextech Ray resolves, marking 3 damage on it.
 	During the resulting cleanup, Stalwart Poro is killed for lethal damage.<Rule number="323.5" />
-	The showdown *does not* end right away and you gain focus as usual.
-	You still have the opportunity to play a legally timed card or ability in an attempt to prevent your opponent from conquering.<Rule number="347.1" />
+	The showdown remains open, and you gain focus when the chain empties.<Rule number="346" />
+	You may still play a legally timed card or ability before players begin passing focus again.<Rule number="347.1" />
 </Callout>
 
-## What happens if another player's unit moves into an existing non-combat showdown? [#non-combat-showdown]
+## What happens if an opposing player's unit moves into an existing non-combat showdown? [#non-combat-showdown]
 
-When a unit controlled by a different player becomes present during a non-combat showdown, combat is staged and the showdown becomes a combat showdown during the cleanup following that unit's arrival.<Rule number="316.8.b.1.a" /><Rule number="323.9" /><Rule number="323.14" />
+When an opposing player's unit becomes present during a non-combat showdown, combat is staged and the showdown becomes a combat showdown during the cleanup following that unit's arrival.<Rule number="316.8.b.1.a" /><Rule number="323.9" /><Rule number="323.14" />
 
-As combat opens, the player who originally applied contested status to the battlefield becomes the attacker,<Rule number="464.2.c.1" /> and the player who moves in during the showdown becomes the defender.<Rule number="464.2.c.2" />
-Their units at that battlefield receive the corresponding designations then,<Rule number="464.2.c.3" /> enabling combat-related keywords such as <Assault /> and <Shield /> and causing attack or defend triggers to happen.
-
-This interaction is commonly called the surprise defender: the player who first contested the battlefield remains the attacker, while the player joining later becomes the defender.
+When combat opens, the player whose units applied contested status is the attacker, and the opposing player is the defender.<Rule number="464.2.c.1" /><Rule number="464.2.c.2" />
+Their units at that battlefield receive the matching attacker or defender designations then.<Rule number="464.2.c.3" />
+Eligible attack and defend triggers are checked when those designations are gained.<Rule number="383.4.e" /><Rule number="383.4.f" />
 
 ## When do attack and defend triggers happen? [#attack-defend-triggers]
 
-Attack and defend triggered abilities (such as "When I attack" or "When I defend") trigger when a unit receives its attacker or defender designation, not necessarily at the start of combat.
-Units already present receive their initial designations when combat opens.<Rule number="464.2.c.3" />
-Units that join an ongoing combat receive their designations during the cleanup following their arrival.
+An attack or defend trigger is checked when its unit or player first gains the matching attacker or defender designation during a combat.<Rule number="383.4.e" /><Rule number="383.4.f" />
+Units already present gain their designations when combat opens, while units that become present later gain them during the cleanup following their arrival.<Rule number="464.2.c.3" /><Rule number="464.2.c.3.a" />
+If the trigger has another condition, that condition must also be fulfilled at that time.<Rule number="383.4.e.2.b" /><Rule number="383.4.f.2.b" />
 
 ### Units can join combat late and still trigger [#late-combat-triggers]
 
-If a unit is moved into a battlefield where combat is already in progress, it will receive the appropriate attacker or defender designation during the next cleanup.<Rule number="323.2.a" />
-When it receives this designation, any "When I attack" or "When I defend" abilities will trigger at that time.
+If a unit becomes present at a battlefield where combat is already in progress, it gains its controller's attacker or defender designation during the next cleanup.<Rule number="323.2.a" /><Rule number="464.2.c.3.a" />
+Its eligible "When I attack" or "When I defend" abilities trigger then, after their other conditions are checked.<Rule number="383.4.e" /><Rule number="383.4.f" />
 
 ### Can attack and defend abilities trigger more than once per combat? [#once-per-combat-triggers]
 
-Attack and defend triggered abilities can only trigger once per combat, even if a unit gains and loses its designation multiple times.<Rule number="383.4.e.2.a" /><Rule number="383.4.f.2.a" />
+An attack or defend trigger's condition is checked only once per combat, even if its unit loses and regains the matching designation.<Rule number="383.4.e.2.a" /><Rule number="383.4.f.2.a" />
 
-Once a unit has been assigned an attacker or defender designation during a combat, moving it away from the battlefield will cause it to lose that designation.<Rule number="323.2.c" />
-If that unit is moved back to the same battlefield during the same combat, it will gain the same designation as its controller,<Rule number="323.2.a" /> which will be the same designation it previously had.
-However, its "When I attack" or "When I defend" ability will not trigger again, as these abilities can only be fulfilled once per combat.
+A unit that leaves the combat battlefield loses its designation during the next cleanup.<Rule number="323.2.c" />
+If it returns during the same combat, it regains its controller's designation during a later cleanup, but its attack or defend trigger is not checked again.<Rule number="323.2.a" /><Rule number="383.4.e.2.a" /><Rule number="383.4.f.2.a" />

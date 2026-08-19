@@ -10,11 +10,9 @@ authors:
 ## If Hidden Blade's kill is replaced, does the target's controller draw? [#draw-if-not-killed]
 
 Yes.
-Replacing Hidden Blade's kill does not prevent its linked draw instruction from executing.
-
 The phrase "its controller" links the draw to the unit affected by the preceding kill instruction.<Rule number="359.3.e.14" />
-Replacing that kill action does not stop the later linked instruction unless it directly references the action itself.<Rule number="359.3.e.14.b" />
-Hidden Blade's draw references the targeted unit's controller, not whether the unit was killed, so the draw still executes.
+Replacing that kill does not stop the linked draw unless the draw instruction directly refers to the kill action.<Rule number="359.3.e.14.b" />
+Hidden Blade refers only to the targeted unit's controller, so that player still draws 2.
 
 <Callout type="idea" title="Example">
 	You play Hidden Blade targeting an opponent's unit.
@@ -26,10 +24,11 @@ Hidden Blade's draw references the targeted unit's controller, not whether the u
 ## If Hidden Blade's target becomes illegal, does that target's controller draw? [#draw-if-illegal]
 
 No.
-An illegal target is entirely unaffected by the spell, and the draw is no exception.
-
-An illegal target is unaffected by the spell, so Hidden Blade's kill instruction is ignored.<Rule number="359.3.e.5" />
+An illegal target is unaffected by Hidden Blade, so the kill instruction is ignored.<Rule number="359.3.e.5" />
+Hidden Blade's draw is linked to its kill instruction because "its controller" refers to the unit affected by that instruction.<Rule number="359.3.e.14" />
 When an earlier linked instruction is ignored, its later linked instructions are also ignored, so the controller does not draw.<Rule number="359.3.e.14.a" />
+
+See [What happens if a target becomes illegal before a spell or ability resolves?](/general-rules/targeting#illegal-targets) for the complete illegal-target procedure.
 
 <Callout type="idea" title="Example">
 	You play Hidden Blade targeting an opponent's unit at a battlefield.

@@ -18,37 +18,45 @@ rulingRelations:
 
 ## When is a Deathknell ability added to the chain? [#trigger-timing]
 
-A <Deathknell /> ability is added to the chain as a pending item before the dying permanent moves to the trash.<Rule number="808.1.d.2" />
-Before the permanent leaves the board, the game records its location, attributes, and other information needed by its ability.<Rule number="808.1.d.3" />
+A <Deathknell /> ability is added to the chain before its permanent moves to the trash.<Rule number="808.1.d.2" />
+At that point it is a pending item, an ability waiting to be finalized.
+Before the permanent leaves the board, the game records its location, attributes, and other information needed to process the ability after finalization.<Rule number="808.1.d.3" />
+
 If the permanent's death is replaced and it is not sent to the trash, the pending ability is removed from the chain.<Rule number="808.1.d.1" />
-Each instance of <Deathknell /> triggers separately and creates its own pending item.<Rule number="808.2" /><Rule number="808.2.a" />
+Each instance of <Deathknell /> triggers separately, and the permanent's controller chooses the order in which those pending abilities are added.<Rule number="808.2" /><Rule number="808.2.a" />
 
 ## When does a Deathknell ability resolve if its unit dies during a cleanup? [#cleanup-timing]
 
-After the cleanup finishes.
-The ability becomes a pending item before the unit moves to the trash.<Rule number="323.4" /><Rule number="323.5" /><Rule number="808.1.d.2" />
-The remaining cleanup steps are then completed before that pending ability can be finalized.<Rule number="334" />
+If it resolves, it resolves after the cleanup finishes.
+The ability becomes a pending item, an ability waiting to be finalized, before the unit moves to the trash.<Rule number="323.4" /><Rule number="323.5" /><Rule number="808.1.d.2" />
+Pending chain items remain unprocessed until every outstanding cleanup task is complete.<Rule number="334.1" /><Rule number="334.2" />
 
-During a combat cleanup, this means surviving units are healed before the <Deathknell /> ability is finalized or resolved.<Rule number="466.1.a.1" />
-After the cleanup, the ability is finalized, any required targets are chosen, and players receive priority before it resolves.<Rule number="334.2" /><Rule number="337.4" />
+During a combat cleanup, surviving units are therefore healed before the <Deathknell /> ability is finalized or resolved.<Rule number="466.1.a.1" />
+After the cleanup, the ability proceeds through finalization and any required choices, such as targets, are made.<Rule number="402.2" />
+If the ability uses <Add />, it resolves immediately when finalized.<Rule number="337.2" />
+Otherwise, once no pending items remain, the controller of the next chain item gains priority, and resolution waits until all players pass without adding another item.<Rule number="337.4" /><Rule number="339.1" />
 
 ## Does Deathknell resolve before the card or ability that killed the unit? [#killing-card-timing]
 
-It depends on when the unit is killed and what kind of chain item caused it.
+Assuming both relevant items resolve, <Deathknell /> resolves first only when the unit was killed to pay the cost of a spell or an ability that does not add resources.<Rule number="357.2" /><Rule number="404.1" /><Rule number="359.3.b" /><Rule number="406.3" /><Rule number="340.1" />
+If that cost belonged to a unit, gear, or ability that adds resources, that item resolves first.<Rule number="337.2" />
+If the unit was killed by an instruction while a spell or ability was resolving, the killing item finishes first.<Rule number="158.3" />
 
 ### Killed as a cost [#killed-as-cost]
 
-If a unit is killed to pay a cost, the kill happens while the card or ability is being finalized.<Rule number="357.2" /><Rule number="404.1" />
-The <Deathknell /> ability becomes pending above that chain item.<Rule number="808.1.d.2" />
+Assuming both relevant items resolve, <Deathknell /> resolves before a spell or non-resource-adding ability whose cost killed the unit, but after a unit, gear, or resource-adding ability whose cost did so.
+The kill happens while the original card or ability is being finalized.<Rule number="357.2" /><Rule number="404.1" />
+The resulting <Deathknell /> is added afterward as a pending item, an ability waiting to be finalized.<Rule number="808.1.d.2" />
 
-If the original item is a spell or an ability that does not add resources, the pending <Deathknell /> ability is finalized before play continues.<Rule number="359.3.b" /><Rule number="406.3" />
-Because it is newer on the chain, the <Deathknell /> ability resolves before that spell or ability.<Rule number="340.1" />
+When the original item is a spell or an ability that does not add resources, it finishes finalizing before the pending items, including the <Deathknell />, are processed.<Rule number="359.3.b" /><Rule number="406.3" />
+The <Deathknell /> is newer than the original item after both are finalized, so it resolves first.<Rule number="340.1" />
 
-If the original item is a unit, gear, or ability that adds resources, it resolves immediately when finalized, before the pending <Deathknell /> ability is processed.<Rule number="337.2" />
-The <Deathknell /> ability resolves afterward.
+A unit, gear, or ability that adds resources instead resolves immediately upon finalization, before the pending <Deathknell /> is processed.<Rule number="337.2" />
+After that immediate resolution, the chain returns to its pending items and the <Deathknell /> can be finalized.<Rule number="340.3" />
 
 ### Killed during resolution [#killed-during-resolution]
 
-If a resolving card or ability kills the unit, that chain item continues resolving without interruption.<Rule number="354.3" />
-The <Deathknell /> ability becomes pending, but it cannot be finalized until the current chain item finishes resolving.<Rule number="334.2" />
-The killing card or ability therefore finishes before the <Deathknell /> ability can resolve.
+Assuming both items resolve, the killing card or ability finishes before the <Deathknell /> resolves.
+While a spell or ability is resolving, no other spell or ability can be finalized or resolved, including a triggered ability created by that resolution.<Rule number="158.3" />
+The <Deathknell /> is still added as a pending item before its permanent moves to the trash, but its finalization waits for the current effect to finish.<Rule number="808.1.d.2" /><Rule number="401.2" />
+The game finishes every effect of the killing item before addressing the new chain item.<Rule number="158.3.a" />

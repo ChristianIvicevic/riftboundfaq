@@ -9,19 +9,19 @@ authors:
 
 ## When do I choose whether to pay the power for Rebuttal? [#power-payment-timing]
 
-You choose whether to pay <Universal /> when Rebuttal resolves because the optional payment is a cost within the spell's instructions, not an additional cost to play it.
+You choose whether to pay <Universal /> when Rebuttal resolves.
+The optional payment is a game action, not a cost, because its effect appears in a separate conditional instruction.<Rule number="205" />
+Because the payment instruction states no other timing, it executes during resolution.<Rule number="135.2.b.3" />
 
-When Rebuttal is finalized, you choose the spell with energy cost no more than <Energy value={4} />.<Rule number="355.5" />
-The optional power payment is not an additional cost to play Rebuttal; it is a cost within the spell's instructions.<Rule number="204.2" /><Rule number="204.3" />
-Costs within a spell's instructions are paid during that spell's resolution.<Rule number="204.3.b" />
-
-Opponents can therefore react to Rebuttal knowing which spell it chose, but without knowing whether you will pay <Universal /> to gain control of that spell or decline to pay and counter it.
+During Rebuttal's finalization, you choose the spell with energy cost no more than <Energy value={4} />.<Rule number="355.5" />
+Opponents can therefore react to Rebuttal knowing which spell it chose, but without knowing whether you will pay <Universal /> to gain control of that spell or decline to pay and counter it.<Rule number="359.3.c" />
 
 ## Can Rebuttal redirect a spell played from Hidden to another location? [#hidden-target-restriction]
 
-No — taking control of the spell and making new choices for it does not remove the targeting restriction imposed by <Hidden />.
+No.
+Taking control of the spell and making new choices for it does not remove the targeting restriction imposed by <Hidden />.
 
-Rebuttal allows its controller to remake a finalized spell's targets,<Rule number="752.1" /> but every new choice must still be legal.<Rule number="753.1" />
+Rebuttal allows you to remake a finalized spell's targets,<Rule number="752.1" /> but every new choice must still be legal.<Rule number="753.1" />
 When a spell is played from <Hidden />, its targets must be chosen from among the options at the battlefield where it was hidden unless the spell's own targeting restriction makes that impossible.<Rule number="811.1.d.2" />
 Changing the spell's controller does not change where it was played from, so this restriction continues to apply.
 
@@ -33,26 +33,39 @@ Changing the spell's controller does not change where it was played from, so thi
 
 ## Whose "when you play a spell" abilities trigger for a spell Rebuttal takes control of? [#play-trigger-controller]
 
-The abilities controlled by the spell's new controller trigger because the act of playing the spell is completed when it resolves under that player's control.
-
-Abilities such as <Card name="Ravenbloom Student" />'s do not trigger when a spell is first placed on or finalized to the chain.
-They trigger when the act of playing that spell is completed by its resolution.<Rule number="419.4.a" />
+If the spell resolves after Rebuttal takes control of it, the spell's new controller's applicable "when you play a spell" abilities trigger; the original player's abilities do not.
+These abilities trigger when the spell's Play is completed by its resolution.<Rule number="419.4.a" />
 At that point, the player who gained control of the spell with Rebuttal is its controller.<Rule number="191.2" />
 
-<Callout type="idea" title="Example">
-	You control Ravenbloom Student and use Rebuttal to gain control of an opponent's <Card name="Gust" />.
-	Your Student triggers when Rebuttal resolves.
-	When Gust resolves afterward, your Student triggers again because you now control Gust.
-	Your opponent's "when you play a spell" abilities do not trigger for Gust.
-</Callout>
+See [What does "play" mean on a card?](/general-rules/playing-cards#play-definition) for the complete distinction between starting, finalizing, and completing a play.
+See [In what order are multiple pending chain items finalized and resolved?](/general-rules/chain-and-priority#pending-item-order) for the general ordering rules.
+
+### Resolution Sequence [#play-trigger-controller-sequence]
+
+Suppose you and your opponent each control <Card name="Ravenbloom Student" />, and you use Rebuttal to gain control of your opponent's <Card name="Gust" />.
+
+1. Your opponent plays Gust, which becomes a finalized chain item after its choices and costs are handled.<Rule number="419.1" /><Rule number="359.3.a" />
+2. You play Rebuttal and choose Gust while Rebuttal is pending during finalization.<Rule number="354.2" /><Rule number="355.5" />
+   Rebuttal then becomes the newer finalized item above Gust.<Rule number="359.3.a" />
+3. After all players pass priority without adding another item, Rebuttal resolves first because it is newer than Gust.<Rule number="339.1" /><Rule number="340.1" />
+4. You pay <Universal />, gain control of Gust, and may make new legal choices for it while Rebuttal resolves.<Rule number="752.1" /><Rule number="753.1" />
+5. When Rebuttal finishes resolving, your Ravenbloom Student ability is added to the chain as a pending item because you control Rebuttal when its Play is completed.<Rule number="383.2.c" /><Rule number="383.3" /><Rule number="329" /><Rule number="191.2" /><Rule number="419.4.a" />
+6. The chain returns to finalization, so the pending Ravenbloom Student ability finalizes before priority is granted.<Rule number="340.3" /><Rule number="337.1" /><Rule number="337.4" />
+   It then resolves before Gust after all players pass.<Rule number="339.1" /><Rule number="340.1" />
+7. Players receive priority again before Gust resolves and may add new <Reaction /> cards or abilities.<Rule number="340.4" /><Rule number="338.1.a" /><Rule number="338.1.a.2" />
+8. If Gust then resolves, your Ravenbloom Student triggers again because you control Gust when its Play is completed; your opponent's Ravenbloom Student does not trigger for Gust.<Rule number="191.2" /><Rule number="419.4.a" />
+
+See [Can I play a reaction after one, but not all, items on the chain have resolved?](/general-rules/chain-and-priority#partial-chain-reactions) for the general priority procedure between resolutions.
 
 ## Do I draw a card if I take control of Back Off? [#back-off-draw]
 
-No — you did not play <Card name="Back Off" /> from your hand merely by taking control of it.
+No.
+Taking control of <Card name="Back Off" /> does not make you responsible for playing it from hand.
 
-To play a card, a player places it on the chain and queues it for finalization.<Rule number="419.1" />
-Back Off's "if you played this from your hand" clause is a non-triggered condition, so it checks whether the card was finalized by that player.<Rule number="419.4.b" /><Rule number="329.3" />
-Gaining control of an already-finalized spell does not repeat that process or change which player performed it.
+The opponent who placed Back Off on the chain and queued it for finalization performed its Play action and remains responsible for it.<Rule number="419.1" /><Rule number="411.1" />
+Gaining control of the already-finalized spell does not restart that process.
+Back Off's "if you played this from your hand" clause is a non-triggered condition, so it counts the card as played once it was finalized.<Rule number="419.4.b" /><Rule number="329.3" />
 
-When Back Off resolves under your control, "you" refers to you, but you did not play it from your hand, so you do not draw a card.
-The opponent who originally played Back Off does not draw either because they no longer control the resolving spell.
+Back Off resolves under your control, but you did not play it from hand, so its draw instruction does not apply to you.<Rule number="191.2" /><Rule number="359.3.d" />
+The opponent who played Back Off does not draw either because they no longer control the resolving spell.
+See [What does "play" mean on a card?](/general-rules/playing-cards#play-definition) for the general finalized-card check.

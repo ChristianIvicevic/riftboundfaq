@@ -21,18 +21,20 @@ rulingRelations:
   - "/cards/emperors-dais"
   - "/cards/lux-crownguard"
   optional-additional-costs:
+  - "/cards/heedless-resurrection"
+  - "/cards/bone-skewer"
   - "/cards/ezreal-prodigy"
 ---
 
 ## How is a card's total cost determined? [#total-cost-determination]
 
-A card's total cost is determined in a fixed sequence, rather than by applying every change at once:
+A card's total cost is determined in five stages, in this order:
 
-1. Start with the card's base cost and apply any changes to it.<Rule number="356.1" />
-2. Add all mandatory additional costs and any optional additional costs you chose to pay.<Rule number="356.2" />
+1. Apply base cost modifications.<Rule number="356.1" />
+2. Apply all mandatory additional costs and any optional additional costs you chose to pay.<Rule number="356.2" />
 3. Apply cost increases.<Rule number="356.3" />
 4. Apply discounts.<Rule number="356.4" />
-5. Apply any effects that modify the final total cost.<Rule number="356.5" />
+5. Apply modifications to the total cost.<Rule number="356.5" />
 
 Discounts that apply to one specific part of a cost are applied before discounts that apply to the total cost.<Rule number="356.4.c" /><Rule number="356.4.d" />
 If multiple discounts apply within either group, you may choose their order.<Rule number="356.4.c.1" /><Rule number="356.4.d.1" />
@@ -43,40 +45,41 @@ Any minimum imposed by a discount applies only to that discount, so a later disc
 No.
 Countering does not refund any costs paid to play a card, activate an ability, or trigger an ability, including additional costs.<Rule number="425.1.c" /><Rule number="425.1.c.1" />
 
-A countered card or ability does nothing and is cleared from the chain,<Rule number="425.1.a" /> but anything already spent, discarded, killed, or otherwise paid as a cost remains paid.
+A countered card or ability does nothing and is cleared from the chain.<Rule number="425.1.a" />
 
 ## What are optional additional costs? [#optional-additional-costs]
 
 Optional additional costs are additional costs a player may choose to pay.<Rule number="356.2.b.1" />
-
-Their rules text uses both "may" and the exact phrase "as an additional cost."
+Their rules text uses both "may" and the exact phrase "as an additional cost."<Rule number="356.2.b.1" />
 <Accelerate /> and <Repeat /> are keyworded optional additional costs.<Rule number="805.1.a" /><Rule number="820.1.d" />
 
-The player chooses whether to pay an optional additional cost while making relevant choices.
-If chosen, it is included while determining the card's total cost before applicable discounts are applied.<Rule number="355.1.a" /><Rule number="356.2" /><Rule number="356.4" />
+You choose whether to pay an optional additional cost while making the relevant choices for the card or ability being played.<Rule number="355.1.a" /><Rule number="399" /><Rule number="402.2" /><Rule number="820.1.c.1" />
+If chosen, it is added while determining the total cost before applicable discounts are applied.<Rule number="356.2" /><Rule number="356.4" /><Rule number="399" /><Rule number="403.2" />
+The optional additional cost counts as paid even if discounts reduce it to zero.<Rule number="356.4.f" /><Rule number="356.4.f.1" />
 
 ## What costs still apply when I play a card ignoring one or more of its costs? [#ignored-costs]
 
-Additional costs and cost increases still apply.
-Playing a card "ignoring its cost" sets only its base energy and power costs to zero, while ignoring only its energy or power cost sets only that base cost to zero.<Rule number="356.1.b.1" /><Rule number="356.1.b.2" />
-Additional costs and cost increases are applied afterward and can raise its total cost above zero.<Rule number="356.1.b.3" />
+The remaining costs depend on the instruction: "ignoring its cost" leaves additional costs and cost increases; ignoring only its energy or power cost also leaves the other base cost; ignoring "any and all costs" leaves none.
+The first two instructions set only the applicable base costs to zero, before additional costs and cost increases are applied.<Rule number="356.1.b.1" /><Rule number="356.1.b.2" /><Rule number="356.1.b.3" />
 
 Mandatory additional costs must still be paid, while optional additional costs may still be chosen and paid.<Rule number="356.2.a.1" /><Rule number="356.2.b.1" />
-By contrast, "ignoring any and all costs" sets the card's total cost to zero, including non-standard costs.<Rule number="356.5.a" />
+The last instruction instead sets the total cost to zero, including non-standard costs paid through game actions such as killing a unit.<Rule number="356.5.a" /><Rule number="356.7" />
 
 <Callout type="idea" title="Example">
 
-<Card name="Fizz, Trickster" /> sets the chosen spell's base energy cost to <Energy value={0} />.
-If an opponent controls <Card name="Helm of Suppression" />, Helm's cost increase is applied afterward, so the spell costs <Energy value={1} />, or <Energy value={1} /><Universal /> if Helm is <Empowered />.<Rule number="356.1.b.2" /><Rule number="356.1.b.3" /><Rule number="356.3" />
+<Card name="Fizz, Trickster" /> sets the chosen spell's base energy cost to <Energy value={0} />.<Rule number="356.1.b.2" />
+If an opponent controls <Card name="Helm of Suppression" />, Helm's cost increase is applied afterward, adding <Energy value={1} />, or <Energy value={1} /><Universal /> if Helm is <Empowered />.<Rule number="356.1.b.3" /><Rule number="356.3" />
 
 </Callout>
 
 ## Can players react while costs are being paid? [#cost-reaction-window]
 
-Not through a normal reaction window.
-Costs are paid while the card or ability is being finalized, and finalization does not pass priority.<Rule number="357" /><Rule number="404" /><Rule number="337.1.a" />
+No normal reaction window opens while a cost is being paid, but a player instructed to pay resources may activate an eligible <Add /> ability with <Reaction /> during that payment.<Rule number="444.2.c" />
 
-When resources are required, the player paying them may activate eligible <Add /> abilities with <Reaction /> during that payment.<Rule number="429.3" /><Rule number="444.2.c" />
-This is a special permission for resource payment, not a normal reaction window: those abilities finalize and resolve immediately without passing priority.<Rule number="429.2" /><Rule number="429.2.a" />
+A card's or ability's play costs are paid during finalization, which does not pass priority.<Rule number="357" /><Rule number="404" /><Rule number="337.1.a" />
+A cost within instructions is written as "[do X] to [do Y]."<Rule number="204.3" />
+At the start of a triggered ability's effect or immediately after an initial "you may" or "they may," that cost becomes the ability's base cost and is paid during finalization.<Rule number="383.3.b" /><Rule number="383.3.b.1" /><Rule number="740.4.a.2" /><Rule number="404.1" />
+On a spell or activated ability, or later in a triggered ability, that cost is paid during resolution, when no other spell or ability can finalize or resolve.<Rule number="204.3.b" /><Rule number="740.4.a.2.a" /><Rule number="158.3" />
+Applied costs are paid as their associated game action is performed and cannot be reacted to.<Rule number="204.4.b" />
 
-Any normal opportunity to react comes only after finalization, when the costs have already been paid.
+The resource-adding exception applies at any of these timings, and that ability finalizes and resolves immediately without passing priority.<Rule number="204.4.b.1" /><Rule number="429.2.a" /><Rule number="429.3" /><Rule number="429.3.a" />

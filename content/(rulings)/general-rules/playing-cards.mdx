@@ -16,26 +16,43 @@ rulingRelations:
 
 ## What does "play" mean on a card? [#play-definition]
 
-"Play" refers to the same underlying action, but rules text uses it in three contexts that initiate or check that action at different points.<Rule number="419.1" /><Rule number="419.4" />
+"Play" has three meanings in rules text: an instruction starts the play process,<Rule number="419.1" /> a non-triggered check counts a card when it finalizes,<Rule number="419.4.b" /> and a trigger condition counts it only when it resolves.<Rule number="419.4.a" />
 
-In trigger conditions — "When you play," as seen on <Card name="Ravenbloom Student" /> and <Card name="Darius, Trifarian" /> — it means resolve.
-A card is Played once the entire process of playing it is complete, and these abilities trigger when that happens at the card's resolution.<Rule number="350.1" /><Rule number="419.4.a" />
-For units and gear, that's the instant they're finalized, since both resolve immediately without priority being passed;<Rule number="337.2" /> for spells, resolution is a separate, later step, reached only after finalization and any reactions have played out.<Rule number="339.1" /><Rule number="340.1" />
+- **Instruction — "play a card."** This starts the play process by moving the card to the chain as a pending item.<Rule number="354" /><Rule number="354.2" />
+  If a game effect gives the instruction during resolution, as on <Card name="Here to Help" /> or <Card name="Fizz, Trickster" />, the card follows every normal play step unless the effect says otherwise.<Rule number="419.3" /><Rule number="419.3.b" />
+  Hiding is a separate action, so it does not satisfy an instruction to play a card.<Rule number="421.1" /><Rule number="811.1.c.1" />
+- **Non-triggered check — "if you've played."** This checks whether the card finalized, not whether it resolved.<Rule number="419.4.b" />
+  A finalized spell still counts if it is later countered.<Rule number="419.4.b" />
+  This is the meaning used by <Card name="Battering Ram" />, <Card name="Crescent Guardian" />, <Card name="Back Off" />, and <Legion />.<Rule number="812.1.b.1" /><Rule number="812.1.c" />
+- **Trigger condition — "when you play."** This waits for the card's resolution to complete.<Rule number="350.1" /><Rule number="419.4.a" />
+  Units and gear resolve immediately after finalizing, but a spell resolves only after players receive priority and all pass without adding another item.<Rule number="337.2" /><Rule number="337.4" /><Rule number="339.1" />
+  A countered card does not fulfill this trigger condition because it does not resolve.<Rule number="419.4.a.1" /><Rule number="425.1.b" />
+  This is the meaning used by <Card name="Ravenbloom Student" /> and <Card name="Darius, Trifarian" />.
 
-In conditional statements checking whether a card has been played — "if you've played," as seen on <Card name="Battering Ram" />, <Card name="Crescent Guardian" />, and <Card name="Back Off" /> — it means finalize, not resolve.
-Although the rules call these "non-triggered abilities," an ability can be part of a game object or spell, so this includes conditions checked while a spell's instructions resolve.<Rule number="361" /><Rule number="419.4.b" />
-A card satisfies this check when its pending chain item becomes a finalized chain item.<Rule number="329.3" />
-The <Legion /> keyword makes this precise: it's written as "if you have played another card this turn,"<Rule number="812.1.b.1" /> but the dependent ability is active as long as that other card "has been Finalized by you on the same turn" — not resolved.<Rule number="812.1.c" />
+## What is the process for playing a card? [#play-process]
 
-As an instruction — "play a card," as seen on <Card name="Here to Help" /> and <Card name="Fizz, Trickster" /> — it initiates that underlying action by placing the card on the chain and queuing it for finalization.<Rule number="419.1" />
-When a game effect instructs a player to play a card during its resolution, that play follows all the normal steps unless the effect says otherwise.<Rule number="419.3" /><Rule number="419.3.b" />
-Hiding is a separate action that puts a card facedown at a battlefield, so it does not satisfy an instruction to play that card.<Rule number="421.1" /><Rule number="811.1.c.1" />
+Playing a card moves through six play steps, then resolves according to its card category.
+
+1. Move the card from its current zone to the chain, where it becomes a pending item waiting to be finalized.<Rule number="354" /><Rule number="354.2" />
+2. Make the relevant choices, including whether to pay optional additional costs.<Rule number="355" /><Rule number="355.1.a" />
+3. Determine the card's total cost.<Rule number="356" />
+4. Pay that cost.<Rule number="357" />
+5. Check the card's targets, costs, resulting game state, and timing permission for legality.
+   If a check fails, undo the actions taken during the play process and cancel the play.<Rule number="358" /><Rule number="358.5" />
+6. Finish finalizing the card.
+   A unit enters the board exhausted at its chosen location, non-unit gear enters the board ready at its controller's base, and a spell becomes a finalized chain item.<Rule number="359.2.c" /><Rule number="359.2.d" /><Rule number="359.3.a" />
+
+Units and gear resolve immediately after finalizing, without passing priority.<Rule number="337.1.a" /><Rule number="337.2" />
+A finalized spell resolves only after no pending items remain and all players pass priority in sequence without adding another item.<Rule number="337.4" /><Rule number="339.1" /><Rule number="340.1" />
 
 ## When does a card leave my trash when I play it from there? [#playing-from-trash]
 
-As soon as you begin playing it.
+It leaves your trash as soon as you begin playing it, although a failed legality check undoes that move and cancels the play.
 The first step of playing a card moves it from its current zone to the chain, where it waits to be finalized.<Rule number="354" /><Rule number="354.2" />
+Moving from the trash, a non-board zone, also makes it a new object for tracking.<Rule number="124" />
+If a legality check fails, the actions taken during the play process are undone.<Rule number="358.5" />
 
-Once you begin playing a card from your trash, it is no longer there while you make choices, determine its total cost, or resolve it.
-If the card counts copies of itself in your trash, only the other copies still there count.
-Likewise, if its cost is reduced for each card in your trash, it does not count itself toward that reduction.
+While the play continues, the card is no longer in your trash when you make choices, determine its total cost, pay its costs, or finalize it.
+It also remains outside your trash while it resolves, if it resolves.
+For example, <Card name="Shadow Assassin" /> does not count itself for its "card with my name in your trash" condition; only another copy still in the trash counts.
+Likewise, <Card name="Rhasa the Sunderer" /> does not include itself among the cards in your trash when determining its cost reduction.

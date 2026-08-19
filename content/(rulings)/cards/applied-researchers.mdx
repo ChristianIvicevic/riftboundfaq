@@ -10,6 +10,8 @@ authors:
 ## Does Applied Researchers reduce Repeat, Flow, and Deflect costs? [#other-spell-costs]
 
 Yes, provided Applied Researchers is <Empowered /> and the cost belongs to a spell.
+Its <Empowered /> ability grants this discount only while it has the <Empowered /> status.<Rule number="828.1.b.1" /><Rule number="828.1.c" />
+See [When can I activate an Empower ability?](/mechanics/empower#empower-timing) for the normal timing of its <Empower /> ability.
 
 <Repeat /> is an optional additional cost.<Rule number="820.1" /><Rule number="820.1.c.1" />
 <Deflect /> imposes a mandatory additional cost on a spell or ability that targets the permanent with <Deflect />.<Rule number="356.2.a.2" /><Rule number="809.1.d" />
@@ -17,9 +19,9 @@ Discounts can reduce both kinds of additional costs, including to zero.<Rule num
 
 A <Flow /> cost is an alternate cost that replaces a spell's base cost during finalization.<Rule number="829.1.c.1" />
 Applied Researchers' discount is applied afterward when determining the spell's total cost.<Rule number="356.1" /><Rule number="356.4" />
+See [How is a card's total cost determined?](/general-rules/costs-and-payments#total-cost-determination) for the complete ordered cost procedure.
 
-Applied Researchers can therefore reduce a <Repeat /> or <Deflect /> cost paid while playing a spell.
-It cannot reduce either cost when playing an ability, because its discount applies only to spells.<Rule number="820.1.a" /><Rule number="809.1.d" />
+Because Applied Researchers' discount applies only to spells, it cannot reduce a <Repeat /> or <Deflect /> cost paid while playing an ability.<Rule number="820.1.a" /><Rule number="809.1.d" />
 
 ## Can Applied Researchers reduce Shock Blast's cost to zero? [#shock-blast-cost]
 
@@ -27,13 +29,12 @@ Yes, if Applied Researchers is <Empowered />, you can play <Card name="Shock Bla
 Applied Researchers itself satisfies Shock Blast's requirement that you control something that is <Empowered />, so both cards' discounts apply.
 
 Both abilities discount Shock Blast's total cost during the Determine Total Cost step of playing it.<Rule number="356.4" />
-Discounts that apply to the total cost may be applied in any order,<Rule number="356.4.d" /><Rule number="356.4.d.1" /> and a minimum imposed by one discount applies only to that discount.<Rule number="356.4.e" />
+Discounts that apply to the total cost may be applied in any order.<Rule number="356.4.d" /><Rule number="356.4.d.1" />
+A minimum imposed by one discount applies only to that discount.<Rule number="356.4.e" />
 
-### Cost Determination Sequence [#cost-determination-sequence]
-
-1. Shock Blast starts with its base cost of <Energy value={3} /><Mind />.
-2. Apply Researchers' discount first, reducing that cost by <Energy value={1} /><Universal /> to <Energy value={2} />.
-This satisfies Researchers' minimum of <Energy value={1} />.
-3. Apply Shock Blast's own discount next, reducing its remaining energy cost by <Energy value={2} /> to <Energy value={0} />.
-
-Applying the discounts in the opposite order would leave the spell costing <Energy value={1} />, but you may choose the order that results in the lower cost.
+<Callout type="idea" title="Example">
+	Shock Blast starts with its base cost of <Energy value={3} /><Mind />.
+	Apply Researchers' discount first, reducing that cost by <Energy value={1} /><Universal /> to <Energy value={2} /> and satisfying its minimum of <Energy value={1} />.
+	Then apply Shock Blast's own discount, reducing the remaining energy cost by <Energy value={2} /> to <Energy value={0} />.
+	Applying the discounts in the opposite order would leave the spell costing <Energy value={1} />, but you may choose the order that results in the lower cost.
+</Callout>
