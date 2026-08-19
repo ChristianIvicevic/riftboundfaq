@@ -7,24 +7,30 @@ authors:
 - "Christian I. (Near)"
 ---
 
-## Can I use Arcane Shift to banish my only unit at a battlefield and replay it there? [#replay-at-same-battlefield]
+## Can I use Arcane Shift to banish the only unit I own and control at a battlefield and replay it there? [#replay-at-same-battlefield]
 
-Yes, as long as you control the battlefield.
+Yes, because you still control the battlefield when the pending unit finalizes and you choose where it will enter.
+Arcane Shift starts playing the banished unit during its own resolution, so the unit waits on the chain as a pending item.<Rule number="354.2" /><Rule number="354.3" />
+The pending unit remains on the chain through the following cleanup.<Rule number="354.4" />
+Because that chain item remains, the chain exists and the turn is closed.<Rule number="330" /><Rule number="331.1" />
+If the turn were open, that cleanup would make you lose control of the empty battlefield; because the turn is closed, you retain control instead.<Rule number="323.6" />
+It remains a valid location for the unit you play and control.<Rule number="191.1" /><Rule number="355.2.a" />
 
-When Arcane Shift resolves, the replayed unit sits on the chain as a pending item throughout the cleanup that follows.
-Because a chain exists, the turn is in a closed state,<Rule number="309.1" /> and cleanup step 4 — which would make the battlefield uncontrolled — only applies during an open state.<Rule number="323.6" />
-The battlefield stays controlled, and when the pending unit is finalized you can choose to replay it there.
-Attackers cannot replay their unit to the attacking battlefield because they never control it in the first place.
+See [Outside a showdown, do I lose control of a battlefield as soon as my last unit leaves it?](/general-rules/chain-and-priority#empty-battlefield-control) for the general control rule.
 
 ### Resolution Sequence [#replay-sequence]
 
 When Arcane Shift resolves, the following happens:
 
-1. "Banish a friendly unit" — the unit leaves the board.
-2. "then its owner plays it, ignoring its cost" — the unit is added to the chain as a pending item,<Rule number="354.2" /> but its play process pauses while Arcane Shift continues resolving.<Rule number="354.3" />
-3. "Deal 3 to an enemy unit" and "Banish this" both resolve.
-4. Arcane Shift finishes resolving, queuing one or more cleanups as outstanding tasks.<Rule number="321.1" />
-5. The cleanups run.
-The pending unit keeps the chain alive, so the turn remains in a closed state<Rule number="309.1" /> and cleanup step 4 does not apply.<Rule number="323.6" />
-6. Once all outstanding tasks are complete, the pending unit is finalized.<Rule number="334.2" />
-You choose where to play it,<Rule number="355.2" /> and the battlefield is still under your control.
+1. Arcane Shift banishes the friendly unit, leaving the battlefield empty and incurring a cleanup.<Rule number="319.6" />
+2. Its replay instruction moves the unit to the chain as a pending item.<Rule number="354.2" />
+   The play process waits while Arcane Shift continues resolving.<Rule number="354.3" />
+3. Arcane Shift deals 3 to an enemy unit, banishes itself, and finishes resolving.
+4. The board-change cleanup remains outstanding until Arcane Shift finishes resolving.<Rule number="321.1" />
+   The pending unit remains on the chain while that cleanup runs.<Rule number="354.4" />
+5. The remaining chain item keeps the turn closed.<Rule number="331.1" />
+   You do not lose control of the empty battlefield during that cleanup.<Rule number="323.6" />
+6. After outstanding tasks finish, the pending unit continues finalizing.<Rule number="334.2" /><Rule number="337.1" />
+   You choose the still-controlled battlefield as the location for the unit you play and control.<Rule number="191.1" /><Rule number="355.2.a" />
+7. The unit immediately resolves.<Rule number="337.2" />
+   It enters that battlefield exhausted.<Rule number="359.2.c" />
