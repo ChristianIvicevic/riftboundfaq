@@ -9,15 +9,18 @@ authors:
 
 ## Can Glasc Mixologist's Deathknell target a unit that died from the same event? [#same-event-target]
 
-Yes, because targets are not chosen until the ability is finalized — by which point all units that died in the same event are already in the trash.
+Yes: every unit that died from the same event is already in the trash when you choose Glasc Mixologist's target.
+Any of those units can be legal if it is in your trash and meets Glasc's cost and rune restrictions.
+The choice happens during ability finalization.<Rule number="402.2" />
 
-Whenever a unit with <Deathknell /> dies, its trigger is placed on the chain as a pending item.<Rule number="808.1.d.2" />
-During a cleanup, this ordering is enforced system-wide: step 3a queues all <Deathknell /> triggers from every unit with lethal damage<Rule number="323.4" /> and only then does step 3b move those units to the trash.<Rule number="323.5" />
+During a cleanup, step 3a adds all relevant death triggers from units with lethal damage<Rule number="323.4" /> before step 3b moves those units to the trash.<Rule number="323.5" />
+Those pending abilities remain unprocessed until the cleanup is complete.<Rule number="334.1" /><Rule number="334.2" />
 
-The same result applies when one kill instruction kills multiple units.
-Their deaths are simultaneous because they result from the same game action,<Rule number="370.1.a.2" /> and each relevant <Deathknell /> becomes pending before its unit moves to the trash.<Rule number="428.1.a.1.b" /><Rule number="808.1.d.2" />
+When one effect instruction of a resolving spell or ability kills multiple units, their deaths are simultaneous.<Rule number="370.1.a.2" />
+Each relevant <Deathknell /> becomes pending before its unit moves to the trash.<Rule number="808.1.d.2" />
+No pending ability can finalize until the current spell or ability finishes resolving.<Rule number="158.3" />
 
-In either case, all units that died from that event are in the trash before the pending ability is finalized and its target is chosen.<Rule number="334.2" /><Rule number="355.8" />
+See [When is a Deathknell ability added to the chain?](/mechanics/deathknell#trigger-timing) for the complete trigger-timing procedure.
 
 ## Can Glasc Mixologist's Deathknell play a unit to the battlefield where he died? [#play-to-same-battlefield]
 
@@ -31,11 +34,17 @@ The battlefield stays under your control, so when the unit is finalized you can 
 
 ## What happens when Glasc Mixologist is my only defender and his Deathknell plays a unit where he died? [#deathknell-combat-result]
 
-Several things here commonly catch players off guard: surviving enemy units heal to full before the new unit arrives, neither player wins the original combat, and a second combat immediately follows.
+If at least one attacker survives, the attackers heal before the new unit enters, neither player wins the original combat, and a second combat is staged immediately.
+If no attacker survives, you win the original combat with the new unit and no second combat is staged.
+Combat result is determined only after the combat cleanup and its associated chain items finish.<Rule number="466.2" />
 
-The combat cleanup heals all units before any pending trigger can resolve,<Rule number="466.1.a.1" /><Rule number="334" /> so by the time Glasc's <Deathknell /> finalizes and the new unit reaches the battlefield, the enemy is already back to full health.
-Because Glasc was your only defender, no defenders remain during cleanup step 3d, so the surviving attackers are not recalled.<Rule number="466.1.a.2" />
+1. The combat cleanup heals all units before Glasc's pending <Deathknell /> can be processed.<Rule number="466.1.a.1" /><Rule number="334.1" /><Rule number="334.2" />
+   Because Glasc was your only defender, no defenders remain during cleanup step 3d, so the surviving attackers are not recalled.<Rule number="466.1.a.2" />
+2. After the cleanup, Glasc's <Deathknell /> finalizes and resolves, playing the new unit to the battlefield.
+3. If at least one attacker remains, both players have units there when combat result is determined.
+   The result is "No Result."<Rule number="466.3.d" />
+   A fresh combat is staged at that battlefield.<Rule number="466.3.d.1" />
+4. If no attacker remains, you are the only player with a unit there and win the combat.<Rule number="466.3.a" />
+   The No Result instruction that stages a follow-up combat does not apply.<Rule number="466.3.d.1" />
 
-With units from both players now present, combat result is determined.
-Because both players have units there, the result is "No Result."<Rule number="466.3.d" />
-A fresh combat is immediately staged at that battlefield.<Rule number="466.3.d.1" />
+See [When does a Deathknell ability resolve if its unit dies during a cleanup?](/mechanics/deathknell#cleanup-timing) for the complete cleanup-timing procedure.
