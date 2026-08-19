@@ -12,14 +12,13 @@ rulingRelations:
 
 ## If Gangplank, Naval replaces one part of a spell or ability, does the rest still resolve? [#partial-resolution]
 
-Yes.
+Yes, only the qualifying stun, might decrease, or return-to-hand instruction is replaced; the spell or ability's other instructions continue resolving.
 A replacement effect only replaces the specific event or instruction that qualifies for it.<Rule number="370.1" />
-For Gangplank, that means a stun, might decrease, or return to hand caused by a spell or ability that chose him.
 
 <Callout type="idea" title="Example">
 	A player plays <Card name="Star-Crossed" />, targeting their own <Empowered /> Gangplank as the friendly unit and an opponent's <Card name="Elder Dragon" /> as the enemy unit.
 
-	Returning Elder Dragon doesn't choose Gangplank, so his replacement effect has nothing to apply to there — it's returned to hand as normal.
+	Returning Elder Dragon doesn't choose Gangplank, so his replacement effect has nothing to apply to there; Elder Dragon is returned to hand as normal.
 	Returning Gangplank is the qualifying event: instead of going to hand, he gets +3 might.
 	The rest of Star-Crossed resolves normally; it simply produces a different result for the one instruction that involves Gangplank.
 </Callout>
@@ -27,17 +26,22 @@ For Gangplank, that means a stun, might decrease, or return to hand caused by a 
 ## What happens when Switcheroo would reduce an Empowered Gangplank, Naval's might? [#switcheroo-might-reduction]
 
 The might reduction is replaced with +3 might, while the modifier applied to the other unit is unchanged.
-See [How does Switcheroo work?](/cards/switcheroo#might-swap) for why swapping creates two separate modifiers from a single calculated difference.<Rule number="433.1.a" /><Rule number="433.1.b" />
-Switcheroo chooses Gangplank when the spell is finalized, then creates one modifier for each unit when it resolves.
+<Card name="Switcheroo" /> chooses Gangplank when the spell is finalized.<Rule number="355.5" /><Rule number="355.10" />
+When it resolves, Switcheroo determines one difference and creates a separate increase and decrease.<Rule number="433.1.a" /><Rule number="433.1.b" />
 If the modifier affecting Gangplank would decrease his might, that event is replaced with +3 might because it comes from a spell that chose him.
 If it would increase his might, it does not match the events his ability replaces and applies normally.
-The modifier affecting the other unit is unchanged, and the difference is not recalculated.
+The modifier affecting the other unit is unchanged.
+Switcheroo does not recalculate either fixed amount after Gangplank replaces his decrease because the effects already have their amounts.<Rule number="433.1.a" /><Rule number="433.1.b" />
+See [How does Switcheroo work?](/cards/switcheroo#might-swap) and [What happens when later modifiers change?](/cards/switcheroo#later-modifier-changes) for the shared Swap treatment.
+
+Gangplank must already be <Empowered /> for his replacement effect to apply.
+By default, his <Empower /> ability cannot be activated in response to Switcheroo or another spell;<Rule number="381" /><Rule number="309.1.a" /> see [When can I activate an Empower ability?](/mechanics/empower#empower-timing).
 
 <Callout type="idea" title="Example">
 	An <Empowered /> Gangplank at 6 might is swapped with a 1 might <Card name="Determined Sentry" /> at the same battlefield via <Card name="Switcheroo" />.
 
 	The swap action calculates a difference of 5, then creates two modifiers: -5 might for Gangplank and +5 might for Determined Sentry.
-	Gangplank's replacement effect intercedes on his -5 might modifier — decreasing his might is one of the events it replaces — and turns it into +3 might instead.
+	Gangplank's replacement effect intercedes on his -5 might modifier because decreasing his might is one of the events it replaces, and turns it into +3 might instead.
 	The +5 might modifier applies only to Determined Sentry, so Gangplank's replacement effect does not affect it.
 
 	Gangplank ends at 9 might (6 base + 3); Determined Sentry ends at 6 might (1 base + 5).
