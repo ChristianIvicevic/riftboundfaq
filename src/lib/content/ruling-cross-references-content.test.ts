@@ -125,6 +125,69 @@ const APPROVED_COSTS_REFERENCES: readonly ApprovedReference[] = [
 	},
 ]
 
+const APPROVED_PLAYING_CARDS_REFERENCES: readonly ApprovedReference[] = [
+	{
+		source: '/cards/abandoned-hall#countered-spell',
+		question: 'What does "play" mean on a card?',
+		destination: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/astral-heron#trigger-timing',
+		question: 'What does "play" mean on a card?',
+		destination: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/brynhir-thundersong#existing-cards',
+		question: 'What does "play" mean on a card?',
+		destination: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/consuming-curse#self-count',
+		question: 'When does a card leave my trash when I play it from there?',
+		destination: '/general-rules/playing-cards#playing-from-trash',
+	},
+	{
+		source: '/cards/fallen-feline#existing-spells',
+		question: 'What does "play" mean on a card?',
+		destination: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/heedless-resurrection#self-resurrection',
+		question: 'What is the process for playing a card?',
+		destination: '/general-rules/playing-cards#play-process',
+	},
+	{
+		source: '/cards/promising-future#brynhir-thundersong',
+		question: 'What does "play" mean on a card?',
+		destination: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/rebuttal#back-off-draw',
+		question: 'What does "play" mean on a card?',
+		destination: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/rebuttal#play-trigger-controller',
+		question: 'What does "play" mean on a card?',
+		destination: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/shadow-assassin#self-count',
+		question: 'When does a card leave my trash when I play it from there?',
+		destination: '/general-rules/playing-cards#playing-from-trash',
+	},
+	{
+		source: '/cards/shadowblade-lurker#self-count',
+		question: 'When does a card leave my trash when I play it from there?',
+		destination: '/general-rules/playing-cards#playing-from-trash',
+	},
+	{
+		source: '/mechanics/repeat#repeat-decision-timing',
+		question: 'What is the process for playing a card?',
+		destination: '/general-rules/playing-cards#play-process',
+	},
+]
+
 function splitMdx(source: string) {
 	const frontmatterEnd = source.indexOf('\n---\n', 4)
 	return {
@@ -244,5 +307,17 @@ describe('Canonical reference source inventories', () => {
 			'What are optional additional costs?',
 			'What costs still apply when I play a card ignoring one or more of its costs?',
 		])
+	})
+
+	test('resolves exactly the 12 approved Playing Cards references without legacy presentations', () => {
+		assertCanonicalFamilyInventory('/general-rules/playing-cards', APPROVED_PLAYING_CARDS_REFERENCES)
+		for (const page of rulingPages) {
+			expect(page.frontmatter).not.toMatch(/^\s+- "\/general-rules\/playing-cards"$/mu)
+		}
+		expect(
+			getRulingCrossReferences(rulingCrossReferenceIndex, '/mechanics/repeat', 'repeat-decision-timing').map(
+				({ question }) => question,
+			),
+		).toStrictEqual(["How is a card's total cost determined?", 'What is the process for playing a card?'])
 	})
 })

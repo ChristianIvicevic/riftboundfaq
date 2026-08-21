@@ -114,6 +114,69 @@ const COSTS_REFERENCES = [
 	},
 ] as const
 
+const PLAYING_CARDS_REFERENCES = [
+	{
+		source: '/cards/abandoned-hall#countered-spell',
+		question: 'What does "play" mean on a card?',
+		url: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/astral-heron#trigger-timing',
+		question: 'What does "play" mean on a card?',
+		url: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/brynhir-thundersong#existing-cards',
+		question: 'What does "play" mean on a card?',
+		url: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/consuming-curse#self-count',
+		question: 'When does a card leave my trash when I play it from there?',
+		url: '/general-rules/playing-cards#playing-from-trash',
+	},
+	{
+		source: '/cards/fallen-feline#existing-spells',
+		question: 'What does "play" mean on a card?',
+		url: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/heedless-resurrection#self-resurrection',
+		question: 'What is the process for playing a card?',
+		url: '/general-rules/playing-cards#play-process',
+	},
+	{
+		source: '/cards/promising-future#brynhir-thundersong',
+		question: 'What does "play" mean on a card?',
+		url: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/rebuttal#back-off-draw',
+		question: 'What does "play" mean on a card?',
+		url: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/rebuttal#play-trigger-controller',
+		question: 'What does "play" mean on a card?',
+		url: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/shadow-assassin#self-count',
+		question: 'When does a card leave my trash when I play it from there?',
+		url: '/general-rules/playing-cards#playing-from-trash',
+	},
+	{
+		source: '/cards/shadowblade-lurker#self-count',
+		question: 'When does a card leave my trash when I play it from there?',
+		url: '/general-rules/playing-cards#playing-from-trash',
+	},
+	{
+		source: '/mechanics/repeat#repeat-decision-timing',
+		question: 'What is the process for playing a card?',
+		url: '/general-rules/playing-cards#play-process',
+	},
+] as const
+
 describe('RulingCrossReferences', () => {
 	test('renders exact destination questions once in a compact non-heading element', async () => {
 		const screen = await render(
@@ -256,6 +319,74 @@ describe('RulingCrossReferences', () => {
 
 		const destination = [...screen.container.querySelectorAll('section')].find(
 			(element) => element.dataset.source === '/general-rules/costs-and-payments',
+		)
+		expect(destination?.querySelector('nav')).toBeNull()
+		expect(screen.container.querySelectorAll('h1, h2, h3, h4, h5, h6')).toHaveLength(0)
+	})
+
+	test('renders the approved Playing Cards inventory only at its exact source answers', async () => {
+		const sources = [...new Set(PLAYING_CARDS_REFERENCES.map(({ source }) => source))]
+		const screen = await render(
+			<div>
+				{sources.map((source) => (
+					<section key={source} data-source={source}>
+						<RulingCrossReferences
+							references={[
+								...(source === '/mechanics/repeat#repeat-decision-timing'
+									? [
+											{
+												type: 'canonical' as const,
+												question: "How is a card's total cost determined?",
+												url: '/general-rules/costs-and-payments#total-cost-determination',
+											},
+										]
+									: []),
+								...PLAYING_CARDS_REFERENCES.filter((reference) => reference.source === source).map(
+									({ question, url }) => ({ type: 'canonical' as const, question, url }),
+								),
+							]}
+						/>
+					</section>
+				))}
+				<section data-source="/general-rules/playing-cards">
+					<RulingCrossReferences references={[]} />
+				</section>
+			</div>,
+		)
+
+		const links = [...screen.container.querySelectorAll('a')]
+		expect(links).toHaveLength(13)
+
+		for (const { source, question, url } of PLAYING_CARDS_REFERENCES) {
+			const section = [...screen.container.querySelectorAll('section')].find(
+				(element) => element.dataset.source === source,
+			)
+			const link = [...(section?.querySelectorAll('a') ?? [])].find(
+				(element) => element.getAttribute('href') === url,
+			)
+
+			expect(link?.textContent).toBe(question)
+		}
+
+		const repeat = [...screen.container.querySelectorAll('section')].find(
+			(element) => element.dataset.source === '/mechanics/repeat#repeat-decision-timing',
+		)
+		expect(repeat?.querySelectorAll('nav')).toHaveLength(1)
+		expect([...(repeat?.querySelectorAll('a') ?? [])].map((link) => link.textContent)).toStrictEqual([
+			"How is a card's total cost determined?",
+			'What is the process for playing a card?',
+		])
+
+		for (const source of ['/cards/rebuttal#play-trigger-controller', '/cards/rebuttal#back-off-draw']) {
+			const rebuttalAnswer = [...screen.container.querySelectorAll('section')].find(
+				(element) => element.dataset.source === source,
+			)
+			expect(rebuttalAnswer?.querySelectorAll('nav')).toHaveLength(1)
+			expect(rebuttalAnswer?.querySelectorAll('a')).toHaveLength(1)
+		}
+
+		const destination = [...screen.container.querySelectorAll('section')].find(
+			(element) => element.dataset.source === '/general-rules/playing-cards',
 		)
 		expect(destination?.querySelector('nav')).toBeNull()
 		expect(screen.container.querySelectorAll('h1, h2, h3, h4, h5, h6')).toHaveLength(0)
