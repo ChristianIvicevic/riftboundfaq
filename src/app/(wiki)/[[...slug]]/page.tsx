@@ -13,12 +13,17 @@ import { resolveCoreRulesReview } from '@/features/rules-documents/core-rules-re
 import { resolveVersionedRulesRoute } from '@/features/rules-documents/versioned-route'
 import { getRiftboundWikiUrl } from '@/lib/cards/links'
 import { getPagePublication } from '@/lib/content/page-publication'
+import {
+	buildRulingCrossReferenceIndex,
+	getRulingCrossReferences,
+} from '@/lib/content/ruling-cross-references'
 import { buildRulingRelationIndex, getRulingRelations } from '@/lib/content/ruling-relations'
 import { getPageImage, PAGE_IMAGE_SIZE, source } from '@/lib/content/source'
 import { SITE_NAME, SITE_URL, X_HANDLE } from '@/lib/site'
 import { getMDXComponents } from '@/mdx-components'
 
 const rulingRelationIndex = buildRulingRelationIndex(source.getPages())
+const rulingCrossReferenceIndex = buildRulingCrossReferenceIndex(source.getPages())
 
 export default async function Page(props: PageProps<'/[[...slug]]'>) {
 	const params = await props.params
@@ -95,6 +100,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 						createRelativeLink(source, page),
 						coreRulesReview?.document,
 						versionedRulesRoute,
+						(anchor) => getRulingCrossReferences(rulingCrossReferenceIndex, page.url, anchor),
 					)}
 				/>
 			</CopyableDocsBody>

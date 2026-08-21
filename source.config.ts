@@ -4,6 +4,8 @@ import { pageSchema, metaSchema } from 'fumadocs-core/source/schema'
 import { defineConfig, defineDocs } from 'fumadocs-mdx/config'
 import lastModified from 'fumadocs-mdx/plugins/last-modified'
 import { z } from 'zod'
+import { remarkRulingCrossReferences } from '@/lib/content/remark-ruling-cross-references'
+import { rulingCrossReferencesSchema } from '@/lib/content/ruling-cross-references-schema'
 import { rulingRelationsSchema } from '@/lib/content/ruling-relations-schema'
 import { RUNE_NAMES, TERM_DEFINITIONS } from '@/lib/mdx-vocabulary'
 import { coreRulesConventions, tournamentRulesConventions } from '@/lib/rules/document-family-conventions'
@@ -33,6 +35,7 @@ export const docs = defineDocs({
 			authors: z.array(z.string()).optional(),
 			createdAt: z.iso.date().optional(),
 			noindex: z.boolean().optional(),
+			rulingCrossReferences: rulingCrossReferencesSchema.optional(),
 			rulingRelations: rulingRelationsSchema.optional(),
 		}),
 	},
@@ -95,7 +98,7 @@ const feedbackBlockOptions: RemarkFeedbackBlockOptions = {
 export default defineConfig({
 	plugins: [lastModified()],
 	mdxOptions: {
-		remarkPlugins: [[remarkFeedbackBlock, feedbackBlockOptions]],
+		remarkPlugins: [[remarkFeedbackBlock, feedbackBlockOptions], remarkRulingCrossReferences],
 		remarkStructureOptions,
 	},
 })
