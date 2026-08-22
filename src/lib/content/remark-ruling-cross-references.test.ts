@@ -38,4 +38,74 @@ describe('remarkRulingCrossReferences', () => {
 			attributes: [{ type: 'mdxJsxAttribute', name: 'anchor', value: 'second-answer' }],
 		})
 	})
+
+	test.each([
+		{
+			name: 'an authored duplicate mount',
+			children: [
+				{ type: 'heading', depth: 2, data: { hProperties: { id: 'answer' } }, children: [] },
+				{
+					type: 'mdxJsxFlowElement',
+					name: 'RulingCrossReferences',
+					attributes: [{ type: 'mdxJsxAttribute', name: 'anchor', value: 'answer' }],
+					children: [],
+				},
+			],
+		},
+		{
+			name: 'an orphan mount',
+			children: [
+				{
+					type: 'mdxJsxFlowElement',
+					name: 'RulingCrossReferences',
+					attributes: [{ type: 'mdxJsxAttribute', name: 'anchor', value: 'missing' }],
+					children: [],
+				},
+			],
+		},
+		{
+			name: 'a nested mount',
+			children: [
+				{
+					type: 'mdxJsxFlowElement',
+					name: 'Callout',
+					children: [
+						{
+							type: 'mdxJsxFlowElement',
+							name: 'RulingCrossReferences',
+							attributes: [{ type: 'mdxJsxAttribute', name: 'anchor', value: 'answer' }],
+							children: [],
+						},
+					],
+				},
+			],
+		},
+		{
+			name: 'an inline mount',
+			children: [
+				{
+					type: 'paragraph',
+					children: [{ type: 'mdxJsxTextElement', name: 'RulingCrossReferences', children: [] }],
+				},
+			],
+		},
+	])('rejects $name', ({ children }) => {
+		expect(() => remarkRulingCrossReferences()({ children })).toThrow(
+			/RulingCrossReferences mounts are generated and must not be authored/u,
+		)
+	})
+
+	test('rejects duplicate answer anchors instead of generating duplicate mounts', () => {
+		const tree = {
+			type: 'root',
+			children: [
+				{ type: 'heading', depth: 2, data: { hProperties: { id: 'answer' } }, children: [] },
+				{ type: 'paragraph', children: [] },
+				{ type: 'heading', depth: 2, data: { hProperties: { id: 'answer' } }, children: [] },
+				{ type: 'paragraph', children: [] },
+			],
+		}
+
+		expect(() => remarkRulingCrossReferences()(tree)).toThrow(/duplicate H2 Ruling answer anchor answer/u)
+	})
 })

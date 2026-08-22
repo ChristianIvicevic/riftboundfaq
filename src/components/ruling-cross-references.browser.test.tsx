@@ -286,6 +286,20 @@ const DEATHKNELL_REPEAT_AND_REPLAY_ENDPOINTS = [
 	},
 ] as const
 
+const BRYNHIR_PROMISING_FUTURE_INTERACTION_ENDPOINTS = [
+	{
+		source: '/cards/brynhir-thundersong#existing-cards',
+		question:
+			"Does Brynhir Thundersong stop an opponent's card chosen with Promising Future from being played?",
+		url: '/cards/promising-future#brynhir-thundersong',
+	},
+	{
+		source: '/cards/promising-future#brynhir-thundersong',
+		question: 'Does Brynhir Thundersong stop cards already on the chain?',
+		url: '/cards/brynhir-thundersong#existing-cards',
+	},
+] as const
+
 describe('RulingCrossReferences', () => {
 	test('renders exact destination questions once in a compact non-heading element', async () => {
 		const screen = await render(
@@ -668,6 +682,52 @@ describe('RulingCrossReferences', () => {
 				(element) => element.dataset.source === source,
 			)
 			expect(destination?.querySelector('nav')).toBeNull()
+		}
+		expect(screen.container.querySelectorAll('h1, h2, h3, h4, h5, h6')).toHaveLength(0)
+	})
+
+	test('renders exactly 53 link appearances for the approved corpus inventory', async () => {
+		const canonicalReferences = [
+			...ABILITIES_REFERENCES,
+			...COSTS_REFERENCES,
+			...PLAYING_CARDS_REFERENCES,
+			...TARGETING_REFERENCES,
+			...SHOWDOWNS_CHAIN_AND_MOVEMENT_REFERENCES,
+			...DEATHKNELL_REPEAT_AND_REPLAY_ENDPOINTS.filter(({ type }) => type === 'canonical'),
+		]
+		const interactionEndpoints = [
+			...BRYNHIR_PROMISING_FUTURE_INTERACTION_ENDPOINTS,
+			...DEATHKNELL_REPEAT_AND_REPLAY_ENDPOINTS.filter(({ type }) => type === 'interaction'),
+		]
+		const referencesBySource = new Map<
+			string,
+			{ type: 'canonical' | 'interaction'; question: string; url: string }[]
+		>()
+		for (const { source, question, url } of canonicalReferences) {
+			const references = referencesBySource.get(source) ?? []
+			references.push({ type: 'canonical', question, url })
+			referencesBySource.set(source, references)
+		}
+		for (const { source, question, url } of interactionEndpoints) {
+			const references = referencesBySource.get(source) ?? []
+			references.push({ type: 'interaction', question, url })
+			referencesBySource.set(source, references)
+		}
+		const screen = await render(
+			<div>
+				{[...referencesBySource].map(([source, references]) => (
+					<section key={source} data-source={source}>
+						<RulingCrossReferences references={references} />
+					</section>
+				))}
+			</div>,
+		)
+
+		expect(canonicalReferences).toHaveLength(49)
+		expect(interactionEndpoints).toHaveLength(4)
+		expect(screen.container.querySelectorAll('a')).toHaveLength(53)
+		for (const section of screen.container.querySelectorAll('section')) {
+			expect(section.querySelectorAll('nav[aria-label="Related rulings"]')).toHaveLength(1)
 		}
 		expect(screen.container.querySelectorAll('h1, h2, h3, h4, h5, h6')).toHaveLength(0)
 	})

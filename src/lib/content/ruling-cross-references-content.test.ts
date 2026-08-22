@@ -538,16 +538,25 @@ describe('Canonical reference source inventories', () => {
 		expect(interactionEndpoints.toSorted(compareReferences)).toStrictEqual(
 			APPROVED_INTERACTION_ENDPOINTS.toSorted(compareReferences),
 		)
+		expect(interactionEndpoints).toHaveLength(4)
+		expect(canonicalReferences.length + interactionEndpoints.length).toBe(53)
 
-		const interactionDeclarations = rulingPages.flatMap((page) =>
+		const declarations = rulingPages.flatMap((page) =>
 			Object.entries(page.data.rulingCrossReferences ?? {}).flatMap(([anchor, references]) =>
-				references
-					.filter(({ type }) => type === 'interaction')
-					.map(({ destination }) => ({ source: `${page.url}#${anchor}`, destination })),
+				references.map(({ type, destination }) => ({
+					type,
+					source: `${page.url}#${anchor}`,
+					destination,
+				})),
 			),
 		)
+		expect(declarations.filter(({ type }) => type === 'canonical')).toHaveLength(49)
+		const interactionDeclarations = declarations.filter(({ type }) => type === 'interaction')
+		expect(interactionDeclarations).toHaveLength(2)
 		expect(
-			interactionDeclarations.toSorted((left, right) => left.source.localeCompare(right.source)),
+			interactionDeclarations
+				.map(({ source, destination }) => ({ source, destination }))
+				.toSorted((left, right) => left.source.localeCompare(right.source)),
 		).toStrictEqual([
 			{
 				source: '/cards/promising-future#brynhir-thundersong',
@@ -560,6 +569,9 @@ describe('Canonical reference source inventories', () => {
 		])
 
 		for (const page of rulingPages) expect(page.frontmatter).not.toContain('rulingRelations:')
+		for (const page of rulingPages) {
+			expect(page.body).not.toMatch(/\/(?:cards|mechanics|general-rules)\//u)
+		}
 		for (const [route, destinations] of Object.entries({
 			'/cards/akshan-mischievous': ['/mechanics/equipment#equipment-control-change'],
 			'/cards/gangplank-naval': [
