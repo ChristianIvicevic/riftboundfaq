@@ -206,6 +206,34 @@ const TARGETING_REFERENCES = [
 	},
 ] as const
 
+const SHOWDOWNS_CHAIN_AND_MOVEMENT_REFERENCES = [
+	{
+		source: '/cards/baron-nashor#baron-pit-showdown',
+		question: 'When does a showdown close?',
+		url: '/general-rules/showdowns#showdown-close',
+	},
+	{
+		source: '/cards/diana-lunari#trigger-resolution-order',
+		question: 'When do attack and defend triggers happen?',
+		url: '/general-rules/showdowns#attack-defend-triggers',
+	},
+	{
+		source: '/cards/khazix-mutating-horror#trigger-per-combat',
+		question: 'When do attack and defend triggers happen?',
+		url: '/general-rules/showdowns#attack-defend-triggers',
+	},
+	{
+		source: '/mechanics/ambush#unit-play-reactions',
+		question: 'Can I react to units being played?',
+		url: '/general-rules/chain-and-priority#unit-play-reactions',
+	},
+	{
+		source: '/cards/call-to-battle#same-battlefield-destination',
+		question: "Can I choose a unit's current location as its move destination?",
+		url: '/general-rules/movement#chosen-destination',
+	},
+] as const
+
 describe('RulingCrossReferences', () => {
 	test('renders exact destination questions once in a compact non-heading element', async () => {
 		const screen = await render(
@@ -484,6 +512,58 @@ describe('RulingCrossReferences', () => {
 				(element) => element.dataset.source === source,
 			)
 			expect(destinationAnswer?.querySelector('nav')).toBeNull()
+		}
+
+		expect(screen.container.querySelectorAll('h1, h2, h3, h4, h5, h6')).toHaveLength(0)
+	})
+
+	test('renders the approved Showdowns, Chain, and Movement inventory only at its exact source answers', async () => {
+		const sources = [...new Set(SHOWDOWNS_CHAIN_AND_MOVEMENT_REFERENCES.map(({ source }) => source))]
+		const screen = await render(
+			<div>
+				{sources.map((source) => (
+					<section key={source} data-source={source}>
+						<RulingCrossReferences
+							references={SHOWDOWNS_CHAIN_AND_MOVEMENT_REFERENCES.filter(
+								(reference) => reference.source === source,
+							).map(({ question, url }) => ({ type: 'canonical', question, url }))}
+						/>
+					</section>
+				))}
+				{['/general-rules/showdowns', '/general-rules/chain-and-priority', '/general-rules/movement'].map(
+					(source) => (
+						<section key={source} data-source={source}>
+							<RulingCrossReferences references={[]} />
+						</section>
+					),
+				)}
+			</div>,
+		)
+
+		const links = [...screen.container.querySelectorAll('a')]
+		expect(links).toHaveLength(5)
+
+		for (const { source, question, url } of SHOWDOWNS_CHAIN_AND_MOVEMENT_REFERENCES) {
+			const section = [...screen.container.querySelectorAll('section')].find(
+				(element) => element.dataset.source === source,
+			)
+			const link = [...(section?.querySelectorAll('a') ?? [])].find(
+				(element) => element.getAttribute('href') === url,
+			)
+
+			expect(link?.textContent).toBe(question)
+			expect(section?.querySelectorAll('nav')).toHaveLength(1)
+		}
+
+		for (const source of [
+			'/general-rules/showdowns',
+			'/general-rules/chain-and-priority',
+			'/general-rules/movement',
+		]) {
+			const destination = [...screen.container.querySelectorAll('section')].find(
+				(element) => element.dataset.source === source,
+			)
+			expect(destination?.querySelector('nav')).toBeNull()
 		}
 
 		expect(screen.container.querySelectorAll('h1, h2, h3, h4, h5, h6')).toHaveLength(0)

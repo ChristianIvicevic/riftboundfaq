@@ -217,6 +217,40 @@ const APPROVED_TARGETING_REFERENCES: readonly ApprovedReference[] = [
 	},
 ]
 
+const APPROVED_SHOWDOWNS_REFERENCES: readonly ApprovedReference[] = [
+	{
+		source: '/cards/baron-nashor#baron-pit-showdown',
+		question: 'When does a showdown close?',
+		destination: '/general-rules/showdowns#showdown-close',
+	},
+	{
+		source: '/cards/diana-lunari#trigger-resolution-order',
+		question: 'When do attack and defend triggers happen?',
+		destination: '/general-rules/showdowns#attack-defend-triggers',
+	},
+	{
+		source: '/cards/khazix-mutating-horror#trigger-per-combat',
+		question: 'When do attack and defend triggers happen?',
+		destination: '/general-rules/showdowns#attack-defend-triggers',
+	},
+]
+
+const APPROVED_CHAIN_REFERENCES: readonly ApprovedReference[] = [
+	{
+		source: '/mechanics/ambush#unit-play-reactions',
+		question: 'Can I react to units being played?',
+		destination: '/general-rules/chain-and-priority#unit-play-reactions',
+	},
+]
+
+const APPROVED_MOVEMENT_REFERENCES: readonly ApprovedReference[] = [
+	{
+		source: '/cards/call-to-battle#same-battlefield-destination',
+		question: "Can I choose a unit's current location as its move destination?",
+		destination: '/general-rules/movement#chosen-destination',
+	},
+]
+
 function splitMdx(source: string) {
 	const frontmatterEnd = source.indexOf('\n---\n', 4)
 	return {
@@ -373,5 +407,11 @@ describe('Canonical reference source inventories', () => {
 				destination: '/general-rules/abilities#costs-within-instructions',
 			},
 		])
+	})
+
+	test('resolves exactly the 5 approved Showdowns, Chain, and Movement references', () => {
+		assertCanonicalFamilyInventory('/general-rules/showdowns', APPROVED_SHOWDOWNS_REFERENCES)
+		assertCanonicalFamilyInventory('/general-rules/chain-and-priority', APPROVED_CHAIN_REFERENCES)
+		assertCanonicalFamilyInventory('/general-rules/movement', APPROVED_MOVEMENT_REFERENCES)
 	})
 })

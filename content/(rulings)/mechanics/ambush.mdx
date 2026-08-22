@@ -4,6 +4,10 @@ createdAt: "2026-05-09"
 reviewedCoreRulesVersion: "1.4"
 authors:
 - "Christian I. (Near)"
+rulingCrossReferences:
+  unit-play-reactions:
+  - type: "canonical"
+    destination: "/general-rules/chain-and-priority#unit-play-reactions"
 ---
 
 ## Can I use Ambush to play a unit to my base? [#ambush-base]
@@ -22,7 +26,6 @@ No.
 Only the unit's controller can act before entry, and only by activating a <Reaction /> ability that uses <Add /> while paying the unit's costs.<Rule number="357.1.a" /><Rule number="429.3" />
 Otherwise, finalizing the unit does not pass priority.<Rule number="337.1.a" />
 The unit then resolves immediately and enters the board.<Rule number="337.2" /><Rule number="359.2.c" />
-See [Can I react to units being played?](/general-rules/chain-and-priority#unit-play-reactions) for the complete unit-entry and trigger procedure.
 
 This is a common point of confusion with cards like <Card name="Kha'Zix, Mutating Horror" />, which has <Ambush /> and triggers if an enemy unit is alone when he attacks or defends.
 An opponent cannot play a unit in response to Kha'Zix being placed on the chain in an attempt to break the "alone" condition before he enters.
@@ -39,5 +42,3 @@ If this processing leaves the chain empty and the <Ambush /> unit started it, th
 
 If a finalized item remains, including an older item that the unit was played in response to, the chain stays closed.<Rule number="309.1" />
 The controller of the newest remaining item gains priority instead.<Rule number="337.4" /><Rule number="340.4" />
-
-After the chain eventually empties, the showdown continues until every player passes focus in sequence; see [When does a showdown close?](/general-rules/showdowns#showdown-close).
