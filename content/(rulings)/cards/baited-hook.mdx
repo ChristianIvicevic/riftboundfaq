@@ -9,6 +9,10 @@ rulingRelations:
   karthus-deathknell-timing:
   - "/cards/glasc-mixologist"
   - "/cards/karthus-eternal"
+rulingCrossReferences:
+  illegal-target:
+  - type: "canonical"
+    destination: "/general-rules/targeting#illegal-targets"
 ---
 
 ## Can my opponent react before Baited Hook kills my unit? [#kill-reaction-window]
@@ -16,7 +20,6 @@ rulingRelations:
 Yes.
 "Kill a friendly unit" comes after the ":" in Baited Hook's activated ability, so it is an effect instruction rather than part of the activation cost.<Rule number="377.1" />
 That instruction targets a friendly unit, and you choose that target while the ability is being finalized.<Rule number="355.10" /><Rule number="402.2" />
-See [What makes something a target?](/general-rules/targeting#target-definition) for the complete targeting definition and its exceptions.
 
 After Baited Hook's ability is finalized, opponents have an opportunity to play Reactions before it resolves and kills the target.<Rule number="377.3.b.2" /><Rule number="406.4" />
 The later might limit refers to the unit affected by the kill, so these are linked instructions.<Rule number="359.3.e.14" />
@@ -36,7 +39,6 @@ The unit is not killed, you still look at the top 5 cards, but you cannot banish
 If the friendly unit is no longer a legal target when the ability resolves, it is unaffected and the kill instruction is ignored.<Rule number="359.3.e.2" /><Rule number="359.3.e.5" />
 Its might is then null, so the calculation used to choose a unit from the top 5 is ignored.<Rule number="359.3.e.12" />
 The independent instruction to recycle the rest still happens, and no card was banished, so every card you looked at is recycled.<Rule number="359.3.e.11" />
-See [What happens if a target becomes illegal before a spell or ability resolves?](/general-rules/targeting#illegal-targets) for the complete illegal-target procedure.
 
 ## Does a unit's Deathknell resolve before or after the unit played by Baited Hook and its triggers? [#deathknell-order]
 

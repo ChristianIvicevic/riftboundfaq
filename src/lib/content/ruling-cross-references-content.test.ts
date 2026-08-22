@@ -188,6 +188,35 @@ const APPROVED_PLAYING_CARDS_REFERENCES: readonly ApprovedReference[] = [
 	},
 ]
 
+const APPROVED_TARGETING_REFERENCES: readonly ApprovedReference[] = [
+	{
+		source: '/cards/baited-hook#illegal-target',
+		question: 'What happens if a target becomes illegal before a spell or ability resolves?',
+		destination: '/general-rules/targeting#illegal-targets',
+	},
+	{
+		source: '/cards/hidden-blade#draw-if-illegal',
+		question: 'What happens if a target becomes illegal before a spell or ability resolves?',
+		destination: '/general-rules/targeting#illegal-targets',
+	},
+	{
+		source: '/cards/lacerate#targeting-restriction',
+		question:
+			'Does "Kill a unit if it has 3 might or less" mean I can only choose a unit with 3 might or less?',
+		destination: '/general-rules/targeting#target-restrictions',
+	},
+	{
+		source: '/cards/lilting-lullaby#own-counter',
+		question: 'What happens if a target becomes illegal before a spell or ability resolves?',
+		destination: '/general-rules/targeting#illegal-targets',
+	},
+	{
+		source: '/mechanics/equipment#equipment-unit-selection',
+		question: 'What makes something a target?',
+		destination: '/general-rules/targeting#target-definition',
+	},
+]
+
 function splitMdx(source: string) {
 	const frontmatterEnd = source.indexOf('\n---\n', 4)
 	return {
@@ -265,6 +294,7 @@ const rulingCrossReferenceIndex = buildRulingCrossReferenceIndex(rulingPages)
 function assertCanonicalFamilyInventory(
 	destinationPage: string,
 	expectedReferences: readonly ApprovedReference[],
+	expectedDestinationReferences: readonly ApprovedReference[] = [],
 ) {
 	const destinationPrefix = `${destinationPage}#`
 	const actualReferences: ApprovedReference[] = []
@@ -285,9 +315,23 @@ function assertCanonicalFamilyInventory(
 	const destination = rulingPages.find((page) => page.url === destinationPage)
 	expect(destination?.frontmatter).not.toContain('rulingRelations:')
 
+	const destinationReferences: ApprovedReference[] = []
 	for (const heading of destination?.data.structuredData.headings ?? []) {
-		expect(getRulingCrossReferences(rulingCrossReferenceIndex, destinationPage, heading.id)).toStrictEqual([])
+		for (const reference of getRulingCrossReferences(
+			rulingCrossReferenceIndex,
+			destinationPage,
+			heading.id,
+		)) {
+			destinationReferences.push({
+				source: `${destinationPage}#${heading.id}`,
+				question: reference.question,
+				destination: reference.url,
+			})
+		}
 	}
+	expect(destinationReferences.toSorted(compareReferences)).toStrictEqual(
+		expectedDestinationReferences.toSorted(compareReferences),
+	)
 }
 
 describe('Canonical reference source inventories', () => {
@@ -319,5 +363,15 @@ describe('Canonical reference source inventories', () => {
 				({ question }) => question,
 			),
 		).toStrictEqual(["How is a card's total cost determined?", 'What is the process for playing a card?'])
+	})
+
+	test('resolves exactly the 5 approved Targeting references without legacy presentations', () => {
+		assertCanonicalFamilyInventory('/general-rules/targeting', APPROVED_TARGETING_REFERENCES, [
+			{
+				source: '/general-rules/targeting#target-definition',
+				question: 'When do I pay a cost in a triggered ability that says "you may"?',
+				destination: '/general-rules/abilities#costs-within-instructions',
+			},
+		])
 	})
 })

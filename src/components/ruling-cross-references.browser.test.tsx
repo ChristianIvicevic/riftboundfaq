@@ -177,6 +177,35 @@ const PLAYING_CARDS_REFERENCES = [
 	},
 ] as const
 
+const TARGETING_REFERENCES = [
+	{
+		source: '/cards/baited-hook#illegal-target',
+		question: 'What happens if a target becomes illegal before a spell or ability resolves?',
+		url: '/general-rules/targeting#illegal-targets',
+	},
+	{
+		source: '/cards/hidden-blade#draw-if-illegal',
+		question: 'What happens if a target becomes illegal before a spell or ability resolves?',
+		url: '/general-rules/targeting#illegal-targets',
+	},
+	{
+		source: '/cards/lacerate#targeting-restriction',
+		question:
+			'Does "Kill a unit if it has 3 might or less" mean I can only choose a unit with 3 might or less?',
+		url: '/general-rules/targeting#target-restrictions',
+	},
+	{
+		source: '/cards/lilting-lullaby#own-counter',
+		question: 'What happens if a target becomes illegal before a spell or ability resolves?',
+		url: '/general-rules/targeting#illegal-targets',
+	},
+	{
+		source: '/mechanics/equipment#equipment-unit-selection',
+		question: 'What makes something a target?',
+		url: '/general-rules/targeting#target-definition',
+	},
+] as const
+
 describe('RulingCrossReferences', () => {
 	test('renders exact destination questions once in a compact non-heading element', async () => {
 		const screen = await render(
@@ -389,6 +418,74 @@ describe('RulingCrossReferences', () => {
 			(element) => element.dataset.source === '/general-rules/playing-cards',
 		)
 		expect(destination?.querySelector('nav')).toBeNull()
+		expect(screen.container.querySelectorAll('h1, h2, h3, h4, h5, h6')).toHaveLength(0)
+	})
+
+	test('renders the approved Targeting inventory only at its exact source answers', async () => {
+		const sources = [...new Set(TARGETING_REFERENCES.map(({ source }) => source))]
+		const screen = await render(
+			<div>
+				{sources.map((source) => (
+					<section key={source} data-source={source}>
+						<RulingCrossReferences
+							references={TARGETING_REFERENCES.filter((reference) => reference.source === source).map(
+								({ question, url }) => ({ type: 'canonical', question, url }),
+							)}
+						/>
+					</section>
+				))}
+				<section data-source="/general-rules/targeting#target-definition">
+					<RulingCrossReferences
+						references={[
+							{
+								type: 'canonical',
+								question: 'When do I pay a cost in a triggered ability that says "you may"?',
+								url: '/general-rules/abilities#costs-within-instructions',
+							},
+						]}
+					/>
+				</section>
+				<section data-source="/general-rules/targeting#target-restrictions">
+					<RulingCrossReferences references={[]} />
+				</section>
+				<section data-source="/general-rules/targeting#illegal-targets">
+					<RulingCrossReferences references={[]} />
+				</section>
+			</div>,
+		)
+
+		const targetingLinks = [...screen.container.querySelectorAll('a[href^="/general-rules/targeting#"]')]
+		expect(targetingLinks).toHaveLength(5)
+
+		for (const { source, question, url } of TARGETING_REFERENCES) {
+			const section = [...screen.container.querySelectorAll('section')].find(
+				(element) => element.dataset.source === source,
+			)
+			const link = [...(section?.querySelectorAll('a') ?? [])].find(
+				(element) => element.getAttribute('href') === url,
+			)
+
+			expect(link?.textContent).toBe(question)
+			expect(section?.querySelectorAll('nav')).toHaveLength(1)
+		}
+
+		const targetDefinition = [...screen.container.querySelectorAll('section')].find(
+			(element) => element.dataset.source === '/general-rules/targeting#target-definition',
+		)
+		expect(
+			[...(targetDefinition?.querySelectorAll('a') ?? [])].map((link) => link.textContent),
+		).toStrictEqual(['When do I pay a cost in a triggered ability that says "you may"?'])
+
+		for (const source of [
+			'/general-rules/targeting#target-restrictions',
+			'/general-rules/targeting#illegal-targets',
+		]) {
+			const destinationAnswer = [...screen.container.querySelectorAll('section')].find(
+				(element) => element.dataset.source === source,
+			)
+			expect(destinationAnswer?.querySelector('nav')).toBeNull()
+		}
+
 		expect(screen.container.querySelectorAll('h1, h2, h3, h4, h5, h6')).toHaveLength(0)
 	})
 })
