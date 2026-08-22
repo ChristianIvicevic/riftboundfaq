@@ -5,14 +5,13 @@ reviewedCoreRulesVersion: "1.4"
 galleryLink: "https://playriftbound.com/en-us/card-gallery/#card-gallery--ogn-242-298"
 authors:
 - "Christian I. (Near)"
-rulingRelations:
-  karthus-deathknell-timing:
-  - "/cards/glasc-mixologist"
-  - "/cards/karthus-eternal"
 rulingCrossReferences:
   illegal-target:
   - type: "canonical"
     destination: "/general-rules/targeting#illegal-targets"
+  karthus-deathknell-timing:
+  - type: "canonical"
+    destination: "/mechanics/deathknell#trigger-timing"
 ---
 
 ## Can my opponent react before Baited Hook kills my unit? [#kill-reaction-window]
@@ -70,7 +69,6 @@ No.
 Glasc Mixologist's <Deathknell /> is processed before <Card name="Karthus, Eternal" /> enters, so Karthus's passive ability cannot create another trigger for Glasc's earlier death.
 
 When Baited Hook kills <Card name="Glasc Mixologist" />, Glasc's <Deathknell /> is added to the chain as a pending item before he enters the trash.<Rule number="808.1.d.2" />
-See [When is a Deathknell ability added to the chain?](/mechanics/deathknell#trigger-timing) for the complete trigger-timing procedure.
 Baited Hook then continues resolving and may play Karthus, adding him as a newer pending item.<Rule number="158.3.a" /><Rule number="354.2" />
 
 After Baited Hook finishes, Glasc's older pending ability is processed until it finalizes or leaves the chain before Karthus is finalized.<Rule number="337.1" /><Rule number="337.1.b" />

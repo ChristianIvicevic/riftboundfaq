@@ -234,6 +234,58 @@ const SHOWDOWNS_CHAIN_AND_MOVEMENT_REFERENCES = [
 	},
 ] as const
 
+const DEATHKNELL_REPEAT_AND_REPLAY_ENDPOINTS = [
+	{
+		source: '/cards/baited-hook#karthus-deathknell-timing',
+		type: 'canonical',
+		question: 'When is a Deathknell ability added to the chain?',
+		url: '/mechanics/deathknell#trigger-timing',
+	},
+	{
+		source: '/cards/glasc-mixologist#deathknell-combat-result',
+		type: 'canonical',
+		question: 'When does a Deathknell ability resolve if its unit dies during a cleanup?',
+		url: '/mechanics/deathknell#cleanup-timing',
+	},
+	{
+		source: '/cards/heedless-resurrection#repeat-cost',
+		type: 'canonical',
+		question: 'What does Repeat repeat?',
+		url: '/mechanics/repeat#repeated-instructions',
+	},
+	{
+		source: '/cards/irelia-fervent#repeat-targeting-twice',
+		type: 'interaction',
+		question: 'What does Repeat repeat?',
+		url: '/mechanics/repeat#repeated-instructions',
+	},
+	{
+		source: '/cards/karthus-eternal#simultaneous-deathknell',
+		type: 'canonical',
+		question: 'When is a Deathknell ability added to the chain?',
+		url: '/mechanics/deathknell#trigger-timing',
+	},
+	{
+		source: '/cards/sacrifice#deathknell-before-spell',
+		type: 'canonical',
+		question: 'Does Deathknell resolve before the card or ability that killed the unit?',
+		url: '/mechanics/deathknell#killing-card-timing',
+	},
+	{
+		source: '/cards/thrill-of-the-hunt#score-on-opponents-turn',
+		type: 'canonical',
+		question:
+			'Can I use Arcane Shift to banish the only unit I own and control at a battlefield and replay it there?',
+		url: '/cards/arcane-shift#replay-at-same-battlefield',
+	},
+	{
+		source: '/mechanics/repeat#repeated-instructions',
+		type: 'interaction',
+		question: 'Does a Repeat spell targeting Irelia, Fervent for both instructions give her +1 might twice?',
+		url: '/cards/irelia-fervent#repeat-targeting-twice',
+	},
+] as const
+
 describe('RulingCrossReferences', () => {
 	test('renders exact destination questions once in a compact non-heading element', async () => {
 		const screen = await render(
@@ -566,6 +618,57 @@ describe('RulingCrossReferences', () => {
 			expect(destination?.querySelector('nav')).toBeNull()
 		}
 
+		expect(screen.container.querySelectorAll('h1, h2, h3, h4, h5, h6')).toHaveLength(0)
+	})
+
+	test('renders the remaining Canonical references directionally and the Repeat interaction at both endpoints', async () => {
+		const sources = [...new Set(DEATHKNELL_REPEAT_AND_REPLAY_ENDPOINTS.map(({ source }) => source))]
+		const screen = await render(
+			<div>
+				{sources.map((source) => (
+					<section key={source} data-source={source}>
+						<RulingCrossReferences
+							references={DEATHKNELL_REPEAT_AND_REPLAY_ENDPOINTS.filter(
+								(reference) => reference.source === source,
+							).map(({ type, question, url }) => ({ type, question, url }))}
+						/>
+					</section>
+				))}
+				{[
+					'/mechanics/deathknell#trigger-timing',
+					'/mechanics/deathknell#cleanup-timing',
+					'/mechanics/deathknell#killing-card-timing',
+					'/cards/arcane-shift#replay-at-same-battlefield',
+				].map((source) => (
+					<section key={source} data-source={source}>
+						<RulingCrossReferences references={[]} />
+					</section>
+				))}
+			</div>,
+		)
+
+		expect(screen.container.querySelectorAll('a')).toHaveLength(8)
+		for (const { source, question, url } of DEATHKNELL_REPEAT_AND_REPLAY_ENDPOINTS) {
+			const section = [...screen.container.querySelectorAll('section')].find(
+				(element) => element.dataset.source === source,
+			)
+			const link = [...(section?.querySelectorAll('a') ?? [])].find(
+				(element) => element.getAttribute('href') === url,
+			)
+			expect(link?.textContent).toBe(question)
+		}
+
+		for (const source of [
+			'/mechanics/deathknell#trigger-timing',
+			'/mechanics/deathknell#cleanup-timing',
+			'/mechanics/deathknell#killing-card-timing',
+			'/cards/arcane-shift#replay-at-same-battlefield',
+		]) {
+			const destination = [...screen.container.querySelectorAll('section')].find(
+				(element) => element.dataset.source === source,
+			)
+			expect(destination?.querySelector('nav')).toBeNull()
+		}
 		expect(screen.container.querySelectorAll('h1, h2, h3, h4, h5, h6')).toHaveLength(0)
 	})
 })

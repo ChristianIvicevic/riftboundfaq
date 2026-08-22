@@ -5,6 +5,10 @@ reviewedCoreRulesVersion: "1.4"
 galleryLink: "https://playriftbound.com/en-us/card-gallery/#card-gallery--sfd-165-221"
 authors:
 - "Christian I. (Near)"
+rulingCrossReferences:
+  deathknell-combat-result:
+  - type: "canonical"
+    destination: "/mechanics/deathknell#cleanup-timing"
 ---
 
 ## Can Glasc Mixologist's Deathknell target a unit that died from the same event? [#same-event-target]
@@ -19,8 +23,6 @@ Those pending abilities remain unprocessed until the cleanup is complete.<Rule n
 When one effect instruction of a resolving spell or ability kills multiple units, their deaths are simultaneous.<Rule number="370.1.a.2" />
 Each relevant <Deathknell /> becomes pending before its unit moves to the trash.<Rule number="808.1.d.2" />
 No pending ability can finalize until the current spell or ability finishes resolving.<Rule number="158.3" />
-
-See [When is a Deathknell ability added to the chain?](/mechanics/deathknell#trigger-timing) for the complete trigger-timing procedure.
 
 ## Can Glasc Mixologist's Deathknell play a unit to the battlefield where he died? [#play-to-same-battlefield]
 
@@ -46,5 +48,3 @@ Combat result is determined only after the combat cleanup and its associated cha
    A fresh combat is staged at that battlefield.<Rule number="466.3.d.1" />
 4. If no attacker remains, you are the only player with a unit there and win the combat.<Rule number="466.3.a" />
    The No Result instruction that stages a follow-up combat does not apply.<Rule number="466.3.d.1" />
-
-See [When does a Deathknell ability resolve if its unit dies during a cleanup?](/mechanics/deathknell#cleanup-timing) for the complete cleanup-timing procedure.
