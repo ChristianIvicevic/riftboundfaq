@@ -1,0 +1,734 @@
+import { describe, expect, test } from 'vitest'
+import { render } from 'vitest-browser-react'
+import { page } from 'vitest/browser'
+import { RulingCrossReferences } from '@/components/ruling-cross-references'
+
+const ABILITIES_REFERENCES = [
+	{
+		source: '/general-rules/targeting#target-definition',
+		question: 'When do I pay a cost in a triggered ability that says "you may"?',
+		url: '/general-rules/abilities#costs-within-instructions',
+	},
+	{
+		source: '/cards/diana-lunari#ability-finalization-cost',
+		question: 'When do I choose whether to use a triggered ability that says "you may"?',
+		url: '/general-rules/abilities#optional-trigger-decision',
+	},
+	{
+		source: '/cards/diana-lunari#ability-finalization-cost',
+		question: 'When do I pay a cost in a triggered ability that says "you may"?',
+		url: '/general-rules/abilities#costs-within-instructions',
+	},
+	{
+		source: '/cards/emperors-dais#ability-finalization-cost',
+		question: 'When do I choose whether to use a triggered ability that says "you may"?',
+		url: '/general-rules/abilities#optional-trigger-decision',
+	},
+	{
+		source: '/cards/emperors-dais#ability-finalization-cost',
+		question: 'When do I pay a cost in a triggered ability that says "you may"?',
+		url: '/general-rules/abilities#costs-within-instructions',
+	},
+	{
+		source: '/cards/khazix-mutating-horror#unit-play-in-response',
+		question: 'When does the game check an "if" condition in a triggered ability?',
+		url: '/general-rules/abilities#trigger-time-conditions',
+	},
+	{
+		source: '/cards/sunken-temple#mighty-from-assault',
+		question: 'When does the game check an "if" condition in a triggered ability?',
+		url: '/general-rules/abilities#trigger-time-conditions',
+	},
+	{
+		source: '/cards/astral-heron#self-trigger',
+		question: 'When does the game check an "if" condition in a triggered ability?',
+		url: '/general-rules/abilities#trigger-time-conditions',
+	},
+	{
+		source: '/cards/astral-heron#moved-during-resolution',
+		question: 'When does the game check an "if" condition in a triggered ability?',
+		url: '/general-rules/abilities#trigger-time-conditions',
+	},
+	{
+		source: '/cards/azir-sovereign#attack-trigger-without-azir',
+		question: "Does removing a triggered ability's source stop that ability?",
+		url: '/general-rules/abilities#source-removal',
+	},
+	{
+		source: '/cards/astral-heron#removed-in-response',
+		question: "Does removing a triggered ability's source stop that ability?",
+		url: '/general-rules/abilities#source-removal',
+	},
+	{
+		source: '/cards/irresistible-faefolk#removed-in-response',
+		question: "Does removing a triggered ability's source stop that ability?",
+		url: '/general-rules/abilities#source-removal',
+	},
+] as const
+
+const COSTS_REFERENCES = [
+	{
+		source: '/cards/applied-researchers#other-spell-costs',
+		question: "How is a card's total cost determined?",
+		url: '/general-rules/costs-and-payments#total-cost-determination',
+	},
+	{
+		source: '/cards/ezreal-prodigy#optional-additional-costs',
+		question: 'What are optional additional costs?',
+		url: '/general-rules/costs-and-payments#optional-additional-costs',
+	},
+	{
+		source: '/cards/heedless-resurrection#ignore-additional-costs',
+		question: 'What are optional additional costs?',
+		url: '/general-rules/costs-and-payments#optional-additional-costs',
+	},
+	{
+		source: '/cards/heedless-resurrection#ignore-additional-costs',
+		question: 'What costs still apply when I play a card ignoring one or more of its costs?',
+		url: '/general-rules/costs-and-payments#ignored-costs',
+	},
+	{
+		source: '/cards/lux-crownguard#hard-bargain-payment',
+		question: 'Can players react while costs are being paid?',
+		url: '/general-rules/costs-and-payments#cost-reaction-window',
+	},
+	{
+		source: '/cards/sacrifice#cost-reaction-window',
+		question: 'Can players react while costs are being paid?',
+		url: '/general-rules/costs-and-payments#cost-reaction-window',
+	},
+	{
+		source: '/cards/temporal-breach#optional-additional-costs',
+		question: 'What costs still apply when I play a card ignoring one or more of its costs?',
+		url: '/general-rules/costs-and-payments#ignored-costs',
+	},
+	{
+		source: '/cards/vex-cheerless#hidden-cost-increase',
+		question: "How is a card's total cost determined?",
+		url: '/general-rules/costs-and-payments#total-cost-determination',
+	},
+	{
+		source: '/mechanics/repeat#repeat-decision-timing',
+		question: "How is a card's total cost determined?",
+		url: '/general-rules/costs-and-payments#total-cost-determination',
+	},
+] as const
+
+const PLAYING_CARDS_REFERENCES = [
+	{
+		source: '/cards/abandoned-hall#countered-spell',
+		question: 'What does "play" mean on a card?',
+		url: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/astral-heron#trigger-timing',
+		question: 'What does "play" mean on a card?',
+		url: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/brynhir-thundersong#existing-cards',
+		question: 'What does "play" mean on a card?',
+		url: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/consuming-curse#self-count',
+		question: 'When does a card leave my trash when I play it from there?',
+		url: '/general-rules/playing-cards#playing-from-trash',
+	},
+	{
+		source: '/cards/fallen-feline#existing-spells',
+		question: 'What does "play" mean on a card?',
+		url: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/heedless-resurrection#self-resurrection',
+		question: 'What is the process for playing a card?',
+		url: '/general-rules/playing-cards#play-process',
+	},
+	{
+		source: '/cards/promising-future#brynhir-thundersong',
+		question: 'What does "play" mean on a card?',
+		url: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/rebuttal#back-off-draw',
+		question: 'What does "play" mean on a card?',
+		url: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/rebuttal#play-trigger-controller',
+		question: 'What does "play" mean on a card?',
+		url: '/general-rules/playing-cards#play-definition',
+	},
+	{
+		source: '/cards/shadow-assassin#self-count',
+		question: 'When does a card leave my trash when I play it from there?',
+		url: '/general-rules/playing-cards#playing-from-trash',
+	},
+	{
+		source: '/cards/shadowblade-lurker#self-count',
+		question: 'When does a card leave my trash when I play it from there?',
+		url: '/general-rules/playing-cards#playing-from-trash',
+	},
+	{
+		source: '/mechanics/repeat#repeat-decision-timing',
+		question: 'What is the process for playing a card?',
+		url: '/general-rules/playing-cards#play-process',
+	},
+] as const
+
+const TARGETING_REFERENCES = [
+	{
+		source: '/cards/baited-hook#illegal-target',
+		question: 'What happens if a target becomes illegal before a spell or ability resolves?',
+		url: '/general-rules/targeting#illegal-targets',
+	},
+	{
+		source: '/cards/hidden-blade#draw-if-illegal',
+		question: 'What happens if a target becomes illegal before a spell or ability resolves?',
+		url: '/general-rules/targeting#illegal-targets',
+	},
+	{
+		source: '/cards/lacerate#targeting-restriction',
+		question:
+			'Does "Kill a unit if it has 3 might or less" mean I can only choose a unit with 3 might or less?',
+		url: '/general-rules/targeting#target-restrictions',
+	},
+	{
+		source: '/cards/lilting-lullaby#own-counter',
+		question: 'What happens if a target becomes illegal before a spell or ability resolves?',
+		url: '/general-rules/targeting#illegal-targets',
+	},
+	{
+		source: '/mechanics/equipment#equipment-unit-selection',
+		question: 'What makes something a target?',
+		url: '/general-rules/targeting#target-definition',
+	},
+] as const
+
+const SHOWDOWNS_CHAIN_AND_MOVEMENT_REFERENCES = [
+	{
+		source: '/cards/baron-nashor#baron-pit-showdown',
+		question: 'When does a showdown close?',
+		url: '/general-rules/showdowns#showdown-close',
+	},
+	{
+		source: '/cards/diana-lunari#trigger-resolution-order',
+		question: 'When do attack and defend triggers happen?',
+		url: '/general-rules/showdowns#attack-defend-triggers',
+	},
+	{
+		source: '/cards/khazix-mutating-horror#trigger-per-combat',
+		question: 'When do attack and defend triggers happen?',
+		url: '/general-rules/showdowns#attack-defend-triggers',
+	},
+	{
+		source: '/mechanics/ambush#unit-play-reactions',
+		question: 'Can I react to units being played?',
+		url: '/general-rules/chain-and-priority#unit-play-reactions',
+	},
+	{
+		source: '/cards/call-to-battle#same-battlefield-destination',
+		question: "Can I choose a unit's current location as its move destination?",
+		url: '/general-rules/movement#chosen-destination',
+	},
+] as const
+
+const DEATHKNELL_REPEAT_AND_REPLAY_ENDPOINTS = [
+	{
+		source: '/cards/baited-hook#karthus-deathknell-timing',
+		type: 'canonical',
+		question: 'When is a Deathknell ability added to the chain?',
+		url: '/mechanics/deathknell#trigger-timing',
+	},
+	{
+		source: '/cards/glasc-mixologist#deathknell-combat-result',
+		type: 'canonical',
+		question: 'When does a Deathknell ability resolve if its unit dies during a cleanup?',
+		url: '/mechanics/deathknell#cleanup-timing',
+	},
+	{
+		source: '/cards/heedless-resurrection#repeat-cost',
+		type: 'canonical',
+		question: 'What does Repeat repeat?',
+		url: '/mechanics/repeat#repeated-instructions',
+	},
+	{
+		source: '/cards/irelia-fervent#repeat-targeting-twice',
+		type: 'interaction',
+		question: 'What does Repeat repeat?',
+		url: '/mechanics/repeat#repeated-instructions',
+	},
+	{
+		source: '/cards/karthus-eternal#simultaneous-deathknell',
+		type: 'canonical',
+		question: 'When is a Deathknell ability added to the chain?',
+		url: '/mechanics/deathknell#trigger-timing',
+	},
+	{
+		source: '/cards/sacrifice#deathknell-before-spell',
+		type: 'canonical',
+		question: 'Does Deathknell resolve before the card or ability that killed the unit?',
+		url: '/mechanics/deathknell#killing-card-timing',
+	},
+	{
+		source: '/cards/thrill-of-the-hunt#score-on-opponents-turn',
+		type: 'canonical',
+		question:
+			'Can I use Arcane Shift to banish the only unit I own and control at a battlefield and replay it there?',
+		url: '/cards/arcane-shift#replay-at-same-battlefield',
+	},
+	{
+		source: '/mechanics/repeat#repeated-instructions',
+		type: 'interaction',
+		question: 'Does a Repeat spell targeting Irelia, Fervent for both instructions give her +1 might twice?',
+		url: '/cards/irelia-fervent#repeat-targeting-twice',
+	},
+] as const
+
+const BRYNHIR_PROMISING_FUTURE_INTERACTION_ENDPOINTS = [
+	{
+		source: '/cards/brynhir-thundersong#existing-cards',
+		question:
+			"Does Brynhir Thundersong stop an opponent's card chosen with Promising Future from being played?",
+		url: '/cards/promising-future#brynhir-thundersong',
+	},
+	{
+		source: '/cards/promising-future#brynhir-thundersong',
+		question: 'Does Brynhir Thundersong stop cards already on the chain?',
+		url: '/cards/brynhir-thundersong#existing-cards',
+	},
+] as const
+
+describe('RulingCrossReferences', () => {
+	test('renders exact destination questions once in a compact non-heading element', async () => {
+		const screen = await render(
+			<RulingCrossReferences
+				references={[
+					{
+						type: 'interaction',
+						question: 'Does Brynhir Thundersong stop cards already on the chain?',
+						url: '/cards/brynhir-thundersong#existing-cards',
+					},
+					{
+						type: 'canonical',
+						question: 'What does "play" mean on a card?',
+						url: '/general-rules/playing-cards#play-definition',
+					},
+				]}
+			/>,
+		)
+
+		await expect.element(screen.getByText('See also:')).toBeVisible()
+		await expect
+			.element(
+				screen.getByRole('link', { name: 'Does Brynhir Thundersong stop cards already on the chain?' }),
+			)
+			.toHaveAttribute('href', '/cards/brynhir-thundersong#existing-cards')
+		await expect
+			.element(screen.getByRole('link', { name: 'What does "play" mean on a card?' }))
+			.toHaveAttribute('href', '/general-rules/playing-cards#play-definition')
+		expect(screen.getByText('See also:').all()).toHaveLength(1)
+		expect(screen.container.querySelectorAll('h1, h2, h3, h4, h5, h6')).toHaveLength(0)
+	})
+
+	test('remains usable at 390px', async () => {
+		await page.viewport(390, 844)
+		const screen = await render(
+			<div style={{ width: 358 }}>
+				<RulingCrossReferences
+					references={[
+						{
+							type: 'interaction',
+							question:
+								"Does Brynhir Thundersong stop an opponent's card chosen with Promising Future from being played?",
+							url: '/cards/promising-future#brynhir-thundersong',
+						},
+					]}
+				/>
+			</div>,
+		)
+
+		await expect
+			.element(
+				screen.getByRole('link', {
+					name: "Does Brynhir Thundersong stop an opponent's card chosen with Promising Future from being played?",
+				}),
+			)
+			.toBeVisible()
+		expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(390)
+	})
+
+	test('renders the approved Abilities inventory only at its exact source answers', async () => {
+		const sources = [...new Set(ABILITIES_REFERENCES.map(({ source }) => source))]
+		const screen = await render(
+			<div>
+				{sources.map((source) => (
+					<section key={source} data-source={source}>
+						<RulingCrossReferences
+							references={ABILITIES_REFERENCES.filter((reference) => reference.source === source).map(
+								({ question, url }) => ({ type: 'canonical', question, url }),
+							)}
+						/>
+					</section>
+				))}
+				<section data-source="/general-rules/abilities">
+					<RulingCrossReferences references={[]} />
+				</section>
+			</div>,
+		)
+
+		const links = [...screen.container.querySelectorAll('a')]
+		expect(links).toHaveLength(12)
+
+		for (const { source, question, url } of ABILITIES_REFERENCES) {
+			const section = [...screen.container.querySelectorAll('section')].find(
+				(element) => element.dataset.source === source,
+			)
+			const link = [...(section?.querySelectorAll('a') ?? [])].find(
+				(element) => element.getAttribute('href') === url,
+			)
+
+			expect(link?.textContent).toBe(question)
+		}
+
+		const destination = [...screen.container.querySelectorAll('section')].find(
+			(element) => element.dataset.source === '/general-rules/abilities',
+		)
+		expect(destination?.querySelector('nav')).toBeNull()
+		expect(screen.container.querySelectorAll('h1, h2, h3, h4, h5, h6')).toHaveLength(0)
+	})
+
+	test('renders the approved Costs and Payments inventory only at its exact source answers', async () => {
+		const sources = [...new Set(COSTS_REFERENCES.map(({ source }) => source))]
+		const screen = await render(
+			<div>
+				{sources.map((source) => (
+					<section key={source} data-source={source}>
+						<RulingCrossReferences
+							references={COSTS_REFERENCES.filter((reference) => reference.source === source).map(
+								({ question, url }) => ({ type: 'canonical', question, url }),
+							)}
+						/>
+					</section>
+				))}
+				<section data-source="/general-rules/costs-and-payments">
+					<RulingCrossReferences references={[]} />
+				</section>
+			</div>,
+		)
+
+		const links = [...screen.container.querySelectorAll('a')]
+		expect(links).toHaveLength(9)
+
+		for (const { source, question, url } of COSTS_REFERENCES) {
+			const section = [...screen.container.querySelectorAll('section')].find(
+				(element) => element.dataset.source === source,
+			)
+			const link = [...(section?.querySelectorAll('a') ?? [])].find(
+				(element) => element.getAttribute('href') === url,
+			)
+
+			expect(link?.textContent).toBe(question)
+		}
+
+		const heedless = [...screen.container.querySelectorAll('section')].find(
+			(element) => element.dataset.source === '/cards/heedless-resurrection#ignore-additional-costs',
+		)
+		expect([...(heedless?.querySelectorAll('a') ?? [])].map((link) => link.textContent)).toStrictEqual([
+			'What are optional additional costs?',
+			'What costs still apply when I play a card ignoring one or more of its costs?',
+		])
+
+		const destination = [...screen.container.querySelectorAll('section')].find(
+			(element) => element.dataset.source === '/general-rules/costs-and-payments',
+		)
+		expect(destination?.querySelector('nav')).toBeNull()
+		expect(screen.container.querySelectorAll('h1, h2, h3, h4, h5, h6')).toHaveLength(0)
+	})
+
+	test('renders the approved Playing Cards inventory only at its exact source answers', async () => {
+		const sources = [...new Set(PLAYING_CARDS_REFERENCES.map(({ source }) => source))]
+		const screen = await render(
+			<div>
+				{sources.map((source) => (
+					<section key={source} data-source={source}>
+						<RulingCrossReferences
+							references={[
+								...(source === '/mechanics/repeat#repeat-decision-timing'
+									? [
+											{
+												type: 'canonical' as const,
+												question: "How is a card's total cost determined?",
+												url: '/general-rules/costs-and-payments#total-cost-determination',
+											},
+										]
+									: []),
+								...PLAYING_CARDS_REFERENCES.filter((reference) => reference.source === source).map(
+									({ question, url }) => ({ type: 'canonical' as const, question, url }),
+								),
+							]}
+						/>
+					</section>
+				))}
+				<section data-source="/general-rules/playing-cards">
+					<RulingCrossReferences references={[]} />
+				</section>
+			</div>,
+		)
+
+		const links = [...screen.container.querySelectorAll('a')]
+		expect(links).toHaveLength(13)
+
+		for (const { source, question, url } of PLAYING_CARDS_REFERENCES) {
+			const section = [...screen.container.querySelectorAll('section')].find(
+				(element) => element.dataset.source === source,
+			)
+			const link = [...(section?.querySelectorAll('a') ?? [])].find(
+				(element) => element.getAttribute('href') === url,
+			)
+
+			expect(link?.textContent).toBe(question)
+		}
+
+		const repeat = [...screen.container.querySelectorAll('section')].find(
+			(element) => element.dataset.source === '/mechanics/repeat#repeat-decision-timing',
+		)
+		expect(repeat?.querySelectorAll('nav')).toHaveLength(1)
+		expect([...(repeat?.querySelectorAll('a') ?? [])].map((link) => link.textContent)).toStrictEqual([
+			"How is a card's total cost determined?",
+			'What is the process for playing a card?',
+		])
+
+		for (const source of ['/cards/rebuttal#play-trigger-controller', '/cards/rebuttal#back-off-draw']) {
+			const rebuttalAnswer = [...screen.container.querySelectorAll('section')].find(
+				(element) => element.dataset.source === source,
+			)
+			expect(rebuttalAnswer?.querySelectorAll('nav')).toHaveLength(1)
+			expect(rebuttalAnswer?.querySelectorAll('a')).toHaveLength(1)
+		}
+
+		const destination = [...screen.container.querySelectorAll('section')].find(
+			(element) => element.dataset.source === '/general-rules/playing-cards',
+		)
+		expect(destination?.querySelector('nav')).toBeNull()
+		expect(screen.container.querySelectorAll('h1, h2, h3, h4, h5, h6')).toHaveLength(0)
+	})
+
+	test('renders the approved Targeting inventory only at its exact source answers', async () => {
+		const sources = [...new Set(TARGETING_REFERENCES.map(({ source }) => source))]
+		const screen = await render(
+			<div>
+				{sources.map((source) => (
+					<section key={source} data-source={source}>
+						<RulingCrossReferences
+							references={TARGETING_REFERENCES.filter((reference) => reference.source === source).map(
+								({ question, url }) => ({ type: 'canonical', question, url }),
+							)}
+						/>
+					</section>
+				))}
+				<section data-source="/general-rules/targeting#target-definition">
+					<RulingCrossReferences
+						references={[
+							{
+								type: 'canonical',
+								question: 'When do I pay a cost in a triggered ability that says "you may"?',
+								url: '/general-rules/abilities#costs-within-instructions',
+							},
+						]}
+					/>
+				</section>
+				<section data-source="/general-rules/targeting#target-restrictions">
+					<RulingCrossReferences references={[]} />
+				</section>
+				<section data-source="/general-rules/targeting#illegal-targets">
+					<RulingCrossReferences references={[]} />
+				</section>
+			</div>,
+		)
+
+		const targetingLinks = [...screen.container.querySelectorAll('a[href^="/general-rules/targeting#"]')]
+		expect(targetingLinks).toHaveLength(5)
+
+		for (const { source, question, url } of TARGETING_REFERENCES) {
+			const section = [...screen.container.querySelectorAll('section')].find(
+				(element) => element.dataset.source === source,
+			)
+			const link = [...(section?.querySelectorAll('a') ?? [])].find(
+				(element) => element.getAttribute('href') === url,
+			)
+
+			expect(link?.textContent).toBe(question)
+			expect(section?.querySelectorAll('nav')).toHaveLength(1)
+		}
+
+		const targetDefinition = [...screen.container.querySelectorAll('section')].find(
+			(element) => element.dataset.source === '/general-rules/targeting#target-definition',
+		)
+		expect(
+			[...(targetDefinition?.querySelectorAll('a') ?? [])].map((link) => link.textContent),
+		).toStrictEqual(['When do I pay a cost in a triggered ability that says "you may"?'])
+
+		for (const source of [
+			'/general-rules/targeting#target-restrictions',
+			'/general-rules/targeting#illegal-targets',
+		]) {
+			const destinationAnswer = [...screen.container.querySelectorAll('section')].find(
+				(element) => element.dataset.source === source,
+			)
+			expect(destinationAnswer?.querySelector('nav')).toBeNull()
+		}
+
+		expect(screen.container.querySelectorAll('h1, h2, h3, h4, h5, h6')).toHaveLength(0)
+	})
+
+	test('renders the approved Showdowns, Chain, and Movement inventory only at its exact source answers', async () => {
+		const sources = [...new Set(SHOWDOWNS_CHAIN_AND_MOVEMENT_REFERENCES.map(({ source }) => source))]
+		const screen = await render(
+			<div>
+				{sources.map((source) => (
+					<section key={source} data-source={source}>
+						<RulingCrossReferences
+							references={SHOWDOWNS_CHAIN_AND_MOVEMENT_REFERENCES.filter(
+								(reference) => reference.source === source,
+							).map(({ question, url }) => ({ type: 'canonical', question, url }))}
+						/>
+					</section>
+				))}
+				{['/general-rules/showdowns', '/general-rules/chain-and-priority', '/general-rules/movement'].map(
+					(source) => (
+						<section key={source} data-source={source}>
+							<RulingCrossReferences references={[]} />
+						</section>
+					),
+				)}
+			</div>,
+		)
+
+		const links = [...screen.container.querySelectorAll('a')]
+		expect(links).toHaveLength(5)
+
+		for (const { source, question, url } of SHOWDOWNS_CHAIN_AND_MOVEMENT_REFERENCES) {
+			const section = [...screen.container.querySelectorAll('section')].find(
+				(element) => element.dataset.source === source,
+			)
+			const link = [...(section?.querySelectorAll('a') ?? [])].find(
+				(element) => element.getAttribute('href') === url,
+			)
+
+			expect(link?.textContent).toBe(question)
+			expect(section?.querySelectorAll('nav')).toHaveLength(1)
+		}
+
+		for (const source of [
+			'/general-rules/showdowns',
+			'/general-rules/chain-and-priority',
+			'/general-rules/movement',
+		]) {
+			const destination = [...screen.container.querySelectorAll('section')].find(
+				(element) => element.dataset.source === source,
+			)
+			expect(destination?.querySelector('nav')).toBeNull()
+		}
+
+		expect(screen.container.querySelectorAll('h1, h2, h3, h4, h5, h6')).toHaveLength(0)
+	})
+
+	test('renders the remaining Canonical references directionally and the Repeat interaction at both endpoints', async () => {
+		const sources = [...new Set(DEATHKNELL_REPEAT_AND_REPLAY_ENDPOINTS.map(({ source }) => source))]
+		const screen = await render(
+			<div>
+				{sources.map((source) => (
+					<section key={source} data-source={source}>
+						<RulingCrossReferences
+							references={DEATHKNELL_REPEAT_AND_REPLAY_ENDPOINTS.filter(
+								(reference) => reference.source === source,
+							).map(({ type, question, url }) => ({ type, question, url }))}
+						/>
+					</section>
+				))}
+				{[
+					'/mechanics/deathknell#trigger-timing',
+					'/mechanics/deathknell#cleanup-timing',
+					'/mechanics/deathknell#killing-card-timing',
+					'/cards/arcane-shift#replay-at-same-battlefield',
+				].map((source) => (
+					<section key={source} data-source={source}>
+						<RulingCrossReferences references={[]} />
+					</section>
+				))}
+			</div>,
+		)
+
+		expect(screen.container.querySelectorAll('a')).toHaveLength(8)
+		for (const { source, question, url } of DEATHKNELL_REPEAT_AND_REPLAY_ENDPOINTS) {
+			const section = [...screen.container.querySelectorAll('section')].find(
+				(element) => element.dataset.source === source,
+			)
+			const link = [...(section?.querySelectorAll('a') ?? [])].find(
+				(element) => element.getAttribute('href') === url,
+			)
+			expect(link?.textContent).toBe(question)
+		}
+
+		for (const source of [
+			'/mechanics/deathknell#trigger-timing',
+			'/mechanics/deathknell#cleanup-timing',
+			'/mechanics/deathknell#killing-card-timing',
+			'/cards/arcane-shift#replay-at-same-battlefield',
+		]) {
+			const destination = [...screen.container.querySelectorAll('section')].find(
+				(element) => element.dataset.source === source,
+			)
+			expect(destination?.querySelector('nav')).toBeNull()
+		}
+		expect(screen.container.querySelectorAll('h1, h2, h3, h4, h5, h6')).toHaveLength(0)
+	})
+
+	test('renders exactly 53 link appearances for the approved corpus inventory', async () => {
+		const canonicalReferences = [
+			...ABILITIES_REFERENCES,
+			...COSTS_REFERENCES,
+			...PLAYING_CARDS_REFERENCES,
+			...TARGETING_REFERENCES,
+			...SHOWDOWNS_CHAIN_AND_MOVEMENT_REFERENCES,
+			...DEATHKNELL_REPEAT_AND_REPLAY_ENDPOINTS.filter(({ type }) => type === 'canonical'),
+		]
+		const interactionEndpoints = [
+			...BRYNHIR_PROMISING_FUTURE_INTERACTION_ENDPOINTS,
+			...DEATHKNELL_REPEAT_AND_REPLAY_ENDPOINTS.filter(({ type }) => type === 'interaction'),
+		]
+		const referencesBySource = new Map<
+			string,
+			{ type: 'canonical' | 'interaction'; question: string; url: string }[]
+		>()
+		for (const { source, question, url } of canonicalReferences) {
+			const references = referencesBySource.get(source) ?? []
+			references.push({ type: 'canonical', question, url })
+			referencesBySource.set(source, references)
+		}
+		for (const { source, question, url } of interactionEndpoints) {
+			const references = referencesBySource.get(source) ?? []
+			references.push({ type: 'interaction', question, url })
+			referencesBySource.set(source, references)
+		}
+		const screen = await render(
+			<div>
+				{[...referencesBySource].map(([source, references]) => (
+					<section key={source} data-source={source}>
+						<RulingCrossReferences references={references} />
+					</section>
+				))}
+			</div>,
+		)
+
+		expect(canonicalReferences).toHaveLength(49)
+		expect(interactionEndpoints).toHaveLength(4)
+		expect(screen.container.querySelectorAll('a')).toHaveLength(53)
+		for (const section of screen.container.querySelectorAll('section')) {
+			expect(section.querySelectorAll('nav[aria-label="Related rulings"]')).toHaveLength(1)
+		}
+		expect(screen.container.querySelectorAll('h1, h2, h3, h4, h5, h6')).toHaveLength(0)
+	})
+})

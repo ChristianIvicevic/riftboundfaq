@@ -5,6 +5,19 @@ reviewedCoreRulesVersion: "1.4"
 galleryLink: "https://playriftbound.com/en-us/card-gallery/#card-gallery--ven-044-166"
 authors:
 - "Christian I. (Near)"
+rulingCrossReferences:
+  trigger-timing:
+  - type: "canonical"
+    destination: "/general-rules/playing-cards#play-definition"
+  self-trigger:
+  - type: "canonical"
+    destination: "/general-rules/abilities#trigger-time-conditions"
+  moved-during-resolution:
+  - type: "canonical"
+    destination: "/general-rules/abilities#trigger-time-conditions"
+  removed-in-response:
+  - type: "canonical"
+    destination: "/general-rules/abilities#source-removal"
 ---
 
 ## When exactly does Astral Heron trigger, and which card gets its discount? [#trigger-timing]
@@ -17,8 +30,6 @@ When the condition is fulfilled, the triggered ability is placed on the chain an
 Once it resolves, "your next card" means the next card you place on the chain and queue for finalization.<Rule number="419.1" />
 Astral Heron's discount is applied while determining that card's total cost, before you pay the cost and finish finalizing it.<Rule number="356.4" /><Rule number="357" />
 
-See [What does "play" mean on a card?](/general-rules/playing-cards#play-definition) for the complete distinction between starting, finalizing, and completing a play.
-
 ## Does Astral Heron's ability trigger if it's your first card played to a battlefield this turn? [#self-trigger]
 
 Yes, if Astral Heron is your first card played that turn and enters a battlefield as it resolves.
@@ -30,7 +41,6 @@ Triggered abilities of permanents can have their conditions evaluated while thei
 Astral Heron is therefore at the battlefield when the game evaluates its trigger condition after the completed play.<Rule number="383.2.c" />
 
 The immediately following "if I'm at a battlefield" is part of the trigger condition and is checked at that time.<Rule number="383.2.a" /><Rule number="383.2.a.1" />
-See [When does the game check an "if" condition in a triggered ability?](/general-rules/abilities#trigger-time-conditions) for the general condition-placement rule.
 
 ## Does Astral Heron trigger if your first card moves it to base? [#moved-during-resolution]
 
@@ -41,7 +51,6 @@ Astral Heron's trigger condition is therefore checked only after the spell's mov
 Because "if I'm at a battlefield" is part of that trigger condition, the ability is not placed on the chain if Astral Heron is at base by then.<Rule number="383.2.a.1" />
 
 This differs from moving Astral Heron after its triggered ability has already been placed on the chain, when the condition has already been satisfied.
-See [When does the game check an "if" condition in a triggered ability?](/general-rules/abilities#trigger-time-conditions) for the general timing rule.
 
 ## Once Astral Heron's triggered ability is on the chain, can killing or moving it stop the cost reduction? [#removed-in-response]
 
@@ -51,8 +60,6 @@ Once the triggered ability is on the chain, killing or moving Astral Heron does 
 "If I'm at a battlefield" is part of the trigger condition, so it is not checked again when the ability resolves.<Rule number="383.2.a.1" />
 The effect does not need Astral Heron's location or continued presence.
 When the triggered ability resolves, it creates a delayed ability that is not associated with Astral Heron and remains applicable at its specified time even if Astral Heron has left the board.<Rule number="390.4" /><Rule number="392" />
-
-See [Does removing a triggered ability's source stop that ability?](/general-rules/abilities#source-removal) for the general source-removal procedure.
 
 ## If the spell that receives Astral Heron's discount is later countered, is the discount granted to a different card instead? [#discount-after-counter]
 

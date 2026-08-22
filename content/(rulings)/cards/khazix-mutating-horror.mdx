@@ -5,6 +5,13 @@ reviewedCoreRulesVersion: "1.4"
 galleryLink: "https://playriftbound.com/en-us/card-gallery/#card-gallery--unl-143-219"
 authors:
 - "Christian I. (Near)"
+rulingCrossReferences:
+  unit-play-in-response:
+  - type: "canonical"
+    destination: "/general-rules/abilities#trigger-time-conditions"
+  trigger-per-combat:
+  - type: "canonical"
+    destination: "/general-rules/showdowns#attack-defend-triggers"
 ---
 
 ## Can an opponent play a unit in reaction to Kha'Zix, Mutating Horror's trigger to prevent the effect? [#unit-play-in-response]
@@ -22,9 +29,6 @@ If the enemy unit is not alone then, the ability does not trigger even if anothe
 Playing a legally timed unit places it on the existing chain as a pending item.<Rule number="330.2" /><Rule number="419.1" />
 After it finalizes, the unit resolves immediately and enters the board.<Rule number="337.2" /><Rule number="359.2.c" />
 This later entry does not repeat Kha'Zix's earlier trigger-condition check.
-See [What does "play" mean on a card?](/general-rules/playing-cards#play-definition) for the complete play distinction.
-
-See [When does the game check an "if" condition in a triggered ability?](/general-rules/abilities#trigger-time-conditions) for the difference between this condition and an "if" that follows an effect instruction.
 
 ## Can Kha'Zix, Mutating Horror trigger multiple times in the same turn? [#trigger-per-combat]
 
@@ -32,5 +36,3 @@ Yes.
 In each combat, Kha'Zix can trigger when he first attacks and when he first defends, if an enemy unit is alone at his battlefield at each check.
 Attack and defend trigger conditions are checked separately when a unit first gains the matching designation during a combat.<Rule number="383.4.e" /><Rule number="383.4.f" />
 Each matching check happens only once per combat, rather than once per turn.<Rule number="383.4.e.2.a" /><Rule number="383.4.f.2.a" />
-
-See [When do attack and defend triggers happen?](/general-rules/showdowns#attack-defend-triggers) for designation timing and late arrivals during combat.

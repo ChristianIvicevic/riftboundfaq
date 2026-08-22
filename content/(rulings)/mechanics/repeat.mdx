@@ -4,10 +4,15 @@ createdAt: "2026-02-02"
 reviewedCoreRulesVersion: "1.4"
 authors:
 - "Christian I. (Near)"
-rulingRelations:
+rulingCrossReferences:
+  repeat-decision-timing:
+  - type: "canonical"
+    destination: "/general-rules/costs-and-payments#total-cost-determination"
+  - type: "canonical"
+    destination: "/general-rules/playing-cards#play-process"
   repeated-instructions:
-  - "/cards/heedless-resurrection"
-  - "/cards/irelia-fervent"
+  - type: "interaction"
+    destination: "/cards/irelia-fervent#repeat-targeting-twice"
 ---
 
 ## When do I decide whether to pay for Repeat? [#repeat-decision-timing]
@@ -17,8 +22,6 @@ Decide whether to pay a spell's <Repeat /> cost while making its relevant choice
 If you choose to pay it, the <Repeat /> cost is included as an optional additional cost when the spell's total cost is determined.<Rule number="356.2.b.1" />
 The spell's costs are then paid and its legality is checked before it finishes finalizing.<Rule number="357" /><Rule number="358" /><Rule number="359" />
 Finalization does not pass priority, so you cannot wait for reactions before making the <Repeat /> decision.<Rule number="337.1.a" />
-
-See [What is the process for playing a card?](/general-rules/playing-cards#play-process) for the complete play process and [How is a card's total cost determined?](/general-rules/costs-and-payments#total-cost-determination) for the ordered cost procedure.
 
 ## What does Repeat repeat? [#repeated-instructions]
 
@@ -38,4 +41,3 @@ Instead, it modifies how the spell resolves by executing its instructions an add
 
 When a spell is countered, it does nothing and is cleared from the chain, so none of its executions happen.<Rule number="425.1.a" />
 Countering does not refund additional costs paid to play the spell.<Rule number="425.1.c" /><Rule number="425.1.c.1" />
-See [Are paid costs refunded if a card or ability is countered?](/general-rules/costs-and-payments#countered-costs) for the complete countered-cost treatment.

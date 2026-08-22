@@ -4,22 +4,10 @@ createdAt: "2026-03-25"
 reviewedCoreRulesVersion: "1.4"
 authors:
 - "Christian I. (Near)"
-rulingRelations:
+rulingCrossReferences:
   target-definition:
-  - "/mechanics/equipment"
-  - "/cards/baited-hook"
-  - "/cards/emperors-dais"
-  - "/cards/irelia-fervent"
-  - "/cards/bone-skewer"
-  - "/cards/sacrifice"
-  - "/cards/vex-apathetic"
-  target-restrictions:
-  - "/cards/lacerate"
-  illegal-targets:
-  - "/cards/alpha-strike"
-  - "/cards/baited-hook"
-  - "/cards/hidden-blade"
-  - "/cards/lilting-lullaby"
+  - type: "canonical"
+    destination: "/general-rules/abilities#costs-within-instructions"
 ---
 
 ## What makes something a target? [#target-definition]
@@ -35,7 +23,6 @@ The only exceptions are:
   "Kill a unit at a battlefield" targets the unit but not the battlefield, while "Play a unit from your hand to a battlefield" does not target the battlefield.
 - **It is included only as part of a cost, trigger condition, or replacement effect.**<Rule number="355.10.c" /><Rule number="355.10.c.1" />
   The dying unit in "When a friendly unit dies, kill a gear" is not a target, but the gear is.
-  See [When do I pay a cost in a triggered ability that says "you may"?](/general-rules/abilities#costs-within-instructions) for how costs within instructions are identified and paid.
 - **It is programmatically selected from its characteristics rather than chosen by the spell or ability's controller.**<Rule number="355.10.d" />
   In "Kill all units at a battlefield," the units are not targets, but the battlefield is.
   This exception applies only when no choice among those objects is ever possible.<Rule number="355.10.d.1" />
