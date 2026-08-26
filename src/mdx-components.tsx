@@ -6,8 +6,6 @@ import { Rule } from '@/components/core-rules/rule'
 import { MDX_TERMS } from '@/components/game-terms'
 import { Energy, RUNES, Universal } from '@/components/resources'
 import { CoreRulesDiff, TournamentRulesDiff } from '@/components/rules/change-view'
-import { submitBlockFeedback } from '@/features/feedback/actions'
-import { FeedbackBlock } from '@/features/feedback/feedback'
 import type { TraversedRulesDocument } from '@/features/rules-documents/registry'
 import {
 	renderVersionedRulesDocument,
@@ -26,7 +24,6 @@ const wikiMdxComponents = {
 	Universal,
 	...RUNES,
 	...MDX_TERMS,
-	FeedbackBlock: (props) => <FeedbackBlock {...props} onSendAction={submitBlockFeedback} />,
 } satisfies MDXComponents
 
 export function getMDXComponents(

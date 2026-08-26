@@ -4,6 +4,7 @@ allowBuilds:
 minimumReleaseAgeExclude:
   - fumadocs-core@16.15.2
   - fumadocs-ui@16.15.2
+  - '@fumadocs/base-ui@16.15.2'
 onlyBuiltDependencies:
   - esbuild
   - sharp

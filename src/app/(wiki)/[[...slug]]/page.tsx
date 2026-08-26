@@ -7,8 +7,8 @@ import { PageActions } from '@/app/(wiki)/[[...slug]]/_components/page-actions'
 import { PageAttribution } from '@/app/(wiki)/[[...slug]]/_components/page-attribution'
 import { RelatedRulings } from '@/app/(wiki)/[[...slug]]/_components/related-rulings'
 import { CoreRulesReviewCallout } from '@/components/core-rules/review-callout'
-import { submitPageFeedback } from '@/features/feedback/actions'
-import { Feedback } from '@/features/feedback/feedback'
+import { submitBlockFeedback, submitPageFeedback } from '@/features/feedback/actions'
+import { Feedback, FeedbackText } from '@/features/feedback/feedback'
 import { resolveCoreRulesReview } from '@/features/rules-documents/core-rules-review'
 import { resolveVersionedRulesRoute } from '@/features/rules-documents/versioned-route'
 import { getRiftboundWikiUrl } from '@/lib/cards/links'
@@ -89,15 +89,17 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 					status={coreRulesReview.status}
 				/>
 			)}
-			<CopyableDocsBody>
-				<MDX
-					components={getMDXComponents(
-						createRelativeLink(source, page),
-						coreRulesReview?.document,
-						versionedRulesRoute,
-					)}
-				/>
-			</CopyableDocsBody>
+			<FeedbackText onSendAction={submitBlockFeedback}>
+				<CopyableDocsBody className="[&>p:first-child]:mt-5">
+					<MDX
+						components={getMDXComponents(
+							createRelativeLink(source, page),
+							coreRulesReview?.document,
+							versionedRulesRoute,
+						)}
+					/>
+				</CopyableDocsBody>
+			</FeedbackText>
 			<RelatedRulings relations={rulingRelations} />
 			<Feedback onSendAction={submitPageFeedback} />
 			{publication.isSourceAttributionEligible && (

@@ -1,15 +1,15 @@
 'use client'
 
 import * as Primitive from '@radix-ui/react-collapsible'
-import { type ComponentPropsWithoutRef, forwardRef, useEffect, useState } from 'react'
+import { ComponentProps, useEffect, useState } from 'react'
 import { cn } from '@/lib/cn'
 
-const Collapsible = Primitive.Root
+export const Collapsible = Primitive.Root
 
-const CollapsibleContent = forwardRef<
-	HTMLDivElement,
-	ComponentPropsWithoutRef<typeof Primitive.CollapsibleContent>
->(({ children, ...props }, ref) => {
+export function CollapsibleContent({
+	children,
+	...props
+}: ComponentProps<typeof Primitive.CollapsibleContent>) {
 	const [mounted, setMounted] = useState(false)
 
 	useEffect(() => {
@@ -18,7 +18,6 @@ const CollapsibleContent = forwardRef<
 
 	return (
 		<Primitive.CollapsibleContent
-			ref={ref}
 			{...props}
 			className={cn(
 				'overflow-hidden',
@@ -30,8 +29,4 @@ const CollapsibleContent = forwardRef<
 			{children}
 		</Primitive.CollapsibleContent>
 	)
-})
-
-CollapsibleContent.displayName = Primitive.CollapsibleContent.displayName
-
-export { Collapsible, CollapsibleContent }
+}

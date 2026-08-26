@@ -1,4 +1,4 @@
-import { remarkFeedbackBlock, RemarkFeedbackBlockOptions } from 'fumadocs-core/mdx-plugins'
+import { remarkBlockId, type RemarkBlockIdOptions } from 'fumadocs-core/mdx-plugins/remark-block-id'
 import { StructureOptions } from 'fumadocs-core/mdx-plugins/remark-structure'
 import { pageSchema, metaSchema } from 'fumadocs-core/source/schema'
 import { defineConfig, defineDocs } from 'fumadocs-mdx/config'
@@ -77,11 +77,12 @@ const remarkStructureOptions: StructureOptions = {
 	},
 }
 
-const feedbackBlockOptions: RemarkFeedbackBlockOptions = {
-	resolve(node) {
+const blockIdOptions: RemarkBlockIdOptions = {
+	addDataAttribute: 'feedback',
+	shouldGenerate(node) {
 		switch (node.type) {
 			case 'mdxJsxFlowElement':
-				return node.name === 'Callout' ? true : 'skip'
+				return node.name === 'Callout' || node.name === 'Steps' || node.name === 'Step' ? true : 'skip'
 			case 'paragraph':
 			case 'image':
 			case 'listItem':
@@ -95,7 +96,7 @@ const feedbackBlockOptions: RemarkFeedbackBlockOptions = {
 export default defineConfig({
 	plugins: [lastModified()],
 	mdxOptions: {
-		remarkPlugins: [[remarkFeedbackBlock, feedbackBlockOptions]],
+		remarkPlugins: [[remarkBlockId, blockIdOptions]],
 		remarkStructureOptions,
 	},
 })
