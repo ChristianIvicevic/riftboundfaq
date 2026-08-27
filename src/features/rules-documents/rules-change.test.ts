@@ -269,6 +269,24 @@ describe('Change page preparation', () => {
 		expect(Object.isFrozen(change.entries[0])).toBe(true)
 	})
 
+	test('preserves durable links for duplicate Core Rules occurrences', () => {
+		const change = prepareRulesChange(
+			createCoreRulesCatalog(
+				[],
+				[
+					{ id: '300.1', text: 'First occurrence.' },
+					{ id: '300.1', text: 'Second occurrence.' },
+				],
+			),
+			{ from: '1.0', to: '1.1' },
+		)
+
+		expect(change.entries).toMatchObject([
+			{ kind: 'added', rule: { href: '/reference/core-rules/1.1#R300.1' } },
+			{ kind: 'added', rule: { href: '/reference/core-rules/1.1#R300.1-2' } },
+		])
+	})
+
 	test.each([
 		{ from: '1.0', to: '9.9', reason: 'unknown-version' },
 		{ from: '1.0', to: '1.2', reason: 'non-adjacent' },

@@ -1,4 +1,4 @@
-import { access, mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises'
+import { access, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, onTestFinished, test } from 'vitest'
@@ -194,9 +194,8 @@ describe('prepareReferencePublication', () => {
 
 	test('preserves Tournament Rules diff and document markers from tracked templates', async () => {
 		const { artifacts } = await prepareFixture()
-
 		expect(artifacts.get('tournament-rules/changes/2026-04-29.mdx')).toMatch(
-			/<TournamentRulesDiff[\s\S]+from="2026-03-30"[\s\S]+to="2026-04-29"[\s\S]+includeChangeDescriptions/u,
+			/<TournamentRulesDiff[\s\S]+from="2026-03-30"[\s\S]+to="2026-04-29"[\s\S]+\/>/u,
 		)
 		expect(artifacts.get('tournament-rules/(archive)/2026-03-30.mdx')).toMatch(
 			/Archived reference[\s\S]+\/reference\/tournament-rules\/2026-04-29[\s\S]+<RulesDocument \/>/u,

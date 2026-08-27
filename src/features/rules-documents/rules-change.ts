@@ -82,14 +82,12 @@ export function prepareRulesChange(
 	const oldDocument = catalog.get(from)
 	const newDocument = catalog.get(to)
 	const prepareRule = (record: RulesDiffRecord, version: string): PreparedRulesChangeRule => {
-		const href =
-			family === 'core-rules'
-				? coreRulesLinks.rule({ number: record.id, version })
-				: tournamentRulesLinks.rule({ anchor: record.anchor, version })
+		const documentHref =
+			family === 'core-rules' ? coreRulesLinks.document(version) : tournamentRulesLinks.document(version)
 		return Object.freeze({
 			id: record.id,
 			label: family === 'core-rules' ? `${record.id}.` : record.label,
-			href,
+			href: `${documentHref}#${record.anchor}`,
 			lines: Object.freeze([...record.lines]),
 		})
 	}
