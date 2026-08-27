@@ -55,7 +55,10 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 						image: new URL(getPageImage(page).url, SITE_URL).toString(),
 						datePublished: page.data.createdAt,
 						dateModified: page.data.lastModified?.toISOString(),
-						author: authors.length > 0 ? authors.map((name) => ({ '@type': 'Person', name })) : undefined,
+						author:
+							authors.length > 0
+								? authors.map(({ name, url }) => ({ '@type': 'Person', name, url }))
+								: undefined,
 						isPartOf: {
 							'@type': 'WebSite',
 							name: SITE_NAME,
@@ -132,7 +135,7 @@ export async function generateMetadata(props: PageProps<'/[[...slug]]'>): Promis
 	return {
 		title: page.url === '/' ? { absolute: publication.metadataTitle } : publication.metadataTitle,
 		description: publication.description,
-		authors: publication.isEditorial ? authors.map((name) => ({ name })) : undefined,
+		authors: publication.isEditorial ? authors : undefined,
 		robots: publication.isIndexable ? undefined : { index: false, follow: true },
 		alternates: { canonical: url },
 		openGraph: publication.isEditorial
@@ -143,7 +146,7 @@ export async function generateMetadata(props: PageProps<'/[[...slug]]'>): Promis
 						? new Date(`${page.data.createdAt}T00:00:00Z`).toISOString()
 						: undefined,
 					modifiedTime: page.data.lastModified?.toISOString(),
-					authors,
+					authors: authors.map(({ name }) => name),
 				}
 			: { type: 'website', ...openGraphBase },
 		twitter: {
