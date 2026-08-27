@@ -1,7 +1,6 @@
 import './global.css'
 import { Tooltip } from '@base-ui/react/tooltip'
 import { Analytics } from '@vercel/analytics/next'
-import { SpeedInsights } from '@vercel/speed-insights/next'
 import { RootProvider } from 'fumadocs-ui/provider/next'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
@@ -27,7 +26,6 @@ export default function Layout({ children }: LayoutProps<'/'>) {
 					<Tooltip.Provider>{children}</Tooltip.Provider>
 				</RootProvider>
 				<Analytics />
-				<SpeedInsights />
 			</body>
 		</html>
 	)
