@@ -22,10 +22,11 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
       - run: pnpm install
-      - run: pnpx playwright install chromium --with-deps
+      - run: pnpm exec playwright install chromium --with-deps
       - run: pnpm rules:generate
       - run: pnpm format:check
       - run: pnpm lint:github
       - run: pnpm test
       - run: pnpm types:check
       - run: pnpm build:app
+      - run: pnpm test:e2e

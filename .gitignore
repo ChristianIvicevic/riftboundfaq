@@ -155,6 +155,10 @@ lib-cov
 coverage
 *.lcov
 
+# Playwright
+playwright-report/
+test-results/
+
 # nyc test coverage
 .nyc_output
 
