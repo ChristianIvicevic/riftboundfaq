@@ -6,6 +6,7 @@
 	"scripts": {
 		"build": "pnpm rules:generate && pnpm build:app",
 		"build:app": "next build",
+		"cards:extract": "jq -f scripts/cards/extract.jq sources/card-gallery-data.json > sources/card-catalog.json && oxfmt sources/card-catalog.json",
 		"dev": "next dev",
 		"start": "next start",
 		"types:check": "fumadocs-mdx && next typegen && tsc --noEmit",

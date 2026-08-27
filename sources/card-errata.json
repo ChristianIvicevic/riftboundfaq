@@ -1,0 +1,380 @@
+{
+	"Arise!": [
+		{
+			"oldText": "Play a 2 [Might] Sand Soldier unit token for each Equipment you control. Then ready two of them.",
+			"newText": "Play a 2 [Might] Sand Soldier unit token for each Equipment you control. Then do this: Ready up to two of them."
+		}
+	],
+	"Astral Heron": [
+		{
+			"oldText": "When you play your first card each turn, if I'm at a battlefield, your next card costs [2][Universal][Universal] less.",
+			"newText": "When you play your first card each turn, if I'm at a battlefield, the next card you play this turn costs [2][Universal][Universal] less."
+		}
+	],
+	"Ava Achiever": [
+		{
+			"oldText": "When I attack, you may pay [Mind] to play a card with [Hidden] from your hand here, ignoring its cost.",
+			"newText": "When I attack, you may pay [Mind] to play a card with [Hidden] from your hand, ignoring its cost. If it’s a unit, play it here."
+		}
+	],
+	"Baited Hook": [
+		{
+			"oldText": "[1][Order], [Exhaust]: Kill a friendly unit. Look at the top 5 cards of your Main Deck. You may play a unit from among them that has Might up to 1 more than the killed unit, ignoring its cost. Then recycle the rest.",
+			"newText": "[1][Order], [Exhaust]: Kill a friendly unit. Look at the top 5 cards of your Main Deck. You may banish a unit from among them that has Might up to 1 more than the killed unit and play it, ignoring its cost. Then recycle the rest."
+		}
+	],
+	"Blind Fury": [
+		{
+			"oldText": "[Action] (Play on your turn or in showdowns.)\nEach opponent reveals the top card of their Main Deck. Choose one and play it, ignoring its cost. Then recycle the rest.",
+			"newText": "[Action] (Play on your turn or in showdowns.)\nEach opponent reveals the top card of their Main Deck. Choose one and banish it, then play it, ignoring its cost. Then recycle the rest."
+		}
+	],
+	"Blood Rush": [
+		{
+			"oldText": "[Action] (Play on your turn or in showdowns.)\n[Repeat] [1] (You may pay the additional cost to repeat this spell's effect.)\nGive a unit [Assault 2]. (+2 [Might] while it's an attacker.)",
+			"newText": "[Action] (Play on your turn or in showdowns.)\n[Repeat] [1] (You may pay the additional cost to repeat this spell's effect.)\nGive a unit [Assault 2] this turn. (+2 [Might] while it's an attacker.)"
+		}
+	],
+	"Bone Skewer": [
+		{
+			"oldText": "[Hidden] (Hide now for [Universal] to react with later for [0].)\nChoose a battlefield. An opponent reveals their hand. You may choose a unit from it. They play that unit to that battlefield, ignoring any and all costs. When they do, [Stun] it. (It doesn't deal combat damage this turn.)",
+			"newText": "[Hidden] (Hide now for [Universal] to react with later for [0].)\nChoose a battlefield. An opponent reveals their hand. You may choose a unit from it. They play that unit to that battlefield, ignoring any and all costs. If they do, then do this: [Stun] it. (It doesn't deal combat damage this turn.)"
+		}
+	],
+	"Clockwork Keeper": [
+		{
+			"oldText": "As you play me, you may pay [Calm] as an additional cost. If you do, draw 1.",
+			"newText": "You may pay [Calm] as an additional cost to play me.\nWhen you play me, if you paid the additional cost, draw 1."
+		}
+	],
+	"Convergent Mutation": [
+		{
+			"oldText": "[Reaction] (Play any time, even before spells and abilities resolve.)\nChoose a friendly unit. Increase its Might until it equals the Might of another friendly unit.",
+			"newText": "[Reaction] (Play any time, even before spells and abilities resolve.)\nChoose a friendly unit. This turn, increase its Might to the Might of another friendly unit."
+		}
+	],
+	"Dark Child - Starter": [
+		{
+			"oldText": "At the end of your turn, ready 2 runes.",
+			"newText": "At the end of your turn, ready up to 2 runes."
+		}
+	],
+	"Dazzling Aurora": [
+		{
+			"oldText": "At the end of your turn, reveal cards from the top of your Main Deck until you reveal a unit. Play it, ignoring its cost, and recycle the rest.",
+			"newText": "At the end of your turn, reveal cards from the top of your Main Deck until you reveal a unit and banish it. Play it, ignoring its cost, and recycle the rest."
+		}
+	],
+	"Death from Below": [
+		{
+			"oldText": "Kill a unit at a battlefield. Then, if it had 3 [Might] or less, you may play this from your trash for [Universal].",
+			"newText": "Kill a unit at a battlefield. Then, if it had 3 [Might] or less, do this: You may play this from your trash for [Universal]."
+		}
+	],
+	"Deathgrip": [
+		{
+			"oldText": "[Reaction] (Play any time, even before spells and abilities resolve.)\nKill a friendly unit to give +[Might] equal to its Might to another friendly unit this turn. Draw 1.",
+			"newText": "[Reaction] (Play any time, even before spells and abilities resolve.)\nKill a friendly unit. If you do, give +[Might] equal to its Might to another friendly unit this turn.\nDraw 1."
+		}
+	],
+	"Deceiver": [
+		{
+			"oldText": "When you conquer or hold, you may discard 1 and exhaust me to play a ready Reflection unit token there. It becomes a copy of another unit there. Give it [Temporary].",
+			"newText": "When you conquer or hold, you may discard 1 and exhaust me to play a ready Reflection unit token there. Then do this: It becomes a copy of another unit there. Give it [Temporary]."
+		}
+	],
+	"Diana, Lunari": [
+		{
+			"oldText": "When a showdown begins here, you may pay [1]. If you do, [Predict], then reveal the top card of your Main Deck. If it's a spell, draw it. (To Predict, look at the top card of your Main Deck. You may recycle it.)",
+			"newText": "When a showdown begins here, you may pay [1] to [Predict], then reveal the top card of your Main Deck. If it's a spell, draw it. (To Predict, look at the top card of your Main Deck. You may recycle it.)"
+		}
+	],
+	"Disintegrate": [
+		{
+			"oldText": "[Action] (Play on your turn or in showdowns.)\nDeal 3 to a unit at a battlefield. If this kills it, draw 1.",
+			"newText": "Action (Play on your turn or in showdowns.)\nDeal 3 to a unit at a battlefield. If this kills it, do this: draw 1."
+		}
+	],
+	"Dragon's Rage": [
+		{
+			"oldText": "Move an enemy unit. Then choose another enemy unit at its destination. They deal damage equal to their Mights to each other.",
+			"newText": "Move an enemy unit. Then do this: Choose another enemy unit at its destination. They deal damage equal to their Mights to each other."
+		}
+	],
+	"Draven, Vanquisher": [
+		{
+			"oldText": "When I win a combat, play a Gold gear token exhausted.\nWhen I attack or defend, you may pay [Fury]. If you do, give me +2 [Might] this turn.",
+			"newText": "When I win a combat, play a Gold gear token exhausted.\nWhen I attack or defend, you may pay [Fury] to give me +2 [Might] this turn."
+		}
+	],
+	"Dune Drake": [
+		{
+			"oldText": "When I attack, give me +2 [Might] if there is a ready enemy unit here.",
+			"newText": "When I attack, give me +2 [Might] this turn if there is a ready enemy unit here."
+		}
+	],
+	"Edge of Night": [
+		{
+			"oldText": "[Hidden] (Hide now for [Universal] to react with later for [0].)\nWhen you play this from face down, attach it to a unit you control here.\n[Equip] [Chaos] ([Chaos]: Attach this to a unit you control.)",
+			"newText": "[Hidden] (Hide now for [Universal] to react with later for [0].)\nWhen you play this from face down, attach it to a unit you control (here).\n[Equip] [Chaos] ([Chaos]: Attach this to a unit you control.)"
+		}
+	],
+	"Emperor's Dais": [
+		{
+			"oldText": "When you conquer here, you may pay [1] and return a unit you control here to its owner's hand. If you do, play a 2 [Might] Sand Soldier unit token here.",
+			"newText": "When you conquer here, you may pay [1] and return a unit you control here to its owner's hand to play a 2 [Might] Sand Soldier unit token here."
+		}
+	],
+	"Falling Star": [
+		{
+			"oldText": "Do this twice:\nDeal 3 to a unit. (You can choose different units.)",
+			"newText": "Deal 3 to a unit.\nDeal 3 to a unit."
+		}
+	],
+	"Fizz, Trickster": [
+		{
+			"oldText": "When you play me, you may play a spell from your trash with Energy cost no more than [3], ignoring its Energy cost. Recycle that spell after you play it. (You must still pay its Power cost.)",
+			"newText": "When you play me, you may play a spell from your trash with Energy cost no more than [3], ignoring its Energy cost. Then recycle it. (You must still pay its Power cost.)"
+		}
+	],
+	"Gangplank, Naval": [
+		{
+			"oldText": "[Empower] [Body][Body] ([Body][Body]: Empower me. Use only if not Empowered.)\n[Empowered][>] If a spell or ability that chooses me would stun me, give me -[Might], or return me to hand, give me +3 [Might] instead.",
+			"newText": "[Empower] [Body][Body] ([Body][Body]: Empower me. Use only if not Empowered.)\n[Empowered][>] If a spell or ability that chooses me would stun me, give me -[Might], or return me to hand, give me +3 [Might] this turn instead."
+		}
+	],
+	"Guards!": [
+		{
+			"oldText": "[Hidden] (Hide now for [Universal] to react with later for [0].)\nPlay a 2 [Might] Sand Soldier unit token. You may pay [Order] to ready it.",
+			"newText": "[Hidden] (Hide now for [Universal] to react with later for [0].)\nPlay a 2 [Might] Sand Soldier unit token. Then do this: You may pay [Order] to ready it."
+		}
+	],
+	"Highlander": [
+		{
+			"oldText": "[Reaction] (Play any time, even before spells and abilities resolve.)\nChoose a friendly unit. The next time it dies this turn, recall it exhausted instead. (Send it to base. This isn't a move.)",
+			"newText": "[Reaction] (Play any time, even before spells and abilities resolve.)\nChoose a friendly unit. The next time it would die this turn, heal it, exhaust it, and recall it instead. (Send it to base. This isn't a move.)"
+		}
+	],
+	"Icathian Rain": [
+		{
+			"oldText": "Do this 6 times:\nDeal 2 to a unit. (You can choose different units.)",
+			"newText": "Deal 2 to a unit.\nDeal 2 to a unit.\nDeal 2 to a unit.\nDeal 2 to a unit.\nDeal 2 to a unit.\nDeal 2 to a unit."
+		}
+	],
+	"Janna, Savior": [
+		{
+			"oldText": "[Reaction] (Play any time, even before spells and abilities resolve, including to a battlefield you control.)\nWhen you play me, heal your units here, then move an enemy unit from here to its base.",
+			"newText": "[Reaction] (Play any time, even before spells and abilities resolve, including to a battlefield you control.)\nWhen you play me, heal your units here, then move up to one enemy unit from here to its base."
+		}
+	],
+	"Jax, Unmatched": [
+		{
+			"oldText": "[Deflect] (Opponents must pay [Universal] to choose me with a spell or ability.)\nEach Equipment in your hand has [Quick-Draw]. (It gains [Reaction]. When you play it, attach it to a unit you control.)",
+			"newText": "[Deflect] (Opponents must pay [Universal] to choose me with a spell or ability.)\nYour Equipment everywhere have [Quick-Draw]. (Each gains [Reaction]. When you play it, attach it to a unit you control.)"
+		}
+	],
+	"Karma, Channeler": [
+		{
+			"oldText": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)\nWhen you recycle one or more cards, buff a friendly unit. (If it doesn't have a buff, it gets a +1 [Might] buff. Runes aren't cards.)",
+			"newText": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)\nWhen you recycle one or more cards to your Main Deck, buff a friendly unit. (If it doesn't have a buff, it gets a +1 [Might] buff. Runes aren't cards.)"
+		}
+	],
+	"Kato the Arm": [
+		{
+			"oldText": "[Deflect] (Opponents must pay [Universal] to choose me with a spell or ability.)\nWhen I move to a battlefield, give a friendly unit my keywords and +[Might] equal to my Might this turn.",
+			"newText": "[Deflect] (Opponents must pay [Universal] to choose me with a spell or ability.)\nWhen I move to a battlefield, give another friendly unit my keywords and +[Might] equal to my Might this turn."
+		}
+	],
+	"Keeper of Masks": [
+		{
+			"oldText": "[Hidden] (Hide now for [Universal] to react with later for [0].)\n[Temporary] (Kill me at the start of my controller's Beginning Phase, before scoring.)\nWhen you play me, play two Reflection unit tokens here. They become copies of me.",
+			"newText": "[Hidden] (Hide now for [Universal] to react with later for [0].)\n[Temporary] (Kill me at the start of my controller's Beginning Phase, before scoring.)\nWhen you play me, play two Reflection unit tokens here. Then do this: They become copies of me."
+		}
+	],
+	"Kinkou Monk": [
+		{
+			"oldText": "When you play me, buff two other friendly units. (Each one that doesn't have a buff gets a +1 [Might] buff.)",
+			"newText": "When you play me, buff up to two other friendly units. (Each one that doesn't have a buff gets a +1 [Might] buff.)"
+		}
+	],
+	"Mirror Image": [
+		{
+			"oldText": "Choose a unit. Play a ready Reflection unit token to your base. It becomes a copy of that unit. Give it [Temporary]. (Kill it at the start of its controller's Beginning Phase, before scoring.)",
+			"newText": "Choose a unit. Play a ready Reflection unit token to your base. Then do this: It becomes a copy of that unit. Give it [Temporary]. (Kill it at the start of its controller's Beginning Phase, before scoring.)"
+		}
+	],
+	"Nocturne, Horrifying": [
+		{
+			"oldText": "[Ganking] (I can move from battlefield to battlefield.)\nWhen you look at cards from the top of your deck (and don't draw them) and see me, you may play me for [Universal].",
+			"newText": "[Ganking] (I can move from battlefield to battlefield.)\nAs you look at or reveal me from the top of your deck, you may banish me. If you do, you may play me for [Universal]."
+		}
+	],
+	"Pack of Wonders": [
+		{
+			"oldText": "[Exhaust]: Return another friendly gear, unit, or [Hidden] card to its owner's hand.",
+			"newText": "[Exhaust]: Return another friendly gear, unit, or facedown card to its owner's hand."
+		}
+	],
+	"Portal Rescue": [
+		{
+			"oldText": "[Action] (Play on your turn or in showdowns.)\nBanish a friendly unit, then play it to base, ignoring its cost.",
+			"newText": "[Action] (Play on your turn or in showdowns.)\nBanish a friendly unit, then its owner plays it to their base, ignoring its cost."
+		}
+	],
+	"Promising Future": [
+		{
+			"oldText": "Each player looks at the top 5 cards of their Main Deck, chooses one, then recycles the rest. Starting with the next player, each player plays those cards, ignoring Energy costs. (They must still pay Power costs.)",
+			"newText": "Each player looks at the top 5 cards of their Main Deck, banishes one of them, then recycles the rest. Starting with the next player, each player plays those cards, ignoring Energy costs. (They must still pay Power costs.)"
+		}
+	],
+	"Ravenborn Tome": [
+		{
+			"oldText": "[Exhaust]: The next spell you play deals 1 Bonus Damage. (Each instance of damage the spell deals is increased by 1.)",
+			"newText": "[Exhaust]: The next spell you play this turn deals 1 Bonus Damage. (Each instance of damage the spell deals is increased by 1.)"
+		}
+	],
+	"Reinforce": [
+		{
+			"oldText": "Look at the top 5 cards of your Main Deck. You may play a unit from among them. Its Energy cost is reduced by [5]. Then recycle the remaining cards.",
+			"newText": "Look at the top 5 cards of your Main Deck. You may banish a unit from among them, then play it, reducing its cost by [5]. Recycle the remaining cards."
+		}
+	],
+	"Rek'Sai, Swarm Queen": [
+		{
+			"oldText": "When I attack, you may reveal the top 2 cards of your Main Deck. You may play one. Then recycle the rest. If the played card is a unit, you may play it here.",
+			"newText": "When I attack, you may reveal the top 2 cards of your Main Deck. You may banish one, then play it. If it is a unit, you may play it here. Recycle the rest."
+		}
+	],
+	"Relentless Pursuit": [
+		{
+			"oldText": "[Action] (Play on your turn or in showdowns.)\nMove a friendly unit. You may attach an Equipment with the same controller to it. This turn, that unit has \"When I conquer, you may move me to my base.\"",
+			"newText": "[Action] (Play on your turn or in showdowns.)\nMove a friendly unit. You may attach up to one Equipment with the same controller to it. This turn, that unit has \"When I conquer, you may move me to my base.\""
+		}
+	],
+	"Rell, Magnetic": [
+		{
+			"oldText": "[Tank] (I must be assigned combat damage first.)\nWhen I attack, you may play an Equipment with Energy cost no more than [2], ignoring its cost, and attach it to me.",
+			"newText": "[Tank] (I must be assigned combat damage first.)\nWhen I attack, you may play an Equipment with Energy cost no more than [2], ignoring its cost. If you do, then do this: Attach it to me."
+		}
+	],
+	"Rengar, Trophy Hunter": [
+		{
+			"oldText": "[Ambush] (You may play me as a [Reaction] to a battlefield where you have units.)\nI can be played to a battlefield where there are enemy units (even if you don't have units there).",
+			"newText": "[Ambush] (You may play me as a [Reaction] to a battlefield where you have units.)\nI can [Ambush] to a battlefield where there are enemy units, even if you don't have units there."
+		}
+	],
+	"Resonating Strike": [
+		{
+			"oldText": "[Hidden] (Hide now for [Universal] to react with later for [0].)\n[Reaction] (Play on your turn or in showdowns.)\nChoose a battlefield you control and a unit you control at a different location. Move that unit to that battlefield and give it +2 [Might] this turn.",
+			"newText": "[Hidden] (Hide now for [Universal] to react with later for [0].)\n[Reaction] (Play any time, even before spells and abilities resolve.)\nChoose a battlefield you control and a unit you control at a different location. Move that unit to that battlefield and give it +2 [Might] this turn."
+		}
+	],
+	"Salvage": [
+		{
+			"oldText": "[Action] (Play on your turn or in showdowns.)\nYou may kill a gear. Draw 1.",
+			"newText": "[Action] (Play on your turn or in showdowns.)\nYou may kill up to one gear. Draw 1."
+		}
+	],
+	"Sigil of the Storm": [
+		{
+			"oldText": "When you conquer here, recycle one of your runes.",
+			"newText": "When you conquer here, you must recycle one of your runes. (This doesn’t choose anything.)"
+		}
+	],
+	"Sona, Harmonious": [
+		{
+			"oldText": "While I'm at a battlefield, ready 4 friendly runes at the end of your turn.",
+			"newText": "At the end of your turn, if I'm at a battlefield, ready up to 4 friendly runes."
+		}
+	],
+	"Stalking Wolf": [
+		{
+			"oldText": "[Ambush] (You may play me as a [Reaction] to a battlefield where you have units.)\nAs an additional cost to play me, kill a Bird, Cat, Dog, or Poro you control. You may play me to its battlefield (even if you don't have other units there).",
+			"newText": "[Ambush] (You may play me as a [Reaction] to a battlefield where you have units.)\nAs an additional cost to play me, kill a Bird, Cat, Dog, or Poro you control. You may [Ambush] me to its battlefield, even if you don't have other units there."
+		}
+	],
+	"Targon's Peak": [
+		{
+			"oldText": "When you conquer here, ready 2 runes at the end of this turn.",
+			"newText": "When you conquer here, ready up to 2 runes at the end of this turn."
+		}
+	],
+	"Teemo, Strategist": [
+		{
+			"oldText": "[Hidden] (Hide now for [Universal] to react with later for [0].)\nWhen I defend or I'm played from [Hidden], reveal the top 5 cards of your Main Deck. Deal 1 to an enemy unit here for each card with [Hidden], then recycle them.",
+			"newText": "[Hidden] (Hide now for [Universal] to react with later for [0].)\nWhen I defend, choose an enemy unit here and reveal the top 5 cards of your Main Deck. Deal 1 to that unit for each card with [Hidden] revealed this way, then recycle the revealed cards."
+		}
+	],
+	"The Boss": [
+		{
+			"oldText": "When a buffed unit you control would die, you may pay [Universal] and exhaust me to spend its buff and recall it exhausted instead. (Send it to base. This isn't a move.)\nWhen you conquer, ready me.",
+			"newText": "If a buffed unit you control would die, you may pay [Universal], exhaust me, and spend its buff to heal it, exhaust it, and recall it instead. (Send it to base. This isn't a move.)\nWhen you conquer, ready me."
+		}
+	],
+	"The Dreaming Tree": [
+		{
+			"oldText": "The first time you choose a friendly unit with a spell here each turn, draw 1.",
+			"newText": "When a player chooses a friendly unit here with a spell for the first time each turn, they draw 1."
+		}
+	],
+	"The Syren": [
+		{
+			"oldText": "[1], [Exhaust]: Move a friendly unit at a battlefield to your base.",
+			"newText": "[1], [Exhaust]: Move a friendly unit at a battlefield to its base."
+		}
+	],
+	"Tianna Crownguard": [
+		{
+			"oldText": "[Deflect] (Opponents must pay [Universal] to choose me with a spell or ability.)\nWhile I'm at a battlefield, opponents can't score points.",
+			"newText": "[Deflect] (Opponents must pay [Universal] to choose me with a spell or ability.)\nWhile I'm at a battlefield, opponents can't gain points."
+		}
+	],
+	"Tideturner": [
+		{
+			"oldText": "[Hidden] (Hide now for [Universal] to react with later for [0].)\nWhen you play me, you may choose a friendly unit. Move me to its location and it to my original location.",
+			"newText": "[Hidden] (Hide now for [Universal] to react with later for [0].)\nWhen you play me, you may choose a unit you control at another location. Move me to its location and it to my original location."
+		}
+	],
+	"Unforgiven": [
+		{
+			"oldText": "[2], [Exhaust]: Move a friendly unit to or from your base.",
+			"newText": "[2], [Exhaust]: Move a friendly unit to or from its base."
+		}
+	],
+	"Unlicensed Armory": [
+		{
+			"oldText": "Discard 1, [Exhaust]: Choose a friendly unit. The next time it dies this turn, you may pay [Fury] to recall it exhausted instead. (Send it to base. This isn't a move.)",
+			"newText": "Discard 1, [Exhaust]: Choose a friendly unit. The next time it would die this turn, you may pay [Fury] to heal it, exhaust it, and recall it instead. (Send it to base. This isn't a move.)"
+		}
+	],
+	"Void Burrower": [
+		{
+			"oldText": "When you conquer, you may exhaust me to reveal the top 2 cards of your Main Deck. You may play one. Then recycle the rest.",
+			"newText": "When you conquer, you may exhaust me to reveal the top 2 cards of your Main Deck. You may banish one, then play it. Recycle the rest."
+		}
+	],
+	"Void Gate": [
+		{
+			"oldText": "Spells and abilities affecting units here each deal 1 Bonus Damage. (Each instance of damage the spell deals is increased by 1.)",
+			"newText": "Spells and abilities deal 1 Bonus Damage to units here. (Each instance of damage the spell deals to a unit here is increased by 1.)"
+		}
+	],
+	"Void Rush": [
+		{
+			"oldText": "Reveal the top 2 cards of your Main Deck. You may play one of them, reducing its cost by [2]. Draw any you did not play this way.",
+			"newText": "Reveal the top 2 cards of your Main Deck. You may banish one, then play it, reducing its cost by [2]. Draw any you didn't banish."
+		}
+	],
+	"Yone, Blademaster": [
+		{
+			"oldText": "[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for [Universal] less, even if it's already attached.)\nWhen I conquer an open battlefield, deal damage equal to my Might to an enemy unit in a base.",
+			"newText": "[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for [Universal] less, even if it's already attached.)\nWhen I conquer a battlefield that was uncontrolled, deal damage equal to my Might to an enemy unit in a base."
+		}
+	],
+	"Zhonya's Hourglass": [
+		{
+			"oldText": "[Hidden] (Hide now for [Universal] to react with later for [0].)\nThe next time a friendly unit would die, kill this instead. Recall that unit exhausted. (Send it to base. This isn't a move.)",
+			"newText": "[Hidden] (Hide now for [Universal] to react with later for [0].)\nIf a friendly unit would die, kill this instead. Heal that unit, exhaust it, and recall it. (Send it to base. This isn't a move.)"
+		}
+	]
+}
