@@ -20,10 +20,13 @@ const VALID_MANIFEST = {
 	},
 }
 
+type MutableVersionMetadata = { name?: string; title?: string } | null
+type MutableRulesFamily = { current: string; versions: Record<string, MutableVersionMetadata> }
 type MutableManifest = {
-	coreRules: { current: string; versions: Record<string, unknown> }
-	tournamentRules: { current: string; versions: Record<string, unknown> }
+	coreRules: MutableRulesFamily
+	tournamentRules: MutableRulesFamily
 }
+type RulesManifestSource = Parameters<typeof parseRulesManifest>[0]
 
 describe('parseRulesManifest', () => {
 	test('returns immutable rules document families in canonical version order', () => {
@@ -62,7 +65,7 @@ describe('parseRulesManifest', () => {
 
 	test('parses the authoritative rules manifest fixture', async () => {
 		const path = join(import.meta.dirname, '..', 'sources', 'rules-manifest.json')
-		const source: unknown = JSON.parse(await readFile(path, 'utf8'))
+		const source = JSON.parse(await readFile(path, 'utf8'))
 
 		expect(parseRulesManifest(source).coreRules.registeredVersions.length).toBeGreaterThan(0)
 	})
@@ -98,7 +101,9 @@ describe('parseRulesManifest', () => {
 		{
 			case: 'version metadata',
 			mutate(value: MutableManifest) {
-				Object.defineProperty(value.coreRules.versions['1.2'] as object, '__proto__', {
+				const metadata = value.coreRules.versions['1.2']
+				if (!metadata) throw new Error('Expected Core Rules metadata fixture')
+				Object.defineProperty(metadata, '__proto__', {
 					value: {},
 					enumerable: true,
 				})
@@ -114,7 +119,7 @@ describe('parseRulesManifest', () => {
 		)
 	})
 
-	test.each([
+	test.each<{ case: string; value: RulesManifestSource; code: string; path: string }>([
 		{
 			case: 'an unknown root property',
 			value: { ...VALID_MANIFEST, extra: true },
@@ -180,7 +185,7 @@ describe('parseRulesManifest', () => {
 		{
 			case: 'non-record Core Rules metadata',
 			mutate(value: MutableManifest) {
-				value.coreRules.versions['1.2'] = null as never
+				value.coreRules.versions['1.2'] = null
 			},
 			code: 'EXPECTED_RECORD',
 			path: '$.coreRules.versions["1.2"]',
@@ -188,7 +193,7 @@ describe('parseRulesManifest', () => {
 		{
 			case: 'an unknown Core Rules metadata property',
 			mutate(value: MutableManifest) {
-				value.coreRules.versions['1.2'] = { title: 'Second' } as never
+				value.coreRules.versions['1.2'] = { title: 'Second' }
 			},
 			code: 'UNEXPECTED_PROPERTY',
 			path: '$.coreRules.versions["1.2"].title',
@@ -240,9 +245,9 @@ describe('parseRulesManifest', () => {
 	test('fully validates Core Rules before Tournament Rules', () => {
 		const value: MutableManifest = structuredClone(VALID_MANIFEST)
 		value.coreRules.versions['1.2'] = { name: '' }
-		value.tournamentRules = null as never
+		const source = { ...value, tournamentRules: null }
 
-		expect(() => parseRulesManifest(value)).toThrow(
+		expect(() => parseRulesManifest(source)).toThrow(
 			expect.objectContaining({
 				code: 'INVALID_CORE_RULES_NAME',
 				path: '$.coreRules.versions["1.2"].name',

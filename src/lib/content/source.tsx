@@ -27,12 +27,11 @@ export const source = loader({
 					if (!file) return node
 					const content = this.storage.read(file)
 					if (!content || content.format !== 'page') return node
-					const sidebarTitle = content.data.sidebarTitle ?? node.name
-					const GameTerm =
-						node.url.startsWith('/mechanics/') && typeof sidebarTitle === 'string'
-							? getGameTermComponentByLabel(sidebarTitle)
-							: undefined
-					node.name = GameTerm ? <GameTerm /> : sidebarTitle
+					const sidebarTitle = content.data.sidebarTitle
+					const GameTerm = node.url.startsWith('/mechanics/')
+						? getGameTermComponentByLabel(sidebarTitle ?? content.data.title)
+						: undefined
+					node.name = GameTerm ? <GameTerm /> : (sidebarTitle ?? node.name)
 					if (isNewPage(content.data.createdAt))
 						node.name = (
 							<div key={content.path} className="flex w-full items-center gap-3">

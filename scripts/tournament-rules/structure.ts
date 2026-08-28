@@ -25,6 +25,11 @@ export type TournamentStructureDiagnostic =
 			id: string | null
 	  }
 
+type TournamentRulesStructure = {
+	sections: TournamentRulesSection[]
+	diagnostics: TournamentStructureDiagnostic[]
+}
+
 type SourceSection = { heading: TournamentRulesHeading; rows: TournamentRulesSourceRow[] }
 type PendingSubsection = {
 	kind: 'subsection'
@@ -240,10 +245,7 @@ function finalizeSection(
 	}
 }
 
-export function structureTournamentRows(rows: readonly TournamentRulesSourceRow[]): {
-	sections: TournamentRulesSection[]
-	diagnostics: TournamentStructureDiagnostic[]
-} {
+export function structureTournamentRows(rows: readonly TournamentRulesSourceRow[]): TournamentRulesStructure {
 	const sections: TournamentRulesSection[] = []
 	const diagnostics: TournamentStructureDiagnostic[] = []
 	let currentSection: SourceSection | null = null

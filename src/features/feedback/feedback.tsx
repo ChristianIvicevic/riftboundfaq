@@ -14,6 +14,7 @@ import {
 	useState,
 	useTransition,
 } from 'react'
+import type { ZodMiniType } from 'zod/mini'
 import { buttonVariants } from '@/components/ui/button'
 import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 import {
@@ -39,10 +40,7 @@ const rateButtonVariants = cva(
 
 export function Feedback({ onSendAction }: { onSendAction: (feedback: PageFeedback) => Promise<void> }) {
 	const url = usePathname()
-	const { previous, setPrevious } = useSubmissionStorage(url, (value) => {
-		const result = pageFeedback.safeParse(value)
-		return result.success ? result.data : null
-	})
+	const { previous, setPrevious } = useSubmissionStorage(url, pageFeedback)
 	const [opinion, setOpinion] = useState<'good' | 'bad' | null>(null)
 	const [message, setMessage] = useState('')
 	const [isPending, startTransition] = useTransition()
@@ -167,7 +165,7 @@ export function FeedbackText({
 	function expandPopup() {
 		if (popup?.mode !== 'tooltip') return
 
-		if (typeof Highlight === 'function' && CSS.highlights) {
+		if ('Highlight' in globalThis && Highlight instanceof Function && CSS.highlights) {
 			const highlight = new Highlight(popup.range)
 			CSS.highlights.set('fd-feedback-text', highlight)
 		}
@@ -341,10 +339,7 @@ function FeedbackTextForm({
 	onClose: () => void
 }) {
 	const url = usePathname()
-	const { previous, setPrevious } = useSubmissionStorage(`${url}-${blockId}`, (value) => {
-		const result = blockFeedback.safeParse(value)
-		return result.success ? result.data : null
-	})
+	const { previous, setPrevious } = useSubmissionStorage(`${url}-${blockId}`, blockFeedback)
 	const [message, setMessage] = useState('')
 	const [isPending, startTransition] = useTransition()
 
@@ -429,17 +424,20 @@ function FeedbackTextForm({
 	)
 }
 
-function useSubmissionStorage<Result>(key: string, validate: (value: unknown) => Result | null) {
+function useSubmissionStorage<Result>(key: string, schema: ZodMiniType<Result>) {
 	const storageKey = `riftboundfaq-feedback-${key}`
 	const [value, setValue] = useState<Result | null>(null)
-	const validateCallback = useEffectEvent(validate)
+	const validate = useEffectEvent((item: string): Result | null => {
+		const result = schema.safeParse(JSON.parse(item))
+		return result.success ? result.data : null
+	})
 
 	useEffect(() => {
 		const item = localStorage.getItem(storageKey)
 		if (item === null) return
 
 		try {
-			const validated = validateCallback(JSON.parse(item))
+			const validated = validate(item)
 			if (validated === null) localStorage.removeItem(storageKey)
 			else setValue(validated)
 		} catch {

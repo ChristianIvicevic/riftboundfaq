@@ -84,8 +84,7 @@ export async function defaultPdfPaths() {
 export async function inspectPdf(path: string) {
 	const absolutePath = resolve(path)
 	const data = new Uint8Array(await readFile(absolutePath))
-	const documentParameters = { data, disableWorker: true }
-	const loadingTask = getDocument(documentParameters)
+	const loadingTask = getDocument({ data })
 	const document = await loadingTask.promise
 	const pageCount = document.numPages
 	const pages: { page: number; width: number; lines: ReturnType<typeof reconstructPhysicalLines> }[] = []

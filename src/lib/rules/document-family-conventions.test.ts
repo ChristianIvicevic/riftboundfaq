@@ -41,7 +41,7 @@ describe('Rules document family conventions', () => {
 		expect(coreRulesConventions.compareVersions('1.10', '1.2')).toBe(1)
 		expect(coreRulesConventions.compareVersions('1.99999999999999999999', '1.10')).toBe(1)
 
-		for (const input of ['1.00', '1.02', '2.0', ' 1.4', '1.4 ', null, 1, 1n]) {
+		for (const input of ['1.00', '1.02', '2.0', ' 1.4', '1.4 ']) {
 			expect(coreRulesConventions.isVersion(input)).toBe(false)
 			expect(() => coreRulesConventions.version(input)).toThrowError(
 				expect.objectContaining({
@@ -51,7 +51,7 @@ describe('Rules document family conventions', () => {
 				}),
 			)
 		}
-		expect(() => coreRulesConventions.version(null)).toThrowError(InvalidRulesVersionError)
+		expect(() => coreRulesConventions.version('2.0')).toThrowError(InvalidRulesVersionError)
 	})
 
 	test('validates and derives Tournament Rules conventions', () => {
@@ -78,14 +78,7 @@ describe('Rules document family conventions', () => {
 		expect(tournamentRulesConventions.isVersion('2024-02-29')).toBe(true)
 		expect(tournamentRulesConventions.compareVersions('2026-04-29', '2026-07-16')).toBe(-1)
 
-		for (const input of [
-			'2026-02-29',
-			'2026-04-31',
-			'2026-7-16',
-			'2026-07-16T00:00:00Z',
-			undefined,
-			20260716,
-		]) {
+		for (const input of ['2026-02-29', '2026-04-31', '2026-7-16', '2026-07-16T00:00:00Z']) {
 			expect(tournamentRulesConventions.isVersion(input)).toBe(false)
 			expect(() => tournamentRulesConventions.version(input)).toThrowError(
 				expect.objectContaining({
@@ -123,16 +116,14 @@ describe('Rules document family conventions', () => {
 		expect(recognizeRulesSourceFilename('CR-v1.04.pdf')).toBeUndefined()
 		expect(recognizeRulesSourceFilename('sources/CR-v1.4.pdf')).toBeUndefined()
 		expect(recognizeRulesSourceFilename('Tournament-Rules-2026-02-29.pdf')).toBeUndefined()
-		expect(() => rulesDocumentFamily('unknown' as 'core-rules')).toThrowError(
+		expect(() => rulesDocumentFamily('unknown')).toThrowError(
 			expect.objectContaining({
 				code: 'UNKNOWN_RULES_DOCUMENT_FAMILY',
 				family: 'unknown',
 			}),
 		)
-		expect(() => rulesDocumentFamily('unknown' as 'core-rules')).toThrowError(UnknownRulesDocumentFamilyError)
-		expect(() => rulesDocumentFamily('constructor' as 'core-rules')).toThrowError(
-			UnknownRulesDocumentFamilyError,
-		)
+		expect(() => rulesDocumentFamily('unknown')).toThrowError(UnknownRulesDocumentFamilyError)
+		expect(() => rulesDocumentFamily('constructor')).toThrowError(UnknownRulesDocumentFamilyError)
 	})
 
 	test('freezes family and version conventions', () => {

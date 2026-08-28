@@ -3,7 +3,7 @@ import { isAbsolute, join } from 'node:path'
 import { coreRulesConventions, tournamentRulesConventions } from '@/lib/rules/document-family-conventions'
 import type { RulesDocumentFamilyId } from '@/lib/rules/document-family-identity'
 import { normalizeRulesDate } from '../rules-date'
-import type { ExtractedCoreRulesFamily, ExtractedTournamentRulesFamily } from '../rules-document-family'
+import type { ExtractedCoreRulesVersion, ExtractedTournamentRulesVersion } from '../rules-document-family'
 
 const PLACEHOLDER = /\{\{([A-Z_]+)\}\}/gu
 
@@ -20,10 +20,14 @@ const TEMPLATE_FILES = [
 ] as const
 
 type CoreVersionMetadata = { name?: string }
+type ReferenceFamilyInput<Version> = Readonly<{
+	versions: readonly Version[]
+	currentVersion: Version
+}>
 type VersionPair = { from: string; to: string }
 type TemplateFile = (typeof TEMPLATE_FILES)[number]
 
-type ReferenceTemplates = Record<TemplateFile, string>
+type ReferenceTemplates = ReadonlyMap<TemplateFile, string>
 type RulesDocumentReference = Readonly<{
 	type: RulesDocumentFamilyId
 	version: string
@@ -60,8 +64,8 @@ type ReferenceFamilyPlan = Readonly<{
 
 export type ReferencePublicationInput = Readonly<{
 	projectDirectory: string
-	coreRules: ExtractedCoreRulesFamily
-	tournamentRules: ExtractedTournamentRulesFamily
+	coreRules: ReferenceFamilyInput<ExtractedCoreRulesVersion>
+	tournamentRules: ReferenceFamilyInput<ExtractedTournamentRulesVersion>
 }>
 
 export type PreparedReferencePublication = Readonly<{
@@ -161,13 +165,13 @@ function formatDateRange(from: string, to: string): string {
 	return `${fromMonthDay} to ${formatDate(to)}`
 }
 
-function validateHistory<Version extends { registeredVersion: { version: string }; lastUpdated: unknown }>(
+function validateHistory<Version extends { registeredVersion: { version: string }; lastUpdated: string }>(
 	label: string,
-	versions: readonly [Version, ...Version[]],
+	versions: readonly Version[],
 	currentVersion: Version,
 	conventions: {
 		compareVersions(left: string, right: string): number
-		version(version: string): unknown
+		version(version: string): void
 	},
 ) {
 	if (versions.length === 0) throw new Error(`${label} has no registered versions`)
@@ -189,7 +193,9 @@ function validateHistory<Version extends { registeredVersion: { version: string 
 	return dates
 }
 
-function planCoreRulesReference(family: ExtractedCoreRulesFamily): ReferenceFamilyPlan {
+function planCoreRulesReference(
+	family: ReferenceFamilyInput<ExtractedCoreRulesVersion>,
+): ReferenceFamilyPlan {
 	const dates = validateHistory('Core Rules', family.versions, family.currentVersion, coreRulesConventions)
 	const versions = family.versions.map(({ registeredVersion }) => registeredVersion.version)
 	const currentVersion = family.currentVersion.registeredVersion.version
@@ -262,7 +268,9 @@ function planCoreRulesReference(family: ExtractedCoreRulesFamily): ReferenceFami
 	}
 }
 
-function planTournamentRulesReference(family: ExtractedTournamentRulesFamily): ReferenceFamilyPlan {
+function planTournamentRulesReference(
+	family: ReferenceFamilyInput<ExtractedTournamentRulesVersion>,
+): ReferenceFamilyPlan {
 	const dates = validateHistory(
 		'Tournament Rules',
 		family.versions,
@@ -335,14 +343,19 @@ function planTournamentRulesReference(family: ExtractedTournamentRulesFamily): R
 }
 
 async function loadReferenceTemplates(templatesDirectory: string): Promise<ReferenceTemplates> {
-	return Object.fromEntries(
-		await Promise.all(
-			TEMPLATE_FILES.map(async (filename) => [
-				filename,
-				await readFile(join(templatesDirectory, filename), 'utf8'),
-			]),
-		),
-	) as ReferenceTemplates
+	const templates = await Promise.all(
+		TEMPLATE_FILES.map(async (filename): Promise<readonly [TemplateFile, string]> => [
+			filename,
+			await readFile(join(templatesDirectory, filename), 'utf8'),
+		]),
+	)
+	return new Map(templates)
+}
+
+function getReferenceTemplate(templates: ReferenceTemplates, filename: TemplateFile): string {
+	const template = templates.get(filename)
+	if (template === undefined) throw new Error(`${filename}: template was not loaded`)
+	return template
 }
 
 function renderOverviewTiles(tiles: readonly PlannedOverviewTile[]): string {
@@ -383,7 +396,7 @@ function renderReferencePublication(
 		[
 			'index.mdx',
 			renderTemplate(
-				templates['index.mdx'],
+				getReferenceTemplate(templates, 'index.mdx'),
 				{
 					CORE_RULES_ARCHIVE: renderOverviewTiles(coreRules.archiveTiles),
 					CORE_RULES_CHANGES: renderOverviewTiles(coreRules.changeTiles),
@@ -398,7 +411,7 @@ function renderReferencePublication(
 		[
 			'meta.json',
 			renderTemplate(
-				templates['meta.json.template'],
+				getReferenceTemplate(templates, 'meta.json.template'),
 				{
 					PAGES: navigationPages(coreRules.currentNavigationPath, tournamentRules.currentNavigationPath),
 				},
@@ -408,7 +421,7 @@ function renderReferencePublication(
 		[
 			'core-rules/changes/meta.json',
 			renderTemplate(
-				templates['group-meta.json.template'],
+				getReferenceTemplate(templates, 'group-meta.json.template'),
 				{
 					PAGES: metadataPages(coreRules.changeNavigationPages),
 					TITLE: 'Changes',
@@ -419,7 +432,7 @@ function renderReferencePublication(
 		[
 			'core-rules/(archive)/meta.json',
 			renderTemplate(
-				templates['group-meta.json.template'],
+				getReferenceTemplate(templates, 'group-meta.json.template'),
 				{
 					PAGES: metadataPages(coreRules.archiveNavigationPages),
 					TITLE: 'Archive',
@@ -430,7 +443,7 @@ function renderReferencePublication(
 		[
 			'tournament-rules/changes/meta.json',
 			renderTemplate(
-				templates['group-meta.json.template'],
+				getReferenceTemplate(templates, 'group-meta.json.template'),
 				{
 					PAGES: metadataPages(tournamentRules.changeNavigationPages),
 					TITLE: 'Changes',
@@ -441,7 +454,7 @@ function renderReferencePublication(
 		[
 			'tournament-rules/(archive)/meta.json',
 			renderTemplate(
-				templates['group-meta.json.template'],
+				getReferenceTemplate(templates, 'group-meta.json.template'),
 				{
 					PAGES: metadataPages(tournamentRules.archiveNavigationPages),
 					TITLE: 'Archive',
@@ -459,7 +472,10 @@ function renderReferencePublication(
 						RULES_DOCUMENT_FRONTMATTER: renderRulesDocumentFrontmatter(artifact.identity),
 					}
 				: artifact.values
-		artifacts.set(artifact.path, renderTemplate(templates[artifact.template], values, artifact.template))
+		artifacts.set(
+			artifact.path,
+			renderTemplate(getReferenceTemplate(templates, artifact.template), values, artifact.template),
+		)
 	}
 
 	const pageCount = [...artifacts.keys()].filter((path) => path.endsWith('.mdx')).length

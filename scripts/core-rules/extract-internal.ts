@@ -7,11 +7,25 @@ import type {
 } from '@/lib/rules/core-rules-document'
 import { coreRulesConventions } from '@/lib/rules/document-family-conventions'
 import { normalizeRulesDate } from '../rules-date'
-import type { CoreRulesFamilyAdapter, ExtractedCoreRulesVersion } from '../rules-document-family'
+import {
+	extractRulesVersions,
+	type CoreRulesFamilyAdapter,
+	type ExtractedCoreRulesVersion,
+} from '../rules-document-family'
 import type { CoreRulesReport } from './inspect'
 
+type CoreRulesExtractionReport = Readonly<
+	Pick<
+		CoreRulesReport,
+		'file' | 'title' | 'lastUpdated' | 'physicalLineCount' | 'assignedPhysicalLines' | 'records'
+	> & {
+		unassignedLines: readonly Readonly<Pick<CoreRulesReport['unassignedLines'][number], 'text'>>[]
+		structured: Readonly<Pick<CoreRulesReport['structured'], 'sections' | 'diagnostics'>>
+	}
+>
+
 export type CoreRulesExtractionDependencies = Readonly<{
-	inspectSource: (path: string) => Promise<CoreRulesReport>
+	inspectSource: (path: string) => Promise<CoreRulesExtractionReport>
 	sourcesDirectory: string
 }>
 
@@ -19,7 +33,9 @@ function runtimeHeading(heading: { source: { sequence: number }; id: string; tex
 	return { sequence: heading.source.sequence, id: heading.id, text: heading.text }
 }
 
-function runtimeRules(rules: CoreRulesReport['structured']['sections'][number]['preamble']): RuleNode[] {
+function runtimeRules(
+	rules: CoreRulesExtractionReport['structured']['sections'][number]['preamble'],
+): RuleNode[] {
 	return rules.map((rule) => ({
 		sequence: rule.source.sequence,
 		id: rule.id,
@@ -28,7 +44,7 @@ function runtimeRules(rules: CoreRulesReport['structured']['sections'][number]['
 	}))
 }
 
-function runtimeSections(sections: CoreRulesReport['structured']['sections']): CoreRulesSection[] {
+function runtimeSections(sections: CoreRulesExtractionReport['structured']['sections']): CoreRulesSection[] {
 	return sections.map((section) => ({
 		heading: runtimeHeading(section.heading),
 		preamble: runtimeRules(section.preamble),
@@ -39,7 +55,7 @@ function runtimeSections(sections: CoreRulesReport['structured']['sections']): C
 	}))
 }
 
-function validateReport(report: CoreRulesReport): string {
+function validateReport(report: CoreRulesExtractionReport): string {
 	if (!report.title) throw new Error(`${report.file}: missing document title`)
 	const lastUpdated = normalizeRulesDate(report.lastUpdated, `${report.file}: Last Updated`)
 	if (report.physicalLineCount !== report.assignedPhysicalLines + report.unassignedLines.length) {
@@ -59,7 +75,7 @@ function validateReport(report: CoreRulesReport): string {
 	return lastUpdated
 }
 
-function serializeCoreRulesTranscript(report: CoreRulesReport): string {
+function serializeCoreRulesTranscript(report: CoreRulesExtractionReport): string {
 	const lines = [report.title, `Last Updated: ${report.lastUpdated}`]
 	for (const record of report.records) {
 		const [firstLine, ...continuationLines] = record.sourceLines
@@ -77,12 +93,9 @@ export function createCoreRulesFamilyAdapter({
 }: CoreRulesExtractionDependencies): CoreRulesFamilyAdapter {
 	return {
 		async extract(family) {
-			const versions: ExtractedCoreRulesVersion[] = []
-			for (const registeredVersion of family.registeredVersions) {
+			const versions = await extractRulesVersions(family.registeredVersions, async (registeredVersion) => {
 				const conventions = coreRulesConventions.version(registeredVersion.version)
 				const sourcePath = join(sourcesDirectory, conventions.source.pdfFilename)
-				// Large PDFs are intentionally processed sequentially to cap memory usage.
-				// oxlint-disable-next-line no-await-in-loop
 				const report = await inspectSource(sourcePath)
 				const lastUpdated = validateReport(report)
 				const document: CoreRulesDocument = {
@@ -90,7 +103,7 @@ export function createCoreRulesFamilyAdapter({
 					version: registeredVersion.version,
 					sections: runtimeSections(report.structured.sections),
 				}
-				versions.push({
+				return {
 					registeredVersion,
 					lastUpdated,
 					document,
@@ -100,14 +113,13 @@ export function createCoreRulesFamilyAdapter({
 					diagnostics: report.structured.diagnostics
 						.filter(({ severity }) => severity === 'warning')
 						.map(({ message }) => ({ severity: 'warning', message })),
-				})
-			}
+				} satisfies ExtractedCoreRulesVersion
+			})
 
-			const extractedVersions = versions as [ExtractedCoreRulesVersion, ...ExtractedCoreRulesVersion[]]
-			const currentVersion = extractedVersions.find(
+			const currentVersion = versions.find(
 				({ registeredVersion }) => registeredVersion === family.currentVersion,
 			)!
-			return { versions: extractedVersions, currentVersion }
+			return { versions, currentVersion }
 		},
 	}
 }

@@ -45,10 +45,14 @@ export type RulesDocumentFamilyConventions<Family extends RulesDocumentFamilyId>
 		documentsExport: string
 		versionNamesExport: string | null
 	}>
-	isVersion(input: unknown): input is RulesVersion<Family>
-	version(input: unknown): RulesDocumentVersionConventions<Family>
-	compareVersions(left: unknown, right: unknown): -1 | 0 | 1
+	isVersion(input: string): input is RulesVersion<Family>
+	version(input: string): RulesDocumentVersionConventions<Family>
+	compareVersions(left: string, right: string): -1 | 0 | 1
 }>
+
+type AnyRulesDocumentFamilyConventions =
+	| RulesDocumentFamilyConventions<'core-rules'>
+	| RulesDocumentFamilyConventions<'tournament-rules'>
 
 export type RecognizedRulesSource =
 	| Readonly<{
@@ -65,11 +69,11 @@ export type RecognizedRulesSource =
 const CORE_RULES_VERSION = /^1\.(0|[1-9]\d*)$/u
 const TOURNAMENT_RULES_VERSION = /^\d{4}-\d{2}-\d{2}$/u
 
-function isCoreRulesVersion(input: unknown): input is RulesVersion<'core-rules'> {
-	return typeof input === 'string' && CORE_RULES_VERSION.test(input)
+function isCoreRulesVersion(input: string): input is RulesVersion<'core-rules'> {
+	return CORE_RULES_VERSION.test(input)
 }
 
-function coreRulesVersion(input: unknown): RulesDocumentVersionConventions<'core-rules'> {
+function coreRulesVersion(input: string): RulesDocumentVersionConventions<'core-rules'> {
 	if (!isCoreRulesVersion(input)) throw new InvalidRulesVersionError('core-rules', input)
 
 	return Object.freeze({
@@ -115,13 +119,13 @@ export const coreRulesConventions: RulesDocumentFamilyConventions<'core-rules'> 
 	},
 })
 
-function isTournamentRulesVersion(input: unknown): input is RulesVersion<'tournament-rules'> {
-	if (typeof input !== 'string' || !TOURNAMENT_RULES_VERSION.test(input)) return false
+function isTournamentRulesVersion(input: string): input is RulesVersion<'tournament-rules'> {
+	if (!TOURNAMENT_RULES_VERSION.test(input)) return false
 	const date = new Date(`${input}T00:00:00.000Z`)
 	return !Number.isNaN(date.valueOf()) && date.toISOString().slice(0, 10) === input
 }
 
-function tournamentRulesVersion(input: unknown): RulesDocumentVersionConventions<'tournament-rules'> {
+function tournamentRulesVersion(input: string): RulesDocumentVersionConventions<'tournament-rules'> {
 	if (!isTournamentRulesVersion(input)) {
 		throw new InvalidRulesVersionError('tournament-rules', input)
 	}
@@ -167,16 +171,15 @@ export const tournamentRulesConventions: RulesDocumentFamilyConventions<'tournam
 	},
 })
 
-export function rulesDocumentFamily<Family extends RulesDocumentFamilyId>(
-	id: Family,
-): RulesDocumentFamilyConventions<Family> {
-	const families = {
-		'core-rules': coreRulesConventions,
-		'tournament-rules': tournamentRulesConventions,
-	} as const
-	if (!Object.hasOwn(families, id)) throw new UnknownRulesDocumentFamilyError(id)
-	const family = families[id]
-	return family as RulesDocumentFamilyConventions<Family>
+export function rulesDocumentFamily(id: 'core-rules'): RulesDocumentFamilyConventions<'core-rules'>
+export function rulesDocumentFamily(
+	id: 'tournament-rules',
+): RulesDocumentFamilyConventions<'tournament-rules'>
+export function rulesDocumentFamily(id: string): AnyRulesDocumentFamilyConventions
+export function rulesDocumentFamily(id: string): AnyRulesDocumentFamilyConventions {
+	if (id === 'core-rules') return coreRulesConventions
+	if (id === 'tournament-rules') return tournamentRulesConventions
+	throw new UnknownRulesDocumentFamilyError(id)
 }
 
 export function recognizeRulesSourceFilename(filename: string): RecognizedRulesSource | undefined {

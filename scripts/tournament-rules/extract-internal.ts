@@ -2,10 +2,11 @@ import { join } from 'node:path'
 import { tournamentRulesConventions } from '@/lib/rules/document-family-conventions'
 import type { TournamentRulesDocument, TournamentRulesSection } from '@/lib/rules/tournament-rules-document'
 import { normalizeRulesDate } from '../rules-date'
-import type {
-	ExtractedRulesDiagnostic,
-	ExtractedTournamentRulesVersion,
-	TournamentRulesFamilyAdapter,
+import {
+	extractRulesVersions,
+	type ExtractedRulesDiagnostic,
+	type ExtractedTournamentRulesVersion,
+	type TournamentRulesFamilyAdapter,
 } from '../rules-document-family'
 import type { TournamentRulesSource } from './inspect'
 import { structureTournamentRows, type TournamentStructureDiagnostic } from './structure'
@@ -78,12 +79,9 @@ export function createTournamentRulesFamilyAdapter({
 }: TournamentRulesExtractionDependencies): TournamentRulesFamilyAdapter {
 	return {
 		async extract(family) {
-			const versions: ExtractedTournamentRulesVersion[] = []
-			for (const registeredVersion of family.registeredVersions) {
+			const versions = await extractRulesVersions(family.registeredVersions, async (registeredVersion) => {
 				const conventions = tournamentRulesConventions.version(registeredVersion.version)
 				const sourcePath = join(sourcesDirectory, conventions.source.pdfFilename)
-				// Large PDFs are intentionally processed sequentially to cap memory usage.
-				// oxlint-disable-next-line no-await-in-loop
 				const source = await readSource(sourcePath)
 				const lastUpdated = validateSource(source, registeredVersion.version)
 				let structured: ReturnType<typeof structureTournamentRows>
@@ -94,23 +92,19 @@ export function createTournamentRulesFamilyAdapter({
 				}
 				const diagnostic = structureWarning(source.file, structured.diagnostics)
 				if (diagnostic) warn(diagnostic.message)
-				versions.push({
+				return {
 					registeredVersion,
 					lastUpdated,
 					document: runtimeDocument(source, structured.sections),
 					transcript: serializeTranscript({ ...source, lastUpdated }),
 					diagnostics: diagnostic ? [diagnostic] : [],
-				})
-			}
+				} satisfies ExtractedTournamentRulesVersion
+			})
 
-			const extractedVersions = versions as [
-				ExtractedTournamentRulesVersion,
-				...ExtractedTournamentRulesVersion[],
-			]
-			const currentVersion = extractedVersions.find(
+			const currentVersion = versions.find(
 				({ registeredVersion }) => registeredVersion === family.currentVersion,
 			)!
-			return { versions: extractedVersions, currentVersion }
+			return { versions, currentVersion }
 		},
 	}
 }

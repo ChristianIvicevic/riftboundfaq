@@ -44,14 +44,20 @@ export class RulesManifestError extends TypeError {
 	}
 }
 
+const jsonValue = z.json()
+type RulesManifestSource = z.infer<typeof jsonValue>
+
 const manifestValue = z.strictObject({
-	coreRules: z.unknown(),
-	tournamentRules: z.unknown(),
+	coreRules: z.custom<RulesManifestSource>(),
+	tournamentRules: z.custom<RulesManifestSource>(),
 })
 const familyValue = z.strictObject({
 	current: z.string(),
-	versions: z.record(z.string(), z.unknown()),
+	versions: z.record(z.string(), z.custom<RulesManifestSource>()),
 })
+const familyVersionsProperty = z.object({ versions: z.custom<RulesManifestSource>() })
+type FamilyValue = z.infer<typeof familyValue>
+type VersionMetadataValues = FamilyValue['versions']
 const coreRulesVersionValue = z.string().refine(coreRulesConventions.isVersion)
 const coreRulesMetadataValue = z.strictObject({
 	name: z
@@ -66,8 +72,8 @@ function fail(code: RulesManifestErrorCode, path: string, message: string): neve
 	throw new RulesManifestError(`Rules manifest at ${path}: ${message}`, code, path)
 }
 
-function rejectPrototypeProperty(value: unknown, path: string): void {
-	if (typeof value === 'object' && value !== null && Object.hasOwn(value, '__proto__')) {
+function rejectPrototypeProperty(value: RulesManifestSource, path: string): void {
+	if (Object.hasOwn(Object(value), '__proto__')) {
 		fail('UNEXPECTED_PROPERTY', `${path}.__proto__`, 'unexpected property')
 	}
 }
@@ -78,7 +84,7 @@ function rejectUnexpectedProperty(issue: ZodIssue, path: string): void {
 	fail('UNEXPECTED_PROPERTY', `${path}.${property}`, 'unexpected property')
 }
 
-function parseManifestStructure(value: unknown) {
+function parseManifestStructure(value: RulesManifestSource) {
 	rejectPrototypeProperty(value, '$')
 	const parsed = manifestValue.safeParse(value)
 	if (parsed.success) return parsed.data
@@ -88,10 +94,11 @@ function parseManifestStructure(value: unknown) {
 	fail('EXPECTED_RECORD', `$.${String(issue.path[0])}`, 'expected a record')
 }
 
-function parseFamilyStructure(value: unknown, path: string) {
+function parseFamilyStructure(value: RulesManifestSource, path: string): FamilyValue {
 	rejectPrototypeProperty(value, path)
-	if (typeof value === 'object' && value !== null && 'versions' in value) {
-		rejectPrototypeProperty(value.versions, `${path}.versions`)
+	const versionsProperty = familyVersionsProperty.safeParse(value)
+	if (versionsProperty.success) {
+		rejectPrototypeProperty(versionsProperty.data.versions, `${path}.versions`)
 	}
 	const parsed = familyValue.safeParse(value)
 	if (!parsed.success) {
@@ -113,7 +120,7 @@ function versionPath(familyPath: string, version: string): string {
 }
 
 function parseCoreRulesVersions(
-	versions: Record<string, unknown>,
+	versions: VersionMetadataValues,
 ): [RegisteredCoreRulesVersion, ...RegisteredCoreRulesVersion[]] {
 	const versionNumbers = Object.keys(versions)
 	for (const version of versionNumbers.toSorted()) {
@@ -126,8 +133,7 @@ function parseCoreRulesVersions(
 		}
 	}
 
-	const orderedVersions = versionNumbers.toSorted(coreRulesConventions.compareVersions)
-	return orderedVersions.map((version) => {
+	const registeredVersions = versionNumbers.toSorted(coreRulesConventions.compareVersions).map((version) => {
 		const path = versionPath('$.coreRules', version)
 		rejectPrototypeProperty(versions[version], path)
 		const metadata = coreRulesMetadataValue.safeParse(versions[version])
@@ -141,13 +147,18 @@ function parseCoreRulesVersions(
 		}
 		if (metadata.data.name === undefined) return { version }
 		return { version, name: metadata.data.name }
-	}) as [RegisteredCoreRulesVersion, ...RegisteredCoreRulesVersion[]]
+	})
+	const [firstVersion, ...remainingVersions] = registeredVersions
+	if (!firstVersion) {
+		fail('NO_REGISTERED_VERSIONS', '$.coreRules.versions', 'expected at least one registered version')
+	}
+	return [firstVersion, ...remainingVersions]
 }
 
 function parseTournamentRulesVersions(
-	versions: Record<string, unknown>,
+	versions: VersionMetadataValues,
 ): [RegisteredTournamentRulesVersion, ...RegisteredTournamentRulesVersion[]] {
-	return Object.keys(versions)
+	const registeredVersions = Object.keys(versions)
 		.toSorted()
 		.map((version) => {
 			const path = versionPath('$.tournamentRules', version)
@@ -166,7 +177,12 @@ function parseTournamentRulesVersions(
 				fail('EXPECTED_RECORD', path, 'expected a record')
 			}
 			return { version }
-		}) as [RegisteredTournamentRulesVersion, ...RegisteredTournamentRulesVersion[]]
+		})
+	const [firstVersion, ...remainingVersions] = registeredVersions
+	if (!firstVersion) {
+		fail('NO_REGISTERED_VERSIONS', '$.tournamentRules.versions', 'expected at least one registered version')
+	}
+	return [firstVersion, ...remainingVersions]
 }
 
 function freezeFamily<RegisteredVersion extends { version: string }>(
@@ -194,7 +210,7 @@ function freezeFamily<RegisteredVersion extends { version: string }>(
 	})
 }
 
-export function parseRulesManifest(value: unknown): RulesManifest {
+export function parseRulesManifest(value: RulesManifestSource): RulesManifest {
 	const root = parseManifestStructure(value)
 	const coreRules = parseFamilyStructure(root.coreRules, '$.coreRules')
 	const coreRulesVersions = parseCoreRulesVersions(coreRules.versions)

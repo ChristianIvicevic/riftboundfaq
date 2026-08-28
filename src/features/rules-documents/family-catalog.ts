@@ -153,21 +153,28 @@ export function createRulesDocumentFamilyCatalog<Document extends { readonly ver
 		)
 	}
 
-	const registeredVersions: readonly RegisteredRulesVersionSummary[] = Object.freeze(
-		versions.map((version) => {
-			const summary = {
+	const archivedSummaries: readonly ArchivedRulesVersionSummary[] = Object.freeze(
+		versions.slice(0, -1).map((version) =>
+			Object.freeze({
 				type,
 				version,
 				name: names[version] ?? null,
-			}
-			return version === currentVersion
-				? Object.freeze({ ...summary, status: 'current' as const })
-				: Object.freeze({ ...summary, status: 'archived' as const })
-		}),
+				status: 'archived' as const,
+			}),
+		),
 	)
+	const currentSummary: CurrentRulesVersionSummary = Object.freeze({
+		type,
+		version: currentVersion,
+		name: names[currentVersion] ?? null,
+		status: 'current',
+	})
+	const registeredVersions: readonly RegisteredRulesVersionSummary[] = Object.freeze([
+		...archivedSummaries,
+		currentSummary,
+	])
 	const summaries = new Map(registeredVersions.map((summary) => [summary.version, summary]))
-	const currentSummary = registeredVersions.at(-1)! as CurrentRulesVersionSummary
-	const previousSummary = registeredVersions.at(-2) as ArchivedRulesVersionSummary | undefined
+	const previousSummary = archivedSummaries.at(-1)
 	const currentTransition = previousSummary
 		? Object.freeze({ from: previousSummary, to: currentSummary })
 		: undefined

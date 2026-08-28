@@ -1,12 +1,16 @@
+import { z } from 'zod'
+
 const BASELINE_TOLERANCE = 1
 const TOP_EDGE_TOLERANCE = 1
 
-export type PdfTextItem = {
-	str: string
-	transform: number[]
-	width: number
-	height: number
-}
+const pdfTextItem = z.object({
+	str: z.string(),
+	transform: z.array(z.number()).min(6),
+	width: z.number(),
+	height: z.number(),
+})
+
+export type PdfTextItem = z.infer<typeof pdfTextItem>
 
 export type PhysicalLine = {
 	page: number
@@ -22,21 +26,6 @@ type PendingPhysicalLine = {
 	page: number
 	y: number
 	items: PdfTextItem[]
-}
-
-function isPdfTextItem(item: unknown): item is PdfTextItem {
-	if (typeof item !== 'object' || item === null) return false
-	const candidate = item as Partial<PdfTextItem>
-	return (
-		typeof candidate.str === 'string' &&
-		Array.isArray(candidate.transform) &&
-		candidate.transform.length >= 6 &&
-		candidate.transform.every(Number.isFinite) &&
-		typeof candidate.width === 'number' &&
-		Number.isFinite(candidate.width) &&
-		typeof candidate.height === 'number' &&
-		Number.isFinite(candidate.height)
-	)
 }
 
 function fontSize(item: PdfTextItem) {
@@ -94,7 +83,10 @@ export function reconstructText(items: readonly PdfTextItem[]) {
 
 export function reconstructPhysicalLines(items: readonly unknown[], pageNumber: number): PhysicalLine[] {
 	const textItems = items
-		.filter((item): item is PdfTextItem => isPdfTextItem(item))
+		.flatMap((item) => {
+			const result = pdfTextItem.safeParse(item)
+			return result.success ? [result.data] : []
+		})
 		.filter((item) => item.str.length > 0)
 		.toSorted(
 			(left, right) => right.transform[5] - left.transform[5] || left.transform[4] - right.transform[4],

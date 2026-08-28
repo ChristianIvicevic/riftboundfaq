@@ -26,9 +26,11 @@ function createRuneComponent(name: RuneName) {
 	}
 }
 
-export const RUNES = Object.fromEntries(RUNE_NAMES.map((name) => [name, createRuneComponent(name)])) as {
-	[K in RuneName]: ReturnType<typeof createRuneComponent>
-}
+export const RUNES =
+	// SAFETY: RUNE_NAMES is the exhaustive key set, and the mapping emits one component for each rune.
+	Object.fromEntries(RUNE_NAMES.map((name) => [name, createRuneComponent(name)])) as {
+		[K in RuneName]: ReturnType<typeof createRuneComponent>
+	}
 
 export function Universal() {
 	return (

@@ -68,11 +68,7 @@ async function readTournamentPdf(path: string) {
 	const filename = basename(absolutePath)
 	const version = filename.match(FORENSIC_PDF_FILENAME)?.[1] ?? null
 	const data = new Uint8Array(await readFile(absolutePath))
-	const loadingTask = getDocument({ data, disableWorker: true } as NonNullable<
-		Parameters<typeof getDocument>[0]
-	> & {
-		disableWorker: boolean
-	})
+	const loadingTask = getDocument({ data })
 	const document = await loadingTask.promise
 	const pageCount = document.numPages
 	let physicalLineCount = 0
@@ -87,7 +83,7 @@ async function readTournamentPdf(path: string) {
 			try {
 				// oxlint-disable-next-line no-await-in-loop
 				const [textContent, operatorList] = await Promise.all([page.getTextContent(), page.getOperatorList()])
-				const textItems = textContent.items.filter((item) => 'str' in item) as PdfTextItem[]
+				const textItems: PdfTextItem[] = textContent.items.filter((item) => 'str' in item)
 				const physicalLines = reconstructPhysicalLines(textItems, pageNumber)
 				physicalLineCount += physicalLines.length
 				if (pageNumber === 1) {

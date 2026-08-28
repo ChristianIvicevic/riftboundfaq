@@ -68,6 +68,9 @@ export type TournamentRulesForensicRow = {
 	geometry: RowGeometry
 }
 
+type ParsedLabel = Pick<TournamentRulesForensicRow, 'id' | 'label' | 'diagnostics'>
+type RowClassification = Pick<TournamentRulesForensicRow, 'kind' | 'fontSize'>
+
 export type TournamentRulesSourceRowReconstructionErrorCode =
 	| 'invalid-page-number'
 	| 'noncontiguous-page-order'
@@ -146,11 +149,7 @@ function reconstructMultilineText(items: PdfTextItem[], pageNumber: number): str
 		.trim()
 }
 
-function parseLabel(rawLabel: string): {
-	id: string | null
-	label: string | null
-	diagnostics: LabelDiagnostic[]
-} {
+function parseLabel(rawLabel: string): ParsedLabel {
 	if (!rawLabel) return { id: null, label: null, diagnostics: [] }
 	const strictMatch = rawLabel.match(STRICT_LABEL)
 	if (strictMatch) return { id: strictMatch[1], label: rawLabel, diagnostics: [] }
@@ -174,10 +173,7 @@ function dominantFontSize(items: readonly PdfTextItem[]): number | null {
 	return [...weights].toSorted((left, right) => right[1] - left[1])[0]?.[0] ?? null
 }
 
-function classifyRow(items: readonly PdfTextItem[]): {
-	kind: TournamentRulesSourceRow['kind']
-	fontSize: number | null
-} {
+function classifyRow(items: readonly PdfTextItem[]): RowClassification {
 	const size = dominantFontSize(items)
 	if (size !== null && size >= 20) return { kind: 'primary-heading', fontSize: size }
 	if (size !== null && size >= 10) return { kind: 'secondary-heading', fontSize: size }

@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { TERM_DEFINITIONS, type TermName, type TermVariant } from '@/lib/mdx-vocabulary'
 
+// SAFETY: TERM_DEFINITIONS is a closed, owned object, so Object.keys returns only TermName values.
 const TERM_NAMES = Object.keys(TERM_DEFINITIONS) as TermName[]
 
 const termVariants = cva(
@@ -59,9 +60,11 @@ function createGameTermComponent(name: TermName) {
 	}
 }
 
-export const MDX_TERMS = Object.fromEntries(
-	TERM_NAMES.map((name) => [name, createGameTermComponent(name)]),
-) as { [K in TermName]: ReturnType<typeof createGameTermComponent> }
+export const MDX_TERMS =
+	// SAFETY: TERM_NAMES contains every TERM_DEFINITIONS key, and the mapping emits one component for each key.
+	Object.fromEntries(TERM_NAMES.map((name) => [name, createGameTermComponent(name)])) as {
+		[K in TermName]: ReturnType<typeof createGameTermComponent>
+	}
 
 const GAME_TERM_COMPONENTS_BY_LABEL = new Map<string, (typeof MDX_TERMS)[TermName]>(
 	TERM_NAMES.map((name) => [TERM_DEFINITIONS[name].label, MDX_TERMS[name]] as const),

@@ -372,7 +372,7 @@ describe('prepareReferencePublication', () => {
 		const emptyCoreRules = {
 			...EXTRACTED_CORE_RULES,
 			versions: [],
-		} as unknown as ExtractedCoreRulesFamily
+		}
 		const duplicateCoreRules: ExtractedCoreRulesFamily = {
 			versions: [EXTRACTED_CORE_RULES.versions[0], EXTRACTED_CORE_RULES.versions[0]],
 			currentVersion: EXTRACTED_CORE_RULES.versions[0],

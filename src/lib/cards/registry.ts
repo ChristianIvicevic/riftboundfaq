@@ -22,9 +22,9 @@ const CARD_SETS = [
 
 export type CardSetId = (typeof CARD_SETS)[number]['id']
 
-export const REGISTERED_CARD_NAMES = [
+export const REGISTERED_CARD_NAMES = Object.freeze([
 	...new Set(CARD_SETS.flatMap(({ cards }) => Object.keys(cards))),
-] as readonly string[]
+])
 
 export function getCardUrls(name: string, set?: CardSetId) {
 	const sets = set ? CARD_SETS.filter(({ id }) => id === set) : CARD_SETS

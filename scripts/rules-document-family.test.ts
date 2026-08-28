@@ -1,7 +1,6 @@
 import { describe, expect, test, vi } from 'vitest'
 import { assembleRuleBlocks, type RulePage } from './core-rules/blocks'
 import { createCoreRulesFamilyAdapter } from './core-rules/extract-internal'
-import type { CoreRulesReport } from './core-rules/inspect'
 import type { PdfTextItem } from './core-rules/lines'
 import { structureRuleBlocks } from './core-rules/structure'
 import { parseRulesManifest } from './rules-manifest'
@@ -32,7 +31,7 @@ function rulePage(rows: PdfTextItem[][]): RulePage {
 	}
 }
 
-function coreRulesReport(): CoreRulesReport {
+function coreRulesReport() {
 	const { blocks } = assembleRuleBlocks([
 		rulePage([
 			[textItem('100.', 20, 700, 20, 35), textItem('Game Concepts', 80, 700, 20, 130)],
@@ -58,7 +57,7 @@ function coreRulesReport(): CoreRulesReport {
 		unassignedLines: [{ text: 'Riftbound Core Rules' }, { text: 'Last Updated: 2026-01-01' }],
 		structured,
 		records: blocks,
-	} as unknown as CoreRulesReport
+	}
 }
 
 function tournamentRow(

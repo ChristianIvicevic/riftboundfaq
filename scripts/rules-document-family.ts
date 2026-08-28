@@ -29,6 +29,20 @@ export type RulesDocumentFamilyAdapter<Family, Result> = Readonly<{
 	extract: (family: Family) => Promise<Result>
 }>
 
+export async function extractRulesVersions<RegisteredVersion, ExtractedVersion>(
+	registeredVersions: readonly [RegisteredVersion, ...RegisteredVersion[]],
+	extract: (registeredVersion: RegisteredVersion) => Promise<ExtractedVersion>,
+): Promise<[ExtractedVersion, ...ExtractedVersion[]]> {
+	const [firstVersion, ...remainingVersions] = registeredVersions
+	const extractedVersions: [ExtractedVersion, ...ExtractedVersion[]] = [await extract(firstVersion)]
+	for (const version of remainingVersions) {
+		// Large PDFs are intentionally processed sequentially to cap memory usage and stop at the first failure.
+		// oxlint-disable-next-line no-await-in-loop
+		extractedVersions.push(await extract(version))
+	}
+	return extractedVersions
+}
+
 export type ExtractedCoreRulesVersion = ExtractedRulesVersion<
 	RegisteredCoreRulesVersion,
 	CoreRulesDocument,

@@ -1,8 +1,8 @@
 const ISO_DATE = /^(\d{4})-(\d{2})-(\d{2})$/u
 const SLASH_DATE = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/u
 
-export function normalizeRulesDate(value: unknown, label = 'Last Updated'): string {
-	if (typeof value !== 'string' || !value.trim()) throw new Error(`${label} is missing`)
+export function normalizeRulesDate(value: string, label = 'Last Updated'): string {
+	if (!value.trim()) throw new Error(`${label} is missing`)
 	const input = value.trim()
 	const isoMatch = ISO_DATE.exec(input)
 	const slashMatch = SLASH_DATE.exec(input)

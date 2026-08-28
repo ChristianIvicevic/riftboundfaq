@@ -130,7 +130,7 @@ describe('Rules document family catalog', () => {
 	})
 
 	test('snapshots registration and compiles exact lookups lazily once', () => {
-		const documents: Record<string, { version: string }> = {
+		const documents = {
 			'1.0': { version: '1.0' },
 			'1.1': { version: '1.1' },
 		}
@@ -142,8 +142,8 @@ describe('Rules document family catalog', () => {
 			adapt,
 			diffId,
 		})
-		delete documents['1.0']
-		documents['1.2'] = { version: '1.2' }
+		Reflect.deleteProperty(documents, '1.0')
+		Object.assign(documents, { '1.2': { version: '1.2' } })
 
 		expect(catalog.registeredVersions.map(({ version }) => version)).toEqual(['1.0', '1.1'])
 		expect(catalog.get('1.0')).toBe(catalog.find('1.0'))

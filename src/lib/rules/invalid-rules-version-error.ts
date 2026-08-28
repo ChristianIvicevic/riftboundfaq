@@ -8,10 +8,9 @@ export class InvalidRulesVersionError extends TypeError {
 
 	constructor(
 		readonly family: RulesDocumentFamilyId,
-		readonly input: unknown,
+		readonly input: string,
 	) {
 		const { label } = RULES_DOCUMENT_FAMILY_IDENTITIES[family]
-		const renderedInput = typeof input === 'string' ? JSON.stringify(input) : String(input)
-		super(`Invalid ${label} version ${renderedInput}`)
+		super(`Invalid ${label} version ${JSON.stringify(input)}`)
 	}
 }

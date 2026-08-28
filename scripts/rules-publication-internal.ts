@@ -1,5 +1,6 @@
 import { access, mkdir, readdir, readFile, rename, rm, rmdir, writeFile } from 'node:fs/promises'
 import { dirname, isAbsolute, join, relative } from 'node:path'
+import { z } from 'zod'
 
 export type RulesPublicationSummary = Readonly<{
 	coreRules: Readonly<{ current: string; versions: number; transcripts: number }>
@@ -39,19 +40,12 @@ export class RulesPublicationError extends Error {
 	}
 }
 
-const SIMULATED_PUBLICATION_CRASH = Symbol('simulated-publication-crash')
+const simulatedPublicationCrashes = new WeakSet<Error>()
 
 export function simulatedPublicationCrash(message: string): Error {
-	return Object.assign(new Error(message), { [SIMULATED_PUBLICATION_CRASH]: true })
-}
-
-function isSimulatedPublicationCrash(value: unknown): boolean {
-	return (
-		typeof value === 'object' &&
-		value !== null &&
-		SIMULATED_PUBLICATION_CRASH in value &&
-		value[SIMULATED_PUBLICATION_CRASH] === true
-	)
+	const error = new Error(message)
+	simulatedPublicationCrashes.add(error)
+	return error
 }
 
 export type RulesPublisher = (options?: RulesPublicationOptions) => Promise<RulesPublicationSummary>
@@ -65,7 +59,7 @@ type PublicationFault = (event: {
 		| 'cleanup'
 		| 'after-cleanup-rename'
 	index?: number
-}) => unknown | Promise<unknown>
+}) => void | Promise<void>
 
 type RulesPublisherDependencies = Readonly<{
 	defaultProjectDirectory?: string
@@ -74,25 +68,25 @@ type RulesPublisherDependencies = Readonly<{
 	warn?: (message: string) => void
 }>
 
-type JournalEntry = {
-	livePath: string
-	stagedPath: string | null
-	backupPath: string
-	hadPrior: boolean
-	status: 'pending' | 'backing-up' | 'backed-up' | 'installing' | 'installed' | 'rolled-back'
-}
+const journalEntryValue = z.object({
+	livePath: z.string(),
+	stagedPath: z.string().nullable(),
+	backupPath: z.string(),
+	hadPrior: z.boolean(),
+	status: z.enum(['pending', 'backing-up', 'backed-up', 'installing', 'installed', 'rolled-back']),
+})
+const publicationJournalValue = z.object({
+	version: z.literal(1),
+	state: z.enum(['staging', 'replacing', 'rolling-back', 'committed']),
+	entries: z.array(journalEntryValue),
+})
+const missingPathError = z.object({ code: z.literal('ENOENT') })
 
-type PublicationJournal = {
-	version: 1
-	state: 'staging' | 'replacing' | 'rolling-back' | 'committed'
-	entries: JournalEntry[]
-}
-
-type DesiredEntry = {
-	livePath: string
-	contents: string | ReadonlyMap<string, string> | null
-	kind: 'file' | 'directory'
-}
+type JournalEntry = z.infer<typeof journalEntryValue>
+type PublicationJournal = z.infer<typeof publicationJournalValue>
+type DesiredEntry =
+	| { livePath: string; contents: string | null; kind: 'file' }
+	| { livePath: string; contents: ReadonlyMap<string, string>; kind: 'directory' }
 
 const TRANSACTION_DIRECTORY = '.rules-publication'
 const COMMITTED_TRANSACTION_DIRECTORY = '.rules-publication-committed'
@@ -123,8 +117,8 @@ async function pathExists(path: string): Promise<boolean> {
 	try {
 		await access(path)
 		return true
-	} catch (error: unknown) {
-		if ((error as NodeJS.ErrnoException).code === 'ENOENT') return false
+	} catch (error) {
+		if (missingPathError.safeParse(error).success) return false
 		throw error
 	}
 }
@@ -132,8 +126,8 @@ async function pathExists(path: string): Promise<boolean> {
 async function directoryEntries(directory: string): Promise<string[]> {
 	try {
 		return await readdir(directory)
-	} catch (error: unknown) {
-		if ((error as NodeJS.ErrnoException).code === 'ENOENT') return []
+	} catch (error) {
+		if (missingPathError.safeParse(error).success) return []
 		throw error
 	}
 }
@@ -248,35 +242,6 @@ async function writeJournal(projectDirectory: string, journal: PublicationJourna
 	await rename(temporaryPath, path)
 }
 
-function isJournal(value: unknown): value is PublicationJournal {
-	if (typeof value !== 'object' || value === null) return false
-	const journal = value as Partial<PublicationJournal>
-	return (
-		journal.version === 1 &&
-		(journal.state === 'staging' ||
-			journal.state === 'replacing' ||
-			journal.state === 'rolling-back' ||
-			journal.state === 'committed') &&
-		Array.isArray(journal.entries) &&
-		journal.entries.every((entry: unknown) => {
-			if (typeof entry !== 'object' || entry === null) return false
-			const candidate = entry as Partial<JournalEntry>
-			return (
-				typeof candidate.livePath === 'string' &&
-				(candidate.stagedPath === null || typeof candidate.stagedPath === 'string') &&
-				typeof candidate.backupPath === 'string' &&
-				typeof candidate.hadPrior === 'boolean' &&
-				(candidate.status === 'pending' ||
-					candidate.status === 'backing-up' ||
-					candidate.status === 'backed-up' ||
-					candidate.status === 'installing' ||
-					candidate.status === 'installed' ||
-					candidate.status === 'rolled-back')
-			)
-		})
-	)
-}
-
 function validateJournalEntry(entry: JournalEntry) {
 	const managed =
 		FIXED_MANAGED_PATH_SET.has(entry.livePath) ||
@@ -298,8 +263,9 @@ async function readJournal(projectDirectory: string): Promise<PublicationJournal
 }
 
 async function readJournalFile(journalPath: string): Promise<PublicationJournal> {
-	const value: unknown = JSON.parse(await readFile(journalPath, 'utf8'))
-	if (!isJournal(value)) throw new Error('Unrecognized rules publication recovery journal')
+	const parsed = publicationJournalValue.safeParse(JSON.parse(await readFile(journalPath, 'utf8')))
+	if (!parsed.success) throw new Error('Unrecognized rules publication recovery journal')
+	const value = parsed.data
 	if (value.state !== 'staging' && value.entries.length < FIXED_MANAGED_PATHS.length) {
 		throw new Error('Recovery journal does not contain every required managed target')
 	}
@@ -479,15 +445,16 @@ async function stagePublication(
 	// Staging is serialized so the journal's target order is deterministic.
 	// oxlint-disable no-await-in-loop
 	for (const [index, entry] of entries.entries()) {
-		const stagedPath = entry.contents === null ? null : `staged/entry-${index}`
-		if (stagedPath) {
+		let stagedPath: string | null = null
+		if (entry.contents !== null) {
+			stagedPath = `staged/entry-${index}`
 			const destination = transactionPath(projectDirectory, stagedPath)
 			if (entry.kind === 'directory') {
 				await mkdir(destination, { recursive: true })
-				await writeArtifacts(destination, entry.contents as ReadonlyMap<string, string>)
+				await writeArtifacts(destination, entry.contents)
 			} else {
 				await mkdir(dirname(destination), { recursive: true })
-				await writeFile(destination, entry.contents as string)
+				await writeFile(destination, entry.contents)
 			}
 		}
 		journal.entries.push({
@@ -566,7 +533,7 @@ export function createRulesPublisher({
 			journal.state = 'committed'
 			await writeJournal(projectDirectory, journal)
 		} catch (cause) {
-			if (isSimulatedPublicationCrash(cause)) throw cause
+			if (cause instanceof Error && simulatedPublicationCrashes.has(cause)) throw cause
 			try {
 				await fault({ event: 'before-rollback' })
 				await rollback(projectDirectory, journal, fault)
