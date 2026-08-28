@@ -73,6 +73,7 @@ function fail(code: RulesManifestErrorCode, path: string, message: string): neve
 }
 
 function rejectPrototypeProperty(value: RulesManifestSource, path: string): void {
+	// oxlint-disable-next-line unicorn/new-for-builtins
 	if (Object.hasOwn(Object(value), '__proto__')) {
 		fail('UNEXPECTED_PROPERTY', `${path}.__proto__`, 'unexpected property')
 	}

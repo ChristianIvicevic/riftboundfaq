@@ -165,6 +165,7 @@ export function FeedbackText({
 	function expandPopup() {
 		if (popup?.mode !== 'tooltip') return
 
+		// oxlint-disable-next-line unicorn/no-instanceof-builtins
 		if ('Highlight' in globalThis && Highlight instanceof Function && CSS.highlights) {
 			const highlight = new Highlight(popup.range)
 			CSS.highlights.set('fd-feedback-text', highlight)
