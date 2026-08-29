@@ -1,0 +1,29 @@
+---
+title: "Elder Dragon"
+createdAt: "2026-08-29"
+reviewedCoreRulesVersion: "1.4"
+galleryLink: "https://playriftbound.com/en-us/card-gallery/#card-gallery--unl-118-219"
+authors:
+- name: "Christian “Near” Ivicevic"
+  url: "https://x.com/civicevic"
+---
+
+## Does damage from earlier in the turn become lethal when Elder Dragon enters, and can I react? [#lethal-damage-timing]
+
+Damage still marked by Elder Dragon's controller becomes lethal to enemy units when Elder Dragon enters, and opponents cannot react after it enters before those units are killed in the resulting cleanup.
+Elder Dragon's "your damage" means damage marked by its controller.<Rule number="142.3.b" />
+Its first ability is a passive statement that changes the lethal-damage value for those enemy units while Elder Dragon is on the board.<Rule number="142.4.c" /><Rule number="364.2" /><Rule number="365.1" />
+
+Finalizing a unit does not pass priority, and the unit resolves immediately.<Rule number="337.1.a" /><Rule number="337.2" />
+After Elder Dragon enters, a cleanup happens without passing or awarding priority, and every unit with lethal damage is killed.<Rule number="319.6" /><Rule number="320.1" /><Rule number="323.5" />
+Elder Dragon's separate "When you play me" ability is a triggered play effect, but it does not create a response window before this lethal-damage check.<Rule number="383.4.a" /><Rule number="383.4.a.2" />
+
+<Callout type="idea" title="Example">
+	You play <Card name="Flurry of Blades" /> during your turn, and its 1 damage remains marked on enemy units at battlefields.
+	When you later play Elder Dragon directly, each of those units is killed in the cleanup caused by Elder Dragon entering before your opponents can react.
+
+	The same result occurs if <Card name="Dazzling Aurora" /> plays Elder Dragon at the end of your turn.
+	End-of-turn abilities happen in the Ending Step, before the Expiration Step's special cleanup heals all units, so reaching the end of the turn has not itself healed Flurry of Blades' damage yet.<Rule number="317.1.a" /><Rule number="317.2.a" /><Rule number="317.2.b" />
+	Opponents may react while Dazzling Aurora's triggered ability waits to resolve.<Rule number="383.1" /><Rule number="337.4" /><Rule number="338.1.a.2" />
+	Once that ability begins resolving and reveals Elder Dragon, no new priority window opens before Elder Dragon enters and the affected units are killed.
+</Callout>
