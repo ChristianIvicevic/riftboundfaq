@@ -40,11 +40,11 @@ The only exceptions are:
 No; you can choose any otherwise legal unit, and the might condition controls only whether the kill instruction is performed.
 
 Targeting restrictions describe the target, as in "Kill a unit with 3 might or less."<Rule number="355.9.b" />
-In "Kill a unit if it has 3 might or less," the later "if" condition is instead part of the effect executed when the spell or ability resolves.<Rule number="359.3.d" /><Rule number="406.5" />
+In "Kill a unit if it has 3 might or less," the later "if" condition is instead part of the effect executed when the spell or ability <Term item="resolution">resolves</Term>.<Rule number="359.3.d" /><Rule number="406.5" />
 
 ## What happens if a target becomes illegal before a spell or ability resolves? [#illegal-targets]
 
-The spell or ability still resolves, but the illegal target is unaffected, instructions related to it cannot be followed, and independent instructions continue normally.<Rule number="359.3.e.1" /><Rule number="359.3.e.5" /><Rule number="406.5" />
+The spell or ability still <Term item="resolution">resolves</Term>, but the illegal target is unaffected, instructions related to it cannot be followed, and independent instructions continue normally.<Rule number="359.3.e.1" /><Rule number="359.3.e.5" /><Rule number="406.5" />
 
 If all of an instruction's targets are illegal, that instruction does not execute.<Rule number="359.3.e.7" />
 If at least one target remains legal, the instruction executes using only the legal targets.<Rule number="359.3.e.8" />
@@ -71,6 +71,6 @@ If an earlier linked instruction is negated, later linked instructions continue 
 </Callout>
 
 <Callout type="idea" title="Example">
-	If a unit chosen by <Card name="Hidden Blade" /> is at base when the spell resolves, Hidden Blade mistargets, so its kill and linked draw instructions are ignored.
+	If a unit chosen by <Card name="Hidden Blade" /> is at base when the spell <Term item="resolution">resolves</Term>, Hidden Blade mistargets, so its kill and linked draw instructions are ignored.
 	If the unit remains a legal target but can't be killed, the kill instruction is negated instead, so its controller still draws 2.
 </Callout>

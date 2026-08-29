@@ -9,7 +9,7 @@ authors:
 
 ## How are targets chosen when playing Alpha Strike? [#targeting]
 
-Alpha Strike's controller chooses its targets while finalizing the spell, in the following order.<Rule number="355.5" /><Rule number="355.14.b" />
+Alpha Strike's controller chooses its targets while <Term item="finalization">finalizing</Term> the spell, in the following order.<Rule number="355.5" /><Rule number="355.14.b" />
 Every chosen unit is a target and must be a legal choice.<Rule number="355.8" /><Rule number="355.9.b" /><Rule number="355.10" /><Rule number="355.14.a" />
 
 <Steps>
@@ -29,7 +29,7 @@ Once Alpha Strike finishes finalizing, its target choices cannot change unless a
 
 ## When and how is Alpha Strike's damage distributed? [#split-distribution]
 
-Alpha Strike's controller chooses how to distribute its damage during resolution, not while choosing targets.<Rule number="355.14.e" />
+Alpha Strike's controller chooses how to distribute its damage during <Term item="resolution">resolution</Term>, not while choosing targets.<Rule number="355.14.e" />
 
 <Steps>
 <Step>
@@ -53,7 +53,7 @@ If only one enemy target remains, assign all available damage to it.
 
 ## What if the friendly unit's might is reduced? [#might-reduction]
 
-If the friendly target remains legal but has lower might when Alpha Strike resolves, Alpha Strike uses that reduced might as the amount of damage to split.<Rule number="359.3.f.1" /><Rule number="359.3.f.2" />
+If the friendly target remains legal but has lower might when Alpha Strike <Term item="resolution">resolves</Term>, Alpha Strike uses that reduced might as the amount of damage to split.<Rule number="359.3.f.1" /><Rule number="359.3.f.2" />
 If there is not enough damage to assign at least 1 to every enemy target, Alpha Strike's controller must remove exactly enough enemy units from Alpha Strike's targets and cannot remove extras to concentrate the damage.<Rule number="355.14.f" /><Rule number="355.14.g" /><Rule number="355.14.h" /><Rule number="355.14.h.1" />
 
 <Callout type="idea" title="Example">
@@ -68,7 +68,7 @@ If Alpha Strike has 0 damage to split, every enemy target ceases being a target 
 
 ## What if the chosen friendly unit leaves the board or becomes illegal before Alpha Strike resolves? [#illegal-friendly-target]
 
-Alpha Strike deals no damage if the chosen friendly unit is an illegal target when the spell resolves.
+Alpha Strike deals no damage if the chosen friendly unit is an illegal target when the spell <Term item="resolution">resolves</Term>.
 An illegal friendly target provides no might that Alpha Strike can use for its damage instruction.<Rule number="359.3.f.1" /><Rule number="359.3.f.2.a" />
 Alpha Strike does not require the chosen friendly unit to be at a particular location, so moving between board locations does not by itself make it illegal.<Rule number="359.3.e.2" />
 If it stays on the board but temporarily stops being a unit or stops being friendly, it is legal again if it meets every targeting requirement at resolution.<Rule number="359.3.e.3" />
@@ -76,7 +76,7 @@ If the target changes to or from a non-board zone, it remains illegal even if it
 
 ## What if a chosen enemy unit leaves a battlefield or becomes illegal before Alpha Strike resolves? [#illegal-enemy-target]
 
-An enemy unit takes no damage if it remains an illegal target when Alpha Strike resolves.<Rule number="359.3.e.2" /><Rule number="359.3.e.5" />
+An enemy unit takes no damage if it remains an illegal target when Alpha Strike <Term item="resolution">resolves</Term>.<Rule number="359.3.e.2" /><Rule number="359.3.e.5" />
 If the unit stays on the board but moves to base, stops being an enemy, or otherwise stops meeting Alpha Strike's description, it is legal again if it meets every requirement before resolution.<Rule number="359.3.e.2" /><Rule number="359.3.e.3" />
 If it changes to or from a non-board zone, it remains illegal even if it returns.<Rule number="359.3.e.4" />
 If every chosen enemy unit is illegal, Alpha Strike deals no damage because its damage instruction does not execute.<Rule number="359.3.e.7" />

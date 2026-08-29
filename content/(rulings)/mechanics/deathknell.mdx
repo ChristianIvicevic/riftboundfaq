@@ -9,8 +9,8 @@ authors:
 
 ## When is a Deathknell ability added to the chain? [#trigger-timing]
 
-A <Deathknell /> ability is added to the chain before its permanent moves to the trash.<Rule number="808.1.d.2" />
-At that point it is a pending item, an ability waiting to be finalized.
+A <Deathknell /> ability is added to the <Term item="chain">chain</Term> before its permanent moves to the trash.<Rule number="808.1.d.2" />
+At that point it is a <Term item="pending">pending</Term> item, an ability waiting to be <Term item="finalization">finalized</Term>.
 Before the permanent leaves the board, the game records its location, attributes, and other information needed to process the ability.<Rule number="808.1.d.3" />
 
 If the permanent's death is replaced and it is not sent to the trash, the pending ability is removed from the chain.<Rule number="808.1.d.1" />
@@ -18,22 +18,22 @@ Each instance of <Deathknell /> triggers separately, and the permanent's control
 
 ## When does a Deathknell ability resolve if its unit dies during a cleanup? [#cleanup-timing]
 
-It resolves only after the cleanup finishes.
+It <Term item="resolution">resolves</Term> only after the <Term item="cleanup">cleanup</Term> finishes.
 During a combat cleanup, surviving units are therefore healed before the <Deathknell /> ability's controller chooses targets or the ability resolves.<Rule number="466.1.a.1" /><Rule number="402.2" /><Rule number="320" />
 
-The ability becomes a pending item before the unit moves to the trash, but pending items cannot begin finalization until every cleanup task is complete.<Rule number="323.4" /><Rule number="323.5" /><Rule number="334.2" /><Rule number="337.1" />
+The ability becomes a <Term item="pending">pending</Term> item before the unit moves to the trash, but pending items cannot begin <Term item="finalization">finalization</Term> until every cleanup task is complete.<Rule number="323.4" /><Rule number="323.5" /><Rule number="334.2" /><Rule number="337.1" />
 
 ## Does Deathknell resolve before the card or ability that killed the unit? [#killing-card-timing]
 
 It depends on when the unit is killed.
 
-- **Killed to pay a cost while a spell or ability is being finalized:** The <Deathknell /> resolves first.
-  The original item is already pending when its cost is paid.<Rule number="354.2" /><Rule number="357.2" /><Rule number="401.1" /><Rule number="404.1" />
+- **Killed to pay a cost while a spell or ability is being <Term item="finalization">finalized</Term>:** The <Deathknell /> <Term item="resolution">resolves</Term> first.
+  The original item is already <Term item="pending">pending</Term> when its cost is paid.<Rule number="354.2" /><Rule number="357.2" /><Rule number="401.1" /><Rule number="404.1" />
   It finishes finalizing before the newer <Deathknell />, which then resolves first.<Rule number="808.1.d.2" /><Rule number="359.3.b" /><Rule number="406.3" /><Rule number="340.1" />
   For example, if <Card name="Sacrifice" /> kills <Card name="Ruined Rex" /> as its additional cost, Ruined Rex's <Deathknell /> resolves before Sacrifice draws 2 and channels 1 rune exhausted.
 - **Killed during resolution:** The killing card or ability finishes first, including when the kill pays a cost within its instructions.
   Costs within instructions in spells and activated abilities, and those appearing later in triggered abilities, are paid during resolution.<Rule number="204.3.b" />
   The <Deathknell /> is added before its permanent moves to the trash, but it cannot finalize or resolve until the current item finishes.<Rule number="808.1.d.2" /><Rule number="401.2" /><Rule number="158.3" />
   For example, after <Card name="Baited Hook" /> kills a unit, it finishes every remaining instruction before that unit's <Deathknell /> can resolve.
-- **Killed by lethal damage:** The card or ability that dealt the damage finishes first because cleanup cannot begin during its resolution.<Rule number="321" /><Rule number="321.1" />
+- **Killed by lethal damage:** The card or ability that dealt the damage finishes first because <Term item="cleanup">cleanup</Term> cannot begin during its resolution.<Rule number="321" /><Rule number="321.1" />
   The <Deathknell /> is added during the subsequent cleanup and cannot finalize until that cleanup ends.<Rule number="323.4" /><Rule number="323.5" /><Rule number="334.2" />

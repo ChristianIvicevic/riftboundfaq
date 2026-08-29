@@ -54,7 +54,7 @@ describe('RulesDocumentRuleList', () => {
 		).toBe(true)
 	})
 
-	test('uses the conventional link color for card preview triggers in rules examples', async () => {
+	test('uses the inline popover treatment for card previews in rules examples', async () => {
 		const screen = await render(
 			<RulesDocumentRuleList
 				findReferences={() => []}
@@ -74,6 +74,11 @@ describe('RulesDocumentRuleList', () => {
 
 		const trigger = screen.getByRole('button', { name: 'Preview Loose Cannon' })
 		await expect.element(trigger).toHaveTextContent('Loose Cannon')
-		await expect.element(trigger).toHaveClass('text-fd-primary')
+		await expect.element(trigger).toHaveClass('text-inherit')
+		await expect.element(trigger).toHaveClass('decoration-2')
+		await expect.element(trigger).toHaveClass('decoration-dotted')
+		await expect.element(trigger).toHaveClass('decoration-fd-primary/70')
+		await expect.element(trigger).toHaveClass('font-medium')
+		await expect.element(trigger).not.toHaveClass('text-fd-primary')
 	})
 })

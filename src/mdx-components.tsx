@@ -7,6 +7,7 @@ import { Rule } from '@/components/core-rules/rule'
 import { MDX_TERMS } from '@/components/game-terms'
 import { Energy, RUNES, Universal } from '@/components/resources'
 import { CoreRulesDiff, TournamentRulesDiff } from '@/components/rules/change-view'
+import { Term } from '@/components/term'
 import type { TraversedRulesDocument } from '@/features/rules-documents/registry'
 import {
 	renderVersionedRulesDocument,
@@ -25,6 +26,7 @@ const wikiMdxComponents = {
 	TournamentRulesDiff,
 	Energy,
 	Universal,
+	Term,
 	...RUNES,
 	...MDX_TERMS,
 } satisfies MDXComponents

@@ -9,27 +9,27 @@ authors:
 
 ## What does "play" mean on a card? [#play-definition]
 
-"Play" has three meanings in rules text: starting the play process, a non-triggered check counts a card when it finalizes, and a trigger condition counts it only when it resolves.
+"Play" has three meanings in rules text: starting the play process, a non-triggered check counts a card when it <Term item="finalization">finalizes</Term>, and a trigger condition counts it only when it <Term item="resolution">resolves</Term>.
 
-- **Starting play — "play a card."** A play starts by moving the card to the chain as a pending item.<Rule number="354" /><Rule number="354.2" />
+- **Starting play — "play a card."** A play starts by moving the card to the <Term item="chain">chain</Term> as a <Term item="pending">pending</Term> item.<Rule number="354" /><Rule number="354.2" />
   If a game effect gives the instruction during resolution, as on <Card name="Here to Help" /> or <Card name="Fizz, Trickster" />, the card follows every normal play step unless the effect says otherwise.<Rule number="419.3" /><Rule number="419.3.b" />
   Hiding is a separate action, so it does not satisfy an instruction to play a card.<Rule number="811.1.c.1" />
 - **Non-triggered check — "if you've played."** This checks whether the card finalized, not whether it resolved.<Rule number="419.4.b" />
   A finalized spell still counts if it is later countered.
   This is the meaning used by <Card name="Battering Ram" />, <Card name="Crescent Guardian" />, <Card name="Back Off" />, and <Legion />.<Rule number="812.1.b.1" /><Rule number="812.1.c" />
 - **Trigger condition — "when you play."** This waits for the card's resolution to complete.<Rule number="419.4.a" />
-  Units and gear resolve immediately after finalizing, but a spell resolves only after players receive priority and all pass without adding another item.<Rule number="337.2" /><Rule number="337.4" /><Rule number="339.1" />
+  Units and gear resolve immediately after finalizing, but a spell resolves only after players receive <Term item="priority">priority</Term> and all pass without adding another item.<Rule number="337.2" /><Rule number="337.4" /><Rule number="339.1" />
   A countered card does not fulfill this trigger condition because it does not resolve.<Rule number="419.4.a.1" />
   This is the meaning used by <Card name="Ravenbloom Student" /> and <Card name="Darius, Trifarian" />.
 
 ## What is the process for playing a card? [#play-process]
 
-Playing a card moves through six play steps, then resolves according to its card category.
+Playing a card moves through six play steps, then <Term item="resolution">resolves</Term> according to its card category.
 
 <Steps>
 <Step>
-**Move the card to the chain.**
-It leaves its current zone and becomes a pending item waiting to be finalized.<Rule number="354" /><Rule number="354.2" />
+**Move the card to the <Term item="chain">chain</Term>.**
+It leaves its current zone and becomes a <Term item="pending">pending</Term> item waiting to be <Term item="finalization">finalized</Term>.<Rule number="354" /><Rule number="354.2" />
 </Step>
 <Step>
 **Make the relevant choices.**
@@ -54,17 +54,17 @@ If a check fails, undo the actions taken during the play process and cancel the 
 
 After finalization, resolution depends on the card category.
 A unit enters the board exhausted at its chosen location, while non-unit gear enters the board ready at its controller's base.<Rule number="359.2.c" /><Rule number="359.2.d" />
-Both resolve immediately without passing priority.<Rule number="337.1.a" /><Rule number="337.2" />
+Both resolve immediately without passing <Term item="priority">priority</Term>.<Rule number="337.1.a" /><Rule number="337.2" />
 A spell instead becomes a finalized chain item.<Rule number="359.3.a" />
 It resolves only after no pending items remain and all players pass priority in sequence without adding another item.<Rule number="337.4" /><Rule number="339.1" /><Rule number="340.1" />
 
 ## When does a card leave my trash when I play it from there? [#playing-from-trash]
 
 It leaves your trash as soon as you begin playing it, although a failed legality check undoes that move and cancels the play.
-The first step of playing a card moves it from its current zone to the chain, where it waits to be finalized.<Rule number="354" /><Rule number="354.2" />
+The first step of playing a card moves it from its current zone to the <Term item="chain">chain</Term>, where it waits to be <Term item="finalization">finalized</Term>.<Rule number="354" /><Rule number="354.2" />
 If a legality check fails, the actions taken during the play process are undone.<Rule number="358.5" />
 
 While the play continues, the card is no longer in your trash when you make choices, determine its total cost, pay its costs, or finalize it.
-It also remains outside your trash while it resolves.
+It also remains outside your trash while it <Term item="resolution">resolves</Term>.
 For example, <Card name="Shadow Assassin" /> does not count itself for its "card with my name in your trash" condition; only another copy still in the trash counts.<Rule number="369.3" />
 Likewise, <Card name="Rhasa the Sunderer" /> does not include itself among the cards in your trash when determining its cost reduction.<Rule number="356" />

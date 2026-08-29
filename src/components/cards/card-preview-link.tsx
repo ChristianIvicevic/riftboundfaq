@@ -5,6 +5,7 @@ import { Images } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { RiftboundLogo } from '@/components/icons/riftbound-logo'
 import { buttonVariants } from '@/components/ui/button'
+import { inlinePopoverTriggerVariants } from '@/components/ui/inline-popover-trigger'
 
 export function CardPreviewLink({
 	children,
@@ -23,8 +24,10 @@ export function CardPreviewLink({
 		<Popover.Root>
 			<Popover.Trigger
 				aria-label={`Preview ${name}`}
-				className="cursor-pointer border-0 bg-transparent p-0 font-medium text-fd-primary underline decoration-fd-primary/35 decoration-dotted underline-offset-2 hover:decoration-fd-primary"
+				className={inlinePopoverTriggerVariants({ kind: 'card' })}
+				nativeButton={false}
 				openOnHover
+				render={<span />}
 			>
 				{children}
 			</Popover.Trigger>

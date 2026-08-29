@@ -9,14 +9,14 @@ authors:
 
 ## How does Switcheroo work? [#might-swap]
 
-Switcheroo reverses the units' current might when it resolves, but it does not exchange their base might or set either unit's might to a new value.
+Switcheroo reverses the units' current might when it <Term item="resolution">resolves</Term>, but it does not exchange their base might or set either unit's might to a new value.
 The Swap action determines the difference between the two current values, then creates a might increase for the lower value and an equal might decrease for the higher value.<Rule number="433.1" /><Rule number="433.1.a" /><Rule number="433.1.b" />
 Each increase or decrease lasts for Switcheroo's stated duration, this turn.<Rule number="433.1.a" />
 If the units have equal might when Switcheroo resolves, the Swap has no effect.<Rule number="433.1.c" />
 
 ## Are existing equipment bonuses or passive effects counted again after Switcheroo resolves? [#existing-modifiers]
 
-No, each existing modifier is counted once as part of the unit's current might, and it continues applying normally after Switcheroo resolves.<Rule number="476.1" /><Rule number="477.3.a" /><Rule number="477.3.d" />
+No, each existing modifier is counted once as part of the unit's current might, and it continues applying normally after Switcheroo <Term item="resolution">resolves</Term>.<Rule number="476.1" /><Rule number="477.3.a" /><Rule number="477.3.d" />
 Switcheroo calculates one difference from the complete current values and creates separate increase and decrease effects; it does not remove, reapply, or replace the existing modifiers.<Rule number="433.1.a" /><Rule number="433.1.b" />
 For example, if a unit has 2 base might and an active +3 bonus, its current might is 5 for the Swap calculation.
 After the Swap, the +3 remains one part of that unit's might rather than being added a second time.
@@ -25,7 +25,7 @@ After the Swap, the +3 remains one part of that unit's might rather than being a
 
 Only the modifier that stops applying changes the unit's might.<Rule number="476.3" /><Rule number="477.3.a" />
 Switcheroo's increase or decrease keeps its originally calculated amount until end of turn.
-The Swap creates effects with fixed amounts when it resolves, so later changes do not cause it to recalculate the difference.<Rule number="433.1.a" /><Rule number="433.1.b" />
+The Swap creates effects with fixed amounts when it <Term item="resolution">resolves</Term>, so later changes do not cause it to recalculate the difference.<Rule number="433.1.a" /><Rule number="433.1.b" />
 
 <Callout type="idea" title="Example">
 	<Card name="Wuju Bladesman - Starter" /> grants a friendly unit +2 might while it defends alone.
@@ -42,7 +42,7 @@ Yes, a unit can have negative might if a bonus included in Switcheroo's calculat
 Spells, abilities, and combat-damage assignment treat negative might as 0.<Rule number="143.2.b" />
 Might increases and decreases instead use the actual negative value.<Rule number="143.2.b.1" />
 The unit does not die merely for having 0 or negative might.
-At cleanup, it is killed only if it has a non-zero amount of marked damage equal to or greater than its might.<Rule number="142.4.b" /><Rule number="323.5" />
+At <Term item="cleanup">cleanup</Term>, it is killed only if it has a non-zero amount of marked damage equal to or greater than its might.<Rule number="142.4.b" /><Rule number="323.5" />
 
 <Callout type="idea" title="Example">
 	A <Card name="Scuttle Crab" /> at -2 might is targeted with <Card name="Punch First" />, which reads "Give a unit +5 Might this turn."
