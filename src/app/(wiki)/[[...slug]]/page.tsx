@@ -10,7 +10,6 @@ import { submitBlockFeedback, submitPageFeedback } from '@/features/feedback/act
 import { Feedback, FeedbackText } from '@/features/feedback/feedback'
 import { resolveCoreRulesReview } from '@/features/rules-documents/core-rules-review'
 import { resolveVersionedRulesRoute } from '@/features/rules-documents/versioned-route'
-import { getRiftboundWikiUrl } from '@/lib/cards/links'
 import { getPagePublication } from '@/lib/content/page-publication'
 import { getPageImage, PAGE_IMAGE_SIZE, source } from '@/lib/content/source'
 import { SITE_NAME, SITE_URL, X_HANDLE } from '@/lib/site'
@@ -28,7 +27,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 		url: page.url,
 		reviewedVersion: page.data.reviewedCoreRulesVersion,
 	})
-	const riftboundWikiUrl = page.url.startsWith('/cards/') ? getRiftboundWikiUrl(page.data.title) : undefined
+	const cardName = page.url.startsWith('/cards/') ? page.data.title : undefined
 	const versionedRulesRoute = resolveVersionedRulesRoute({
 		url: page.url,
 		rulesDocument: page.data.rulesDocument,
@@ -79,7 +78,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 			)}
 			<DocsTitle>{page.data.title}</DocsTitle>
 			<DocsDescription className="mb-0">{publication.description}</DocsDescription>
-			<PageActions galleryLink={page.data.galleryLink} riftboundWikiUrl={riftboundWikiUrl} />
+			<PageActions cardName={cardName} />
 			{coreRulesReview && (
 				<CoreRulesReviewCallout
 					currentVersion={coreRulesReview.currentVersion}

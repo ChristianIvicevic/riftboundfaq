@@ -29,7 +29,6 @@ export const docs = defineDocs({
 					}),
 				])
 				.optional(),
-			galleryLink: z.url().optional(),
 			authors: z.array(author).optional(),
 			createdAt: z.iso.date().optional(),
 			noindex: z.boolean().optional(),
