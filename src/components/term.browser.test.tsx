@@ -50,6 +50,7 @@ describe('Term', () => {
 		paragraph.style.whiteSpace = 'normal'
 		paragraph.style.width = `${availableWidth}px`
 
+		// oxlint-disable-next-line unicorn/prefer-number-coercion
 		const lineHeight = Number.parseFloat(getComputedStyle(paragraph).lineHeight)
 		const lineDelta = periodRange.getBoundingClientRect().top - trigger.getBoundingClientRect().top
 		expect(lineDelta).toBeLessThan(lineHeight / 2)
