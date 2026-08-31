@@ -32,7 +32,7 @@ export function CardPreviewLink({
 				{children}
 			</Popover.Trigger>
 			<Popover.Portal>
-				<Popover.Positioner className="z-50 max-w-[calc(100vw-2rem)]" sideOffset={8}>
+				<Popover.Positioner className="z-50 max-w-[calc(100vw-2rem)]" side="top" sideOffset={8}>
 					<Popover.Popup className="max-h-(--available-height) w-64 origin-(--transform-origin) overflow-y-auto rounded-xl border bg-fd-popover/80 p-1 text-fd-popover-foreground shadow-xl backdrop-blur-lg transition data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0">
 						<Popover.Title className="sr-only">{name} card preview</Popover.Title>
 						<img

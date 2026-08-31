@@ -33,7 +33,7 @@ export function TermPopover({
 				{text}
 			</Popover.Trigger>
 			<Popover.Portal>
-				<Popover.Positioner className="z-50 max-w-[calc(100vw-2rem)]" sideOffset={8}>
+				<Popover.Positioner className="z-50 max-w-[calc(100vw-2rem)]" side="top" sideOffset={8}>
 					<Popover.Popup
 						className="w-80 max-w-[calc(100vw-2rem)] origin-(--transform-origin) rounded-xl border bg-fd-popover/80 px-4 py-3 text-fd-popover-foreground shadow-xl backdrop-blur-lg transition data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0"
 						initialFocus={false}
