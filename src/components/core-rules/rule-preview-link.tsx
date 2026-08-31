@@ -46,7 +46,7 @@ export function RulePreviewLink({
 				[{number}]
 			</Popover.Trigger>
 			<Popover.Portal>
-				<Popover.Positioner className="z-50 max-w-[calc(100vw-2rem)]" sideOffset={8}>
+				<Popover.Positioner className="z-50 max-w-[calc(100vw-2rem)]" side="top" sideOffset={8}>
 					<Popover.Popup className="max-w-100 origin-(--transform-origin) rounded-xl border bg-fd-popover/80 px-4 py-3 text-sm leading-relaxed text-fd-popover-foreground shadow-xl backdrop-blur-lg transition data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0">
 						<Popover.Title className="sr-only">Rule {number}</Popover.Title>
 						<Popover.Description className="m-0">
