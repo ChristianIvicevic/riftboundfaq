@@ -27,7 +27,7 @@ export const GLOSSARY = {
 	priority: {
 		title: 'Priority',
 		explanation:
-			'Priority identifies the one player who may choose to act at the current moment, as timing allows. While a card or ability is waiting to take effect, that player can use a Reaction or pass priority to the next player.',
+			'Priority marks the player, if any, who may choose to act at the current moment, as timing allows. When players are allowed to respond before a spell or ability takes effect, the player with priority may play an eligible Reaction or pass to the next player.',
 	},
 	cleanup: {
 		title: 'Cleanup',
@@ -37,7 +37,7 @@ export const GLOSSARY = {
 	focus: {
 		title: 'Focus',
 		explanation:
-			'Focus marks which player gets the next chance to play a card, use an ability, or pass during a showdown over a battlefield. It usually moves to the next player when they pass or after everything waiting from their play is finished; a full round of passes with no play ends the showdown.',
+			'During a showdown, focus marks the player who gets opportunity to start a sequence of events by playing an eligible card or activating an eligible ability. Focus usually passes to the next player once that entire sequence has finished. However, the player can instead pass focus, and if every player passes in turn without starting a sequence, the showdown ends.',
 	},
 } as const satisfies Record<string, GlossaryEntry>
 
