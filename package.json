@@ -29,17 +29,17 @@
 		"@vercel/analytics": "2.0.1",
 		"class-variance-authority": "0.7.1",
 		"cnfast": "0.1.0",
-		"fumadocs-core": "16.15.2",
-		"fumadocs-mdx": "15.3.1",
-		"fumadocs-ui": "npm:@fumadocs/base-ui@16.15.2",
-		"lucide-react": "1.33.0",
-		"next": "16.3.2",
-		"posthog-node": "5.51.0",
+		"fumadocs-core": "16.15.4",
+		"fumadocs-mdx": "15.4.0",
+		"fumadocs-ui": "npm:@fumadocs/base-ui@16.15.4",
+		"lucide-react": "1.37.0",
+		"next": "16.3.3",
+		"posthog-node": "5.51.4",
 		"react": "19.2.8",
 		"react-dom": "19.2.8",
 		"tailwind-merge": "3.6.0",
-		"takumi-js": "2.12.0",
-		"zod": "4.4.3"
+		"takumi-js": "2.13.2",
+		"zod": "4.5.4"
 	},
 	"devDependencies": {
 		"@playwright/test": "1.62.1",
@@ -48,11 +48,11 @@
 		"@types/node": "25.9.5",
 		"@types/react": "19.2.18",
 		"@types/react-dom": "19.2.5",
-		"@vitejs/plugin-react": "6.1.0",
+		"@vitejs/plugin-react": "6.1.1",
 		"@vitest/browser-playwright": "4.1.11",
-		"oxfmt": "0.64.0",
-		"oxlint": "1.79.0",
-		"pdfjs-dist": "6.2.108",
+		"oxfmt": "0.65.0",
+		"oxlint": "1.80.0",
+		"pdfjs-dist": "6.3.289",
 		"postcss": "8.5.26",
 		"tailwindcss": "4.3.3",
 		"tsx": "4.23.12",
@@ -60,5 +60,5 @@
 		"vitest": "4.1.11",
 		"vitest-browser-react": "2.2.0"
 	},
-	"packageManager": "pnpm@11.23.0"
+	"packageManager": "pnpm@11.25.0"
 }
