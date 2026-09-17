@@ -3,10 +3,10 @@ import {
 	RulesDocumentSectionHeading,
 	RulesDocumentSubsectionHeading,
 } from '@/components/rules/document'
-import type { TraversedRulesDocument } from '@/features/rules-documents/registry'
+import type { CompiledRulesDocument } from '@/features/rules-documents/registry'
 import { findTournamentRuleReferences } from '@/features/tournament-rules/references'
 
-export function TournamentRulesDocumentView({ document }: { document: TraversedRulesDocument }) {
+export function TournamentRulesDocumentView({ document }: { document: CompiledRulesDocument }) {
 	return (
 		<div className="not-prose mt-8 space-y-14">
 			{document.sections.map((section) => {

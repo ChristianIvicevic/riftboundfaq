@@ -1,9 +1,6 @@
-import type {
-	RulesDiffRecord,
-	RulesDocumentFamily,
-	RulesDocumentFamilyCatalog,
-} from '@/features/rules-documents/family-catalog'
+import type { RulesDiffRecord, RulesDocumentFamilyCatalog } from '@/features/rules-documents/family-catalog'
 import type { DiffEntry } from '@/lib/rules/diff'
+import type { RulesDocumentFamilyId } from '@/lib/rules/document-family-conventions'
 import { coreRulesLinks, tournamentRulesLinks } from '@/lib/rules/links'
 
 type PreparedRulesChangeVersion = Readonly<{
@@ -45,12 +42,12 @@ export type RulesChangeErrorReason = 'unknown-version' | 'non-adjacent' | 'rever
 export class RulesChangeError extends Error {
 	constructor(
 		readonly reason: RulesChangeErrorReason,
-		readonly family: RulesDocumentFamily,
+		readonly family: RulesDocumentFamilyId,
 		readonly from: string,
 		readonly to: string,
 	) {
 		super(
-			`Invalid ${family === 'core-rules' ? 'Core Rules' : 'Tournament Rules'} Change page from ${JSON.stringify(from)} to ${JSON.stringify(to)}: ${reason}`,
+			`Invalid rules changes page for ${family === 'core-rules' ? 'Core Rules' : 'Tournament Rules'} from ${JSON.stringify(from)} to ${JSON.stringify(to)}: ${reason}`,
 		)
 	}
 }

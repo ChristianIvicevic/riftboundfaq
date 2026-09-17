@@ -7,7 +7,7 @@ const searchResult = z.object({
 	url: z.string(),
 })
 
-test('renders Glossary entries in MDX and copies only the visible prose', async ({ context, page }) => {
+test('renders game glossary entries in MDX and copies only the visible prose', async ({ context, page }) => {
 	await context.grantPermissions(['clipboard-read', 'clipboard-write'])
 	await page.goto('/general-rules/chain-and-priority#unit-play-reactions')
 
@@ -37,7 +37,7 @@ test('renders Glossary entries in MDX and copies only the visible prose', async 
 test.describe('touch interaction', () => {
 	test.use({ hasTouch: true, viewport: { width: 320, height: 844 } })
 
-	test('opens a Glossary entry by touch', async ({ page }) => {
+	test('opens a game glossary entry by touch', async ({ page }) => {
 		await page.goto('/general-rules/showdowns#showdown-close')
 
 		await page.getByRole('button', { name: 'focus', exact: true }).tap()
@@ -45,7 +45,7 @@ test.describe('touch interaction', () => {
 		const dialog = page.getByRole('dialog', { name: 'Focus' })
 		await expect(dialog).toBeVisible()
 		const bounds = await dialog.boundingBox()
-		if (!bounds) throw new Error('Glossary dialog bounds are unavailable')
+		if (!bounds) throw new Error('Game glossary entry dialog bounds are unavailable')
 		expect(bounds.x).toBeGreaterThanOrEqual(0)
 		expect(bounds.x + bounds.width).toBeLessThanOrEqual(320)
 	})

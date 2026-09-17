@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next'
-import { getPagePublication } from '@/lib/content/page-publication'
+import { getPagePublishingDetails } from '@/lib/content/page-publishing-details'
 import { source } from '@/lib/content/source'
 import { SITE_URL } from '@/lib/site'
 
@@ -10,7 +10,7 @@ function buildUrl(path: string): string {
 export default function sitemap(): MetadataRoute.Sitemap {
 	return source
 		.getPages()
-		.filter((page) => getPagePublication(page).isIndexable)
+		.filter((page) => getPagePublishingDetails(page).isIndexable)
 		.map((page): MetadataRoute.Sitemap[number] => ({
 			url: buildUrl(page.url),
 			lastModified: page.data.lastModified,

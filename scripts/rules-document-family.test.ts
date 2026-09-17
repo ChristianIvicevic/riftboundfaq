@@ -6,7 +6,7 @@ import { structureRuleBlocks } from './core-rules/structure'
 import { parseRulesManifest } from './rules-manifest'
 import { createTournamentRulesFamilyAdapter } from './tournament-rules/extract-internal'
 import type { TournamentRulesSource } from './tournament-rules/inspect'
-import type { TournamentRulesSourceRow } from './tournament-rules/source-rows'
+import type { TournamentRulesSourceEntry } from './tournament-rules/source-rows'
 
 function textItem(str: string, x: number, y: number, size = 8, width = str.length * 4): PdfTextItem {
 	return { str, transform: [size, 0, 0, size, x, y], width, height: size }
@@ -60,16 +60,16 @@ function coreRulesReport() {
 	}
 }
 
-function tournamentRow(
-	input: Partial<TournamentRulesSourceRow> &
-		Pick<TournamentRulesSourceRow, 'sequence' | 'kind' | 'text'> & { id?: string | null },
-): TournamentRulesSourceRow {
-	const { id = null, ...row } = input
+function tournamentEntry(
+	input: Partial<TournamentRulesSourceEntry> &
+		Pick<TournamentRulesSourceEntry, 'sequence' | 'kind' | 'text'> & { id?: string | null },
+): TournamentRulesSourceEntry {
+	const { id = null, ...entry } = input
 	return {
 		label: id ? { sourceText: `${id}.`, id, text: `${id}.`, normalization: 'unchanged' } : null,
 		activity: { status: 'active', removalEvidence: null },
 		sourcePages: { start: 1, end: 1 },
-		...row,
+		...entry,
 	}
 }
 
@@ -79,14 +79,14 @@ function tournamentRulesSource(): TournamentRulesSource {
 		version: '2026-01-01',
 		title: 'Riftbound Tournament Rules',
 		lastUpdated: '2026-01-01',
-		rows: [
-			tournamentRow({
+		entries: [
+			tournamentEntry({
 				sequence: 0,
 				kind: 'primary-heading',
 				id: '100',
 				text: 'Tournament Operations',
 			}),
-			tournamentRow({ sequence: 1, kind: 'rule', text: 'A preserved unnumbered rule.' }),
+			tournamentEntry({ sequence: 1, kind: 'rule', text: 'A preserved unnumbered rule.' }),
 		],
 	}
 }
@@ -205,7 +205,7 @@ describe('Rules document family extraction', () => {
 		})
 	})
 
-	test('processes Registered rules versions sequentially and returns no partial family', async () => {
+	test('processes registered rules versions sequentially and returns no partial family', async () => {
 		const manifest = parseRulesManifest({
 			coreRules: { current: '1.2', versions: { '1.0': {}, 1.1: {}, 1.2: {} } },
 			tournamentRules: { current: '2026-01-01', versions: { '2026-01-01': {} } },
@@ -298,7 +298,7 @@ describe('Rules document family extraction', () => {
 		expect(extracted.currentVersion).toBe(extracted.versions[1])
 	})
 
-	test('stops Tournament Rules extraction at the first failed Registered rules version', async () => {
+	test('stops Tournament Rules extraction at the first failed registered rules version', async () => {
 		const manifest = parseRulesManifest({
 			coreRules: { current: '1.0', versions: { '1.0': {} } },
 			tournamentRules: {
@@ -343,9 +343,9 @@ describe('Rules document family extraction', () => {
 				const source = tournamentRulesSource()
 				return {
 					...source,
-					rows: [
-						...source.rows,
-						tournamentRow({
+					entries: [
+						...source.entries,
+						tournamentEntry({
 							sequence: 2,
 							kind: 'rule',
 							id: '100.1',

@@ -15,7 +15,7 @@ export type TournamentRulesSourcePage = Readonly<{
 	drawings: DrawingInspection
 }>
 
-export type TournamentRulesSourceRow = Readonly<{
+export type TournamentRulesSourceEntry = Readonly<{
 	sequence: number
 	label: Readonly<{
 		sourceText: string
@@ -57,7 +57,7 @@ export type TournamentRulesForensicRow = {
 	id: string | null
 	label: string | null
 	text: string
-	kind: TournamentRulesSourceRow['kind']
+	kind: TournamentRulesSourceEntry['kind']
 	fontSize: number | null
 	active: boolean
 	highlighted: boolean
@@ -346,7 +346,7 @@ function joinCrossPageRows(rows: TournamentRulesForensicRow[]): TournamentRulesF
 	return joined
 }
 
-function sourceRow(row: TournamentRulesForensicRow): TournamentRulesSourceRow {
+function sourceEntry(row: TournamentRulesForensicRow): TournamentRulesSourceEntry {
 	const completeText = `${row.rawLabel}${row.text ? ` ${row.text}` : ''}`.trim()
 	return {
 		sequence: row.sequence,
@@ -381,7 +381,7 @@ export async function reconstructTournamentRulesSourceRows(
 	pages: AsyncIterable<TournamentRulesSourcePage>,
 ): Promise<
 	Readonly<{
-		sourceRows: readonly TournamentRulesSourceRow[]
+		sourceEntries: readonly TournamentRulesSourceEntry[]
 		forensicRows: readonly TournamentRulesForensicRow[]
 	}>
 > {
@@ -402,5 +402,5 @@ export async function reconstructTournamentRulesSourceRows(
 		previousPage = page.page
 	}
 	const forensicRows = joinCrossPageRows(rows)
-	return { sourceRows: forensicRows.map((row) => sourceRow(row)), forensicRows }
+	return { sourceEntries: forensicRows.map((row) => sourceEntry(row)), forensicRows }
 }

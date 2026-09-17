@@ -64,7 +64,7 @@ const RENUMBERED_CHANGE: PreparedRulesChange = {
 	],
 }
 
-describe('Change page rendering', () => {
+describe('rules changes page rendering', () => {
 	test('renders one semantic comparison table', async () => {
 		const screen = await render(<RulesChangeView change={CHANGE} />)
 

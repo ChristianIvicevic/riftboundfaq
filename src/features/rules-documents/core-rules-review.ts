@@ -1,14 +1,14 @@
 import {
 	rulesDocuments,
 	UnknownRulesVersionError,
-	type TraversedRulesDocument,
+	type CompiledRulesDocument,
 } from '@/features/rules-documents/registry'
 
 export type CoreRulesReview = Readonly<{
 	reviewedVersion: string
 	currentVersion: string
-	status: 'current' | 'archived'
-	document: TraversedRulesDocument
+	reviewStatus: 'up-to-date' | 'outdated'
+	document: CompiledRulesDocument
 }>
 
 export class CoreRulesReviewError extends Error {
@@ -18,7 +18,7 @@ export class CoreRulesReviewError extends Error {
 		cause: UnknownRulesVersionError,
 	) {
 		super(
-			`Core Rules review for Page publication ${JSON.stringify(url)} identifies unknown version ${JSON.stringify(reviewedVersion)}`,
+			`Core Rules review for page ${JSON.stringify(url)} identifies unknown version ${JSON.stringify(reviewedVersion)}`,
 			{ cause },
 		)
 	}
@@ -34,7 +34,7 @@ export function resolveCoreRulesReview({
 	if (!reviewedVersion) return
 
 	const coreRules = rulesDocuments.family('core-rules')
-	let document: TraversedRulesDocument
+	let document: CompiledRulesDocument
 	try {
 		document = coreRules.get(reviewedVersion)
 	} catch (cause) {
@@ -44,7 +44,7 @@ export function resolveCoreRulesReview({
 	return Object.freeze({
 		reviewedVersion: document.identity.version,
 		currentVersion: coreRules.currentVersion.version,
-		status: document.identity.status,
+		reviewStatus: document.identity.version === coreRules.currentVersion.version ? 'up-to-date' : 'outdated',
 		document,
 	})
 }

@@ -1,6 +1,6 @@
 import { SITE_DESCRIPTION, SITE_TITLE } from '@/lib/site'
 
-type PublicationPage = {
+type PublishingPage = {
 	url: string
 	data: {
 		title: string
@@ -9,7 +9,7 @@ type PublicationPage = {
 	}
 }
 
-export type PagePublication = Readonly<{
+export type PagePublishingDetails = Readonly<{
 	metadataTitle: string
 	description: string
 	isEditorial: boolean
@@ -44,7 +44,7 @@ const EDITORIAL_FAMILY_POLICIES: readonly EditorialFamilyPolicy[] = [
 	},
 ]
 
-export function getPagePublication(page: PublicationPage): PagePublication {
+export function getPagePublishingDetails(page: PublishingPage): PagePublishingDetails {
 	const family = EDITORIAL_FAMILY_POLICIES.find(({ prefix }) => page.url.startsWith(prefix))
 	const metadataTitle =
 		page.url === '/' ? SITE_TITLE : (family?.metadataTitle(page.data.title) ?? page.data.title)

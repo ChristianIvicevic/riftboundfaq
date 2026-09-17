@@ -4,7 +4,7 @@ import { userEvent } from 'vitest/browser'
 import { Term } from '@/components/term'
 
 describe('Term', () => {
-	test('opens its Glossary entry when pressed', async () => {
+	test('opens its game glossary entry when pressed', async () => {
 		const screen = await render(<Term item="finalization">finalized</Term>)
 		const trigger = screen.getByRole('button', { name: 'finalized' })
 		await expect.element(trigger).toHaveAttribute('data-copy-text', 'finalized')

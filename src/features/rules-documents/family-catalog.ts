@@ -9,10 +9,8 @@ import type { RulesDocumentContent } from '@/lib/rules/document-types'
 
 export { RulesDocumentInvariantError }
 
-export type RulesDocumentFamily = RulesDocumentFamilyId
-
 export type RulesDocumentReference = {
-	readonly type: RulesDocumentFamily
+	readonly type: RulesDocumentFamilyId
 	readonly version: string
 }
 
@@ -48,10 +46,10 @@ export type TraversedRule = {
 	readonly anchor: string
 	readonly content: readonly RulesDocumentContent[]
 	readonly children: readonly TraversedRule[]
-	readonly changeStatus?: CurrentRuleChangeStatus
+	readonly changeMarker?: RuleChangeMarker
 }
 
-export type CurrentRuleChangeStatus = 'new' | 'changed'
+export type RuleChangeMarker = 'new' | 'changed'
 
 export type TraversedRulesBlock =
 	| { kind: 'rules'; rules: readonly TraversedRule[] }
@@ -74,7 +72,7 @@ export type RulesReferenceTarget = {
 	readonly anchor: string
 }
 
-export type TraversedRulesDocument = {
+export type CompiledRulesDocument = {
 	readonly identity: RegisteredRulesVersionSummary
 	readonly sections: readonly TraversedRulesSection[]
 	readonly navigation: readonly TraversedRulesHeading[]
@@ -87,15 +85,15 @@ export type RulesDocumentFamilyCatalog = Readonly<{
 	registeredVersions: readonly RegisteredRulesVersionSummary[]
 	currentVersion: CurrentRulesVersionSummary
 	currentTransition: CurrentRulesTransition | undefined
-	readonly current: TraversedRulesDocument
-	get(version: string): TraversedRulesDocument
-	find(version: string): TraversedRulesDocument | undefined
+	readonly current: CompiledRulesDocument
+	get(version: string): CompiledRulesDocument
+	find(version: string): CompiledRulesDocument | undefined
 	difference(from: string, to: string): readonly DiffEntry<RulesDiffRecord>[]
 }>
 
 export class UnknownRulesVersionError extends Error {
 	constructor(
-		readonly family: RulesDocumentFamily,
+		readonly family: RulesDocumentFamilyId,
 		readonly version: string,
 	) {
 		const label = rulesDocumentFamily(family).label
@@ -111,7 +109,7 @@ export function createRulesDocumentFamilyCatalog<Document extends { readonly ver
 	adapt,
 	diffId,
 }: Readonly<{
-	type: RulesDocumentFamily
+	type: RulesDocumentFamilyId
 	currentVersion: string
 	documents: Readonly<Record<string, Document>>
 	names?: Readonly<Record<string, string>>
@@ -178,7 +176,7 @@ export function createRulesDocumentFamilyCatalog<Document extends { readonly ver
 	const currentTransition = previousSummary
 		? Object.freeze({ from: previousSummary, to: currentSummary })
 		: undefined
-	const compiled = new Map<string, TraversedRulesDocument>()
+	const compiled = new Map<string, CompiledRulesDocument>()
 	const differences = new Map<string, readonly DiffEntry<RulesDiffRecord>[]>()
 	const difference = (from: string, to: string) => {
 		const key = `${from}\0${to}`
@@ -209,18 +207,18 @@ export function createRulesDocumentFamilyCatalog<Document extends { readonly ver
 		})
 		compiled.set(version, document)
 		if (version === currentVersion && previousSummary) {
-			const statuses = new Map<string, CurrentRuleChangeStatus>()
+			const markers = new Map<string, RuleChangeMarker>()
 			for (const entry of difference(previousSummary.version, currentVersion)) {
-				if (entry.kind === 'added') statuses.set(entry.rule.anchor, 'new')
-				if (entry.kind === 'modified') statuses.set(entry.newRule.anchor, 'changed')
+				if (entry.kind === 'added') markers.set(entry.rule.anchor, 'new')
+				if (entry.kind === 'modified') markers.set(entry.newRule.anchor, 'changed')
 			}
-			const addStatuses = (rules: readonly TraversedRule[]): readonly TraversedRule[] =>
+			const addMarkers = (rules: readonly TraversedRule[]): readonly TraversedRule[] =>
 				Object.freeze(
 					rules.map((rule) =>
 						Object.freeze({
 							...rule,
-							changeStatus: statuses.get(rule.anchor),
-							children: addStatuses(rule.children),
+							changeMarker: markers.get(rule.anchor),
+							children: addMarkers(rule.children),
 						}),
 					),
 				)
@@ -231,7 +229,7 @@ export function createRulesDocumentFamilyCatalog<Document extends { readonly ver
 						Object.freeze({
 							...section,
 							blocks: Object.freeze(
-								section.blocks.map((block) => Object.freeze({ ...block, rules: addStatuses(block.rules) })),
+								section.blocks.map((block) => Object.freeze({ ...block, rules: addMarkers(block.rules) })),
 							),
 						}),
 					),

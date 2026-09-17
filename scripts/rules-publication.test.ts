@@ -31,14 +31,14 @@ function preparedPublication(): PreparedRulesPublication {
 		},
 		metadata: 'rules metadata',
 		reference: new Map([
-			['index.mdx', 'reference overview'],
+			['index.mdx', 'Rules Documents page'],
 			['meta.json', 'reference navigation'],
 			['core-rules/1.0.mdx', 'current Core Rules'],
 			['core-rules/(archive)/0.9.mdx', 'archived Core Rules'],
-			['core-rules/changes/1.0.mdx', 'Core Rules change page'],
+			['core-rules/changes/1.0.mdx', 'Core Rules changes page'],
 			['tournament-rules/2026-01-01.mdx', 'current Tournament Rules'],
 			['tournament-rules/(archive)/2025-12-01.mdx', 'archived Tournament Rules'],
-			['tournament-rules/changes/2026-01-01.mdx', 'Tournament Rules change page'],
+			['tournament-rules/changes/2026-01-01.mdx', 'Tournament Rules changes page'],
 		]),
 		summary: {
 			coreRules: { current: '1.0', transcripts: 1, versions: 2 },
@@ -116,7 +116,7 @@ describe('publishRules', () => {
 			await readFile(join(projectDirectory, 'src/generated/tournament-rules/v2026-01-01.ts'), 'utf8'),
 		).toBe('tournament version')
 		expect(await readFile(join(projectDirectory, 'content/reference/index.mdx'), 'utf8')).toBe(
-			'reference overview',
+			'Rules Documents page',
 		)
 		expect(await readFile(join(projectDirectory, 'sources/CR-v1.0.txt'), 'utf8')).toBe('core transcript')
 		expect(await readFile(join(projectDirectory, 'sources/Tournament-Rules-2026-01-01.txt'), 'utf8')).toBe(
@@ -134,7 +134,7 @@ describe('publishRules', () => {
 		).toBe('archived Core Rules')
 		expect(
 			await readFile(join(projectDirectory, 'content/reference/core-rules/changes/1.0.mdx'), 'utf8'),
-		).toBe('Core Rules change page')
+		).toBe('Core Rules changes page')
 	})
 
 	test('rejects removal of a previously published registered rules version before mutation', async () => {
@@ -142,7 +142,7 @@ describe('publishRules', () => {
 		await writeProjectFile(
 			projectDirectory,
 			'content/reference/core-rules/(archive)/0.8.mdx',
-			'prior durable Core Rules route',
+			'prior version-specific Core Rules page',
 		)
 		await writeProjectFile(projectDirectory, 'src/generated/rules-metadata.ts', 'prior metadata')
 		const publishRules = createRulesPublisher({ prepare: async () => preparedPublication() })
@@ -150,7 +150,7 @@ describe('publishRules', () => {
 		await expect(publishRules({ projectDirectory })).rejects.toThrow(/registered Core Rules version 0\.8/u)
 		expect(
 			await readFile(join(projectDirectory, 'content/reference/core-rules/(archive)/0.8.mdx'), 'utf8'),
-		).toBe('prior durable Core Rules route')
+		).toBe('prior version-specific Core Rules page')
 		expect(await readFile(join(projectDirectory, 'src/generated/rules-metadata.ts'), 'utf8')).toBe(
 			'prior metadata',
 		)

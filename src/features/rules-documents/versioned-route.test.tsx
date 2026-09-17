@@ -4,7 +4,7 @@ import {
 	VersionedRulesRouteError,
 } from '@/features/rules-documents/versioned-route'
 
-describe('Versioned rules route', () => {
+describe('version-specific rules page', () => {
 	test('resolves one archived rules document for navigation and rendering', () => {
 		const route = resolveVersionedRulesRoute({
 			url: '/reference/core-rules/1.0',
@@ -19,7 +19,7 @@ describe('Versioned rules route', () => {
 		expect(route?.toc[0]).toEqual({ title: '000. Golden and Silver Rules', url: '#R000', depth: 2 })
 	})
 
-	test('renders the Current Tournament Rules through its family adapter', () => {
+	test('renders the current Tournament Rules through its family adapter', () => {
 		const route = resolveVersionedRulesRoute({
 			url: '/reference/tournament-rules/2026-07-16',
 			rulesDocument: { type: 'tournament-rules', version: '2026-07-16' },
@@ -33,7 +33,7 @@ describe('Versioned rules route', () => {
 		expect(resolveVersionedRulesRoute({ url: '/reference/core-rules/changes/1.4' })).toBeUndefined()
 	})
 
-	test('rejects a rules document at the wrong route', () => {
+	test('rejects a rules document at the wrong URL', () => {
 		expect(() =>
 			resolveVersionedRulesRoute({
 				url: '/reference/core-rules/1.1',

@@ -18,19 +18,19 @@ const invalidCatalogs: readonly {
 	message: string
 }[] = [
 	{
-		name: 'has no Registered rules versions',
+		name: 'has no registered rules versions',
 		currentVersion: '1.0',
 		documents: {},
 		message: 'Core Rules 1.0: no registered rules versions',
 	},
 	{
-		name: 'does not register the Current rules version',
+		name: 'does not register the current rules version',
 		currentVersion: '1.1',
 		documents: { '1.0': { version: '1.0' } },
 		message: 'Core Rules 1.1: current rules version is not registered',
 	},
 	{
-		name: 'declares a non-greatest Current rules version',
+		name: 'declares a non-greatest current rules version',
 		currentVersion: '1.0',
 		documents: { '1.0': { version: '1.0' }, '1.1': { version: '1.1' } },
 		message: 'Core Rules 1.0: current rules version is not the greatest registered rules version "1.1"',
@@ -38,7 +38,7 @@ const invalidCatalogs: readonly {
 ]
 
 describe('Rules document family catalog', () => {
-	test('orders Registered rules versions and identifies the transition into the Current rules version', () => {
+	test('orders registered rules versions and identifies the transition into the current rules version', () => {
 		const adapt = vi.fn(({ version }: { version: string }) => ({ version, sections: [] }))
 		const catalog = createRulesDocumentFamilyCatalog({
 			type: 'core-rules',
@@ -64,7 +64,7 @@ describe('Rules document family catalog', () => {
 		expect(adapt).not.toHaveBeenCalled()
 	})
 
-	test('orders Tournament Rules versions and permits a family with no Archived rules version', () => {
+	test('orders Tournament Rules versions and permits a family with no archived rules version', () => {
 		const catalog = createRulesDocumentFamilyCatalog({
 			type: 'tournament-rules',
 			currentVersion: '2026-07-16',
@@ -189,6 +189,6 @@ describe('Rules document family catalog', () => {
 
 		expect(catalog.registeredVersions).toHaveLength(1)
 		expect(() => catalog.get('1.0')).toThrow(RulesDocumentInvariantError)
-		expect(() => catalog.get('1.0')).toThrow('Core Rules 1.0 source row 1: source sequence follows 2')
+		expect(() => catalog.get('1.0')).toThrow('Core Rules 1.0 source entry 1: source sequence follows 2')
 	})
 })

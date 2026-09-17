@@ -3,7 +3,7 @@ import { join } from 'node:path'
 import { notFound } from 'next/navigation'
 import { ImageResponse } from 'takumi-js/response'
 import { generate as DefaultImage } from '@/components/takumi'
-import { getPagePublication } from '@/lib/content/page-publication'
+import { getPagePublishingDetails } from '@/lib/content/page-publishing-details'
 import { getPageImage, PAGE_IMAGE_SIZE, source } from '@/lib/content/source'
 import { SITE_NAME } from '@/lib/site'
 
@@ -13,7 +13,7 @@ export async function GET(_req: Request, { params }: RouteContext<'/og/[...slug]
 
 	const page = source.getPage(slug.slice(0, -1))
 	if (!page) notFound()
-	const publication = getPagePublication(page)
+	const publishingDetails = getPagePublishingDetails(page)
 
 	const logoData = readFile(join(process.cwd(), 'src', 'app', 'icon.png')).then(
 		(buffer) => Uint8Array.from(buffer).buffer,
@@ -22,7 +22,7 @@ export async function GET(_req: Request, { params }: RouteContext<'/og/[...slug]
 	return new ImageResponse(
 		<DefaultImage
 			title={page.data.title}
-			description={publication.description}
+			description={publishingDetails.description}
 			site={SITE_NAME}
 			icon={<img src="logo" alt="" width={56} height={56} style={{ objectFit: 'contain' }} />}
 			primaryColor="#f4cc52"

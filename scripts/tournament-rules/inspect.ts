@@ -10,7 +10,7 @@ import { inspectDrawings } from './drawings'
 import {
 	reconstructTournamentRulesSourceRows,
 	type TournamentRulesForensicRow,
-	type TournamentRulesSourceRow,
+	type TournamentRulesSourceEntry,
 } from './source-rows'
 
 const SOURCES_DIRECTORY = resolve(import.meta.dirname, '..', '..', 'sources')
@@ -60,7 +60,7 @@ export type TournamentRulesSource = Readonly<{
 	version: string | null
 	title: string
 	lastUpdated: string
-	rows: readonly TournamentRulesSourceRow[]
+	entries: readonly TournamentRulesSourceEntry[]
 }>
 
 async function readTournamentPdf(path: string) {
@@ -200,7 +200,7 @@ export async function defaultTournamentPdfPaths() {
 
 export async function readTournamentRulesSource(path: string): Promise<TournamentRulesSource> {
 	const { filename, version, title, lastUpdated, reconstruction } = await readTournamentPdf(path)
-	return { file: filename, version, title, lastUpdated, rows: reconstruction.sourceRows }
+	return { file: filename, version, title, lastUpdated, entries: reconstruction.sourceEntries }
 }
 
 export type TournamentPdfReport = Awaited<ReturnType<typeof inspectTournamentPdf>>

@@ -2,25 +2,24 @@ import type { ReactNode } from 'react'
 import { CoreRulesDocumentView } from '@/features/core-rules/document-view'
 import {
 	rulesDocuments,
-	type RulesDocumentFamily,
+	type CompiledRulesDocument,
 	type RulesDocumentReference,
-	type TraversedRulesDocument,
 	UnknownRulesVersionError,
 } from '@/features/rules-documents/registry'
 import { TournamentRulesDocumentView } from '@/features/tournament-rules/document-view'
-import { rulesDocumentFamily } from '@/lib/rules/document-family-conventions'
+import { rulesDocumentFamily, type RulesDocumentFamilyId } from '@/lib/rules/document-family-conventions'
 
 type VersionedRulesRouteErrorReason = 'route-mismatch' | 'unknown-rules-version' | 'missing-route-context'
 
-type RulesDocumentRenderAdapter = (document: TraversedRulesDocument) => ReactNode
+type RulesDocumentRenderAdapter = (document: CompiledRulesDocument) => ReactNode
 
 const RULES_DOCUMENT_RENDER_ADAPTERS = {
 	'core-rules': (document) => <CoreRulesDocumentView document={document} />,
 	'tournament-rules': (document) => <TournamentRulesDocumentView document={document} />,
-} satisfies Record<RulesDocumentFamily, RulesDocumentRenderAdapter>
+} satisfies Record<RulesDocumentFamilyId, RulesDocumentRenderAdapter>
 
-export type VersionedRulesRoute = Readonly<{
-	document: TraversedRulesDocument
+export type ResolvedRulesDocumentPage = Readonly<{
+	document: CompiledRulesDocument
 	toc: readonly Readonly<{
 		title: string
 		url: `#${string}`
@@ -46,10 +45,10 @@ export function resolveVersionedRulesRoute({
 }: Readonly<{
 	url: string
 	rulesDocument?: RulesDocumentReference
-}>): VersionedRulesRoute | undefined {
+}>): ResolvedRulesDocumentPage | undefined {
 	if (!rulesDocument) return
 
-	let document: TraversedRulesDocument
+	let document: CompiledRulesDocument
 	try {
 		document = rulesDocuments.get(rulesDocument)
 	} catch (cause) {
@@ -57,7 +56,7 @@ export function resolveVersionedRulesRoute({
 		throw new VersionedRulesRouteError(
 			'unknown-rules-version',
 			url,
-			`Versioned rules route ${JSON.stringify(url)} identifies an unknown registered rules version`,
+			`Version-specific rules page ${JSON.stringify(url)} identifies an unknown registered rules version`,
 			{ cause },
 		)
 	}
@@ -82,14 +81,14 @@ export function resolveVersionedRulesRoute({
 	})
 }
 
-export function renderVersionedRulesDocument(route: VersionedRulesRoute | undefined): ReactNode {
-	if (!route) {
+export function renderVersionedRulesDocument(page: ResolvedRulesDocumentPage | undefined): ReactNode {
+	if (!page) {
 		throw new VersionedRulesRouteError(
 			'missing-route-context',
 			undefined,
-			'<RulesDocument /> requires a resolved Versioned rules route',
+			'<RulesDocument /> requires a resolved version-specific rules page',
 		)
 	}
 
-	return RULES_DOCUMENT_RENDER_ADAPTERS[route.document.identity.type](route.document)
+	return RULES_DOCUMENT_RENDER_ADAPTERS[page.document.identity.type](page.document)
 }

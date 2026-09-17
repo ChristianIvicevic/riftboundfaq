@@ -10,13 +10,13 @@ export type RegisteredTournamentRulesVersion = Readonly<{
 	version: string
 }>
 
-export type RulesDocumentFamily<RegisteredVersion> = Readonly<{
+export type RulesFamilyHistory<RegisteredVersion> = Readonly<{
 	registeredVersions: readonly [RegisteredVersion, ...RegisteredVersion[]]
 	currentVersion: RegisteredVersion
 }>
 
-export type CoreRulesFamily = RulesDocumentFamily<RegisteredCoreRulesVersion>
-export type TournamentRulesFamily = RulesDocumentFamily<RegisteredTournamentRulesVersion>
+export type CoreRulesFamily = RulesFamilyHistory<RegisteredCoreRulesVersion>
+export type TournamentRulesFamily = RulesFamilyHistory<RegisteredTournamentRulesVersion>
 
 export type RulesManifest = Readonly<{
 	coreRules: CoreRulesFamily
@@ -190,7 +190,7 @@ function freezeFamily<RegisteredVersion extends { version: string }>(
 	registeredVersions: [RegisteredVersion, ...RegisteredVersion[]],
 	current: string,
 	path: string,
-): RulesDocumentFamily<Readonly<RegisteredVersion>> {
+): RulesFamilyHistory<Readonly<RegisteredVersion>> {
 	const currentVersion = registeredVersions.find(({ version }) => version === current)
 	if (!currentVersion) {
 		fail('CURRENT_NOT_REGISTERED', path, `current version ${JSON.stringify(current)} is not registered`)

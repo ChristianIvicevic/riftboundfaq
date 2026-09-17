@@ -1,5 +1,5 @@
 import { createFromSource } from 'fumadocs-core/search/server'
-import { getPagePublication } from '@/lib/content/page-publication'
+import { getPagePublishingDetails } from '@/lib/content/page-publishing-details'
 import { source } from '@/lib/content/source'
 
 function isSearchSourceKey(property: PropertyKey): property is keyof typeof source {
@@ -16,7 +16,7 @@ const searchSource = new Proxy(source, {
 	get(target, prop) {
 		if (prop === 'getPages') {
 			return (language?: string) =>
-				target.getPages(language).filter((page) => getPagePublication(page).isIndexable)
+				target.getPages(language).filter((page) => getPagePublishingDetails(page).isIndexable)
 		}
 		if (!isSearchSourceKey(prop)) return
 		return target[prop]

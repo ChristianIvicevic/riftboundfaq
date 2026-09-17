@@ -5,7 +5,7 @@ import type {
 	TournamentRulesSection,
 	TournamentRulesSectionBlock,
 } from '@/lib/rules/tournament-rules-document'
-import type { TournamentRulesSourceRow } from './source-rows'
+import type { TournamentRulesSourceEntry } from './source-rows'
 
 export type TournamentStructureDiagnostic =
 	| {
@@ -30,14 +30,14 @@ type TournamentRulesStructure = {
 	diagnostics: TournamentStructureDiagnostic[]
 }
 
-type SourceSection = { heading: TournamentRulesHeading; rows: TournamentRulesSourceRow[] }
+type SourceSection = { heading: TournamentRulesHeading; entries: TournamentRulesSourceEntry[] }
 type PendingSubsection = {
 	kind: 'subsection'
 	heading: TournamentRulesHeading
-	rows: TournamentRulesSourceRow[]
+	entries: TournamentRulesSourceEntry[]
 }
 type PendingRules = { kind: 'rules'; rules: TournamentRuleNode[] }
-type PreservedRow = {
+type PreservedEntry = {
 	sequence: number
 	id: string | null
 	text: string
@@ -45,62 +45,67 @@ type PreservedRow = {
 	blockId?: string | null
 }
 
-function rowId(row: TournamentRulesSourceRow): string | null {
-	return row.label?.id ?? null
+function entryId(entry: TournamentRulesSourceEntry): string | null {
+	return entry.label?.id ?? null
 }
 
-function heading(row: TournamentRulesSourceRow): TournamentRulesHeading {
-	return { sequence: row.sequence, id: row.label!.id!, text: row.text }
+function heading(entry: TournamentRulesSourceEntry): TournamentRulesHeading {
+	return { sequence: entry.sequence, id: entry.label!.id!, text: entry.text }
 }
 
-function content(row: TournamentRulesSourceRow): TournamentRuleContent[] {
-	if (row.text.startsWith('Example:')) return [{ kind: 'example', text: row.text }]
-	if (row.text.startsWith('See ')) return [{ kind: 'reference', text: row.text }]
-	return [{ kind: 'paragraph', text: row.text }]
+function content(entry: TournamentRulesSourceEntry): TournamentRuleContent[] {
+	if (entry.text.startsWith('Example:')) return [{ kind: 'example', text: entry.text }]
+	if (entry.text.startsWith('See ')) return [{ kind: 'reference', text: entry.text }]
+	return [{ kind: 'paragraph', text: entry.text }]
 }
 
-function ruleNode(row: TournamentRulesSourceRow): TournamentRuleNode {
+function ruleNode(entry: TournamentRulesSourceEntry): TournamentRuleNode {
 	return {
-		sequence: row.sequence,
-		id: rowId(row),
-		label: row.label?.text ?? null,
-		content: content(row),
+		sequence: entry.sequence,
+		id: entryId(entry),
+		label: entry.label?.text ?? null,
+		content: content(entry),
 		children: [],
 	}
 }
 
-function collectRuleRows(
+function collectRuleEntries(
 	rules: TournamentRuleNode[],
-	rows: PreservedRow[],
+	entries: PreservedEntry[],
 	parentRuleId: string | null = null,
 	blockId: string | null = null,
 ): void {
 	for (const rule of rules) {
-		rows.push({
+		entries.push({
 			sequence: rule.sequence,
 			id: rule.id,
 			text: rule.content.map(({ text }) => text).join('\n'),
 			parentId: parentRuleId,
 			blockId,
 		})
-		collectRuleRows(rule.children, rows, rule.id, blockId)
+		collectRuleEntries(rule.children, entries, rule.id, blockId)
 	}
 }
 
-function assertRowsPreserved(
-	sourceRows: readonly TournamentRulesSourceRow[],
+function assertEntriesPreserved(
+	sourceEntries: readonly TournamentRulesSourceEntry[],
 	sections: TournamentRulesSection[],
 ): void {
-	const expected = sourceRows
+	const expected = sourceEntries
 		.filter(({ activity }) => activity.status === 'active')
-		.map((row) => ({ sequence: row.sequence, id: rowId(row), text: row.text }))
-	const actual: PreservedRow[] = []
+		.map((entry) => ({ sequence: entry.sequence, id: entryId(entry), text: entry.text }))
+	const actual: PreservedEntry[] = []
 
 	for (const section of sections) {
 		actual.push(section.heading)
 		for (const block of section.blocks) {
 			if (block.kind === 'subsection') actual.push(block.heading)
-			collectRuleRows(block.rules, actual, null, block.kind === 'subsection' ? block.heading.id : 'section')
+			collectRuleEntries(
+				block.rules,
+				actual,
+				null,
+				block.kind === 'subsection' ? block.heading.id : 'section',
+			)
 		}
 	}
 
@@ -118,12 +123,12 @@ function assertRowsPreserved(
 					actualIndex === -1
 						? 'is missing'
 						: `moved to position ${actualIndex + 1} in ${actual[actualIndex].blockId ?? 'a heading'} under ${actual[actualIndex].parentId ?? 'no parent'}`
-				const actualDescription = structured ? `found row ${structured.sequence}` : 'reached the end'
+				const actualDescription = structured ? `found entry ${structured.sequence}` : 'reached the end'
 				throw new Error(
-					`structuring did not preserve active row ${source.sequence}: ${sourceStatus}; ${actualDescription}`,
+					`structuring did not preserve active entry ${source.sequence}: ${sourceStatus}; ${actualDescription}`,
 				)
 			}
-			throw new Error(`structuring duplicated active row ${structured.sequence}`)
+			throw new Error(`structuring duplicated active entry ${structured.sequence}`)
 		}
 	}
 }
@@ -149,7 +154,7 @@ function nearestExistingParent(
 }
 
 function ruleTree(
-	rows: readonly TournamentRulesSourceRow[],
+	entries: readonly TournamentRulesSourceEntry[],
 	diagnostics: TournamentStructureDiagnostic[],
 	headingId: string,
 ): TournamentRuleNode[] {
@@ -157,8 +162,8 @@ function ruleTree(
 	const nodesById = new Map<string, TournamentRuleNode>()
 	let previousNumberedId: string | null = null
 
-	for (const row of rows) {
-		const node = ruleNode(row)
+	for (const entry of entries) {
+		const node = ruleNode(entry)
 		if (!node.id) {
 			const inferredParentId = parentId(previousNumberedId)
 			const inferredParent = inferredParentId ? nodesById.get(inferredParentId) : null
@@ -200,7 +205,7 @@ function finalizeSection(
 ): TournamentRulesSection {
 	const blocks: (PendingRules | PendingSubsection)[] = []
 	let currentSubsection: PendingSubsection | null = null
-	let sectionRules: TournamentRulesSourceRow[] = []
+	let sectionRules: TournamentRulesSourceEntry[] = []
 	let previousNumberedId: string | null = null
 	const flushSectionRules = () => {
 		if (sectionRules.length === 0) return
@@ -208,24 +213,24 @@ function finalizeSection(
 		sectionRules = []
 	}
 
-	for (const row of section.rows) {
-		if (row.kind === 'secondary-heading') {
+	for (const entry of section.entries) {
+		if (entry.kind === 'secondary-heading') {
 			flushSectionRules()
-			currentSubsection = { kind: 'subsection', heading: heading(row), rows: [] }
+			currentSubsection = { kind: 'subsection', heading: heading(entry), entries: [] }
 			blocks.push(currentSubsection)
-			previousNumberedId = rowId(row)
+			previousNumberedId = entryId(entry)
 			continue
 		}
 
 		const subsectionId = currentSubsection?.heading.id
-		const id = rowId(row)
+		const id = entryId(entry)
 		const belongsToSubsection = subsectionId
 			? id?.startsWith(`${subsectionId}.`) || (!id && previousNumberedId?.startsWith(`${subsectionId}.`))
 			: false
-		if (belongsToSubsection && currentSubsection) currentSubsection.rows.push(row)
+		if (belongsToSubsection && currentSubsection) currentSubsection.entries.push(entry)
 		else {
 			currentSubsection = null
-			sectionRules.push(row)
+			sectionRules.push(entry)
 		}
 		if (id) previousNumberedId = id
 	}
@@ -239,39 +244,41 @@ function finalizeSection(
 				: {
 						kind: block.kind,
 						heading: block.heading,
-						rules: ruleTree(block.rows, diagnostics, block.heading.id),
+						rules: ruleTree(block.entries, diagnostics, block.heading.id),
 					},
 		),
 	}
 }
 
-export function structureTournamentRows(rows: readonly TournamentRulesSourceRow[]): TournamentRulesStructure {
+export function structureTournamentRulesEntries(
+	entries: readonly TournamentRulesSourceEntry[],
+): TournamentRulesStructure {
 	const sections: TournamentRulesSection[] = []
 	const diagnostics: TournamentStructureDiagnostic[] = []
 	let currentSection: SourceSection | null = null
 
-	for (const row of rows.filter(({ activity }) => activity.status === 'active')) {
-		if (row.kind === 'primary-heading') {
+	for (const entry of entries.filter(({ activity }) => activity.status === 'active')) {
+		if (entry.kind === 'primary-heading') {
 			if (currentSection) sections.push(finalizeSection(currentSection, diagnostics))
-			currentSection = { heading: heading(row), rows: [] }
+			currentSection = { heading: heading(entry), entries: [] }
 			continue
 		}
 
 		if (!currentSection) {
 			diagnostics.push({
 				code:
-					row.kind === 'secondary-heading'
+					entry.kind === 'secondary-heading'
 						? 'secondary-before-primary-heading'
 						: 'rule-before-primary-heading',
-				sequence: row.sequence,
-				id: rowId(row),
+				sequence: entry.sequence,
+				id: entryId(entry),
 			})
 			continue
 		}
-		currentSection.rows.push(row)
+		currentSection.entries.push(entry)
 	}
 
 	if (currentSection) sections.push(finalizeSection(currentSection, diagnostics))
-	assertRowsPreserved(rows, sections)
+	assertEntriesPreserved(entries, sections)
 	return { sections, diagnostics }
 }

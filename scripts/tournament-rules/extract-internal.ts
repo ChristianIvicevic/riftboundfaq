@@ -9,7 +9,7 @@ import {
 	type TournamentRulesFamilyAdapter,
 } from '../rules-document-family'
 import type { TournamentRulesSource } from './inspect'
-import { structureTournamentRows, type TournamentStructureDiagnostic } from './structure'
+import { structureTournamentRulesEntries, type TournamentStructureDiagnostic } from './structure'
 const TITLE = 'Riftbound Tournament Rules'
 
 export type TournamentRulesExtractionDependencies = Readonly<{
@@ -28,15 +28,15 @@ function validateSource(source: TournamentRulesSource, version: string): string 
 		)
 	}
 	if (source.title !== TITLE) throw new Error(`${source.file}: unexpected document title ${source.title}`)
-	if (source.rows.length === 0) throw new Error(`${source.file}: no table rows found`)
-	if (source.rows.some(({ kind, label }) => kind !== 'rule' && !label?.id)) {
+	if (source.entries.length === 0) throw new Error(`${source.file}: no Tournament Rules source entries found`)
+	if (source.entries.some(({ kind, label }) => kind !== 'rule' && !label?.id)) {
 		throw new Error(`${source.file}: heading without an ID`)
 	}
 
-	for (const row of source.rows) {
-		if (row.activity.status === 'removed' && row.activity.removalEvidence.coverage === 'partial') {
+	for (const entry of source.entries) {
+		if (entry.activity.status === 'removed' && entry.activity.removalEvidence.coverage === 'partial') {
 			throw new Error(
-				`${source.file}: partial strikeout on page ${row.sourcePages.start} requires manual review`,
+				`${source.file}: partial strikeout on page ${entry.sourcePages.start} requires manual review`,
 			)
 		}
 	}
@@ -66,8 +66,8 @@ function structureWarning(
 
 function serializeTranscript(source: TournamentRulesSource): string {
 	const lines = [source.title, `Last Updated: ${source.lastUpdated}`]
-	for (const row of source.rows.filter(({ activity }) => activity.status === 'active')) {
-		lines.push(`${row.label?.text ?? ''}${row.text ? ` ${row.text}` : ''}`.trim())
+	for (const entry of source.entries.filter(({ activity }) => activity.status === 'active')) {
+		lines.push(`${entry.label?.text ?? ''}${entry.text ? ` ${entry.text}` : ''}`.trim())
 	}
 	return `${lines.join('\n')}\n`
 }
@@ -84,9 +84,9 @@ export function createTournamentRulesFamilyAdapter({
 				const sourcePath = join(sourcesDirectory, conventions.source.pdfFilename)
 				const source = await readSource(sourcePath)
 				const lastUpdated = validateSource(source, registeredVersion.version)
-				let structured: ReturnType<typeof structureTournamentRows>
+				let structured: ReturnType<typeof structureTournamentRulesEntries>
 				try {
-					structured = structureTournamentRows(source.rows)
+					structured = structureTournamentRulesEntries(source.entries)
 				} catch (cause) {
 					throw new Error(`${source.file}: Tournament Rules structuring failed`, { cause })
 				}

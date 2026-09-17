@@ -8,10 +8,10 @@ import { MDX_TERMS } from '@/components/game-terms'
 import { Energy, RUNES, Universal } from '@/components/resources'
 import { CoreRulesDiff, TournamentRulesDiff } from '@/components/rules/change-view'
 import { Term } from '@/components/term'
-import type { TraversedRulesDocument } from '@/features/rules-documents/registry'
+import type { CompiledRulesDocument } from '@/features/rules-documents/registry'
 import {
 	renderVersionedRulesDocument,
-	type VersionedRulesRoute,
+	type ResolvedRulesDocumentPage,
 } from '@/features/rules-documents/versioned-route'
 
 const wikiMdxComponents = {
@@ -33,13 +33,13 @@ const wikiMdxComponents = {
 
 export function getMDXComponents(
 	relativeLink: NonNullable<MDXComponents['a']>,
-	reviewedCoreRulesDocument?: TraversedRulesDocument,
-	versionedRulesRoute?: VersionedRulesRoute,
+	reviewedCoreRulesDocument?: CompiledRulesDocument,
+	resolvedRulesDocumentPage?: ResolvedRulesDocumentPage,
 ): MDXComponents {
 	return {
 		...wikiMdxComponents,
 		a: relativeLink,
-		RulesDocument: () => renderVersionedRulesDocument(versionedRulesRoute),
+		RulesDocument: () => renderVersionedRulesDocument(resolvedRulesDocumentPage),
 		Rule: (props: Omit<ComponentProps<typeof Rule>, 'document'>) => (
 			<Rule {...props} document={reviewedCoreRulesDocument} />
 		),

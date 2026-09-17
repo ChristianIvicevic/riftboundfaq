@@ -26,12 +26,12 @@ function sourcePage(items: PdfTextItem[], page = 1): TournamentRulesSourcePage {
 }
 
 describe('reconstructTournamentRulesSourceRows', () => {
-	test('interprets a labeled table row for source and forensic callers', async () => {
+	test('reconstructs a labeled table row for source-entry and forensic callers', async () => {
 		const result = await reconstructTournamentRulesSourceRows(
 			pages(sourcePage([textItem('100.1.', 40, 150), textItem('A tournament rule.', 130, 150)])),
 		)
 
-		expect(result.sourceRows).toStrictEqual([
+		expect(result.sourceEntries).toStrictEqual([
 			{
 				sequence: 1,
 				label: { sourceText: '100.1.', id: '100.1', text: '100.1.', normalization: 'unchanged' },
@@ -70,7 +70,7 @@ describe('reconstructTournamentRulesSourceRows', () => {
 			pages(sourcePage([textItem(sourceText, 40, 150), textItem('Rule text.', 130, 150)])),
 		)
 
-		expect(result.sourceRows[0].label).toStrictEqual(expected)
+		expect(result.sourceEntries[0].label).toStrictEqual(expected)
 	})
 
 	test('splits multiple labels in one table interval and classifies their typography', async () => {
@@ -85,7 +85,7 @@ describe('reconstructTournamentRulesSourceRows', () => {
 			),
 		)
 
-		expect(result.sourceRows).toMatchObject([
+		expect(result.sourceEntries).toMatchObject([
 			{ sequence: 1, kind: 'primary-heading', text: 'Tournament Operations' },
 			{ sequence: 2, kind: 'rule', text: 'A tournament rule.' },
 		])
@@ -100,7 +100,7 @@ describe('reconstructTournamentRulesSourceRows', () => {
 
 		const result = await reconstructTournamentRulesSourceRows(pages(page))
 
-		expect(result.sourceRows[0].activity).toStrictEqual({
+		expect(result.sourceEntries[0].activity).toStrictEqual({
 			status: 'removed',
 			removalEvidence: { text, coverage },
 		})
@@ -114,7 +114,7 @@ describe('reconstructTournamentRulesSourceRows', () => {
 			),
 		)
 
-		expect(result.sourceRows).toStrictEqual([
+		expect(result.sourceEntries).toStrictEqual([
 			{
 				sequence: 1,
 				label: { sourceText: '100.1.', id: '100.1', text: '100.1.', normalization: 'unchanged' },
@@ -137,7 +137,10 @@ describe('reconstructTournamentRulesSourceRows', () => {
 
 		const result = await reconstructTournamentRulesSourceRows(pages(page))
 
-		expect(result.sourceRows[0]).toMatchObject({ kind: 'secondary-heading', activity: { status: 'active' } })
+		expect(result.sourceEntries[0]).toMatchObject({
+			kind: 'secondary-heading',
+			activity: { status: 'active' },
+		})
 		expect(result.forensicRows[0].highlighted).toBe(true)
 	})
 
@@ -147,7 +150,7 @@ describe('reconstructTournamentRulesSourceRows', () => {
 
 		const result = await reconstructTournamentRulesSourceRows(pages(page))
 
-		expect(result).toStrictEqual({ sourceRows: [], forensicRows: [] })
+		expect(result).toStrictEqual({ sourceEntries: [], forensicRows: [] })
 	})
 
 	test.each([

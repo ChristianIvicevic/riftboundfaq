@@ -10,7 +10,7 @@ import { submitBlockFeedback, submitPageFeedback } from '@/features/feedback/act
 import { Feedback, FeedbackText } from '@/features/feedback/feedback'
 import { resolveCoreRulesReview } from '@/features/rules-documents/core-rules-review'
 import { resolveVersionedRulesRoute } from '@/features/rules-documents/versioned-route'
-import { getPagePublication } from '@/lib/content/page-publication'
+import { getPagePublishingDetails } from '@/lib/content/page-publishing-details'
 import { getPageImage, PAGE_IMAGE_SIZE, source } from '@/lib/content/source'
 import { SITE_NAME, SITE_URL, X_HANDLE } from '@/lib/site'
 import { getMDXComponents } from '@/mdx-components'
@@ -22,17 +22,17 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 
 	const MDX = page.data.body
 	const authors = page.data.authors ?? []
-	const publication = getPagePublication(page)
+	const publishingDetails = getPagePublishingDetails(page)
 	const coreRulesReview = resolveCoreRulesReview({
 		url: page.url,
 		reviewedVersion: page.data.reviewedCoreRulesVersion,
 	})
 	const cardName = page.url.startsWith('/cards/') ? page.data.title : undefined
-	const versionedRulesRoute = resolveVersionedRulesRoute({
+	const resolvedRulesDocumentPage = resolveVersionedRulesRoute({
 		url: page.url,
 		rulesDocument: page.data.rulesDocument,
 	})
-	const toc = versionedRulesRoute ? [...versionedRulesRoute.toc] : page.data.toc
+	const toc = resolvedRulesDocumentPage ? [...resolvedRulesDocumentPage.toc] : page.data.toc
 	const structuredData =
 		page.url === '/'
 			? {
@@ -40,15 +40,15 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 					'@type': 'WebSite',
 					name: SITE_NAME,
 					url: SITE_URL.toString(),
-					description: publication.description,
+					description: publishingDetails.description,
 					inLanguage: 'en',
 				}
-			: publication.isEditorial
+			: publishingDetails.isEditorial
 				? {
 						'@context': 'https://schema.org',
 						'@type': 'Article',
 						headline: page.data.title,
-						description: publication.description,
+						description: publishingDetails.description,
 						url: new URL(page.url, SITE_URL).toString(),
 						mainEntityOfPage: new URL(page.url, SITE_URL).toString(),
 						image: new URL(getPageImage(page).url, SITE_URL).toString(),
@@ -77,13 +77,13 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 				/>
 			)}
 			<DocsTitle>{page.data.title}</DocsTitle>
-			<DocsDescription className="mb-0">{publication.description}</DocsDescription>
+			<DocsDescription className="mb-0">{publishingDetails.description}</DocsDescription>
 			<PageActions cardName={cardName} />
 			{coreRulesReview && (
 				<CoreRulesReviewCallout
 					currentVersion={coreRulesReview.currentVersion}
 					reviewedVersion={coreRulesReview.reviewedVersion}
-					status={coreRulesReview.status}
+					reviewStatus={coreRulesReview.reviewStatus}
 				/>
 			)}
 			<FeedbackText onSendAction={submitBlockFeedback}>
@@ -92,13 +92,13 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 						components={getMDXComponents(
 							createRelativeLink(source, page),
 							coreRulesReview?.document,
-							versionedRulesRoute,
+							resolvedRulesDocumentPage,
 						)}
 					/>
 				</CopyableDocsBody>
 			</FeedbackText>
 			<Feedback onSendAction={submitPageFeedback} />
-			{publication.isSourceAttributionEligible && (
+			{publishingDetails.isSourceAttributionEligible && (
 				<PageAttribution authors={authors} lastModified={page.data.lastModified} />
 			)}
 		</DocsPage>
@@ -114,7 +114,7 @@ export async function generateMetadata(props: PageProps<'/[[...slug]]'>): Promis
 	const page = source.getPage(params.slug)
 	if (!page) notFound()
 
-	const publication = getPagePublication(page)
+	const publishingDetails = getPagePublishingDetails(page)
 	resolveCoreRulesReview({ url: page.url, reviewedVersion: page.data.reviewedCoreRulesVersion })
 	const url = new URL(page.url, SITE_URL).toString()
 	const image = getPageImage(page).url
@@ -127,17 +127,19 @@ export async function generateMetadata(props: PageProps<'/[[...slug]]'>): Promis
 			...PAGE_IMAGE_SIZE,
 			type: 'image/png',
 			alt:
-				page.url === '/' ? publication.metadataTitle : `${SITE_NAME} social preview for ${page.data.title}`,
+				page.url === '/'
+					? publishingDetails.metadataTitle
+					: `${SITE_NAME} social preview for ${page.data.title}`,
 		},
 	}
 
 	return {
-		title: page.url === '/' ? { absolute: publication.metadataTitle } : publication.metadataTitle,
-		description: publication.description,
-		authors: publication.isEditorial ? authors : undefined,
-		robots: publication.isIndexable ? undefined : { index: false, follow: true },
+		title: page.url === '/' ? { absolute: publishingDetails.metadataTitle } : publishingDetails.metadataTitle,
+		description: publishingDetails.description,
+		authors: publishingDetails.isEditorial ? authors : undefined,
+		robots: publishingDetails.isIndexable ? undefined : { index: false, follow: true },
 		alternates: { canonical: url },
-		openGraph: publication.isEditorial
+		openGraph: publishingDetails.isEditorial
 			? {
 					type: 'article',
 					...openGraphBase,
@@ -151,7 +153,7 @@ export async function generateMetadata(props: PageProps<'/[[...slug]]'>): Promis
 		twitter: {
 			card: 'summary_large_image',
 			site: X_HANDLE,
-			creator: publication.isEditorial ? X_HANDLE : undefined,
+			creator: publishingDetails.isEditorial ? X_HANDLE : undefined,
 		},
 	}
 }

@@ -202,7 +202,7 @@ describe('prepareReferencePublication', () => {
 		)
 	})
 
-	test('rejects a Versioned rules route artifact without its document marker', async () => {
+	test('rejects a version-specific rules page artifact without its document marker', async () => {
 		const { projectDirectory } = await createReferenceWorkspace()
 		await writeFile(
 			join(projectDirectory, 'templates', 'reference', 'core-rules-current.mdx'),
@@ -218,7 +218,7 @@ describe('prepareReferencePublication', () => {
 		).rejects.toMatchObject({ stage: 'artifacts' })
 	})
 
-	test('rejects a Versioned rules route artifact with a second identity', async () => {
+	test('rejects a version-specific rules page artifact with a second identity', async () => {
 		const { projectDirectory } = await createReferenceWorkspace()
 		await writeFile(
 			join(projectDirectory, 'templates', 'reference', 'core-rules-current.mdx'),
@@ -234,7 +234,7 @@ describe('prepareReferencePublication', () => {
 		).rejects.toMatchObject({ stage: 'artifacts' })
 	})
 
-	test('rejects an inline second identity in a Versioned rules route artifact', async () => {
+	test('rejects an inline second identity in a version-specific rules page artifact', async () => {
 		const { projectDirectory } = await createReferenceWorkspace()
 		await writeFile(
 			join(projectDirectory, 'templates', 'reference', 'core-rules-current.mdx'),
@@ -275,7 +275,7 @@ describe('prepareReferencePublication', () => {
 			problem: 'legacy family marker',
 			suffix: '<RulesDocument />\n<CoreRulesDocument />',
 		},
-	])('rejects a Versioned rules route artifact with a $problem', async ({ suffix }) => {
+	])('rejects a version-specific rules page artifact with a $problem', async ({ suffix }) => {
 		const { projectDirectory } = await createReferenceWorkspace()
 		await writeFile(
 			join(projectDirectory, 'templates', 'reference', 'core-rules-current.mdx'),

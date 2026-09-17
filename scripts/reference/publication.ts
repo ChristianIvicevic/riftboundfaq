@@ -38,10 +38,10 @@ type PlannedReferenceArtifactBase = Readonly<{
 	values: Readonly<Record<string, string>>
 }>
 type PlannedReferenceArtifact =
-	| (PlannedReferenceArtifactBase & Readonly<{ kind: 'change-page' }>)
+	| (PlannedReferenceArtifactBase & Readonly<{ kind: 'rules-changes-page' }>)
 	| (PlannedReferenceArtifactBase &
 			Readonly<{
-				kind: 'versioned-rules-route'
+				kind: 'version-specific-rules-page'
 				identity: RulesDocumentReference
 				status: 'current' | 'archived'
 			}>)
@@ -224,7 +224,7 @@ function planCoreRulesReference(
 		changeNavigationPages: changes.toReversed().map(({ to }) => to),
 		artifacts: [
 			{
-				kind: 'versioned-rules-route',
+				kind: 'version-specific-rules-page',
 				path: currentConventions.reference.currentDocumentPath,
 				template: 'core-rules-current.mdx',
 				identity: { type: 'core-rules', version: currentVersion },
@@ -237,7 +237,7 @@ function planCoreRulesReference(
 			...archivedVersions.map((version): PlannedReferenceArtifact => {
 				const name = metadata[version].name
 				return {
-					kind: 'versioned-rules-route',
+					kind: 'version-specific-rules-page',
 					path: coreRulesConventions.version(version).reference.archivedDocumentPath,
 					template: 'core-rules-archive.mdx',
 					identity: { type: 'core-rules', version },
@@ -245,14 +245,14 @@ function planCoreRulesReference(
 					values: {
 						CREATED_AT: dates.get(version)!,
 						CURRENT_VERSION_ROUTE: currentConventions.reference.documentRoute,
-						DESCRIPTION: `Archived snapshot of the Riftbound Core Rules Document as of version ${coreVersionLabel(version, name)}.`,
+						DESCRIPTION: `Archived version of the Riftbound Core Rules Document: ${coreVersionLabel(version, name)}.`,
 						SIDEBAR_TITLE: coreSidebarTitle(version, name),
 						TITLE: coreTitle(version, name),
 					},
 				}
 			}),
 			...changes.map(({ from, to }): PlannedReferenceArtifact => ({
-				kind: 'change-page',
+				kind: 'rules-changes-page',
 				path: coreRulesConventions.version(to).reference.changePath,
 				template: 'core-rules-change.mdx',
 				values: {
@@ -301,7 +301,7 @@ function planTournamentRulesReference(
 		changeNavigationPages: changes.toReversed().map(({ to }) => to),
 		artifacts: [
 			{
-				kind: 'versioned-rules-route',
+				kind: 'version-specific-rules-page',
 				path: currentConventions.reference.currentDocumentPath,
 				template: 'tournament-rules-current.mdx',
 				identity: { type: 'tournament-rules', version: currentVersion },
@@ -312,7 +312,7 @@ function planTournamentRulesReference(
 				},
 			},
 			...archivedVersions.map((version): PlannedReferenceArtifact => ({
-				kind: 'versioned-rules-route',
+				kind: 'version-specific-rules-page',
 				path: tournamentRulesConventions.version(version).reference.archivedDocumentPath,
 				template: 'tournament-rules-archive.mdx',
 				identity: { type: 'tournament-rules', version },
@@ -320,13 +320,13 @@ function planTournamentRulesReference(
 				values: {
 					CREATED_AT: dates.get(version)!,
 					CURRENT_VERSION_ROUTE: currentConventions.reference.documentRoute,
-					DESCRIPTION: `Archived snapshot of the Riftbound Tournament Rules last updated ${formatDate(version)}.`,
+					DESCRIPTION: `Archived version of the Riftbound Tournament Rules last updated ${formatDate(version)}.`,
 					SIDEBAR_TITLE: `${formatMonthYear(version)} Tournament Rules`,
 					TITLE: `Tournament Rules (${formatDate(version)})`,
 				},
 			})),
 			...changes.map(({ from, to }): PlannedReferenceArtifact => ({
-				kind: 'change-page',
+				kind: 'rules-changes-page',
 				path: tournamentRulesConventions.version(to).reference.changePath,
 				template: 'tournament-rules-change.mdx',
 				values: {
@@ -466,7 +466,7 @@ function renderReferencePublication(
 
 	for (const artifact of [...coreRules.artifacts, ...tournamentRules.artifacts]) {
 		const values =
-			artifact.kind === 'versioned-rules-route'
+			artifact.kind === 'version-specific-rules-page'
 				? {
 						...artifact.values,
 						RULES_DOCUMENT_FRONTMATTER: renderRulesDocumentFrontmatter(artifact.identity),
@@ -504,9 +504,9 @@ function validateArtifacts(
 	tournamentRules: ReferenceFamilyPlan,
 ) {
 	for (const artifact of [...coreRules.artifacts, ...tournamentRules.artifacts]) {
-		if (artifact.kind !== 'versioned-rules-route') continue
+		if (artifact.kind !== 'version-specific-rules-page') continue
 		const source = prepared.artifacts.get(artifact.path)
-		if (!source) throw new Error(`Missing Versioned rules route artifact ${artifact.path}`)
+		if (!source) throw new Error(`Missing version-specific rules page artifact ${artifact.path}`)
 		const conventions =
 			artifact.identity.type === 'core-rules'
 				? coreRulesConventions.version(artifact.identity.version)
@@ -516,7 +516,7 @@ function validateArtifacts(
 				? conventions.reference.currentDocumentPath
 				: conventions.reference.archivedDocumentPath
 		if (artifact.path !== expectedPath) {
-			throw new Error(`Versioned rules route artifact ${artifact.path} does not match ${expectedPath}`)
+			throw new Error(`Version-specific rules page artifact ${artifact.path} does not match ${expectedPath}`)
 		}
 		const frontmatter = renderRulesDocumentFrontmatter(artifact.identity)
 		const frontmatterEnd = source.startsWith('---\n') ? source.indexOf('\n---', 4) : -1
@@ -527,14 +527,18 @@ function validateArtifacts(
 			sourceFrontmatter.split(frontmatter).length !== 2
 		) {
 			throw new Error(
-				`Versioned rules route artifact ${artifact.path} must contain its canonical identity once`,
+				`Version-specific rules page artifact ${artifact.path} must contain its canonical identity once`,
 			)
 		}
 		if (source.split('<RulesDocument />').length !== 2) {
-			throw new Error(`Versioned rules route artifact ${artifact.path} must contain one <RulesDocument />`)
+			throw new Error(
+				`Version-specific rules page artifact ${artifact.path} must contain one <RulesDocument />`,
+			)
 		}
 		if (source.includes('<CoreRulesDocument') || source.includes('<TournamentRulesDocument')) {
-			throw new Error(`Versioned rules route artifact ${artifact.path} contains a legacy document marker`)
+			throw new Error(
+				`Version-specific rules page artifact ${artifact.path} contains a legacy document marker`,
+			)
 		}
 	}
 

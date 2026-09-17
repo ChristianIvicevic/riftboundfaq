@@ -1,8 +1,8 @@
 import { RulePreviewLink } from '@/components/core-rules/rule-preview-link'
-import type { TraversedRulesDocument } from '@/features/rules-documents/registry'
+import type { CompiledRulesDocument } from '@/features/rules-documents/registry'
 import { coreRulesLinks } from '@/lib/rules/links'
 
-export function Rule({ number, document }: { number: string; document?: TraversedRulesDocument }) {
+export function Rule({ number, document }: { number: string; document?: CompiledRulesDocument }) {
 	if (!document) {
 		return <sup className="text-nowrap text-fd-muted-foreground">[{number}]</sup>
 	}

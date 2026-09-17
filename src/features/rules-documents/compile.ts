@@ -1,14 +1,14 @@
 import type {
 	RegisteredRulesVersionSummary,
 	RulesDiffRecord,
-	RulesDocumentFamily,
 	RulesReferenceTarget,
 	TraversedRule,
 	TraversedRulesBlock,
-	TraversedRulesDocument,
+	CompiledRulesDocument,
 	TraversedRulesHeading,
 	TraversedRulesSection,
 } from '@/features/rules-documents/family-catalog'
+import type { RulesDocumentFamilyId } from '@/lib/rules/document-family-conventions'
 import type { RulesDocumentContent } from '@/lib/rules/document-types'
 
 export type SourceRulesHeading = {
@@ -44,14 +44,14 @@ export type SourceRulesDocument = {
 
 export class RulesDocumentInvariantError extends Error {
 	constructor(
-		readonly family: RulesDocumentFamily,
+		readonly family: RulesDocumentFamilyId,
 		readonly version: string,
 		readonly sequence: number | undefined,
 		invariant: string,
 		options?: ErrorOptions,
 	) {
 		super(
-			`${family === 'core-rules' ? 'Core Rules' : 'Tournament Rules'} ${version}${sequence === undefined ? '' : ` source row ${sequence}`}: ${invariant}`,
+			`${family === 'core-rules' ? 'Core Rules' : 'Tournament Rules'} ${version}${sequence === undefined ? '' : ` source entry ${sequence}`}: ${invariant}`,
 			options,
 		)
 	}
@@ -65,7 +65,7 @@ export function compileRulesDocument({
 	identity: RegisteredRulesVersionSummary
 	source: SourceRulesDocument
 	diffId: (id: string | null, occurrence: number) => string
-}): TraversedRulesDocument {
+}): CompiledRulesDocument {
 	if (source.version !== identity.version) {
 		throw new RulesDocumentInvariantError(
 			identity.type,

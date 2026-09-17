@@ -1,7 +1,6 @@
 import { adaptCoreRulesDocument, coreRulesDiffId } from '@/features/rules-documents/core-rules-adapter'
 import {
 	createRulesDocumentFamilyCatalog,
-	type RulesDocumentFamily,
 	type RulesDocumentReference,
 } from '@/features/rules-documents/family-catalog'
 import { prepareRulesChange } from '@/features/rules-documents/rules-change'
@@ -18,21 +17,21 @@ import {
 	CURRENT_PDF_TOURNAMENT_RULES_VERSION,
 	PDF_TOURNAMENT_RULES_DOCUMENTS,
 } from '@/generated/tournament-rules'
+import type { RulesDocumentFamilyId } from '@/lib/rules/document-family-conventions'
 
 export {
 	RulesDocumentInvariantError,
 	UnknownRulesVersionError,
 } from '@/features/rules-documents/family-catalog'
 export type {
-	CurrentRuleChangeStatus,
+	CompiledRulesDocument,
 	RegisteredRulesVersionSummary,
+	RuleChangeMarker,
 	RulesDiffRecord,
-	RulesDocumentFamily,
 	RulesDocumentReference,
 	RulesReferenceTarget,
 	TraversedRule,
 	TraversedRulesBlock,
-	TraversedRulesDocument,
 	TraversedRulesHeading,
 	TraversedRulesSection,
 } from '@/features/rules-documents/family-catalog'
@@ -56,7 +55,7 @@ const families = {
 }
 
 export const rulesDocuments = {
-	change({ type, from, to }: { type: RulesDocumentFamily; from: string; to: string }) {
+	change({ type, from, to }: { type: RulesDocumentFamilyId; from: string; to: string }) {
 		return prepareRulesChange(families[type], { from, to })
 	},
 	get(reference: RulesDocumentReference) {
@@ -65,7 +64,7 @@ export const rulesDocuments = {
 	find(reference: RulesDocumentReference) {
 		return families[reference.type].find(reference.version)
 	},
-	family(type: RulesDocumentFamily) {
+	family(type: RulesDocumentFamilyId) {
 		return families[type]
 	},
 }

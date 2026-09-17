@@ -41,13 +41,13 @@ export const GLOSSARY = {
 	},
 } as const satisfies Record<string, GlossaryEntry>
 
-export type GlossaryItem = keyof typeof GLOSSARY
+export type GlossaryKey = keyof typeof GLOSSARY
 
-function isGlossaryItem(item: string): item is GlossaryItem {
-	return Object.hasOwn(GLOSSARY, item)
+function isGlossaryKey(key: string): key is GlossaryKey {
+	return Object.hasOwn(GLOSSARY, key)
 }
 
-export function getGlossaryEntry(item: string): GlossaryEntry {
-	if (!isGlossaryItem(item)) throw new Error(`Unknown Glossary item "${item}"`)
-	return GLOSSARY[item]
+export function getGlossaryEntry(key: string): GlossaryEntry {
+	if (!isGlossaryKey(key)) throw new Error(`Unknown game glossary key "${key}"`)
+	return GLOSSARY[key]
 }

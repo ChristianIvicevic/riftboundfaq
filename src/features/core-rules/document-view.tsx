@@ -4,9 +4,9 @@ import {
 	RulesDocumentSubsectionHeading,
 } from '@/components/rules/document'
 import { findCoreRuleReferences } from '@/features/core-rules/references'
-import type { TraversedRulesDocument } from '@/features/rules-documents/registry'
+import type { CompiledRulesDocument } from '@/features/rules-documents/registry'
 
-export function CoreRulesDocumentView({ document }: { document: TraversedRulesDocument }) {
+export function CoreRulesDocumentView({ document }: { document: CompiledRulesDocument }) {
 	return (
 		<div className="not-prose mt-8 space-y-14">
 			{document.sections.map((section) => {

@@ -6,7 +6,7 @@ import {
 	VersionedRulesRouteError,
 } from '@/features/rules-documents/versioned-route'
 
-describe('Versioned rules route rendering', () => {
+describe('version-specific rules page rendering', () => {
 	test('renders an archived Core Rules document', async () => {
 		const route = resolveVersionedRulesRoute({
 			url: '/reference/core-rules/1.0',
@@ -19,7 +19,7 @@ describe('Versioned rules route rendering', () => {
 			.toHaveAttribute('id', 'R000')
 	})
 
-	test('renders the Current Tournament Rules through its family adapter', async () => {
+	test('renders the current Tournament Rules through its family adapter', async () => {
 		const route = resolveVersionedRulesRoute({
 			url: '/reference/tournament-rules/2026-07-16',
 			rulesDocument: { type: 'tournament-rules', version: '2026-07-16' },
@@ -31,7 +31,7 @@ describe('Versioned rules route rendering', () => {
 			.toHaveAttribute('id', 'R100')
 	})
 
-	test('rejects rendering without Versioned rules route context', () => {
+	test('rejects rendering without version-specific page context', () => {
 		const route = resolveVersionedRulesRoute({ url: '/cards/alpha-strike' })
 
 		expect(() => renderVersionedRulesDocument(route)).toThrow(

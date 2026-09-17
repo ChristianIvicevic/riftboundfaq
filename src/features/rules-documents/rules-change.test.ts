@@ -83,7 +83,7 @@ function changedRuleIds(
 	)
 }
 
-describe('Change page preparation', () => {
+describe('rules changes page preparation', () => {
 	test('classifies current rule occurrences with the Current transition', () => {
 		const catalog = createCoreRulesCatalog(
 			[
@@ -99,11 +99,11 @@ describe('Change page preparation', () => {
 		const archivedRules = catalog.get('1.0').sections[0].blocks[0].rules
 		const currentRules = catalog.current.sections[0].blocks[0].rules
 
-		expect(archivedRules.map((rule) => rule.changeStatus)).toEqual([undefined, undefined])
-		expect(currentRules.map((rule) => rule.changeStatus)).toEqual(['changed', undefined, 'new'])
+		expect(archivedRules.map((rule) => rule.changeMarker)).toEqual([undefined, undefined])
+		expect(currentRules.map((rule) => rule.changeMarker)).toEqual(['changed', undefined, 'new'])
 	})
 
-	test('does not classify rules when the family has no preceding Registered rules version', () => {
+	test('does not mark rules when the family has no preceding registered rules version', () => {
 		const catalog = createRulesDocumentFamilyCatalog({
 			type: 'core-rules',
 			currentVersion: '1.0',
@@ -134,7 +134,7 @@ describe('Change page preparation', () => {
 			diffId: (id) => id ?? '',
 		})
 
-		expect(catalog.current.sections[0].blocks[0].rules[0].changeStatus).toBeUndefined()
+		expect(catalog.current.sections[0].blocks[0].rules[0].changeMarker).toBeUndefined()
 	})
 
 	test('classifies the exact unlabeled Tournament Rules occurrence', () => {
@@ -180,7 +180,7 @@ describe('Change page preparation', () => {
 		})
 		const rules = catalog.current.sections[0].blocks[0].rules
 
-		expect(rules.map((rule) => [rule.anchor, rule.changeStatus])).toEqual([
+		expect(rules.map((rule) => [rule.anchor, rule.changeMarker])).toEqual([
 			['U2', undefined],
 			['U3', 'changed'],
 		])
@@ -240,8 +240,8 @@ describe('Change page preparation', () => {
 		const [parent] = catalog.current.sections[0].blocks[0].rules
 
 		expect(catalog.difference('1.0', '1.1')).toBe(comparison)
-		expect(parent.changeStatus).toBeUndefined()
-		expect(parent.children.map((rule) => [rule.anchor, rule.changeStatus])).toEqual([
+		expect(parent.changeMarker).toBeUndefined()
+		expect(parent.children.map((rule) => [rule.anchor, rule.changeMarker])).toEqual([
 			['R100.1.a', undefined],
 			['R100.1.a-2', 'changed'],
 		])
@@ -269,7 +269,7 @@ describe('Change page preparation', () => {
 		expect(Object.isFrozen(change.entries[0])).toBe(true)
 	})
 
-	test('preserves durable links for duplicate Core Rules occurrences', () => {
+	test('preserves version-specific links for duplicate Core Rules occurrences', () => {
 		const change = prepareRulesChange(
 			createCoreRulesCatalog(
 				[],
@@ -292,7 +292,7 @@ describe('Change page preparation', () => {
 		{ from: '1.0', to: '1.2', reason: 'non-adjacent' },
 		{ from: '1.1', to: '1.0', reason: 'reversed' },
 		{ from: '1.0', to: '1.0', reason: 'same-version' },
-	] as const)('rejects $reason Change page versions', ({ from, to, reason }) => {
+	] as const)('rejects $reason rules changes page versions', ({ from, to, reason }) => {
 		const catalog = createCatalog('core-rules', ['1.0', '1.1', '1.2'])
 
 		expect(() => prepareRulesChange(catalog, { from, to })).toThrow(
@@ -300,7 +300,7 @@ describe('Change page preparation', () => {
 		)
 	})
 
-	test('applies Tournament Rules labels, durable links, and difference policy', () => {
+	test('applies Tournament Rules labels, version-specific links, and difference policy', () => {
 		const change = prepareRulesChange(createCatalog('tournament-rules', ['2026-03-30', '2026-04-29']), {
 			from: '2026-03-30',
 			to: '2026-04-29',
@@ -448,7 +448,7 @@ describe('Change page preparation', () => {
 		expect(prepareRulesChange(catalog, { from: '1.0', to: '1.1' }).to.label).toBe('Spiritforged')
 	})
 
-	test('permits an adjacent Change page with no visible differences', () => {
+	test('permits an adjacent rules changes page with no visible differences', () => {
 		const change = prepareRulesChange(
 			createCatalog('core-rules', ['1.0', '1.1'], () => 'Same heading'),
 			{

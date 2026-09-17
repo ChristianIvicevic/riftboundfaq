@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'vitest'
 import { getGlossaryEntry, GLOSSARY } from '@/lib/glossary'
 
-describe('Glossary', () => {
-	test('resolves the current Glossary entry for a registered item', () => {
+describe('game glossary', () => {
+	test('resolves the current game glossary entry for a registered key', () => {
 		expect(getGlossaryEntry('finalization')).toEqual({
 			title: 'Finalization',
 			explanation:
@@ -22,7 +22,7 @@ describe('Glossary', () => {
 		])
 	})
 
-	test('rejects an unknown Glossary item', () => {
-		expect(() => getGlossaryEntry('finalisation')).toThrow('Unknown Glossary item "finalisation"')
+	test('rejects an unknown game glossary key', () => {
+		expect(() => getGlossaryEntry('finalisation')).toThrow('Unknown game glossary key "finalisation"')
 	})
 })
