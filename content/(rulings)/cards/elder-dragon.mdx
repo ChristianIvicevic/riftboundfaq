@@ -7,6 +7,27 @@ authors:
   url: "https://x.com/civicevic"
 ---
 
+## How does Elder Dragon affect combat damage assignment? [#combat-damage-assignment]
+
+While you control Elder Dragon on the board, 1 combat damage from your units is lethal to an enemy unit regardless of its might, unless another effect changes how much must be assigned or prevents that damage.
+Elder Dragon changes the lethal-damage value for enemy units with its controller's damage, and the smallest valid amount of damage is 1.<Rule number="142.3.b" /><Rule number="142.4.c" /><Rule number="417.1.e" />
+
+You must assign lethal damage to one unit before assigning damage to another, and you cannot assign more than the lethal minimum while another unit remains.<Rule number="465.2.c.3" /><Rule number="465.2.c.4" />
+With Elder Dragon, that normally means assigning exactly 1 damage to an enemy unit before moving to the next.
+Prevention and other replacement effects are considered during assignment and can change this minimum.<Rule number="465.2.c.4.a" /><Rule number="465.2.c.5" />
+
+<Callout type="idea" title="Elder Dragon vs. Imperial Decree">
+	Suppose <Card name="Pakaa Cub" />, with 3 might, is your only attacker against three undamaged copies of <Card name="Noxus Hopeful" />, each defending with 4 might.
+	With Elder Dragon, you assign 1 damage from Pakaa Cub to each Noxus Hopeful, and all three are killed during the combat <Term item="cleanup">cleanup</Term>.<Rule number="323.5" /><Rule number="465.2.d" /><Rule number="466.1.a" />
+
+	<Card name="Imperial Decree" /> does not change lethal damage or combat damage assignment.
+	Assigning damage is not dealing damage, so its delayed triggered ability triggers only after a unit actually takes damage and then attempts to kill that unit.<Rule number="383.2.c" /><Rule number="390.2" /><Rule number="465.2.c.1" />
+
+	With Imperial Decree instead, Pakaa Cub still assigns all 3 damage, but you cannot split it among the three Noxus Hopefuls.
+	You must assign lethal damage to one before moving to another, so all 3 damage is assigned to the Noxus Hopeful you choose first.
+	Of the three Noxus Hopefuls, only that one takes Pakaa Cub's combat damage, so Imperial Decree's kill ability triggers for it and not the other two.
+</Callout>
+
 ## Does damage from earlier in the turn become lethal when Elder Dragon enters, and can I react? [#lethal-damage-timing]
 
 Damage still marked by Elder Dragon's controller becomes lethal to enemy units when Elder Dragon enters, and opponents cannot react after it enters before those units are killed in the resulting <Term item="cleanup">cleanup</Term>.
