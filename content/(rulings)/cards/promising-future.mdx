@@ -73,6 +73,21 @@ If no valid target exists, its play process is undone and it returns to banishme
 A counterspell put on the chain before another chosen card must finalize or leave the chain before that later card can finalize.<Rule number="337.1" /><Rule number="337.1.b" />
 It needs a legal target when its own targets are chosen.
 
+## Can Salvage or Brittle Steel target Dazzling Aurora if both are chosen with Promising Future? [#gear-targeting]
+
+In a two-player game, <Card name="Salvage" /> or <Card name="Brittle Steel" /> can target <Card name="Dazzling Aurora" /> only if Promising Future's controller chose the spell and their opponent chose Aurora.
+If Promising Future's controller chose Aurora and their opponent chose the spell, that spell cannot target Aurora.
+
+Promising Future puts the next player's chosen card on the <Term item="chain">chain</Term> first, so the opponent's card <Term item="finalization">finalizes</Term> first.<Rule number="337.1.b" />
+A gear that finalizes resolves immediately and enters the board.<Rule number="337.2" /><Rule number="359.2.d" />
+A spell chooses its targets during its own finalization, and a gear target must be on the board unless another zone is specified.<Rule number="355.5" /><Rule number="355.7" /><Rule number="355.9.a" /><Rule number="355.9.a.1" />
+
+If the opponent chose Aurora, it enters the board before Promising Future's controller's spell chooses its target.
+If the opponent chose the spell, it must choose its target while Aurora is still <Term item="pending">pending</Term> on the chain, so Aurora is not a legal target.
+
+Both spells may choose another legal gear instead.
+Salvage may also choose no gear, while Brittle Steel's play is undone if no legal gear is available.<Rule number="355.8" /><Rule number="358.5" />
+
 ## Does Brynhir Thundersong stop an opponent's card chosen with Promising Future from being played? [#brynhir-thundersong]
 
 Only if <Card name="Brynhir Thundersong" />'s play effect has already <Term item="resolution">resolved</Term> when Promising Future instructs that opponent to play their chosen card.
@@ -98,8 +113,7 @@ You decide whether to pay Akshan's optional additional cost while Akshan is bein
 His play effect is a separate pending ability put on the chain after Akshan finalizes and enters the board.<Rule number="383.4.a.2" />
 You choose the enemy gear while that triggered ability is being finalized, rather than while Akshan is being finalized.<Rule number="355.5" /><Rule number="355.5.b" />
 
-This differs from a spell such as <Card name="Salvage" />, which chooses a gear while Salvage itself is finalized.<Rule number="355.5" />
-If Salvage finalizes before Dazzling Aurora, it cannot choose Aurora because Aurora has not entered the board.
+This differs from a spell that chooses a gear itself, because that choice is made while the spell is finalized.<Rule number="355.5" />
 Akshan's play effect is instead a separate, newer pending item, so every chosen card finalizes or leaves the chain before that ability finalizes.<Rule number="337.1" /><Rule number="337.1.b" /><Rule number="383.4.a.2" />
 
 ### Dazzling Aurora Is Banished First [#aurora-first-sequence]
