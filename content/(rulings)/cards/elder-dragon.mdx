@@ -30,12 +30,12 @@ Prevention and other replacement effects are considered during assignment and ca
 
 ## Does damage from earlier in the turn become lethal when Elder Dragon enters, and can I react? [#lethal-damage-timing]
 
-Damage still marked by Elder Dragon's controller becomes lethal to enemy units when Elder Dragon enters, and opponents cannot react after it enters before those units are killed in the resulting <Term item="cleanup">cleanup</Term>.
+Damage still marked by Elder Dragon's controller becomes lethal to enemy units when Elder Dragon enters, and opponents cannot react after it enters before the resulting <Term item="cleanup">cleanup</Term> handles that lethal damage.
 Elder Dragon's "your damage" means damage marked by its controller.<Rule number="142.3.b" />
 Its first ability is a passive statement that changes the lethal-damage value for those enemy units while Elder Dragon is on the board.<Rule number="142.4.c" /><Rule number="364.2" /><Rule number="365.1" />
 
 <Term item="finalization">Finalizing</Term> a unit does not pass <Term item="priority">priority</Term>, and the unit <Term item="resolution">resolves</Term> immediately.<Rule number="337.1.a" /><Rule number="337.2" />
-After Elder Dragon enters, a cleanup happens without passing or awarding priority, and every unit with lethal damage is killed.<Rule number="319.6" /><Rule number="320.1" /><Rule number="323.5" />
+After Elder Dragon enters, a cleanup happens without passing or awarding priority, and every unit with lethal damage is killed unless that death is replaced.<Rule number="319.6" /><Rule number="320.1" /><Rule number="323.5" /><Rule number="370.1" /><Rule number="370.1.c" />
 Elder Dragon's separate "When you play me" ability is a triggered play effect, but it does not create a response window before this lethal-damage check.<Rule number="383.4.a" /><Rule number="383.4.a.2" />
 
 <Callout type="idea" title="Example">
@@ -47,6 +47,36 @@ Elder Dragon's separate "When you play me" ability is a triggered play effect, b
 	Opponents may react while Dazzling Aurora's triggered ability waits to resolve.<Rule number="383.1" /><Rule number="337.4" /><Rule number="338.1.a.2" />
 	Once that ability begins resolving and reveals Elder Dragon, no new priority window opens before Elder Dragon enters and the affected units are killed.
 </Callout>
+
+## Can Elder Dragon target a unit after Zhonya's Hourglass recalls it? [#zhonyas-target-timing]
+
+Yes, if you play Elder Dragon while an enemy unit at a battlefield has your damage marked on it and that unit's controller controls <Card name="Zhonya's Hourglass" /> in their base: Zhonya's Hourglass replaces that unit's death and recalls it before you choose targets for Elder Dragon's play effect, so you can choose the recalled unit in its controller's base.
+If another valid enemy unit remains at a battlefield, you can choose that unit as well because it is at a different location.
+
+<Steps>
+<Step>
+Elder Dragon enters, and its passive makes your marked damage lethal to the damaged enemy unit.<Rule number="142.4.c" />
+Its play effect is then added to the <Term item="chain">chain</Term> as a <Term item="pending">pending</Term> item.<Rule number="383.4.a.2" />
+</Step>
+<Step>
+Both Elder Dragon entering and its play effect being added require <Term item="cleanup">cleanup</Term> before play continues.<Rule number="319.6" /><Rule number="319.3" />
+All outstanding cleanups finish before the pending effect can begin <Term item="finalization">finalization</Term>.<Rule number="320" /><Rule number="334.2" />
+</Step>
+<Step>
+During cleanup, the damaged unit would be killed.<Rule number="323.5" />
+Zhonya's Hourglass replaces that death: the Hourglass is killed instead, and the unit is healed, exhausted, and recalled to its controller's base rather than killed.<Rule number="370.1.a.1" />
+</Step>
+<Step>
+Killing Zhonya's Hourglass sends it from the board to the trash, making another cleanup outstanding after the current one.<Rule number="428.1" /><Rule number="319.6" /><Rule number="322" />
+</Step>
+<Step>
+After all cleanups finish, you choose targets while finalizing the play effect.<Rule number="334.2" /><Rule number="337.1" /><Rule number="191.4.c" /><Rule number="402.2" />
+The recalled unit is now in base, and any valid enemy unit that remains at a battlefield is at a different location, so both can be chosen.<Rule number="146.1" /><Rule number="198.1" /><Rule number="355.11.a" />
+</Step>
+</Steps>
+
+When the effect <Term item="resolution">resolves</Term>, it deals 1 to each target it affects, marking damage on each unit separately.<Rule number="417.1.b" /><Rule number="417.1.c" />
+If Elder Dragon remains on the board, its passive makes that damage lethal, so each affected unit would be killed during the cleanup after the ability leaves the chain.<Rule number="142.3.b" /><Rule number="142.4.c" /><Rule number="365.1" /><Rule number="406.5" /><Rule number="319.5" /><Rule number="323.5" />
 
 ## Does Elder Dragon's play effect finalize if its passive leaves no enemy units to target? [#zero-target-finalization]
 
