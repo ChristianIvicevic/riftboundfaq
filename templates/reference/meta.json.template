@@ -2,7 +2,7 @@
 	"title": "Reference",
 	"description": "The Core Rules, Tournament Rules, and their version histories",
 	"root": true,
-	"icon": "BookMarked",
+	"icon": "Bookmark",
 	"pages": [
 {{PAGES}}
 	]
