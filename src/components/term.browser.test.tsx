@@ -18,7 +18,7 @@ describe('Term', () => {
 		const dialog = screen.getByRole('dialog', { name: 'Finalization' })
 		await expect
 			.element(dialog)
-			.toHaveTextContent(
+			.toMatchTextContent(
 				'Finalization is the setup stage of playing a card or ability: settle its required up-front choices and costs, then check that the play is legal.',
 			)
 	})
