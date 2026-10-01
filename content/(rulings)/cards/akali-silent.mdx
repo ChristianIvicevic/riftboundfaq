@@ -1,0 +1,33 @@
+---
+title: "Akali, Silent"
+createdAt: "2026-10-01"
+reviewedCoreRulesVersion: "1.4"
+authors:
+- name: "Christian “Near” Ivicevic"
+  url: "https://x.com/civicevic"
+---
+
+## Can an opponent's Deathknell target Akali, Silent after combat damage? [#deathknell-targeting]
+
+Yes, Akali can be targeted by enemy <Deathknell /> abilities until combat ends, as long as she remains at the battlefield with a combat designation.
+
+Combat has three steps:
+
+<Steps>
+<Step>
+**Combat Showdown Step.**<Rule number="464" />
+</Step>
+<Step>
+**Combat Damage Step.**<Rule number="465" />
+</Step>
+<Step>
+**Resolution Step.**<Rule number="466" />
+The combat <Term item="cleanup">cleanup</Term> triggers <Deathknell /> abilities from lethally damaged units.<Rule number="466.1" /><Rule number="323.4" />
+Any targets are chosen when those abilities <Term item="finalization">finalize</Term>.<Rule number="402.2" />
+Those abilities fully <Term item="resolution">resolve</Term> before combat ends.<Rule number="466.2" />
+Combat ends only at the final part of this step.<Rule number="466.7" />
+Only then does Akali stop being in combat and become untargetable by enemy spells and abilities.<Rule number="466.7.a" /><Rule number="740.2.c" />
+</Step>
+</Steps>
+
+This is why <Card name="Ruined Rex" />'s <Deathknell /> can choose her after Rex dies to combat damage.
