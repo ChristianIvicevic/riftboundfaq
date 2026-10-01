@@ -148,12 +148,13 @@ const TOURNAMENT_CR_REFERENCE = /\bCR\s+\d{3}(?:\.[0-9a-z]+)*/giu
 const TOURNAMENT_CUED_REFERENCE =
 	/\b(?:see(?:\s+rule)?|section|steps?|proceed to|process of|described in|except for|perform|listed (?:under|in)|qualifies for|meets?)\s+\d{3}(?:\.[0-9a-z]+)*(?:\.?\s*(?:-|–|—|and|or)\s*\d{3}(?:\.[0-9a-z]+)*)*/giu
 
+const maskIds = (reference: string) => reference.replaceAll(RULE_ID, 'rule#')
+
 /**
  * Replace IDs in recognizable rule-reference expressions with a placeholder. A rule whose only
  * change is such a reference then compares equal, without treating unrelated numbers as references.
  */
 function maskRuleReferences(text: string, syntax: 'generic' | 'tournament'): string {
-	const maskIds = (reference: string) => reference.replaceAll(RULE_ID, 'rule#')
 	const masked = text.replaceAll(GENERIC_RULE_REFERENCE, maskIds)
 	if (syntax === 'generic') return masked
 	return masked.replaceAll(TOURNAMENT_CR_REFERENCE, maskIds).replaceAll(TOURNAMENT_CUED_REFERENCE, maskIds)
