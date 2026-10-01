@@ -1,0 +1,38 @@
+---
+title: "Elnuk Herd"
+createdAt: "2026-10-01"
+reviewedCoreRulesVersion: "1.4"
+authors:
+- name: "Christian “Near” Ivicevic"
+  url: "https://x.com/civicevic"
+---
+
+## What happens if I play Elnuk Herd from face down to a battlefield with no other friendly units? [#no-friendly-target]
+
+Elnuk Herd enters and remains at the battlefield instead of recycling itself.
+With no other friendly unit there, Elnuk Herd's play effect has no legal target when it reaches <Term item="finalization">finalization</Term>, so the effect is removed from the <Term item="chain">chain</Term> without finalizing and gives no unit +3 might.
+
+Elnuk Herd itself is legal to play even if no other friendly unit is at its battlefield.
+The <Hidden /> restriction that prevents a card without valid targets from being played applies only when that card is a spell.<Rule number="811.1.d" />
+Elnuk Herd is a unit, and the "another friendly unit" target of its separate play effect is not chosen as part of playing Elnuk Herd.<Rule number="355.5.b" /><Rule number="355.10" />
+That play effect is added to the chain as a <Term item="pending">pending</Term> item only after Elnuk Herd enters.<Rule number="383.4.a.2" />
+Because Elnuk Herd was played from <Hidden />, the play effect must choose its target from the battlefield where Elnuk Herd was hidden.<Rule number="811.1.d.2" />
+Elnuk Herd is not "another friendly unit," so if no other friendly unit is there, the play effect has no legal choice and is removed before finalizing.<Rule number="402.4" />
+
+The recycle instruction is part of the same play effect, not a separate reflexive trigger.
+The rules mark reflexive triggers with specific "Do..." wording, which Elnuk Herd does not use.<Rule number="387.1" /><Rule number="387.1.b" />
+Because the play effect never finalizes, it never <Term item="resolution">resolves</Term>, so neither instruction executes.<Rule number="406.2" /><Rule number="406.5" />
+
+If at least one other friendly unit there is a legal target while the play effect is being finalized, you must choose one.<Rule number="402.4.b" />
+If that unit remains legal when the ability resolves, it gets +3 might this turn before Elnuk Herd recycles itself.
+If the chosen unit is no longer a legal target when the ability resolves, it gets no +3 might,<Rule number="359.3.e.2" /><Rule number="359.3.e.5" /> but the recycle instruction does not refer to that target and still executes.<Rule number="055" /><Rule number="406.5" />
+
+<Callout type="idea" title="Example">
+	Suppose Elnuk Herd was hidden at a battlefield on an earlier turn.<Rule number="811.1.b" />
+	During the combat <Term item="cleanup">cleanup</Term>, a unit you control that is the last friendly unit there dies and its <Deathknell /> becomes the only pending chain item.<Rule number="323.4" /><Rule number="808.1.d.2" />
+	Combat has not changed control of that battlefield yet, so the face-down Elnuk Herd remains there.<Rule number="190.4.b" /><Rule number="323.7" />
+	After the cleanup, the <Deathknell /> finalizes.<Rule number="334.2" /><Rule number="337.1" />
+	With no other pending item, <Term item="priority">priority</Term> is awarded and you may play Elnuk Herd from face down as a <Reaction /> before the <Deathknell /> resolves.<Rule number="337.4" /><Rule number="338.1.a.2" /><Rule number="811.6" />
+	Elnuk Herd enters, but its play effect has no legal target and is removed, so Elnuk Herd remains when the combat result is determined after the chain finishes.<Rule number="466.2" />
+	If opposing units also remain, the original combat has no result and another combat is staged.<Rule number="466.3.d" /><Rule number="466.3.d.1" />
+</Callout>
