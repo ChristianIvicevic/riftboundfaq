@@ -864,6 +864,18 @@
 		"effects": null
 	},
 	{
+		"name": "Battlefield Armorer",
+		"energyCost": 3,
+		"powerCost": null,
+		"might": 3,
+		"domains": ["Order"],
+		"cardTypes": ["Spell"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "When a friendly gear at a battlefield dies, you may pay [1] to return it to its owner's hand.",
+		"effects": null
+	},
+	{
 		"name": "Beast Below",
 		"energyCost": 7,
 		"powerCost": 2,
@@ -993,6 +1005,18 @@
 		"superTypes": [],
 		"tags": ["Noxus"],
 		"abilities": "[Assault] (+1 [Might] while I'm an attacker.)\n[Deathknell][>] Channel 1 rune exhausted. (When I die, get the effect.)",
+		"effects": null
+	},
+	{
+		"name": "Black Rose Sanctum",
+		"energyCost": null,
+		"powerCost": null,
+		"might": null,
+		"domains": ["Colorless"],
+		"cardTypes": ["Battlefield"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "For each player, the first time each turn a non-token unit they control dies here, they play a 1 [Might] Recruit unit token to their base.",
 		"effects": null
 	},
 	{
@@ -2556,6 +2580,18 @@
 		"effects": null
 	},
 	{
+		"name": "Demacian Illuminators",
+		"energyCost": 3,
+		"powerCost": 1,
+		"might": 3,
+		"domains": ["Order"],
+		"cardTypes": ["Spell"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "When one or more friendly units die, [Buff] a friendly unit. (Give it a +1 [Might] buff if it doesn't have one.)",
+		"effects": null
+	},
+	{
 		"name": "Demacian Standard",
 		"energyCost": 2,
 		"powerCost": 1,
@@ -2601,6 +2637,18 @@
 		"superTypes": [],
 		"tags": [],
 		"abilities": "Kill a gear. Its controller draws 2.",
+		"effects": null
+	},
+	{
+		"name": "Detonation Amplifier",
+		"energyCost": 4,
+		"powerCost": 1,
+		"might": null,
+		"domains": ["Chaos"],
+		"cardTypes": ["Gear"],
+		"superTypes": [],
+		"tags": ["Device"],
+		"abilities": "[Deploy] (Play this only to a battlefield. When an opponent holds here, kill this.)\nWhen you play this, you may kill another friendly unit or gear to draw 1.\nFriendly [Deathknell] effects here trigger an additional time.",
 		"effects": null
 	},
 	{
@@ -2904,6 +2952,18 @@
 		"effects": null
 	},
 	{
+		"name": "Drakehound Packmaster",
+		"energyCost": 9,
+		"powerCost": 2,
+		"might": 9,
+		"domains": ["Fury"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "When you play me, reveal the top card of each opponent's Main Deck. Choose one and banish it, then play it, ignoring its cost. Recycle the rest.",
+		"effects": null
+	},
+	{
 		"name": "Dramatic Visionary",
 		"energyCost": 4,
 		"powerCost": null,
@@ -3144,6 +3204,18 @@
 		"effects": null
 	},
 	{
+		"name": "Ekko, Revolutionary",
+		"energyCost": 5,
+		"powerCost": 1,
+		"might": 4,
+		"domains": ["Fury"],
+		"cardTypes": ["Unit"],
+		"superTypes": ["Champion"],
+		"tags": ["Ekko", "Zaun"],
+		"abilities": "I enter ready.\n[Assault] (+1 [Might] while I'm an attacker.)\n[Action][>] Discard 1, [1][Fury]: Banish me, then play me to your base, ignoring my cost.",
+		"effects": null
+	},
+	{
 		"name": "Elder Dragon",
 		"energyCost": 12,
 		"powerCost": 4,
@@ -3309,6 +3381,18 @@
 		"superTypes": [],
 		"tags": [],
 		"abilities": "You may have me enter ready. If you do, I can't move this turn.",
+		"effects": null
+	},
+	{
+		"name": "Ephemeral Ward",
+		"energyCost": 4,
+		"powerCost": 2,
+		"might": null,
+		"domains": ["Calm"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "Your units have +2 [Might].\nWhen you play a unit, kill this.",
 		"effects": null
 	},
 	{
@@ -4992,6 +5076,18 @@
 		"effects": null
 	},
 	{
+		"name": "Hunting Dog",
+		"energyCost": 3,
+		"powerCost": null,
+		"might": 3,
+		"domains": ["Order"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Deathknell][>] Play a 1 [Might] Bird unit token with [Deflect] to your base. (When I die, get the effect. Opponents must pay [Universal] to choose a [Deflect] unit with a spell or ability.)",
+		"effects": null
+	},
+	{
 		"name": "Hwei, Brooding Painter",
 		"energyCost": 5,
 		"powerCost": 1,
@@ -5112,6 +5208,18 @@
 		"effects": null
 	},
 	{
+		"name": "Industrious Mechsmith",
+		"energyCost": 4,
+		"powerCost": null,
+		"might": 1,
+		"domains": [],
+		"cardTypes": [],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "When you play me, play a 3 [Might] Mech unit token here.",
+		"effects": null
+	},
+	{
 		"name": "Inferna",
 		"energyCost": 2,
 		"powerCost": null,
@@ -5193,6 +5301,18 @@
 		"superTypes": ["Champion"],
 		"tags": ["Irelia", "Ionia"],
 		"abilities": "Your spells that choose me cost [1] or [Universal] less.",
+		"effects": null
+	},
+	{
+		"name": "Iridescent Avian",
+		"energyCost": 3,
+		"powerCost": null,
+		"might": 3,
+		"domains": ["Calm"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Exhaust]: [Buff] a unit. If it's already buffed, give it +2 [Might] this turn instead. (To buff a unit, give it a +1 [Might] buff if it doesn't have one.)",
 		"effects": null
 	},
 	{
@@ -5724,6 +5844,18 @@
 		"effects": null
 	},
 	{
+		"name": "Ki Burst",
+		"energyCost": 1,
+		"powerCost": null,
+		"might": null,
+		"domains": ["Calm"],
+		"cardTypes": ["Spell"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Action] (Play on your turn or in showdowns.)\nAs an additional cost to play this, exhaust a friendly unit.\n[Stun] a unit. (It doesn't deal combat damage this turn.)",
+		"effects": null
+	},
+	{
 		"name": "King's Edict",
 		"energyCost": 6,
 		"powerCost": 2,
@@ -5853,6 +5985,18 @@
 		"superTypes": ["Signature"],
 		"tags": ["Yasuo"],
 		"abilities": "[Action] (Play on your turn or in showdowns.)\nReady a friendly unit. It deals damage equal to its Might to an enemy unit at a battlefield.",
+		"effects": null
+	},
+	{
+		"name": "Last Caress",
+		"energyCost": 2,
+		"powerCost": null,
+		"might": null,
+		"domains": ["Body", "Chaos"],
+		"cardTypes": ["Spell"],
+		"superTypes": ["Signature"],
+		"tags": ["Evelynn"],
+		"abilities": "[Reaction] (Play any time, even before spells and abilities resolve.)\nThe next unit you play this turn (even from face down) can be played to any battlefield. When you play it, [Buff] it. (Give it a +1 [Might] buff if it doesn't have one.)",
 		"effects": null
 	},
 	{
@@ -6540,6 +6684,18 @@
 		"effects": null
 	},
 	{
+		"name": "Meticulous Restorationist",
+		"energyCost": 2,
+		"powerCost": null,
+		"might": 2,
+		"domains": ["Order"],
+		"cardTypes": ["Gear"],
+		"superTypes": [],
+		"tags": ["Device"],
+		"abilities": "When you play a card with Energy cost [7] or more, you may play me from your trash for [Order].",
+		"effects": null
+	},
+	{
 		"name": "Might of Demacia - Starter",
 		"energyCost": null,
 		"powerCost": null,
@@ -6861,6 +7017,18 @@
 		"superTypes": [],
 		"tags": ["Cat", "Bilgewater"],
 		"abilities": "[Shield 2] (+2 [Might] while I'm a defender.)\n[Tank] (I must be assigned combat damage first.)",
+		"effects": null
+	},
+	{
+		"name": "Mysterious Chronomancer",
+		"energyCost": 5,
+		"powerCost": null,
+		"might": 4,
+		"domains": ["Mind"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "When you play me, [Predict 2]. (Look at the top 2 cards of your Main Deck. Recycle any of them and put the rest back in any order.)\n[Disarm 2] (When I attack, give an enemy unit here -2 [Might] this turn.)",
 		"effects": null
 	},
 	{
@@ -7680,6 +7848,18 @@
 		"effects": null
 	},
 	{
+		"name": "Portable Portal",
+		"energyCost": 2,
+		"powerCost": null,
+		"might": null,
+		"domains": ["Body"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": ["Device"],
+		"abilities": "[Deploy] (Play this only to a battlefield. When an opponent holds here, kill this.)\nWhen you play this, you may pay [Body] to ready a unit here.\nFriendly units here have [Ganking]. (They can move from battlefield to battlefield.)",
+		"effects": null
+	},
+	{
 		"name": "Portal Rescue",
 		"energyCost": 3,
 		"powerCost": 1,
@@ -8052,6 +8232,18 @@
 		"effects": null
 	},
 	{
+		"name": "Rally for War",
+		"energyCost": 3,
+		"powerCost": 1,
+		"might": null,
+		"domains": ["Fury"],
+		"cardTypes": ["Gear"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "Choose an occupied enemy battlefield. Play three 1 [Might] Recruit unit tokens there.",
+		"effects": null
+	},
+	{
 		"name": "Rally the Troops",
 		"energyCost": 2,
 		"powerCost": null,
@@ -8121,6 +8313,30 @@
 		"superTypes": [],
 		"tags": [],
 		"abilities": "[Exhaust]: The next spell you play this turn deals 1 Bonus Damage. (Each instance of damage the spell deals is increased by 1.)",
+		"effects": null
+	},
+	{
+		"name": "Raving Witness",
+		"energyCost": 3,
+		"powerCost": null,
+		"might": 3,
+		"domains": ["Body"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "When I move, reveal the top card of your Main Deck. If it's [Mighty], draw it. Otherwise, recycle it. (A unit is Mighty while it has 5+ [Might].)",
+		"effects": null
+	},
+	{
+		"name": "Realm of Death",
+		"energyCost": 2,
+		"powerCost": 1,
+		"might": null,
+		"domains": ["Fury", "Order"],
+		"cardTypes": ["Spell"],
+		"superTypes": ["Signature"],
+		"tags": ["Mordekaiser"],
+		"abilities": "Give an enemy unit -2 [Might] this turn and a friendly unit +2 [Might] this turn. They deal damage equal to their Mights to each other.",
 		"effects": null
 	},
 	{
@@ -8628,6 +8844,18 @@
 		"effects": null
 	},
 	{
+		"name": "Riven, Broken Blade",
+		"energyCost": 4,
+		"powerCost": null,
+		"might": 4,
+		"domains": ["Calm"],
+		"cardTypes": ["Unit"],
+		"superTypes": ["Champion"],
+		"tags": ["Riven"],
+		"abilities": "When I become exhausted, choose one that hasn't been chosen this turn —\n- [Buff] me. (Give me a +1 [Might] buff if I don't have one.)\n- Spend my buff to [Stun] an enemy unit. (It doesn't deal combat damage this turn.)\n- Spend my buff to ready me.",
+		"effects": null
+	},
+	{
 		"name": "Riven, Shattered",
 		"energyCost": 3,
 		"powerCost": 1,
@@ -8961,6 +9189,18 @@
 		"superTypes": [],
 		"tags": ["Dog", "Noxus"],
 		"abilities": "[Hunt 2] (When I conquer or hold, gain 2 XP.)\n[Level 3][>] I have +1 [Might] and enter ready. (While you have 3+ XP, get the effect.)",
+		"effects": null
+	},
+	{
+		"name": "Scorched Earth",
+		"energyCost": 4,
+		"powerCost": 1,
+		"might": null,
+		"domains": [],
+		"cardTypes": [],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Action] (Play on your turn or in showdowns.)\nDeal 5 damage split among units at a single battlefield.",
 		"effects": null
 	},
 	{
@@ -9660,6 +9900,18 @@
 		"effects": "My hold effects are also conquer effects, and vice versa."
 	},
 	{
+		"name": "Skystrike Squadron",
+		"energyCost": 5,
+		"powerCost": null,
+		"might": 4,
+		"domains": ["Body"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "You may return a friendly gear to its owner's hand as an additional cost to play me. If you do, I cost [2] less.\n[Deflect] (Opponents must pay [Universal] to choose me with a spell or ability.)",
+		"effects": null
+	},
+	{
 		"name": "Skyward Strike",
 		"energyCost": 2,
 		"powerCost": 1,
@@ -10188,6 +10440,18 @@
 		"effects": null
 	},
 	{
+		"name": "Staunch Survivor",
+		"energyCost": 2,
+		"powerCost": 1,
+		"might": 2,
+		"domains": ["Body"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Assault 2], [Shield 2] (+2 [Might] while I'm an attacker or defender.)",
+		"effects": null
+	},
+	{
 		"name": "Steadfast Outrider",
 		"energyCost": 4,
 		"powerCost": null,
@@ -10305,6 +10569,18 @@
 		"superTypes": [],
 		"tags": [],
 		"abilities": "[Reaction] (Play any time, even before spells and abilities resolve.)\nGive a unit -1 [Might] this turn, to a minimum of 1 [Might]. Draw 1.",
+		"effects": null
+	},
+	{
+		"name": "Suave Negotiator",
+		"energyCost": 3,
+		"powerCost": null,
+		"might": 3,
+		"domains": ["Chaos"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "When you play me, choose an opponent. You and that player each draw 1.",
 		"effects": null
 	},
 	{
@@ -10620,6 +10896,18 @@
 		"effects": null
 	},
 	{
+		"name": "The Ball",
+		"energyCost": 5,
+		"powerCost": 1,
+		"might": null,
+		"domains": ["Calm", "Mind"],
+		"cardTypes": ["Gear"],
+		"superTypes": ["Signature"],
+		"tags": ["Device", "Orianna"],
+		"abilities": "[Deploy] (Play this only to a battlefield. When an opponent holds here, kill this.)\n[Ganking] (While this is a unit, it can move from battlefield to battlefield.)\nWhen you play or move this, choose one —\n- Draw 1.\n- Deal 2 to enemy units here.",
+		"effects": null
+	},
+	{
 		"name": "The Boss",
 		"energyCost": null,
 		"powerCost": null,
@@ -10653,6 +10941,18 @@
 		"superTypes": [],
 		"tags": [],
 		"abilities": "When a player chooses a friendly unit here with a spell for the first time each turn, they draw 1.",
+		"effects": null
+	},
+	{
+		"name": "The Empyrean",
+		"energyCost": 8,
+		"powerCost": null,
+		"might": 8,
+		"domains": ["Mind"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": ["Dragon"],
+		"abilities": "[Show Off] a card. (As you play me, you may reveal a card from hand or pick another friendly one.)\nWhen you play me, if you showed off a card, [Predict] equal to its Power cost, then draw 2. (Look at that many cards from your Main Deck. Recycle any of them and put the rest back in any order.)",
 		"effects": null
 	},
 	{
@@ -10737,6 +11037,18 @@
 		"superTypes": [],
 		"tags": [],
 		"abilities": "[1], [Exhaust]: Move a friendly unit at a battlefield to your base.",
+		"effects": null
+	},
+	{
+		"name": "The Waters' Wage",
+		"energyCost": 1,
+		"powerCost": null,
+		"might": null,
+		"domains": ["Chaos"],
+		"cardTypes": ["Spell"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Hidden] (Hide now for [Universal] to react with later for [0].)\nPlay a Gold gear token exhausted. If it's your turn and you played this from face down, play three ready Gold gear tokens instead. (Gold tokens have \"[Reaction][>] Kill this, [Exhaust]: [Add] [Universal].\")",
 		"effects": null
 	},
 	{
