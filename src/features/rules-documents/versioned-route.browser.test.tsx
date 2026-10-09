@@ -21,8 +21,8 @@ describe('version-specific rules page rendering', () => {
 
 	test('renders the current Tournament Rules through its family adapter', async () => {
 		const route = resolveVersionedRulesRoute({
-			url: '/reference/tournament-rules/2026-07-16',
-			rulesDocument: { type: 'tournament-rules', version: '2026-07-16' },
+			url: '/reference/tournament-rules/2026-10-09',
+			rulesDocument: { type: 'tournament-rules', version: '2026-10-09' },
 		})
 		const screen = await render(renderVersionedRulesDocument(route))
 

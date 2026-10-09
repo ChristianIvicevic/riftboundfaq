@@ -140,10 +140,13 @@ export function structureRuleBlocks(blocks: readonly RuleBlock[]) {
 	for (const block of blocks) {
 		if (block.headingStyleMismatch) {
 			const { labelFontSize, bodyFontSize } = block.headingStyleMismatch
+			const classification = block.heading
+				? `classifying it as a ${block.heading} heading from its body text`
+				: 'preserving it as a rule'
 			diagnostics.push({
 				severity: 'warning',
 				code: 'heading-style-mismatch',
-				message: `Rule ${block.id} has a ${labelFontSize}pt heading-sized label but ${bodyFontSize === null ? 'no same-line body text' : `${bodyFontSize}pt body text`}; preserving it as a rule.`,
+				message: `Rule ${block.id} has a ${labelFontSize}pt label and ${bodyFontSize === null ? 'no same-line body text' : `${bodyFontSize}pt body text`}; ${classification}.`,
 				ruleId: block.id,
 				source: sourceLocation(block),
 			})

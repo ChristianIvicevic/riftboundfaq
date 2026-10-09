@@ -119,6 +119,12 @@
 			"newText": "[Hidden] (Hide now for [Universal] to react with later for [0].)\nWhen you play this from face down, attach it to a unit you control (here).\n[Equip] [Chaos] ([Chaos]: Attach this to a unit you control.)"
 		}
 	],
+	"Elnuk Herd": [
+		{
+			"oldText": "[Hidden] (Hide now for [Universal] to react with later for [0].)\nWhen you play me, give another friendly unit +3 [Might] this turn, then recycle me if I was played from face down.",
+			"newText": "[Hidden] (Hide now for [Universal] to react with later for [0].)\nWhen you play me, give a friendly unit +3 [Might] this turn, then recycle me if I was played from face down."
+		}
+	],
 	"Emperor's Dais": [
 		{
 			"oldText": "When you conquer here, you may pay [1] and return a unit you control here to its owner's hand. If you do, play a 2 [Might] Sand Soldier unit token here.",
@@ -135,6 +141,12 @@
 		{
 			"oldText": "When you play me, you may play a spell from your trash with Energy cost no more than [3], ignoring its Energy cost. Recycle that spell after you play it. (You must still pay its Power cost.)",
 			"newText": "When you play me, you may play a spell from your trash with Energy cost no more than [3], ignoring its Energy cost. Then recycle it. (You must still pay its Power cost.)"
+		}
+	],
+	"Forbidden Technique": [
+		{
+			"oldText": "Ready a unit.\nWhen you play a card with Energy cost [7] or more, you may play this from your trash for [1][Fury][Fury]. Banish this.",
+			"newText": "Ready a unit.\nWhen you play a card with Energy cost [7] or more, you may play this from your trash for [1][Fury][Fury]. Then banish this."
 		}
 	],
 	"Gangplank, Naval": [
@@ -197,10 +209,22 @@
 			"newText": "When you play me, buff up to two other friendly units. (Each one that doesn't have a buff gets a +1 [Might] buff.)"
 		}
 	],
+	"Last Caress": [
+		{
+			"oldText": "[Reaction] (Play any time, even before spells and abilities resolve.)\nThe next unit you play this turn (even from face down) can be played to any battlefield. When you play it, [Buff] it. (Give it a +1 [Might] buff if it doesn't have one.)",
+			"newText": "[Reaction] (Play any time, even before spells and abilities resolve.)\nThe next unit you play this turn, even from face down, can be played to any battlefield. When you play it, [Buff] it. (Give it a +1 [Might] buff if it doesn't have one.)"
+		}
+	],
 	"Mirror Image": [
 		{
 			"oldText": "Choose a unit. Play a ready Reflection unit token to your base. It becomes a copy of that unit. Give it [Temporary]. (Kill it at the start of its controller's Beginning Phase, before scoring.)",
 			"newText": "Choose a unit. Play a ready Reflection unit token to your base. Then do this: It becomes a copy of that unit. Give it [Temporary]. (Kill it at the start of its controller's Beginning Phase, before scoring.)"
+		}
+	],
+	"Neeko, Blending In": [
+		{
+			"oldText": "(Neutral cards can go in decks of any Domain.)\nIf Neeko is in your deck, choose 3 different legends in addition to your starting legend. (Different means none match names.)\nWhen you play me, choose one of those legends and add it to your Legend Zone while I'm on the board.",
+			"newText": "(Neutral cards can go in decks of any Domain.)\nIf Neeko is in your deck, choose up to 3 different legends in addition to your starting legend. (Different means none match names.)\nWhen you play me, choose one of those Legends and add it to your Legend Zone while I'm on the board."
 		}
 	],
 	"Nocturne, Horrifying": [

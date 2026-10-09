@@ -67,6 +67,7 @@ function tournamentEntry(
 	const { id = null, ...entry } = input
 	return {
 		label: id ? { sourceText: `${id}.`, id, text: `${id}.`, normalization: 'unchanged' } : null,
+		nestingDepth: id ? id.split('.').length - 1 : 0,
 		activity: { status: 'active', removalEvidence: null },
 		sourcePages: { start: 1, end: 1 },
 		...entry,

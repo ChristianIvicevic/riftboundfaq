@@ -153,6 +153,17 @@ function nearestExistingParent(
 	return null
 }
 
+function nearestIndentedParent(
+	nestingDepth: number,
+	nodesByDepth: readonly (TournamentRuleNode | undefined)[],
+): TournamentRuleNode | null {
+	for (let depth = nestingDepth - 1; depth >= 0; depth--) {
+		const candidate = nodesByDepth[depth]
+		if (candidate) return candidate
+	}
+	return null
+}
+
 function ruleTree(
 	entries: readonly TournamentRulesSourceEntry[],
 	diagnostics: TournamentStructureDiagnostic[],
@@ -160,13 +171,12 @@ function ruleTree(
 ): TournamentRuleNode[] {
 	const roots: TournamentRuleNode[] = []
 	const nodesById = new Map<string, TournamentRuleNode>()
-	let previousNumberedId: string | null = null
+	const nodesByDepth: (TournamentRuleNode | undefined)[] = []
 
 	for (const entry of entries) {
 		const node = ruleNode(entry)
 		if (!node.id) {
-			const inferredParentId = parentId(previousNumberedId)
-			const inferredParent = inferredParentId ? nodesById.get(inferredParentId) : null
+			const inferredParent = nearestIndentedParent(entry.nestingDepth, nodesByDepth)
 			if (inferredParent) inferredParent.children.push(node)
 			else roots.push(node)
 			diagnostics.push({
@@ -174,6 +184,8 @@ function ruleTree(
 				sequence: node.sequence,
 				inferredParentId: inferredParent?.id ?? null,
 			})
+			nodesByDepth.length = entry.nestingDepth + 1
+			nodesByDepth[entry.nestingDepth] = node
 			continue
 		}
 
@@ -193,7 +205,8 @@ function ruleTree(
 		if (parent) parent.children.push(node)
 		else roots.push(node)
 		nodesById.set(node.id, node)
-		previousNumberedId = node.id
+		nodesByDepth.length = entry.nestingDepth + 1
+		nodesByDepth[entry.nestingDepth] = node
 	}
 
 	return roots

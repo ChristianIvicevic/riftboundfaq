@@ -8,12 +8,14 @@ function entry(
 	kind: TournamentRulesSourceEntry['kind'],
 	id: string | null,
 	text: string,
+	nestingDepth = id ? id.split('.').length - 1 : 0,
 ): TournamentRulesSourceEntry {
 	return {
 		sequence,
 		kind,
 		label: id ? { sourceText: `${id}.`, id, text: `${id}.`, normalization: 'unchanged' } : null,
 		text,
+		nestingDepth,
 		activity: { status: 'active', removalEvidence: null },
 		sourcePages: { start: 1, end: 1 },
 	}
@@ -51,6 +53,32 @@ describe('structureTournamentRulesEntries', () => {
 		expect(firstRuleBlock(sections).map(({ sequence }) => sequence)).toStrictEqual([2, 3])
 		expect(diagnostics.map(({ code, sequence }) => ({ code, sequence }))).toStrictEqual([
 			{ code: 'unnumbered-rule', sequence: 3 },
+		])
+	})
+
+	test('uses source indentation to nest unnumbered rules without reordering peers', () => {
+		const entries = [
+			entry(1, 'primary-heading', '703', 'Errors'),
+			entry(2, 'rule', '703.4', 'Deck Presentation Error'),
+			entry(3, 'rule', '703.4.b', 'Chosen Champion remedies'),
+			entry(4, 'rule', null, 'Before the first turn.', 3),
+			entry(5, 'rule', '703.4.b.1', 'Casual OPL'),
+			entry(6, 'rule', '703.4.b.1.a', 'Casual fallback'),
+			entry(7, 'rule', '703.4.b.2', 'Competitive OPL'),
+			entry(8, 'rule', '703.4.b.2.a', 'Competitive fallback'),
+			entry(9, 'rule', null, 'Professional OPL', 3),
+			entry(10, 'rule', '703.4.b.3', 'Cheating'),
+		]
+
+		const { sections, diagnostics } = structureTournamentRulesEntries(entries)
+		const deckPresentationError = firstRuleBlock(sections)[0]
+		const remedies = deckPresentationError.children[0]
+
+		expect(ruleSequences(firstRuleBlock(sections))).toStrictEqual([2, 3, 4, 5, 6, 7, 8, 9, 10])
+		expect(remedies.children.map(({ sequence }) => sequence)).toStrictEqual([4, 5, 7, 9, 10])
+		expect(diagnostics).toStrictEqual([
+			{ code: 'unnumbered-rule', sequence: 4, inferredParentId: '703.4.b' },
+			{ code: 'unnumbered-rule', sequence: 9, inferredParentId: '703.4.b' },
 		])
 	})
 

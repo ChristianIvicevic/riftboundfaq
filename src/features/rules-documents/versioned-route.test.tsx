@@ -21,8 +21,8 @@ describe('version-specific rules page', () => {
 
 	test('renders the current Tournament Rules through its family adapter', () => {
 		const route = resolveVersionedRulesRoute({
-			url: '/reference/tournament-rules/2026-07-16',
-			rulesDocument: { type: 'tournament-rules', version: '2026-07-16' },
+			url: '/reference/tournament-rules/2026-10-09',
+			rulesDocument: { type: 'tournament-rules', version: '2026-10-09' },
 		})
 
 		expect(route?.document.identity.status).toBe('current')

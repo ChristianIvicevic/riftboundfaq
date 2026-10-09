@@ -66,19 +66,27 @@ function dominantFontSize(items: readonly PdfTextItem[]) {
 	return [...weights].toSorted((left, right) => right[1] - left[1])[0]?.[0] ?? null
 }
 
+function headingLevel(size: number | null): RuleBlock['heading'] {
+	if (size === null) return null
+	if (size >= 20) return 'primary'
+	if (size >= 10) return 'secondary'
+	return null
+}
+
 function classifyHeading(label: PdfTextItem, bodyItems: readonly PdfTextItem[]) {
 	const labelSize = roundedFontSize(label)
-	const candidate: RuleBlock['heading'] = labelSize >= 20 ? 'primary' : labelSize >= 10 ? 'secondary' : null
-	if (!candidate) return { heading: null, headingStyleMismatch: null }
-
 	const bodyFontSize = dominantFontSize(bodyItems)
+	const heading = headingLevel(bodyFontSize)
+	const labelHeading = headingLevel(labelSize)
+	const hasHeadingStyle = labelHeading !== null || heading !== null
 	const tolerance = Math.max(1, labelSize * 0.1)
-	if (bodyFontSize !== null && Math.abs(labelSize - bodyFontSize) <= tolerance) {
-		return { heading: candidate, headingStyleMismatch: null }
+	const sizesMatch = bodyFontSize !== null && Math.abs(labelSize - bodyFontSize) <= tolerance
+	if (!hasHeadingStyle || (labelHeading === heading && sizesMatch)) {
+		return { heading, headingStyleMismatch: null }
 	}
 
 	return {
-		heading: null,
+		heading,
 		headingStyleMismatch: { labelFontSize: labelSize, bodyFontSize },
 	}
 }

@@ -5,6 +5,7 @@ import type { DrawingBounds, DrawingInspection, DrawingStroke } from './drawings
 const LABEL_CELL_LEFT_MAXIMUM = 50
 const LABEL_CELL_RIGHT = 126
 const BODY_CELL_LEFT = 126
+const BODY_INDENT_WIDTH = 36
 const STRICT_LABEL = /^(\d{3}(?:\.(?:\d+|[a-z]))*)\.$/u
 const MISSING_PERIOD_LABEL = /^(\d{3}(?:\.(?:\d+|[a-z]))*)$/u
 const LABEL_LIKE = /^\d{3}(?:\.[0-9A-Za-z]+)*\.?$/u
@@ -25,6 +26,7 @@ export type TournamentRulesSourceEntry = Readonly<{
 	}> | null
 	text: string
 	kind: 'primary-heading' | 'secondary-heading' | 'rule'
+	nestingDepth: number
 	activity:
 		| Readonly<{ status: 'active'; removalEvidence: null }>
 		| Readonly<{
@@ -348,6 +350,9 @@ function joinCrossPageRows(rows: TournamentRulesForensicRow[]): TournamentRulesF
 
 function sourceEntry(row: TournamentRulesForensicRow): TournamentRulesSourceEntry {
 	const completeText = `${row.rawLabel}${row.text ? ` ${row.text}` : ''}`.trim()
+	const nestingDepth = row.geometry.bodyBounds
+		? Math.max(0, Math.round((row.geometry.bodyBounds.x - BODY_CELL_LEFT) / BODY_INDENT_WIDTH))
+		: Math.max(0, (row.id?.split('.').length ?? 1) - 1)
 	return {
 		sequence: row.sequence,
 		label: row.rawLabel
@@ -364,6 +369,7 @@ function sourceEntry(row: TournamentRulesForensicRow): TournamentRulesSourceEntr
 			: null,
 		text: row.text,
 		kind: row.kind,
+		nestingDepth,
 		activity: row.active
 			? { status: 'active', removalEvidence: null }
 			: {
