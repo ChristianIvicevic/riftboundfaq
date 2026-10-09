@@ -5,6 +5,7 @@ describe('normalizeRulesDate', () => {
 	test.each([
 		{ case: 'preserves an ISO date', input: '2026-07-16', expected: '2026-07-16' },
 		{ case: 'trims whitespace around an M/D/YYYY date', input: ' 7/6/2026 ', expected: '2026-07-06' },
+		{ case: 'normalizes a named month date', input: 'October 9, 2026', expected: '2026-10-09' },
 		{ case: 'accepts a valid leap day', input: '2/29/2024', expected: '2024-02-29' },
 	])('$case', ({ input, expected }) => {
 		expect(normalizeRulesDate(input)).toBe(expected)
@@ -22,6 +23,11 @@ describe('normalizeRulesDate', () => {
 			case: 'an invalid non-leap date',
 			input: '2025-02-29',
 			message: 'Last Updated "2025-02-29" is not a valid date',
+		},
+		{
+			case: 'an invalid named month date',
+			input: 'February 29, 2025',
+			message: 'Last Updated "February 29, 2025" is not a valid date',
 		},
 		{
 			case: 'an invalid month',

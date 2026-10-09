@@ -164,6 +164,10 @@ function splitWords(text: string): string[] {
 	return text.split(/\s+/u).filter(Boolean)
 }
 
+function textWithoutLeadingOrdinal(text: string): string | null {
+	return text.match(/^\d+\.\s+(.+)$/u)?.[1] ?? null
+}
+
 /** Length of the longest common subsequence, computed with O(m) memory. */
 function lcsLength<T>(a: T[], b: T[]): number {
 	let prev = new Int32Array(b.length + 1)
@@ -253,10 +257,18 @@ export function diffRuleSets<Rule extends RuleRecord>(
 
 	const flushGap = () => {
 		if (gapOld.length === 0 && gapNew.length === 0) return
+		const ordinalMatchScore = 2 * Math.min(gapOld.length, gapNew.length) + 1
 		const matchScore = (i: number, j: number) => {
 			const oldRule = oldRules[gapOld[i]]
 			const newRule = newRules[gapNew[j]]
-			if (textsMatch(oldText[gapOld[i]], newText[gapNew[j]])) return 2
+			const oldNorm = oldText[gapOld[i]]
+			const newNorm = newText[gapNew[j]]
+			const oldWithoutOrdinal = textWithoutLeadingOrdinal(oldNorm)
+			const newWithoutOrdinal = textWithoutLeadingOrdinal(newNorm)
+			// An ordinal-only title change is stronger than every possible combination of partial matches
+			// in this gap, so an inserted numbered title cannot steal its counterpart.
+			if (oldWithoutOrdinal !== null && oldWithoutOrdinal === newWithoutOrdinal) return ordinalMatchScore
+			if (textsMatch(oldNorm, newNorm)) return 2
 			return oldRule.id === newRule.id ? 1 : 0
 		}
 		const gapOps = alignIndicesByScore(gapOld.length, gapNew.length, matchScore)

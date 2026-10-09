@@ -62,6 +62,60 @@ describe('assembleRuleBlocks', () => {
 		])
 	})
 
+	test('uses body text size to classify mismatched heading labels', () => {
+		const result = assembleRuleBlocks([
+			rulePage(1, 600, [
+				[textItem('100.', 20, 700, 20, 35), textItem('Game Concepts', 80, 700, 20, 130)],
+				[textItem('101.', 20, 660, 8, 35), textItem('Deck Construction', 80, 660, 11, 90)],
+				[textItem('102.', 20, 620, 11, 35), textItem('This remains a rule.', 80, 620, 8, 90)],
+				[textItem('103.', 20, 580, 10, 35), textItem('This also remains a rule.', 80, 580, 9, 90)],
+				[textItem('104.', 20, 540, 20, 35), textItem('Actions', 80, 540, 19, 90)],
+				[textItem('105.', 20, 500, 10, 35), textItem('Movement', 80, 500, 19, 90)],
+				[textItem('106.', 20, 460, 20, 35), textItem('Playing the Game', 80, 460, 40, 90)],
+			]),
+		])
+
+		expect(
+			result.blocks.map(({ id, heading, headingStyleMismatch }) => ({
+				id,
+				heading,
+				headingStyleMismatch,
+			})),
+		).toStrictEqual([
+			{ id: '100', heading: 'primary', headingStyleMismatch: null },
+			{
+				id: '101',
+				heading: 'secondary',
+				headingStyleMismatch: { labelFontSize: 8, bodyFontSize: 11 },
+			},
+			{
+				id: '102',
+				heading: null,
+				headingStyleMismatch: { labelFontSize: 11, bodyFontSize: 8 },
+			},
+			{
+				id: '103',
+				heading: null,
+				headingStyleMismatch: { labelFontSize: 10, bodyFontSize: 9 },
+			},
+			{
+				id: '104',
+				heading: 'secondary',
+				headingStyleMismatch: { labelFontSize: 20, bodyFontSize: 19 },
+			},
+			{
+				id: '105',
+				heading: 'secondary',
+				headingStyleMismatch: { labelFontSize: 10, bodyFontSize: 19 },
+			},
+			{
+				id: '106',
+				heading: 'primary',
+				headingStyleMismatch: { labelFontSize: 20, bodyFontSize: 40 },
+			},
+		])
+	})
+
 	test('preserves wrapped text and source ranges across pages', () => {
 		const result = assembleFixture()
 

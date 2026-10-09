@@ -6,12 +6,12 @@ describe('Core Rules review', () => {
 	test('resolves an up-to-date Core Rules review for its callout and citations', () => {
 		const review = resolveCoreRulesReview({
 			url: '/cards/alpha-strike',
-			reviewedVersion: '1.4',
+			reviewedVersion: '1.5',
 		})!
 
 		expect(review).toMatchObject({
-			reviewedVersion: '1.4',
-			currentVersion: '1.4',
+			reviewedVersion: '1.5',
+			currentVersion: '1.5',
 			reviewStatus: 'up-to-date',
 		})
 	})
@@ -24,7 +24,7 @@ describe('Core Rules review', () => {
 
 		expect(review).toMatchObject({
 			reviewedVersion: '1.3',
-			currentVersion: '1.4',
+			currentVersion: '1.5',
 			reviewStatus: 'outdated',
 		})
 	})

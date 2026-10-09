@@ -7,12 +7,14 @@ function block({
 	id,
 	text,
 	heading = null,
+	headingStyleMismatch = null,
 	lines = [text],
 }: {
 	sequence: number
 	id: string
 	text: string
 	heading?: RuleBlock['heading']
+	headingStyleMismatch?: RuleBlock['headingStyleMismatch']
 	lines?: string[]
 }): RuleBlock {
 	return {
@@ -27,7 +29,7 @@ function block({
 		bodyX: 80,
 		fontSize: heading === 'primary' ? 20 : heading === 'secondary' ? 12 : 8,
 		heading,
-		headingStyleMismatch: null,
+		headingStyleMismatch,
 		physicalLineCount: 1,
 		sourceLines: [{ page: 1, line: sequence, x: 20, y: 700 - sequence * 40, text }],
 		lines,
@@ -70,6 +72,28 @@ describe('structureRuleBlocks', () => {
 			],
 			children: [{ id: '100.2.1.a', content: [{ kind: 'bullet', text: 'Then finish.' }] }],
 		})
+	})
+
+	test('reports a heading whose label and body use different sizes', () => {
+		const { diagnostics, sections } = structureRuleBlocks([
+			block({ sequence: 1, id: '100', text: 'Game Concepts', heading: 'primary' }),
+			block({
+				sequence: 2,
+				id: '101',
+				text: 'Deck Construction',
+				heading: 'secondary',
+				headingStyleMismatch: { labelFontSize: 8, bodyFontSize: 11 },
+			}),
+		])
+
+		expect(sections[0].subsections[0].heading).toMatchObject({ id: '101', level: 'secondary' })
+		expect(diagnostics).toMatchObject([
+			{
+				code: 'heading-style-mismatch',
+				ruleId: '101',
+				message: expect.stringContaining('classifying it as a secondary heading'),
+			},
+		])
 	})
 
 	test('reports content that precedes a primary heading', () => {

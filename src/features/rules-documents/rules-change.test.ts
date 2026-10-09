@@ -380,6 +380,34 @@ describe('rules changes page preparation', () => {
 		expect(changedRuleIds(oldRules, newRules)).toEqual(expected)
 	})
 
+	test('prefers a renumbered title over an earlier partial title match', () => {
+		expect(
+			changedRuleIds(
+				[{ id: '477.1', text: '1. Trait-Altering Effects' }],
+				[
+					{ id: '479.1', text: '1. Copy Effects' },
+					{ id: '479.2', text: '2. Trait-Altering Effects' },
+				],
+			),
+		).toEqual(['added:479.1', '477.1->479.2'])
+	})
+
+	test('prioritizes a renumbered title over multiple partial matches', () => {
+		expect(
+			changedRuleIds(
+				[
+					{ id: '477.1', text: '1. Trait-Altering Effects' },
+					{ id: '477.1.a', text: 'Copy effects are applied in this layer.' },
+				],
+				[
+					{ id: '479.1', text: '1. Copy Effects' },
+					{ id: '479.1.a', text: 'All copy effects are applied in this layer.' },
+					{ id: '479.2', text: '2. Trait-Altering Effects' },
+				],
+			),
+		).toEqual(['added:479.1', 'added:479.1.a', '477.1->479.2', 'removed:477.1.a'])
+	})
+
 	test('preserves the exact record when duplicate difference identities are removed', () => {
 		const catalog = createRulesDocumentFamilyCatalog({
 			type: 'tournament-rules',

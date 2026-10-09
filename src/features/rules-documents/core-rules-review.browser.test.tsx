@@ -8,7 +8,7 @@ describe('Core Rules review rendering', () => {
 	test('renders an up-to-date review callout and interactive citation', async () => {
 		const review = resolveCoreRulesReview({
 			url: '/cards/alpha-strike',
-			reviewedVersion: '1.4',
+			reviewedVersion: '1.5',
 		})!
 		const screen = await render(
 			<>
@@ -43,7 +43,7 @@ describe('Core Rules review rendering', () => {
 
 		await expect.element(screen.getByText('Outdated:')).toBeVisible()
 		await expect.element(screen.getByText(/reviewed against Core Rules 1\.3/u)).toBeVisible()
-		await expect.element(screen.getByText(/current version \(1\.4\)/u)).toBeVisible()
+		await expect.element(screen.getByText(/current version \(1\.5\)/u)).toBeVisible()
 		await expect
 			.element(screen.getByRole('link', { name: '[999.999]' }))
 			.toHaveAttribute('href', '/reference/core-rules/1.3#R999.999')

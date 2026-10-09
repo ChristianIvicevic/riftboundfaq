@@ -37,6 +37,7 @@ describe('reconstructTournamentRulesSourceRows', () => {
 				label: { sourceText: '100.1.', id: '100.1', text: '100.1.', normalization: 'unchanged' },
 				text: 'A tournament rule.',
 				kind: 'rule',
+				nestingDepth: 0,
 				activity: { status: 'active', removalEvidence: null },
 				sourcePages: { start: 1, end: 1 },
 			},
@@ -52,6 +53,14 @@ describe('reconstructTournamentRulesSourceRows', () => {
 				active: true,
 			},
 		])
+	})
+
+	test('records the semantic nesting depth of each source entry', async () => {
+		const result = await reconstructTournamentRulesSourceRows(
+			pages(sourcePage([textItem('100.1.a.', 40, 150), textItem('A nested rule.', 238.5, 150)])),
+		)
+
+		expect(result.sourceEntries[0]).toMatchObject({ nestingDepth: 3 })
 	})
 
 	test.each([
@@ -120,6 +129,7 @@ describe('reconstructTournamentRulesSourceRows', () => {
 				label: { sourceText: '100.1.', id: '100.1', text: '100.1.', normalization: 'unchanged' },
 				text: 'Text before the break and after it.',
 				kind: 'rule',
+				nestingDepth: 0,
 				activity: { status: 'active', removalEvidence: null },
 				sourcePages: { start: 1, end: 2 },
 			},

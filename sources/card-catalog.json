@@ -312,6 +312,18 @@
 		"effects": null
 	},
 	{
+		"name": "An Offer You Can't Refuse",
+		"energyCost": 2,
+		"powerCost": null,
+		"might": null,
+		"domains": ["Chaos"],
+		"cardTypes": ["Gear"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Action] (Play on your turn or in showdowns.)\nKill a gear. Its controller plays a Gold gear token exhausted. (It has \"[Reaction][>] Kill this, [Exhaust]: [Add] [Universal].\")",
+		"effects": null
+	},
+	{
 		"name": "Ancient Henge",
 		"energyCost": 2,
 		"powerCost": 1,
@@ -393,6 +405,18 @@
 		"superTypes": ["Champion"],
 		"tags": ["Annie", "Noxus"],
 		"abilities": "When you play me, return a spell from your trash to your hand.",
+		"effects": null
+	},
+	{
+		"name": "Antagonistic Apparatus",
+		"energyCost": 6,
+		"powerCost": 1,
+		"might": 3,
+		"domains": [],
+		"cardTypes": [],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "I enter ready.\nWhen you play me, play a ready 3 [Might] Mech unit token here.",
 		"effects": null
 	},
 	{
@@ -1500,6 +1524,18 @@
 		"effects": null
 	},
 	{
+		"name": "Bushwhack Trap",
+		"energyCost": 1,
+		"powerCost": null,
+		"might": null,
+		"domains": ["Fury"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": ["Device"],
+		"abilities": "[Deploy] (Play this only to a battlefield. When an opponent holds here, kill this.)\nWhile you or an ally control this battlefield, that player may hide an additional card here.",
+		"effects": null
+	},
+	{
 		"name": "Butcher of the Sands",
 		"energyCost": null,
 		"powerCost": null,
@@ -2601,6 +2637,18 @@
 		"superTypes": ["Signature"],
 		"tags": ["Device", "Jarvan IV"],
 		"abilities": "[Deploy] (Play this only to a battlefield. When an opponent holds here, kill this.)\nWhen one or more friendly units attack here, give one of them +2 [Might] this turn.\nWhen you hold here, you may return this to its owner's hand.",
+		"effects": null
+	},
+	{
+		"name": "Demon Shade",
+		"energyCost": 3,
+		"powerCost": null,
+		"might": null,
+		"domains": ["Fury"],
+		"cardTypes": ["Spell"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Hidden] (Hide now for [Universal] to react with later for [0].)\nChoose a friendly unit, then choose one —\n- Move it to an open battlefield.\n- Give it [Ganking] this turn if there are no open battlefields. (It can move from battlefield to battlefield.)",
 		"effects": null
 	},
 	{
@@ -3804,6 +3852,18 @@
 		"effects": null
 	},
 	{
+		"name": "Firebrand Raider",
+		"energyCost": 6,
+		"powerCost": 1,
+		"might": 6,
+		"domains": ["Fury"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "I enter ready.\nWhen you play me, ready all enemy units.\nOther units enter ready.\nUnits don't ready during the Awaken Phase.",
+		"effects": null
+	},
+	{
 		"name": "Firelights' Hideout",
 		"energyCost": null,
 		"powerCost": null,
@@ -4428,6 +4488,18 @@
 		"effects": null
 	},
 	{
+		"name": "Gravity Field",
+		"energyCost": 5,
+		"powerCost": 1,
+		"might": null,
+		"domains": ["Calm"],
+		"cardTypes": ["Gear"],
+		"superTypes": [],
+		"tags": ["Device"],
+		"abilities": "[Deploy] (Play this only to a battlefield. When an opponent holds here, kill this.)\nOpponents must pay [1][Universal] to move one or more units to this battlefield.\n[Deathknell][>] Draw 1. (When I die, get the effect.)",
+		"effects": null
+	},
+	{
 		"name": "Green Father",
 		"energyCost": null,
 		"powerCost": null,
@@ -4701,6 +4773,18 @@
 		"superTypes": [],
 		"tags": ["Yordle", "Kennen"],
 		"abilities": "When you play a card from anywhere other than your hand, empower me.\n[Action][>] Disempower me, [Exhaust]: Give a unit [Assault 2] this turn. (+2 [Might] while it's an attacker.)",
+		"effects": null
+	},
+	{
+		"name": "Heartening Soul",
+		"energyCost": 7,
+		"powerCost": 1,
+		"might": 7,
+		"domains": ["Calm"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "When you play me, ready a friendly legend.\nFriendly legends have \"[Exhaust]: Give a unit +3 [Might] this turn.\"",
 		"effects": null
 	},
 	{
@@ -5088,6 +5172,18 @@
 		"effects": null
 	},
 	{
+		"name": "Hush",
+		"energyCost": 1,
+		"powerCost": 2,
+		"might": null,
+		"domains": [],
+		"cardTypes": [],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Reaction] (Play any time, even before spells and abilities resolve.)\nCounter a spell with Power cost [Universal][Universal] or more.",
+		"effects": null
+	},
+	{
 		"name": "Hwei, Brooding Painter",
 		"energyCost": 5,
 		"powerCost": 1,
@@ -5445,6 +5541,18 @@
 		"superTypes": ["Champion"],
 		"tags": ["Demacia", "Jarvan IV"],
 		"abilities": "Your gear with [Deploy] have [Action]. (They can be played on your turn or in showdowns.)\nWhen I conquer, if there is a friendly gear with [Deploy] here, channel 1 rune exhausted.",
+		"effects": null
+	},
+	{
+		"name": "Jarvan IV, Royal Heir",
+		"energyCost": 7,
+		"powerCost": 1,
+		"might": 7,
+		"domains": ["Order"],
+		"cardTypes": ["Unit"],
+		"superTypes": ["Champion"],
+		"tags": ["Demacia", "Jarvan IV"],
+		"abilities": "[Assault] (+1 [Might] while I'm attacking.)\n[Tank] (I must be assigned combat damage first.)\nWhen I attack, you may move a unit you control to my battlefield.",
 		"effects": null
 	},
 	{
@@ -6168,6 +6276,18 @@
 		"effects": null
 	},
 	{
+		"name": "Life from Stone",
+		"energyCost": 1,
+		"powerCost": null,
+		"might": null,
+		"domains": ["Calm"],
+		"cardTypes": ["Spell"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Reaction] (Play any time, even before spells and abilities resolve.)\nAs an additional cost to play this, exhaust a friendly unit.\nDraw 1 and channel 1 rune exhausted.",
+		"effects": null
+	},
+	{
 		"name": "Lightning Rush",
 		"energyCost": 1,
 		"powerCost": null,
@@ -6600,6 +6720,18 @@
 		"effects": null
 	},
 	{
+		"name": "Mechanical Bandit",
+		"energyCost": 4,
+		"powerCost": 1,
+		"might": null,
+		"domains": ["Fury"],
+		"cardTypes": ["Gear"],
+		"superTypes": [],
+		"tags": ["Device"],
+		"abilities": "At the start of your Beginning Phase, each player reveals the top card of their Main Deck. If you revealed a card with the lowest Energy cost, draw it. Recycle the rest.",
+		"effects": null
+	},
+	{
 		"name": "Mechanized Menace",
 		"energyCost": null,
 		"powerCost": null,
@@ -6933,6 +7065,18 @@
 		"superTypes": ["Champion"],
 		"tags": ["Noxus", "Mordekaiser"],
 		"abilities": "When you play me or when I attack, you may discard 1 to kill a unit or gear.",
+		"effects": null
+	},
+	{
+		"name": "Mordekaiser, Twice Slain",
+		"energyCost": 7,
+		"powerCost": 1,
+		"might": 5,
+		"domains": ["Fury"],
+		"cardTypes": ["Unit"],
+		"superTypes": ["Champion"],
+		"tags": ["Noxus", "Mordekaiser"],
+		"abilities": "[Accelerate] (You may pay [1][Fury] as an additional cost to have me enter ready.)\n[Assault 3] (+3 [Might] while I'm an attacker.)\nOnce each turn, if I would die, you may kill a friendly unit to heal me, exhaust me, and recall me instead.",
 		"effects": null
 	},
 	{
@@ -7368,6 +7512,18 @@
 		"effects": null
 	},
 	{
+		"name": "One-Two Punch",
+		"energyCost": 3,
+		"powerCost": null,
+		"might": null,
+		"domains": [],
+		"cardTypes": [],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Action] (Play on your turn or in showdowns.)\n[Buff] a friendly unit and [Stun] an enemy unit. (Give the friendly unit a +1 [Might] buff if it doesn't have one. The enemy unit doesn't deal combat damage this turn.)",
+		"effects": null
+	},
+	{
 		"name": "Onslaught",
 		"energyCost": 4,
 		"powerCost": null,
@@ -7533,6 +7689,30 @@
 		"superTypes": [],
 		"tags": ["Cat", "Shurima"],
 		"abilities": "When I move, reveal the top card of your Main Deck. If it's a unit, draw it. Otherwise, put it in your trash and give me +2 [Might] this turn.",
+		"effects": null
+	},
+	{
+		"name": "Parallel Convergence",
+		"energyCost": 2,
+		"powerCost": 1,
+		"might": null,
+		"domains": ["Mind"],
+		"cardTypes": ["Spell"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "As an additional cost to play this, return a friendly unit to its owner's hand.\nDeal 5 to a unit at a battlefield.",
+		"effects": null
+	},
+	{
+		"name": "Party Crasher",
+		"energyCost": 9,
+		"powerCost": 1,
+		"might": 6,
+		"domains": ["Order"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "I cost [1] less for each exhausted unit you control.\n[Tank] (I must be assigned combat damage first.)",
 		"effects": null
 	},
 	{
@@ -8688,6 +8868,18 @@
 		"effects": null
 	},
 	{
+		"name": "Resource Extractor",
+		"energyCost": 1,
+		"powerCost": null,
+		"might": null,
+		"domains": ["Mind"],
+		"cardTypes": ["Gear"],
+		"superTypes": [],
+		"tags": ["Device"],
+		"abilities": "[Deploy] (Play this only to a battlefield. When an opponent holds here, kill this.)\nAt the end of your turn, if you control this battlefield, play a Gold gear token exhausted. (It has \"[Reaction][>] Kill this, [Exhaust]: [Add] [Universal].\")",
+		"effects": null
+	},
+	{
 		"name": "Resplendent Rostrum",
 		"energyCost": 8,
 		"powerCost": 1,
@@ -8853,6 +9045,18 @@
 		"superTypes": ["Champion"],
 		"tags": ["Riven"],
 		"abilities": "When I become exhausted, choose one that hasn't been chosen this turn —\n- [Buff] me. (Give me a +1 [Might] buff if I don't have one.)\n- Spend my buff to [Stun] an enemy unit. (It doesn't deal combat damage this turn.)\n- Spend my buff to ready me.",
+		"effects": null
+	},
+	{
+		"name": "Riven, Deserter",
+		"energyCost": 5,
+		"powerCost": 1,
+		"might": 5,
+		"domains": ["Chaos"],
+		"cardTypes": ["Unit"],
+		"superTypes": ["Champion"],
+		"tags": ["Riven"],
+		"abilities": "When another friendly unit becomes exhausted, give me +1 [Might] this turn.\nExhaust a friendly unit: Ready a unit. Use this ability only once each turn.",
 		"effects": null
 	},
 	{
@@ -9132,6 +9336,18 @@
 		"effects": null
 	},
 	{
+		"name": "Sanctum Conservator",
+		"energyCost": 5,
+		"powerCost": null,
+		"might": 5,
+		"domains": ["Calm"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "When you play a card with Energy cost [7] or more, ready me.",
+		"effects": null
+	},
+	{
 		"name": "Sandshifter",
 		"energyCost": 5,
 		"powerCost": 2,
@@ -9237,6 +9453,18 @@
 		"superTypes": [],
 		"tags": ["Mech", "Bandle City"],
 		"abilities": "[Legion] — When you play me, discard 2, then draw 2. (Get the effect if you've played another card this turn.)",
+		"effects": null
+	},
+	{
+		"name": "Scrutinizing Scope",
+		"energyCost": 2,
+		"powerCost": null,
+		"might": null,
+		"domains": ["Mind"],
+		"cardTypes": ["Spell"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[1], [Exhaust]: Choose an opponent. They guess a card type. Reveal the top card of your Main Deck. If it has that type, recycle it. Otherwise, draw it. (Unit, gear, and spell are types.)",
 		"effects": null
 	},
 	{
@@ -9969,6 +10197,18 @@
 		"superTypes": [],
 		"tags": ["Pirate", "Bilgewater"],
 		"abilities": "You may play me to an open battlefield.",
+		"effects": null
+	},
+	{
+		"name": "Sneaky Zeebles",
+		"energyCost": 2,
+		"powerCost": null,
+		"might": 1,
+		"domains": ["Body"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "When I conquer, [Add] [Universal]. (Abilities that add resources can't be reacted to.)",
 		"effects": null
 	},
 	{
@@ -11172,6 +11412,18 @@
 		"effects": null
 	},
 	{
+		"name": "Titanic Shrine",
+		"energyCost": 3,
+		"powerCost": null,
+		"might": null,
+		"domains": ["Body"],
+		"cardTypes": ["Gear"],
+		"superTypes": [],
+		"tags": ["Device"],
+		"abilities": "When you play a unit with Might greater than each other unit on the board, exhaust me to draw 1.",
+		"effects": null
+	},
+	{
 		"name": "Tomb-Raider Barbara",
 		"energyCost": 4,
 		"powerCost": null,
@@ -12084,6 +12336,18 @@
 		"effects": null
 	},
 	{
+		"name": "War Scout",
+		"energyCost": 3,
+		"powerCost": null,
+		"might": 2,
+		"domains": ["Fury"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Accelerate] (You may pay [1][Fury] as an additional cost to have me enter ready.)\nWhen you play me, give a unit +2 [Might] this turn.",
+		"effects": null
+	},
+	{
 		"name": "Warmog's Armor",
 		"energyCost": 1,
 		"powerCost": null,
@@ -12285,6 +12549,18 @@
 		"superTypes": [],
 		"tags": ["Spirit", "Shadow Isles"],
 		"abilities": "The first time a friendly unit dies each turn, draw 1.",
+		"effects": null
+	},
+	{
+		"name": "Wrath of the Freljord",
+		"energyCost": 9,
+		"powerCost": null,
+		"might": 7,
+		"domains": ["Body"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "I enter ready.\n[Shield 3] (+3 [Might] while I'm a defender.)",
 		"effects": null
 	},
 	{
@@ -12561,6 +12837,18 @@
 		"superTypes": [],
 		"tags": [],
 		"abilities": "[Hidden] (Hide now for [Universal] to react with later for [0].)\nThe next time a friendly unit would die, kill this instead. Recall that unit exhausted. (Send it to base. This isn't a move.)",
+		"effects": null
+	},
+	{
+		"name": "Ziggs, Explosive",
+		"energyCost": 4,
+		"powerCost": null,
+		"might": 4,
+		"domains": ["Chaos"],
+		"cardTypes": ["Unit"],
+		"superTypes": ["Champion"],
+		"tags": ["Bandle City", "Ziggs"],
+		"abilities": "[1], [Exhaust]: Play a Bomb gear token to a battlefield. (It has [Deploy]. When it dies, deal 2 to an enemy there and kill your other Bombs there.)\nWhen I defend, you may kill a friendly gear to give me +2 [Might] this turn.",
 		"effects": null
 	},
 	{
