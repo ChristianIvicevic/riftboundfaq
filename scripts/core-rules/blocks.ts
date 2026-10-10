@@ -1,13 +1,21 @@
+import type { RuleContent } from '@/lib/rules/core-rules-document'
 import { reconstructText, type PdfTextItem, type PhysicalLine } from './lines'
 
 const RULE_LABEL_CANDIDATE = /^(\d{3}(?:\.[0-9A-Za-z]+)*)(?:\.)?$/u
 const RULE_LIKE_TEXT = /^\d{3}(?:\.[0-9A-Za-z]+)*(?:\.|\b)/u
+// Core Rules list rows use one 36pt indent and stop well before the text column's right edge.
+const LIST_INDENT = 36
+const LIST_X_TOLERANCE = 1
+const LIST_MINIMUM_RIGHT_MARGIN = 100
+const NON_LIST_ROW = /^(?:\d+[.)]\s|Examples?:|e\.g\.,|See rule |Reminder:)/u
 
 export type SourceLine = {
 	page: number
 	line: number
 	x: number
 	y: number
+	right: number
+	pageWidth: number
 	text: string
 }
 
@@ -26,7 +34,7 @@ export type RuleBlock = {
 	headingStyleMismatch: { labelFontSize: number; bodyFontSize: number | null } | null
 	physicalLineCount: number
 	sourceLines: SourceLine[]
-	lines: string[]
+	lines: RuleContent[]
 	text: string
 	source: { startPage: number; startLine: number; endPage: number; endLine: number }
 }
@@ -96,32 +104,161 @@ function bodyItemsOnLine(line: PhysicalLine, label: PdfTextItem) {
 	return line.items.filter((item) => item.str.trim() !== '' && item.transform[4] >= labelRight)
 }
 
-function sourceLine(line: PhysicalLine, text: string, x = line.x): SourceLine {
-	return { page: line.page, line: line.line, x, y: line.y, text }
+function roundedCoordinate(value: number) {
+	return Math.round(value * 100) / 100
 }
 
-function normalizedLines(lines: readonly SourceLine[]) {
-	const text = lines
+function sourceLine(
+	line: PhysicalLine,
+	text: string,
+	pageWidth: number,
+	items: readonly PdfTextItem[] = line.items,
+): SourceLine {
+	const contentItems = items.filter((item) => item.str.trim() !== '')
+	const x = Math.min(...contentItems.map((item) => item.transform[4]))
+	const right = Math.max(...contentItems.map((item) => item.transform[4] + item.width))
+	return {
+		page: line.page,
+		line: line.line,
+		x: roundedCoordinate(x),
+		y: line.y,
+		right: roundedCoordinate(right),
+		pageWidth,
+		text,
+	}
+}
+
+function joinedText(lines: readonly SourceLine[]) {
+	return lines
 		.map((line) => line.text)
 		.filter(Boolean)
 		.join(' ')
 		.replaceAll(/\s+/gu, ' ')
 		.trim()
+}
+
+function contentFromText(text: string): RuleContent[] {
 	if (!text) return []
 
 	return text
 		.split(/(?=Example:|See rule )/gu)
 		.map((part) => part.trim())
 		.filter(Boolean)
+		.map((part) => {
+			if (part.startsWith('Example:')) return { kind: 'example', text: part }
+			if (part.startsWith('See rule ')) return { kind: 'reference', text: part }
+			if (part.startsWith('* ')) return { kind: 'bullet', text: part.slice(2) }
+			return { kind: 'paragraph', text: part }
+		})
+}
+
+function atListIndent(line: SourceLine, bodyX: number) {
+	return Math.abs(line.x - (bodyX + LIST_INDENT)) <= LIST_X_TOLERANCE
+}
+
+function hasListWidth(line: SourceLine) {
+	return line.pageWidth - line.right >= LIST_MINIMUM_RIGHT_MARGIN
+}
+
+function listRunEnd(lines: readonly SourceLine[], start: number, bodyX: number) {
+	let end = start
+	while (
+		end < lines.length &&
+		atListIndent(lines[end], bodyX) &&
+		hasListWidth(lines[end]) &&
+		!NON_LIST_ROW.test(lines[end].text)
+	) {
+		end++
+	}
+	return end - start >= 2 ? end : start
+}
+
+function normalizeProseAndLists(lines: readonly SourceLine[], bodyX: number): RuleContent[] {
+	const content: RuleContent[] = []
+	let prose: SourceLine[] = []
+	const flushProse = () => {
+		content.push(...contentFromText(joinedText(prose)))
+		prose = []
+	}
+
+	for (let index = 0; index < lines.length;) {
+		const end = listRunEnd(lines, index, bodyX)
+		if (end === index) {
+			prose.push(lines[index])
+			index++
+			continue
+		}
+
+		flushProse()
+		for (const line of lines.slice(index, end)) content.push({ kind: 'bullet', text: line.text })
+		index = end
+	}
+
+	flushProse()
+	return content
+}
+
+function samePageGap(previous: SourceLine, current: SourceLine) {
+	return previous.page === current.page ? previous.y - current.y : null
+}
+
+function normalizeExamples(marker: SourceLine, lines: readonly SourceLine[]): RuleContent[] {
+	if (lines.length === 0) return []
+	const gaps = [marker, ...lines].flatMap((line, index, allLines) => {
+		const next = allLines[index + 1]
+		if (!next) return []
+		const gap = samePageGap(line, next)
+		return gap !== null && gap > 0 ? [gap] : []
+	})
+	if (gaps.length === 0) return lines.map(({ text }) => ({ kind: 'example', text }))
+	const normalLeading = Math.min(...gaps)
+	const itemGap = normalLeading * 1.5
+	const spaced = gaps.some((gap) => gap >= itemGap)
+	// Compact groups put one example on every row; spaced groups use a blank row between examples.
+	if (!spaced) return lines.map(({ text }) => ({ kind: 'example', text }))
+
+	const examples: RuleContent[] = []
+	let current = ''
+	for (let index = 0; index < lines.length; index++) {
+		const line = lines[index]
+		const previous = lines[index - 1]
+		const pageBreakStartsItem =
+			previous &&
+			previous.page !== line.page &&
+			previous.pageWidth - previous.right >= LIST_MINIMUM_RIGHT_MARGIN
+		const gap = previous ? samePageGap(previous, line) : null
+		const startsItem = index === 0 || pageBreakStartsItem || (gap !== null && gap >= itemGap)
+
+		if (startsItem && current) {
+			examples.push({ kind: 'example', text: current })
+			current = line.text
+		} else current = current ? `${current} ${line.text}` : line.text
+	}
+	if (current) examples.push({ kind: 'example', text: current })
+	return examples
+}
+
+function normalizedLines(lines: readonly SourceLine[], bodyX: number | null): RuleContent[] {
+	if (lines.length === 0) return []
+	const effectiveBodyX = bodyX ?? lines[0].x
+	const examplesIndex = lines.findIndex(({ text }) => text === 'Examples:')
+	if (examplesIndex < 0) return normalizeProseAndLists(lines, effectiveBodyX)
+
+	const marker = lines[examplesIndex]
+	return [
+		...normalizeProseAndLists(lines.slice(0, examplesIndex), effectiveBodyX),
+		{ kind: 'paragraph', text: marker.text },
+		...normalizeExamples(marker, lines.slice(examplesIndex + 1)),
+	]
 }
 
 function finalizeBlock(block: PendingRuleBlock): RuleBlock {
-	const lines = normalizedLines(block.sourceLines)
+	const lines = normalizedLines(block.sourceLines, block.bodyX)
 	const lastSourceLine = block.sourceLines.at(-1)
 	return {
 		...block,
 		lines,
-		text: lines.join(' '),
+		text: joinedText(block.sourceLines),
 		source: {
 			startPage: block.page,
 			startLine: block.sourceLine,
@@ -151,9 +288,9 @@ export function assembleRuleBlocks(pages: readonly RulePage[]) {
 			)
 			if (!labelItem) {
 				if (current) {
-					current.sourceLines.push(sourceLine(line, line.text))
+					current.sourceLines.push(sourceLine(line, line.text, page.width))
 					current.physicalLineCount++
-				} else unassignedLines.push(sourceLine(line, line.text))
+				} else unassignedLines.push(sourceLine(line, line.text, page.width))
 				continue
 			}
 
@@ -182,7 +319,7 @@ export function assembleRuleBlocks(pages: readonly RulePage[]) {
 				heading: classification.heading,
 				headingStyleMismatch: classification.headingStyleMismatch,
 				physicalLineCount: 1,
-				sourceLines: bodyText ? [sourceLine(line, bodyText, bodyX ?? line.x)] : [],
+				sourceLines: bodyText ? [sourceLine(line, bodyText, page.width, bodyItems)] : [],
 			}
 		}
 	}
