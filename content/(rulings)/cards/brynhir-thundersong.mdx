@@ -1,7 +1,7 @@
 ---
 title: "Brynhir Thundersong"
 createdAt: "2026-08-01"
-reviewedCoreRulesVersion: "1.4"
+reviewedCoreRulesVersion: "1.5"
 authors:
 - name: "Christian “Near” Ivicevic"
   url: "https://x.com/civicevic"
@@ -10,8 +10,9 @@ authors:
 ## Does Brynhir Thundersong stop cards already on the chain? [#existing-cards]
 
 No.
-A card already on the <Term item="chain">chain</Term> has already started its play because playing a card means placing it there and queuing it for <Term item="finalization">finalization</Term>.<Rule number="419.1" />
+A card already on the <Term item="chain">chain</Term> has already started its play because playing a card means placing it there and queuing it for <Term item="finalization">finalization</Term>.<Rule number="420.1" />
 Once Brynhir Thundersong's play effect <Term item="resolution">resolves</Term>, it prevents opponents from starting further plays that turn, but it does not stop cards already on the chain from finalizing or resolving.
 
-If one of those cards later instructs an opponent to play another card, Brynhir can still make the new play impossible.
-Brynhir prevents that new play, so the second card stays in its current zone while the card already on the chain continues resolving.<Rule number="358.3.a" />
+If one of those cards later instructs an opponent to play another card, Brynhir can still make the new play impossible without preventing that card from finalizing.<Rule number="358.3.a" />
+The play instruction is negated, so the second card stays in its current zone.<Rule number="359.3.e.6" />
+The card already on the chain continues resolving and does as much as it can.<Rule number="055" />
