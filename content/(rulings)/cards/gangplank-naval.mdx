@@ -1,7 +1,7 @@
 ---
 title: "Gangplank, Naval"
 createdAt: "2026-07-12"
-reviewedCoreRulesVersion: "1.4"
+reviewedCoreRulesVersion: "1.5"
 authors:
 - name: "Christian “Near” Ivicevic"
   url: "https://x.com/civicevic"
@@ -15,31 +15,24 @@ A replacement effect only replaces the specific event or instruction that qualif
 <Callout type="idea" title="Example">
 	You play <Card name="Star-Crossed" />, targeting your own <Empowered /> Gangplank as the friendly unit and an opponent's <Card name="Elder Dragon" /> as the enemy unit.
 
-	The return event affecting Elder Dragon would not return Gangplank, so his replacement effect does not apply to it; Elder Dragon is returned to hand normally.
-	Returning Gangplank is the qualifying event: instead of going to hand, he gets +3 might.
+	Gangplank's replacement effect does not apply to the separate return event affecting Elder Dragon, so Elder Dragon returns to its owner's hand normally.
+	Returning Gangplank is the qualifying event: instead of going to hand, he gets +3 might this turn.
 	The rest of Star-Crossed <Term item="resolution">resolves</Term> normally; it simply produces a different result for the one return event involving Gangplank.
 </Callout>
 
 ## What happens when Switcheroo would reduce an Empowered Gangplank, Naval's might? [#switcheroo-might-reduction]
 
-Under the August 2026 [Vendetta FAQ](https://playriftbound.com/en-us/news/rules-and-releases/vendetta-rules-faq-and-clarifications), the might reduction is replaced with +3 might, while the modifier applied to the other unit is unchanged.
+When Switcheroo would decrease an <Empowered /> Gangplank's might, Gangplank gets +3 might this turn instead, while the increase affecting the other unit remains unchanged.
 <Card name="Switcheroo" /> chooses Gangplank when the spell is <Term item="finalization">finalized</Term>.<Rule number="355.5" /><Rule number="355.10" />
-When it <Term item="resolution">resolves</Term>, Switcheroo determines one difference and creates a separate increase and decrease.<Rule number="433.1.a" /><Rule number="433.1.b" />
-If the modifier affecting Gangplank would decrease his might, that event is replaced with +3 might because it comes from a spell that chose him.
-If it would increase his might, it does not match the events his ability replaces and applies normally.<Rule number="370.1" /><Rule number="370.1.b" />
-The modifier affecting the other unit is unchanged.
-Under that ruling, Switcheroo does not recalculate either fixed amount after Gangplank replaces his decrease.
-
-<Callout type="warn" title="Rules citation needed">
-	Core Rules 1.4 does not yet make this no-recalculation result explicit, and its swap rules need clarification.
-</Callout>
+When it <Term item="resolution">resolves</Term>, Switcheroo first determines one difference, then creates separate might-increase and might-decrease effects for that fixed amount; replacing one does not recalculate or alter the other.<Rule number="434.1.a" /><Rule number="434.1.b" /><Rule number="434.1.d" />
+Gangplank's replacement effect replaces the decrease affecting him because it comes from a spell that chose him, but an increase does not match any event his ability replaces and applies normally.<Rule number="370.1" /><Rule number="370.1.b" />
 
 <Callout type="idea" title="Example">
 	An <Empowered /> Gangplank with 6 current might is swapped with a <Card name="Determined Sentry" /> with 1 current might at the same battlefield via Switcheroo.
 
-	The swap action calculates a difference of 5, then creates two modifiers: -5 might for Gangplank and +5 might for Determined Sentry.
-	Gangplank's replacement effect intercedes on his -5 might modifier because decreasing his might is one of the events it replaces, and turns it into +3 might instead.
-	The +5 might modifier applies only to Determined Sentry, so Gangplank's replacement effect does not affect it.
+	The swap action calculates a difference of 5, then creates two effects: -5 might for Gangplank and +5 might for Determined Sentry.
+	Gangplank's replacement effect replaces the -5 might decrease affecting him with +3 might this turn.
+	The +5 might effect applies only to Determined Sentry, so Gangplank's replacement effect does not affect it.
 
-	Gangplank ends at 9 might (6 current might + 3 might); Determined Sentry ends at 6 might (1 current might + 5 might).
+	After Switcheroo resolves, Gangplank has 9 might (6 current might + 3 might), and Determined Sentry has 6 might (1 current might + 5 might).
 </Callout>
