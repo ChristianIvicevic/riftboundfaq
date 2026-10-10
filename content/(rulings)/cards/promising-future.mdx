@@ -1,7 +1,7 @@
 ---
 title: "Promising Future"
 createdAt: "2026-07-21"
-reviewedCoreRulesVersion: "1.4"
+reviewedCoreRulesVersion: "1.5"
 authors:
 - name: "Christian “Near” Ivicevic"
   url: "https://x.com/civicevic"
@@ -26,11 +26,11 @@ Each card waits for finalization while Promising Future continues resolving.
 </Step>
 <Step>
 Promising Future finishes resolving.
-This completes the act of playing Promising Future, so applicable abilities on cards such as <Card name="Ravenbloom Student" /> and <Card name="Astral Heron" /> trigger and are put on the chain after the chosen cards.<Rule number="383.3" /><Rule number="419.4.a" />
+This completes the act of playing Promising Future, so applicable abilities on cards such as <Card name="Ravenbloom Student" /> trigger and are put on the chain after the chosen cards.<Rule number="383.3" /><Rule number="420.4.a" />
 </Step>
 <Step>
 The chosen cards then proceed to finalization in the order they were put on the chain: the next player's card first, followed by each other player in turn order.<Rule number="337.1.b" />
-Their energy costs are set to zero, but their power costs and applicable additional costs still apply.<Rule number="356.1.b.2" /><Rule number="356.1.b.3" />
+Their base energy costs are set to zero, but their power costs, applicable additional costs, and later cost increases still apply.<Rule number="356.1.b.2" /><Rule number="356.1.b.3" />
 If a player cannot pay every required cost, that card's play process is undone and it returns to banishment.<Rule number="358.2" /><Rule number="358.5" />
 </Step>
 <Step>
@@ -67,11 +67,11 @@ If no valid target exists, its play process is undone and it returns to banishme
 	In a two-player game, suppose the turn player banishes a counterspell.
 	The opponent's card is put on the chain first, followed by the turn player's counterspell, so the opponent's card undergoes finalization first.<Rule number="337.1.b" />
 	If the opponent chose a spell that the counterspell can target, the turn player can choose that spell while finalizing the counterspell.
-	The counterspell is newer and therefore <Term item="resolution">resolves</Term> first, allowing it to counter the opponent's spell before that spell resolves.<Rule number="340.1" /><Rule number="425.1.a" />
+	The counterspell is newer and therefore <Term item="resolution">resolves</Term> first, allowing it to counter the opponent's spell before that spell resolves.<Rule number="340.1" /><Rule number="426.1.a" />
 </Callout>
 
-A counterspell put on the chain before another chosen card must finalize or leave the chain before that later card can finalize.<Rule number="337.1" /><Rule number="337.1.b" />
-It needs a legal target when its own targets are chosen.
+A counterspell put on the chain before another chosen card must finalize or leave the chain while that later card is still pending.<Rule number="337.1" /><Rule number="337.1.b" />
+Only a finalized spell or ability on the chain can be a legal target, so the counterspell cannot target that later card.<Rule number="355.9.a" />
 
 ## Can Salvage or Brittle Steel target Dazzling Aurora if both are chosen with Promising Future? [#gear-targeting]
 
@@ -80,7 +80,7 @@ If Promising Future's controller chose Aurora and their opponent chose the spell
 
 Promising Future puts the next player's chosen card on the <Term item="chain">chain</Term> first, so the opponent's card <Term item="finalization">finalizes</Term> first.<Rule number="337.1.b" />
 A gear that finalizes resolves immediately and enters the board.<Rule number="337.2" /><Rule number="359.2.d" />
-A spell chooses its targets during its own finalization, and a gear target must be on the board unless another zone is specified.<Rule number="355.5" /><Rule number="355.7" /><Rule number="355.9.a" /><Rule number="355.9.a.1" />
+A spell chooses its targets during its own finalization, and a gear target must be on the board unless another zone is specified.<Rule number="355.5" /><Rule number="355.9.a" /><Rule number="355.9.a.1" />
 
 If the opponent chose Aurora, it enters the board before Promising Future's controller's spell chooses its target.
 If the opponent chose the spell, it must choose its target while Aurora is still <Term item="pending">pending</Term> on the chain, so Aurora is not a legal target.
@@ -91,15 +91,15 @@ Salvage may also choose no gear, while Brittle Steel's play is undone if no lega
 ## Does Brynhir Thundersong stop an opponent's card chosen with Promising Future from being played? [#brynhir-thundersong]
 
 Only if <Card name="Brynhir Thundersong" />'s play effect has already <Term item="resolution">resolved</Term> when Promising Future instructs that opponent to play their chosen card.
-Brynhir then prevents that play, so the card remains banished.<Rule number="358.3.a" />
+Brynhir's restriction supersedes Promising Future's permission to play the card.<Rule number="054.1" />
+That play instruction is negated, so the chosen card remains banished.<Rule number="359.3.e.6" />
 
-Brynhir prevents an opponent from starting to play a card.
-A card's play starts when it is placed on the <Term item="chain">chain</Term>; <Term item="finalization">finalization</Term> and resolution happen later.<Rule number="419.1" />
+Brynhir prevents an opponent from performing the play game action, which puts the card on the <Term item="chain">chain</Term> and queues it for <Term item="finalization">finalization</Term>.<Rule number="420.1" /><Rule number="420.5" />
 
 If Brynhir herself is chosen with Promising Future, she does not stop any other chosen card.
 Promising Future puts every chosen card on the chain as a <Term item="pending">pending</Term> item before any of them proceed to finalization.<Rule number="354.2" /><Rule number="354.3" />
 Brynhir's play effect is added only after she finalizes and enters the board.<Rule number="383.4.a.2" />
-By then, every chosen card has already started being played, even if it has not yet finalized or resolved.
+By then, every chosen card has already been added to the chain and queued for finalization, so Brynhir's restriction cannot prevent those play game actions.<Rule number="420.5" />
 
 ## When I choose Akshan, Mischievous with Promising Future, do I have to pay his additional cost before knowing whether I can take Dazzling Aurora? [#akshan-aurora]
 
@@ -111,7 +111,8 @@ You can then choose Dazzling Aurora for Akshan's play effect.
 Promising Future puts every chosen card on the <Term item="chain">chain</Term> as a <Term item="pending">pending</Term> item before any of them proceed to <Term item="finalization">finalization</Term>.<Rule number="354.2" /><Rule number="354.3" />
 You decide whether to pay Akshan's optional additional cost while Akshan is being finalized, not when he is banished or first put on the chain.<Rule number="355.1.a" />
 His play effect is a separate pending ability put on the chain after Akshan finalizes and enters the board.<Rule number="383.4.a.2" />
-You choose the enemy gear while that triggered ability is being finalized, rather than while Akshan is being finalized.<Rule number="355.5" /><Rule number="355.5.b" />
+You choose the enemy gear while that triggered ability is being finalized.<Rule number="403.2" />
+It isn't chosen while Akshan is being finalized.<Rule number="355.5.b" />
 
 This differs from a spell that chooses a gear itself, because that choice is made while the spell is finalized.<Rule number="355.5" />
 Akshan's play effect is instead a separate, newer pending item, so every chosen card finalizes or leaves the chain before that ability finalizes.<Rule number="337.1" /><Rule number="337.1.b" /><Rule number="383.4.a.2" />
@@ -138,7 +139,7 @@ Dazzling Aurora is the older pending item, so it finalizes next and enters the b
 </Step>
 <Step>
 Akshan's play effect then finalizes.
-Dazzling Aurora is now an enemy gear on the board, and you can choose it for that ability.<Rule number="355.5" />
+Dazzling Aurora is now an enemy gear on the board, and you can choose it for that ability.<Rule number="403.2" />
 </Step>
 </Steps>
 
@@ -159,7 +160,7 @@ Each play effect that triggers is put on the chain as a separate pending item on
 
 If Dazzling Aurora finalizes first, it is already on the board when the unit's play effect is finalized.
 If either unit finalizes first, its play effect is put on the chain after Dazzling Aurora, so the older Aurora finalizes and enters before the ability is finalized.<Rule number="337.1.b" /><Rule number="337.2" /><Rule number="359.2.d" />
-In either order, Aurora is on the board by the time the play effect chooses a gear.<Rule number="355.5" />
+In either order, Aurora is on the board by the time the play effect chooses a gear.<Rule number="403.2" />
 
 ## Can Ravenbloom Prefect banish Dazzling Aurora if both are chosen with Promising Future? [#ravenbloom-prefect]
 
@@ -167,7 +168,7 @@ Only if <Card name="Dazzling Aurora" /> is played by an opponent of <Card name="
 
 Promising Future puts every chosen card on the <Term item="chain">chain</Term> as a <Term item="pending">pending</Term> item before any of them proceed to finalization.<Rule number="354.2" /><Rule number="354.3" />
 Ravenbloom Prefect's ability triggers when an opponent plays a gear; it is not Prefect's own play effect.<Rule number="383.4.a.4" />
-Prefect must therefore be on the board when Dazzling Aurora finishes being played for that trigger condition to be fulfilled.<Rule number="384.2" /><Rule number="383.2.c" /><Rule number="419.4.a" />
+Prefect must therefore be on the board when Dazzling Aurora finishes being played for that trigger condition to be fulfilled.<Rule number="384.2" /><Rule number="383.2.c" /><Rule number="420.4.a" />
 
 If Ravenbloom Prefect finalizes first, it enters before Dazzling Aurora finalizes.
 When the opposing player finishes playing Aurora, Prefect's ability triggers and is put on the chain.<Rule number="383.3" />
