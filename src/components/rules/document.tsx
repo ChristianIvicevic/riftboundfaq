@@ -239,7 +239,7 @@ export function RulesDocumentRuleList({
 						id={anchor}
 						key={anchor}
 					>
-						{rule.id ? (
+						{rule.id || (labelMode === 'source' && rule.label) ? (
 							<div className="grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] items-start gap-x-2 py-1.5 sm:grid-cols-[max-content_minmax(0,1fr)_max-content] sm:gap-x-4">
 								{labelMode === 'id-with-period' ? (
 									<a
@@ -251,7 +251,7 @@ export function RulesDocumentRuleList({
 									</a>
 								) : (
 									<a
-										aria-label={`Link to rule ${rule.id}`}
+										aria-label={`Link to rule ${rule.id ?? rule.label}`}
 										className="font-mono text-sm leading-6 font-medium whitespace-nowrap text-fd-muted-foreground no-underline hover:text-fd-primary"
 										href={`#${anchor}`}
 									>

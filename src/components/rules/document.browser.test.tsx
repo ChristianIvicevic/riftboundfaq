@@ -54,6 +54,29 @@ describe('RulesDocumentRuleList', () => {
 		).toBe(true)
 	})
 
+	test('renders a source label when its malformed ID cannot be linked as a rule reference', async () => {
+		const screen = await render(
+			<RulesDocumentRuleList
+				findReferences={() => []}
+				labelMode="source"
+				referenceTarget={() => {}}
+				rules={[
+					{
+						id: null,
+						label: '701.4.b2.',
+						anchor: 'U667',
+						content: [{ kind: 'paragraph', text: 'Malformed source label.' }],
+						children: [],
+					},
+				]}
+			/>,
+		)
+
+		const label = screen.getByRole('link', { name: 'Link to rule 701.4.b2.' })
+		await expect.element(label).toHaveTextContent('701.4.b2.')
+		await expect.element(label).toHaveAttribute('href', '#U667')
+	})
+
 	test('uses the inline popover treatment for card previews in rules examples', async () => {
 		const screen = await render(
 			<RulesDocumentRuleList
