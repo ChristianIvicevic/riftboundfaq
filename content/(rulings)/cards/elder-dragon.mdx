@@ -1,7 +1,7 @@
 ---
 title: "Elder Dragon"
 createdAt: "2026-08-29"
-reviewedCoreRulesVersion: "1.4"
+reviewedCoreRulesVersion: "1.5"
 authors:
 - name: "Christian “Near” Ivicevic"
   url: "https://x.com/civicevic"
@@ -10,18 +10,18 @@ authors:
 ## How does Elder Dragon affect combat damage assignment? [#combat-damage-assignment]
 
 While you control Elder Dragon on the board, 1 combat damage from your units is lethal to an enemy unit regardless of its might, unless another effect changes how much must be assigned or prevents that damage.
-Elder Dragon changes the lethal-damage value for enemy units with its controller's damage, and the smallest valid amount of damage is 1.<Rule number="142.3.b" /><Rule number="142.4.c" /><Rule number="417.1.e" />
+Elder Dragon changes the lethal-damage value for enemy units with its controller's damage, and the smallest valid amount of damage is 1.<Rule number="142.3.b" /><Rule number="142.4.c" /><Rule number="418.1.e" />
 
-You must assign lethal damage to one unit before assigning damage to another, and you cannot assign more than the lethal minimum while another unit remains.<Rule number="465.2.c.3" /><Rule number="465.2.c.4" />
+You must assign lethal damage to one unit before assigning damage to another, and you cannot assign more than the lethal minimum while another unit remains.<Rule number="467.2.c.3" /><Rule number="467.2.c.4" />
 With Elder Dragon, that normally means assigning exactly 1 damage to an enemy unit before moving to the next.
-Prevention and other replacement effects are considered during assignment and can change this minimum.<Rule number="465.2.c.4.a" /><Rule number="465.2.c.5" />
+Passive abilities and replacement effects, including prevention, are considered during assignment and can change this minimum.<Rule number="467.2.c.4.a" /><Rule number="467.2.c.5" />
 
 <Callout type="idea" title="Elder Dragon vs. Imperial Decree">
 	Suppose <Card name="Pakaa Cub" />, with 3 might, is your only attacker against three undamaged copies of <Card name="Noxus Hopeful" />, each defending with 4 might.
-	With Elder Dragon, you assign 1 damage from Pakaa Cub to each Noxus Hopeful, and all three are killed during the combat <Term item="cleanup">cleanup</Term>.<Rule number="323.5" /><Rule number="465.2.d" /><Rule number="466.1.a" />
+	With Elder Dragon, you assign 1 damage from Pakaa Cub to each Noxus Hopeful, and all three are killed during the combat <Term item="cleanup">cleanup</Term>.<Rule number="323.4" /><Rule number="467.2.d" /><Rule number="468.1.a" />
 
 	<Card name="Imperial Decree" /> does not change lethal damage or combat damage assignment.
-	Assigning damage is not dealing damage, so its delayed triggered ability triggers only after a unit actually takes damage and then attempts to kill that unit.<Rule number="383.2.c" /><Rule number="390.2" /><Rule number="465.2.c.1" />
+	Assigning damage is not dealing damage, so its delayed triggered ability triggers only after a unit actually takes damage and then attempts to kill that unit.<Rule number="383.2.c" /><Rule number="391.2" /><Rule number="467.2.c.1" />
 
 	With Imperial Decree instead, Pakaa Cub still assigns all 3 damage, but you cannot split it among the three Noxus Hopefuls.
 	You must assign lethal damage to one before moving to another, so all 3 damage is assigned to the Noxus Hopeful you choose first.
@@ -35,7 +35,7 @@ Elder Dragon's "your damage" means damage marked by its controller.<Rule number=
 Its first ability is a passive statement that changes the lethal-damage value for those enemy units while Elder Dragon is on the board.<Rule number="142.4.c" /><Rule number="364.2" /><Rule number="365.1" />
 
 <Term item="finalization">Finalizing</Term> a unit does not pass <Term item="priority">priority</Term>, and the unit <Term item="resolution">resolves</Term> immediately.<Rule number="337.1.a" /><Rule number="337.2" />
-After Elder Dragon enters, a cleanup happens without passing or awarding priority, and every unit with lethal damage is killed unless that death is replaced.<Rule number="319.6" /><Rule number="320.1" /><Rule number="323.5" /><Rule number="370.1" /><Rule number="370.1.c" />
+After Elder Dragon enters, a cleanup happens without passing or awarding priority, and every unit with lethal damage is killed unless that death is replaced.<Rule number="319.6" /><Rule number="320.1" /><Rule number="323.4" /><Rule number="370.1" /><Rule number="370.1.c" />
 Elder Dragon's separate "When you play me" ability is a triggered play effect, but it does not create a response window before this lethal-damage check.<Rule number="383.4.a" /><Rule number="383.4.a.2" />
 
 <Callout type="idea" title="Example">
@@ -63,29 +63,29 @@ Both Elder Dragon entering and its play effect being added require <Term item="c
 All outstanding cleanups finish before the pending effect can begin <Term item="finalization">finalization</Term>.<Rule number="320" /><Rule number="334.2" />
 </Step>
 <Step>
-During cleanup, the damaged unit would be killed.<Rule number="323.5" />
+During cleanup, the damaged unit would be killed.<Rule number="323.4" />
 Zhonya's Hourglass replaces that death: the Hourglass is killed instead, and the unit is healed, exhausted, and recalled to its controller's base rather than killed.<Rule number="370.1.a.1" />
 </Step>
 <Step>
-Killing Zhonya's Hourglass sends it from the board to the trash, making another cleanup outstanding after the current one.<Rule number="428.1" /><Rule number="319.6" /><Rule number="322" />
+Killing Zhonya's Hourglass sends it from the board to the trash, making another cleanup outstanding after the current one.<Rule number="429.1" /><Rule number="319.6" /><Rule number="322" />
 </Step>
 <Step>
-After all cleanups finish, you choose targets while finalizing the play effect.<Rule number="334.2" /><Rule number="337.1" /><Rule number="191.4.c" /><Rule number="402.2" />
+After all cleanups finish, you choose targets while finalizing the play effect.<Rule number="334.2" /><Rule number="337.1" /><Rule number="191.5.c" /><Rule number="403.2" />
 The recalled unit is now in base, and any valid enemy unit that remains at a battlefield is at a different location, so both can be chosen.<Rule number="146.1" /><Rule number="198.1" /><Rule number="355.11.a" />
 </Step>
 </Steps>
 
-When the effect <Term item="resolution">resolves</Term>, it deals 1 to each target it affects, marking damage on each unit separately.<Rule number="417.1.b" /><Rule number="417.1.c" />
-If Elder Dragon remains on the board, its passive makes that damage lethal, so each affected unit would be killed during the cleanup after the ability leaves the chain.<Rule number="142.3.b" /><Rule number="142.4.c" /><Rule number="365.1" /><Rule number="406.5" /><Rule number="319.5" /><Rule number="323.5" />
+When the effect <Term item="resolution">resolves</Term>, it deals 1 to each target it affects, marking damage on each unit separately.<Rule number="418.1.b" /><Rule number="418.1.c" />
+If Elder Dragon remains on the board, its passive makes that damage lethal, so each affected unit would be killed during the cleanup after the ability leaves the chain.<Rule number="142.3.b" /><Rule number="142.4.c" /><Rule number="365.1" /><Rule number="407.5" /><Rule number="319.5" /><Rule number="323.4" />
 
 ## Does Elder Dragon's play effect finalize if its passive leaves no enemy units to target? [#zero-target-finalization]
 
 Yes.
 The words "up to" allow Elder Dragon's controller to choose zero targets.<Rule number="355.13" />
-Because the ability does not begin with "you may," its controller cannot decline to perform it, so the play effect <Term item="finalization">finalizes</Term> even when no enemy units remain.<Rule number="383.3.a" /><Rule number="402.4" /><Rule number="406.2" />
+Because the ability does not begin with "you may," its controller cannot decline to perform it, so the play effect <Term item="finalization">finalizes</Term> even when no enemy units remain.<Rule number="383.3.a" /><Rule number="403.4" /><Rule number="407.2" />
 
 After Elder Dragon enters, its play effect is added to the <Term item="chain">chain</Term> before the resulting <Term item="cleanup">cleanup</Term>.<Rule number="319.6" /><Rule number="334.2.a" /><Rule number="383.4.a.2" />
-Elder Dragon's passive ability makes its controller's marked damage on enemy units lethal, so that cleanup may kill an opponent's last units.<Rule number="142.4.c" /><Rule number="323.5" />
-The <Term item="pending">pending</Term> play effect remains on the chain throughout the cleanup, so the opponent retains control of their empty battlefields and their <Hidden /> cards remain there.<Rule number="320" /><Rule number="323.6" /><Rule number="323.7" /><Rule number="330" /><Rule number="331.1" />
-After the play effect finalizes with zero targets, the opponent may play an eligible card from face down as a <Reaction /> before the effect <Term item="resolution">resolves</Term>.<Rule number="406.4" /><Rule number="811.6" />
+Elder Dragon's passive ability makes its controller's marked damage on enemy units lethal, so that cleanup may kill an opponent's last units.<Rule number="142.4.c" /><Rule number="323.4" />
+The <Term item="pending">pending</Term> play effect remains on the chain throughout the cleanup, so the opponent retains control of their empty battlefields and their <Hidden /> cards remain there.<Rule number="320" /><Rule number="323.5" /><Rule number="323.6.a" /><Rule number="330" /><Rule number="331.1" />
+After the play effect finalizes with zero targets, the opponent may play an eligible card from face down as a <Reaction /> before the effect <Term item="resolution">resolves</Term>.<Rule number="407.4" />
 When the effect resolves with no targets, it simply does nothing.
