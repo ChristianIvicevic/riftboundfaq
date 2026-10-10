@@ -1,7 +1,7 @@
 ---
 title: "Baron Nashor"
 createdAt: "2026-05-06"
-reviewedCoreRulesVersion: "1.4"
+reviewedCoreRulesVersion: "1.5"
 authors:
 - name: "Christian “Near” Ivicevic"
   url: "https://x.com/civicevic"
@@ -12,7 +12,7 @@ authors:
 No.
 Baron Nashor enters the <Card name="Baron Pit" /> directly; he does not move there.
 
-Moving means changing position between spaces on the board, while entering the board from another zone is a zone change.<Rule number="446.1" /><Rule number="446.2" />
+Moving means changing position between spaces on the board, while entering the board from another zone is a zone change.<Rule number="448.1" /><Rule number="448.2" />
 When Baron Nashor creates the Baron Pit, his replacement effect changes his entry location from the originally chosen location to the Baron Pit.<Rule number="369.3" />
 
 ## What happens after Baron Nashor enters the Baron Pit? [#baron-pit-showdown]
@@ -24,7 +24,7 @@ The Baron Pit remains uncontrolled until that showdown closes.
 
 <Steps>
 <Step>
-The Baron Pit is created uncontrolled.<Rule number="439.4.b" />
+The Baron Pit is created uncontrolled.<Rule number="440.4.b" />
 </Step>
 <Step>
 Baron Nashor enters it and contests it for his controller.<Rule number="190.3.a.1" />
@@ -34,7 +34,7 @@ His entry causes a <Term item="cleanup">cleanup</Term>, which stages a showdown 
 </Step>
 <Step>
 That showdown normally begins during the cleanup.
-If multiple showdowns are ready to begin, the turn player chooses which one begins.<Rule number="323.12" />
+If multiple showdowns are ready to begin, the turn player chooses which one begins.<Rule number="323.11" />
 </Step>
 <Step>
 The Baron Pit remains uncontrolled while the showdown is ongoing.<Rule number="190.4.b" />
@@ -43,19 +43,19 @@ The Baron Pit remains uncontrolled while the showdown is ongoing.<Rule number="1
 
 ### Closing and Conquest [#closing-conquest]
 
-The showdown closes after every player passes <Term item="focus">focus</Term> in sequence without playing a spell or activating an ability.<Rule number="347.2.a" /><Rule number="348" />
+The showdown closes after every player passes <Term item="focus">focus</Term> in sequence without playing a card or activating an ability.<Rule number="347.2.a" /><Rule number="348" />
 If Baron Nashor's controller is then the only player with units there, they establish control of the Baron Pit and conquer it if they have not scored it that turn.<Rule number="348.2.a" /><Rule number="348.2.a.1" />
 
 ## Does the Baron Pit need to be scored to win by conquering? [#baron-pit-victory]
 
 Yes, when the potential winning point would come from conquering.
-At match point, a player gains the final point from a conquer only if they have scored every battlefield on the board that turn, including the <Card name="Baron Pit" />.<Rule number="471.1.b" /><Rule number="471.1.b.1" />
-If they have not scored every battlefield, they draw a card instead.<Rule number="471.1.b.1" />
+At match point, a player gains the final point from a conquer only if they have scored every battlefield on the board that turn, including the <Card name="Baron Pit" />.<Rule number="473.1.b" /><Rule number="473.1.b.1" />
+If they have not scored every battlefield, they draw a card instead.<Rule number="473.1.b.1" />
 
 ## Can a unit survive combat damage that becomes lethal when Baron Nashor dies in the same combat? [#might-loss-survival]
 
 Yes, if the unit does not have lethal damage when the <Term item="cleanup">cleanup</Term> checks it while Baron Nashor's +2 might still applies.
-The cleanup checks all units for lethal damage only once, so a unit that becomes lethal after Baron Nashor leaves is not checked again during that cleanup.<Rule number="323.5" />
+The cleanup checks all units for lethal damage only once, so a unit that becomes lethal after Baron Nashor leaves is not checked again during that cleanup.<Rule number="323.4" />
 
 ### Steps [#might-loss-survival-sequence]
 
@@ -64,7 +64,7 @@ Suppose Baron Nashor is assigned lethal combat damage and a friendly <Card name=
 <Steps>
 <Step>
 **Lethal-damage check:** Baron Nashor has lethal damage, while Evelynn's 2 marked damage is less than her current 4 might: 2 printed might plus Baron Nashor's +2.<Rule number="142.4.b" />
-Of the two, only Baron Nashor has lethal damage during the check, so the cleanup kills him and not Evelynn.<Rule number="323.5" />
+Of the two, only Baron Nashor has lethal damage during the check, so the cleanup kills him and not Evelynn.<Rule number="323.4" />
 </Step>
 <Step>
 Baron Nashor's passive ability stops applying when he leaves the board.<Rule number="365.1" />
@@ -73,11 +73,11 @@ Her 2 marked damage is now lethal.<Rule number="142.4.b" />
 That cleanup does not check her again.
 </Step>
 <Step>
-**Combat healing:** The combat special cleanup heals all units, clearing Evelynn's marked damage.<Rule number="466.1.a.1" />
+**Combat healing:** The combat special cleanup heals all units, clearing Evelynn's marked damage.<Rule number="468.1.a.1" />
 </Step>
 <Step>
 Baron Nashor's departure causes another cleanup.<Rule number="319.6" /><Rule number="322" />
-Evelynn has no marked damage when that cleanup checks for lethal damage, so she is not killed.<Rule number="323.5" />
+Evelynn has no marked damage when that cleanup checks for lethal damage, so she is not killed.<Rule number="323.4" />
 </Step>
 </Steps>
 
