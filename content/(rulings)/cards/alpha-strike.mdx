@@ -1,7 +1,7 @@
 ---
 title: "Alpha Strike"
 createdAt: "2026-04-30"
-reviewedCoreRulesVersion: "1.4"
+reviewedCoreRulesVersion: "1.5"
 authors:
 - name: "Christian “Near” Ivicevic"
   url: "https://x.com/civicevic"
@@ -17,7 +17,7 @@ Every chosen unit is a target and must be a legal choice.<Rule number="355.8" />
 Choose one friendly unit.
 </Step>
 <Step>
-Check that unit's might, then choose any legal number of enemy units at battlefields, up to that amount; Alpha Strike does not require every enemy unit across every battlefield to be chosen.<Rule number="355.14.c" />
+Check that unit's current might after applying all might-changing effects (its effective might).<Rule number="143.2.a" /><Rule number="143.2.a.1" /> Then choose any legal number of enemy units at battlefields, up to that amount; Alpha Strike does not require every enemy unit across every battlefield to be chosen.<Rule number="355.14.c" />
 </Step>
 <Step>
 Pay the mandatory additional cost for each chosen enemy unit with <Deflect />.<Rule number="740.1.b" /><Rule number="809.1.c" /><Rule number="356.2.a.2" />
@@ -40,7 +40,7 @@ If the friendly target is illegal, Alpha Strike deals no damage because that tar
 If no enemy target remains legal, Alpha Strike deals no damage because its damage instruction does not execute.<Rule number="359.3.e.7" />
 </Step>
 <Step>
-Use the friendly target's might at resolution as the amount of damage to distribute.<Rule number="359.3.f.1" /><Rule number="359.3.f.2" />
+Use the friendly target's current might after applying all might-changing effects (its effective might) as the amount of damage to distribute.<Rule number="143.2.a" /><Rule number="143.2.a.1" /> Because Alpha Strike does not specify a different time, check that might when the damage instruction executes.<Rule number="359.3.f.1" /><Rule number="359.3.f.2" />
 </Step>
 <Step>
 If there are more remaining enemy targets than damage, choose exactly enough of those units to cease being targets so the number of targets does not exceed the available damage.<Rule number="355.14.h" /><Rule number="355.14.h.1" />
@@ -53,7 +53,7 @@ If only one enemy target remains, assign all available damage to it.
 
 ## What if the friendly unit's might is reduced? [#might-reduction]
 
-If the friendly target remains legal but has lower might when Alpha Strike <Term item="resolution">resolves</Term>, Alpha Strike uses that reduced might as the amount of damage to split.<Rule number="359.3.f.1" /><Rule number="359.3.f.2" />
+If the friendly target remains legal but has lower might when Alpha Strike's damage instruction executes, Alpha Strike uses that reduced might as the amount of damage to split.<Rule number="359.3.f.1" /><Rule number="359.3.f.2" />
 If there is not enough damage to assign at least 1 to every enemy target, Alpha Strike's controller must remove exactly enough enemy units from Alpha Strike's targets and cannot remove extras to concentrate the damage.<Rule number="355.14.f" /><Rule number="355.14.g" /><Rule number="355.14.h" /><Rule number="355.14.h.1" />
 
 <Callout type="idea" title="Example">
@@ -63,7 +63,7 @@ If there is not enough damage to assign at least 1 to every enemy target, Alpha 
 	You cannot drop a second target to deal both points of damage to one unit.
 </Callout>
 
-A might below 0 counts as 0 when Alpha Strike references it.<Rule number="143.2.b" />
+A might below 0 counts as 0 when Alpha Strike references it.<Rule number="143.2.c" />
 If Alpha Strike has 0 damage to split, every enemy target ceases being a target because each remaining target would have to receive at least 1 damage.<Rule number="355.14.f" /><Rule number="355.14.g" /><Rule number="355.14.h" />
 
 ## What if the chosen friendly unit leaves the board or becomes illegal before Alpha Strike resolves? [#illegal-friendly-target]
