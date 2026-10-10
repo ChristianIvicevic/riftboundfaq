@@ -1,7 +1,7 @@
 ---
 title: "Baited Hook"
 createdAt: "2026-07-08"
-reviewedCoreRulesVersion: "1.4"
+reviewedCoreRulesVersion: "1.5"
 authors:
 - name: "Christian “Near” Ivicevic"
   url: "https://x.com/civicevic"
@@ -11,9 +11,9 @@ authors:
 
 Yes.
 "Kill a friendly unit" comes after the ":" in Baited Hook's activated ability, so it is an effect instruction rather than part of the activation cost.<Rule number="377.1" />
-That instruction targets a friendly unit, and you choose that target while the ability is being <Term item="finalization">finalized</Term>.<Rule number="355.10" /><Rule number="402.2" />
+That instruction targets a friendly unit, and you choose that target while the ability is being <Term item="finalization">finalized</Term>.<Rule number="355.10" /><Rule number="403.2" />
 
-After Baited Hook's ability is finalized, opponents have an opportunity to play Reactions before it <Term item="resolution">resolves</Term> and kills the target.<Rule number="406.4" />
+After Baited Hook's ability is finalized, opponents have an opportunity to play Reactions before it <Term item="resolution">resolves</Term> and kills the target.<Rule number="407.4" />
 The later might limit refers to the unit affected by the kill, so these are linked instructions.<Rule number="359.3.e.14" />
 After the unit enters the trash, Baited Hook uses its might from immediately before that zone change.<Rule number="359.3.e.13" />
 
@@ -29,7 +29,7 @@ After the unit enters the trash, Baited Hook uses its might from immediately bef
 The unit is not killed, you still look at the top 5 cards, but you cannot banish or play a unit from among them and must recycle every card you looked at.
 
 If the friendly unit is no longer a legal target when the ability <Term item="resolution">resolves</Term>, it is unaffected and the kill instruction is ignored.<Rule number="359.3.e.2" /><Rule number="359.3.e.5" />
-Its might is then null, so the calculation used to choose a unit from the top 5 is ignored.<Rule number="359.3.e.12" />
+Its might is then null, so the instructions that would use that might to banish and play a unit are ignored.<Rule number="359.3.e.12" />
 The independent instruction to recycle the rest still happens, and no card was banished, so every card you looked at is recycled.<Rule number="359.3.e.5" />
 
 ## Does a unit's Deathknell resolve before or after the unit played by Baited Hook and its triggers? [#deathknell-order]
@@ -58,5 +58,5 @@ No.
 Baited Hook kills <Card name="Glasc Mixologist" /> before it plays <Card name="Karthus, Eternal" />.
 Glasc's <Deathknell /> triggers before he enters the trash.<Rule number="808.1.d.2" />
 Karthus's passive ability is active only while he is on the board.<Rule number="365.1" />
-Karthus entering later does not reevaluate Glasc's earlier death or make the <Deathknell /> trigger again.<Rule number="383.2.c" />
+Karthus entering later does not reevaluate Glasc's earlier death or make the <Deathknell /> trigger again.<Rule number="383.2.c.3" />
 Glasc's <Deathknell /> can play only one unit from the trash.
