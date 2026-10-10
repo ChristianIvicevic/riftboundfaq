@@ -1,7 +1,7 @@
 ---
 title: "Diana, Lunari"
 createdAt: "2026-05-07"
-reviewedCoreRulesVersion: "1.4"
+reviewedCoreRulesVersion: "1.5"
 authors:
 - name: "Christian “Near” Ivicevic"
   url: "https://x.com/civicevic"
@@ -11,27 +11,26 @@ authors:
 
 When combat opens with a new showdown, Diana's ability triggers first but <Term item="resolution">resolves</Term> last, after all attack and defend abilities generated immediately afterward.
 
-Start-of-showdown effects happen before units gain their attacker and defender designations, so Diana triggers before those designations trigger attack and defend abilities.<Rule number="383.4.e" /><Rule number="383.4.f" /><Rule number="464.2.b" /><Rule number="464.2.c.3" />
-These are consecutive combat-opening tasks with no <Term item="priority">priority</Term> between them, so all resulting abilities are <Term item="pending">pending</Term> on the combat <Term item="chain">chain</Term> before any is <Term item="finalization">finalized</Term> or can resolve.<Rule number="334.1" /><Rule number="334.2" /><Rule number="464.2.a" /><Rule number="464.2.e" />
+Start-of-showdown effects happen before units gain their attacker and defender designations, so Diana triggers before those designations trigger attack and defend abilities.<Rule number="383.4.e" /><Rule number="383.4.f" /><Rule number="466.2.a" /><Rule number="466.2.b" /><Rule number="466.2.c.3" />
+These are consecutive combat-opening tasks with no <Term item="priority">priority</Term> between them, so all resulting abilities are <Term item="pending">pending</Term> on the combat <Term item="chain">chain</Term> before any is <Term item="finalization">finalized</Term> or can resolve.<Rule number="334.1" /><Rule number="334.2" /><Rule number="466.2.d" />
 The newest chain items resolve first, so the attack and defend abilities resolve before Diana's ability.<Rule number="340.1" />
 
-If combat opens during an existing showdown, the showdown does not begin again, so Diana's "when a showdown begins here" ability does not trigger.<Rule number="464.1" /><Rule number="464.2" />
+If combat opens during an existing showdown, the showdown does not begin again, so Diana's "when a showdown begins here" ability does not trigger.<Rule number="466.1" /><Rule number="466.2" />
 
 ## When do I pay the 1 energy for Diana, Lunari's ability? [#ability-finalization-cost]
 
-You pay it while Diana's triggered ability is being <Term item="finalization">finalized</Term>, before opponents receive the normal opportunity to play Reactions to the ability.<Rule number="406.4" />
+You pay it while Diana's triggered ability is being <Term item="finalization">finalized</Term>, before opponents receive the normal opportunity to play Reactions to the ability.<Rule number="407.4" />
 
 Because "you may" is the first part of the effect, you choose whether to perform the ability during finalization.<Rule number="383.3.a" />
 The immediately following "pay <Energy value={1} /> to <Predict />" is a cost within instructions, so the payment becomes the triggered ability's base cost and must be paid for the ability to finalize.<Rule number="383.3.b" /><Rule number="383.3.b.1" /><Rule number="740.4.a" />
-While paying, you may activate an eligible <Add /> ability with <Reaction /> to provide the energy.<Rule number="444.2.c" />
+While paying, you may activate an eligible <Add /> ability with <Reaction /> to provide the energy.<Rule number="445.2.c" />
 
-If you decline to pay, the <Term item="pending">pending</Term> ability is removed from the <Term item="chain">chain</Term> without finalizing.<Rule number="404.2" />
-If you pay, it becomes a finalized chain item, and opponents may react before it <Term item="resolution">resolves</Term>.<Rule number="406.2" /><Rule number="406.4" />
+If you decline to pay, the <Term item="pending">pending</Term> ability is removed from the <Term item="chain">chain</Term> without finalizing.<Rule number="405.2" />
+If you pay, it becomes a finalized chain item, and opponents may react before it <Term item="resolution">resolves</Term>.<Rule number="407.2" /><Rule number="407.4" />
 When it resolves, you <Predict />, reveal the top card of your main deck, and draw that card if it is a spell.
 
 <Callout type="warn" title="Errata">
 	Diana received functional errata.
 	Older printings say "you may pay <Energy value={1} />. If you do, ..."; her current text says "you may pay <Energy value={1} /> to ..." instead.
 	This changes the payment from an instruction performed during resolution into a cost paid while finalizing the ability.
-	CR 444.2 still describes Diana using her pre-errata behavior and incorrectly places the payment during resolution.<Rule number="444.2" />
 </Callout>
