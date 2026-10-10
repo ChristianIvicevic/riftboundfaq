@@ -1,7 +1,7 @@
 ---
 title: "Akali, Silent"
 createdAt: "2026-10-01"
-reviewedCoreRulesVersion: "1.4"
+reviewedCoreRulesVersion: "1.5"
 authors:
 - name: "Christian “Near” Ivicevic"
   url: "https://x.com/civicevic"
@@ -15,18 +15,19 @@ Combat has three steps:
 
 <Steps>
 <Step>
-**Combat Showdown Step.**<Rule number="464" />
+**Combat Showdown Step.**<Rule number="466" />
 </Step>
 <Step>
-**Combat Damage Step.**<Rule number="465" />
+**Combat Damage Step.**<Rule number="467" />
 </Step>
 <Step>
-**Resolution Step.**<Rule number="466" />
-The combat <Term item="cleanup">cleanup</Term> triggers <Deathknell /> abilities from lethally damaged units.<Rule number="466.1" /><Rule number="323.4" />
-Any targets are chosen when those abilities <Term item="finalization">finalize</Term>.<Rule number="402.2" />
-Those abilities fully <Term item="resolution">resolve</Term> before combat ends.<Rule number="466.2" />
-Combat ends only at the final part of this step.<Rule number="466.7" />
-Only then does Akali stop being in combat and become untargetable by enemy spells and abilities.<Rule number="466.7.a" /><Rule number="740.2.c" />
+**Resolution Step.**<Rule number="468" />
+The combat <Term item="cleanup">cleanup</Term> kills lethally damaged units.<Rule number="468.1" /><Rule number="323.4" />
+A <Deathknell /> trigger is added to the <Term item="chain">chain</Term> before its unit moves to the trash.<Rule number="808.1.d.2" />
+Any targets are chosen when those abilities <Term item="finalization">finalize</Term>.<Rule number="403.2" />
+Those abilities fully <Term item="resolution">resolve</Term> before combat proceeds to determining the result.<Rule number="468.2" />
+Combat ends only at the final part of this step.<Rule number="468.7" />
+Only then is Akali's combat designation removed, so she stops being in combat and her restriction against enemy spells and abilities applies again.<Rule number="468.7.a" /><Rule number="740.2.c" />
 </Step>
 </Steps>
 
