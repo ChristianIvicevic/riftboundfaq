@@ -8,14 +8,14 @@ function block({
 	text,
 	heading = null,
 	headingStyleMismatch = null,
-	lines = [text],
+	lines = [{ kind: 'paragraph' as const, text }],
 }: {
 	sequence: number
 	id: string
 	text: string
 	heading?: RuleBlock['heading']
 	headingStyleMismatch?: RuleBlock['headingStyleMismatch']
-	lines?: string[]
+	lines?: RuleBlock['lines']
 }): RuleBlock {
 	return {
 		sequence,
@@ -31,7 +31,17 @@ function block({
 		heading,
 		headingStyleMismatch,
 		physicalLineCount: 1,
-		sourceLines: [{ page: 1, line: sequence, x: 20, y: 700 - sequence * 40, text }],
+		sourceLines: [
+			{
+				page: 1,
+				line: sequence,
+				x: 20,
+				y: 700 - sequence * 40,
+				right: 120,
+				pageWidth: 600,
+				text,
+			},
+		],
 		lines,
 		text,
 		source: { startPage: 1, startLine: sequence, endPage: 1, endLine: sequence },
@@ -48,9 +58,18 @@ describe('structureRuleBlocks', () => {
 				sequence: 4,
 				id: '100.2.1',
 				text: 'Resolve it. Example: Do this. See rule 200.1.',
-				lines: ['Resolve it.', 'Example: Do this.', 'See rule 200.1.'],
+				lines: [
+					{ kind: 'paragraph', text: 'Resolve it.' },
+					{ kind: 'example', text: 'Example: Do this.' },
+					{ kind: 'reference', text: 'See rule 200.1.' },
+				],
 			}),
-			block({ sequence: 5, id: '100.2.1.a', text: '* Then finish.', lines: ['* Then finish.'] }),
+			block({
+				sequence: 5,
+				id: '100.2.1.a',
+				text: '* Then finish.',
+				lines: [{ kind: 'bullet', text: 'Then finish.' }],
+			}),
 		]
 
 		const { sections, diagnostics } = structureRuleBlocks(blocks)

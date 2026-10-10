@@ -65,20 +65,11 @@ function heading(block: RuleBlock): StructuredHeading {
 	return { id: block.id, text: block.text, level: block.heading, source: sourceLocation(block) }
 }
 
-function content(lines: readonly string[]): RuleContent[] {
-	return lines.map((line) => {
-		if (line.startsWith('Example:')) return { kind: 'example', text: line }
-		if (line.startsWith('See rule ')) return { kind: 'reference', text: line }
-		if (line.startsWith('* ')) return { kind: 'bullet', text: line.slice(2) }
-		return { kind: 'paragraph', text: line }
-	})
-}
-
 function ruleNode(block: RuleBlock): StructuredRuleNode {
 	return {
 		key: `${block.page}:${block.sourceLine}:${block.sequence}`,
 		id: block.id,
-		content: content(block.lines),
+		content: block.lines,
 		children: [],
 		source: sourceLocation(block),
 	}
