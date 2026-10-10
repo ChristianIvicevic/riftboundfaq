@@ -50,5 +50,5 @@ type ContentPage = ReturnType<typeof source.getPages>[number]
 
 export function getPageImage(page: Pick<ContentPage, 'slugs'>) {
 	const segments = [...page.slugs, 'image.png']
-	return { segments, url: `/og/${segments.join('/')}?v=2` }
+	return { segments, url: `/og/${segments.join('/')}?v=3` }
 }

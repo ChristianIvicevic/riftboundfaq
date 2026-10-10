@@ -31,7 +31,7 @@ export function generate({
 			<p
 				style={{
 					fontWeight: 800,
-					fontSize: '82px',
+					fontSize: '74px',
 					margin: 0,
 				}}
 			>
@@ -39,7 +39,7 @@ export function generate({
 			</p>
 			<p
 				style={{
-					fontSize: '52px',
+					fontSize: '48px',
 					color: 'rgba(240,240,240,0.8)',
 					margin: 0,
 					marginTop: '16px',
