@@ -1,7 +1,7 @@
 ---
 title: "Hidden Blade"
 createdAt: "2026-01-22"
-reviewedCoreRulesVersion: "1.4"
+reviewedCoreRulesVersion: "1.5"
 authors:
 - name: "Christian “Near” Ivicevic"
   url: "https://x.com/civicevic"
@@ -9,19 +9,14 @@ authors:
 
 ## If Hidden Blade's kill is prevented or replaced, does the target's controller draw? [#draw-if-not-killed]
 
-If the targeted unit remains on the board, its controller draws 2; if a replacement moves it off the board, no player draws.
+If Hidden Blade's target is legal when the spell begins resolving and remains on the board after the kill is prevented or replaced, its controller draws 2; if a replacement causes it to leave the board, no player draws.
 The phrase "its controller" links the draw to the unit affected by the preceding kill instruction.<Rule number="359.3.e.14" />
-If the legal target can't be killed, the [Vendetta FAQ](https://playriftbound.com/en-us/news/rules-and-releases/vendetta-rules-faq-and-clarifications) classifies the kill instruction as negated rather than ignored, so the linked draw still executes.
-Replacing that kill does not itself stop the linked draw because the draw instruction does not refer to the kill action.<Rule number="359.3.e.14.b" />
-
-<Callout type="warn" title="Rules citation needed">
-	Core Rules 1.4 still calls instructions prevented by other circumstances "ignored."<Rule number="359.3.e.6" />
-	The linked Vendetta FAQ narrows that term to mistargeting and expressly takes precedence on this point until a later Core Rules Document says otherwise.
-</Callout>
+If the legal target can't be killed, the kill instruction is negated rather than ignored.<Rule number="359.3.e.6" />
+Negating or replacing that kill does not stop the linked draw because the draw instruction does not refer to the kill action.<Rule number="359.3.e.14.b" />
 
 - **The unit remains on the board:** Hidden Blade can identify its controller, and that player draws 2.<Rule number="359.3.e.12.a" />
   For example, <Card name="Zhonya's Hourglass" /> recalls the unit to base, where it remains on the board under its controller.
-- **The unit moves off the board:** Hidden Blade can no longer identify a controller for that card, so no player draws.<Rule number="359.3.e.12" />
+- **The unit leaves the board:** Hidden Blade can no longer identify a controller for that card, so no player draws.<Rule number="359.3.e.12" />
   For example, a unit previously affected by <Card name="Smite" /> is banished instead when Hidden Blade would kill it.
 
 ## If Hidden Blade's target becomes illegal, does that target's controller draw? [#draw-if-illegal]
