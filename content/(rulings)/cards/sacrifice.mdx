@@ -1,7 +1,7 @@
 ---
 title: "Sacrifice"
 createdAt: "2026-06-15"
-reviewedCoreRulesVersion: "1.4"
+reviewedCoreRulesVersion: "1.5"
 authors:
   - name: "Christian “Near” Ivicevic"
     url: "https://x.com/civicevic"
@@ -11,22 +11,22 @@ authors:
 
 No.
 Killing a friendly <Mighty /> unit is an additional cost paid while playing Sacrifice.<Rule number="356.7" /><Rule number="357.2" />
-Countering the spell later does not refund that cost, so the killed unit is not returned.<Rule number="425.1.c" /><Rule number="425.1.c.1" />
+Countering the spell later does not refund that cost, so the killed unit is not returned.<Rule number="426.1.c" /><Rule number="426.1.c.1" />
 
 ## Can my opponent play a reaction after I choose the Mighty unit for Sacrifice's additional cost but before I kill it? [#cost-reaction-window]
 
 No.
 Your opponent has no normal reaction window after you choose the <Mighty /> unit but before you kill it.
 Costs are paid during step 4 of <Term item="finalization">finalization</Term>, and finalization does not pass <Term item="priority">priority</Term>.<Rule number="357.2" /><Rule number="337.1.a" />
-During that step, as Sacrifice's controller, you may activate an eligible <Add /> ability with <Reaction /> when resources are required, even without priority.<Rule number="357.1.a" />
-This limited exception does not create a normal reaction window or permit your opponent to play a spell like <Card name="Stupefy" /> between choosing and killing the unit.
+During that step, as Sacrifice's controller, you may activate an eligible <Add /> ability with <Reaction /> when resources are required, even without priority.<Rule number="357.1.a" /><Rule number="430.3" />
+This limited exception does not create a normal reaction window or permit your opponent to play a spell like <Card name="Stupefy" /> between choosing and killing the unit.<Rule number="430.2.a" />
 
 ## Does the Deathknell of the unit killed as the cost resolve before Sacrifice draws and channels? [#deathknell-before-spell]
 
 Yes.
 The unit is killed while Sacrifice's additional cost is being paid.<Rule number="356.7" /><Rule number="357.2" />
 Its <Deathknell /> is therefore added above Sacrifice as a <Term item="pending">pending</Term> ability.<Rule number="808.1.d.2" />
-The <Deathknell /> <Term item="resolution">resolves</Term> before Sacrifice draws and channels.<Rule number="337.2" /><Rule number="340.1" />
+The <Deathknell /> <Term item="resolution">resolves</Term> before Sacrifice draws and channels.<Rule number="337.1.b" /><Rule number="340.1" />
 
 ### Steps [#deathknell-sequence]
 
@@ -40,7 +40,7 @@ That unit's <Deathknell /> is added above Sacrifice as a pending ability before 
 </Step>
 <Step>
 Sacrifice finishes <Term item="finalization">finalizing</Term>.<Rule number="359.3.a" />
-The pending <Deathknell /> then finalizes.<Rule number="337.1" /><Rule number="359.3.b" /><Rule number="406.2" />
+The pending <Deathknell /> then finalizes.<Rule number="337.1" /><Rule number="359.3.b" /><Rule number="407.2" />
 </Step>
 <Step>
 The <Deathknell /> resolves before Sacrifice.
