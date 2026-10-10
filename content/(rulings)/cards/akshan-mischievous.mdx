@@ -1,7 +1,7 @@
 ---
 title: "Akshan, Mischievous"
 createdAt: "2026-04-14"
-reviewedCoreRulesVersion: "1.4"
+reviewedCoreRulesVersion: "1.5"
 authors:
 - name: "Christian “Near” Ivicevic"
   url: "https://x.com/civicevic"
@@ -13,21 +13,23 @@ No.
 You gain control of the enemy <Card name="Dazzling Aurora" /> after its end-of-turn trigger condition has already been checked.
 
 "At the end of your turn" refers to the Ending Step's end-of-turn point.<Rule number="317.1.a" /><Rule number="383.1" />
-At that point, the enemy Dazzling Aurora is still controlled by your opponent, so its controller-relative "your turn" condition does not refer to your turn.<Rule number="191.4.a" /><Rule number="383.2.c" />
+At that point, the enemy Dazzling Aurora is still controlled by your opponent, so its controller-relative "your turn" condition is not fulfilled.<Rule number="191.5.a" /><Rule number="383.2.c" />
 
 Your Dazzling Aurora's end-of-turn ability plays Akshan after that point in the turn has been reached.
 After Akshan enters the board, his play effect is added to the <Term item="chain">chain</Term> as a <Term item="pending">pending</Term> item.<Rule number="383.4.a" /><Rule number="383.4.a.2" />
-You gain control of the enemy Dazzling Aurora only when that ability later <Term item="resolution">resolves</Term>.<Rule number="406.5" />
+You gain control of the enemy Dazzling Aurora only when that ability later <Term item="resolution">resolves</Term>.<Rule number="407.5" />
 
-If you take control of an enemy Dazzling Aurora before the Ending Step, it triggers normally at the end of that turn.
+If you take control of an enemy Dazzling Aurora before the Ending Step and still control it at the end-of-turn point, it triggers normally.
 
 ## If my opponent and I each use Akshan, Mischievous to take the same gear, who controls it when either Akshan dies? [#dual-akshan-control]
 
-The most recently played Akshan takes precedence while both are on the board.
-If either Akshan dies, the surviving Akshan controls the gear.
+After both play effects have <Term item="resolution">resolved</Term>, if either Akshan dies, the gear is controlled by the player whose control effect remains.
+While both effects remain, the player whose effect was generated most recently controls the gear.
 
-Each <Term item="resolution">resolved</Term> play effect creates a delayed passive ability, a control effect that remains active until that Akshan leaves the board.<Rule number="390.4" /><Rule number="391" />
-While both effects remain, they independently change the gear's controller in the same trait-altering layer.<Rule number="477.1.a" /><Rule number="478" />
-The effect established most recently applies last and determines who controls the gear.<Rule number="480" /><Rule number="480.1" /><Rule number="480.3" />
+Each resolved play effect creates a delayed passive ability, a control effect that remains active until that Akshan leaves the board.<Rule number="391.4" /><Rule number="392" />
+While both effects remain, they change the gear's controller in the same trait-altering layer.<Rule number="479.2.a" />
+Neither effect changes the other's existence, scope, or result, so no dependency is established.<Rule number="480.1.a" /><Rule number="480.1.b" /><Rule number="480.1.c" />
+Timestamp order therefore applies.<Rule number="482" />
+Each effect's timestamp is established when it begins applying, and the newer effect applies last and determines who controls the gear.<Rule number="482.1" /><Rule number="482.3" />
 
-When an Akshan dies, that Akshan's control effect ends and the surviving effect determines control.<Rule number="428.2" />
+When an Akshan dies, it moves from the board to the trash, ending that Akshan's control effect and leaving the other effect to determine control.<Rule number="429.2" />
