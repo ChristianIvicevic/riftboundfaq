@@ -1,17 +1,17 @@
 ---
 title: "Ambush"
 createdAt: "2026-05-09"
-reviewedCoreRulesVersion: "1.4"
+reviewedCoreRulesVersion: "1.5"
 authors:
 - name: "Christian “Near” Ivicevic"
   url: "https://x.com/civicevic"
 ---
 
-## Can I use Ambush to play a unit to my base? [#ambush-base]
+## Can I use Ambush to play a unit to my base as a Reaction? [#ambush-base]
 
 No.
-<Ambush /> applies only when you play the unit to a battlefield where you control units: it makes that battlefield a valid location and gives the unit <Reaction /> while it is being played there.<Rule number="822.1.b" /><Rule number="822.1.c" />
-You may still play the unit to your base under the normal unit-play permission, but only at its normal timing.<Rule number="355.2.a" />
+<Ambush /> gives the unit <Reaction /> only while you are playing it to a battlefield where you control units.<Rule number="822.1.b" />
+You may still play the unit to your base under the normal unit-play permission, but not as a <Reaction /> granted by <Ambush />.<Rule number="355.2.a" />
 
 ## Can opponents react to a unit being played with Ambush? [#unit-play-reactions]
 
@@ -20,14 +20,15 @@ No.
 <Term item="finalization">Finalizing</Term> it does not pass <Term item="priority">priority</Term>.<Rule number="337.1.a" />
 It then <Term item="resolution">resolves</Term> and enters the board immediately.<Rule number="337.2" /><Rule number="359.2.c" />
 
-This is a common point of confusion with cards like <Card name="Kha'Zix, Mutating Horror" />, which has <Ambush /> and triggers if an enemy unit is alone when he attacks or defends.
+This is a common point of confusion with cards like <Card name="Kha'Zix, Mutating Horror" />, which has <Ambush /> and triggers when he attacks or defends if an enemy unit is alone at his battlefield.
 An opponent cannot play a unit in response to Kha'Zix being placed on the <Term item="chain">chain</Term> in an attempt to break the "alone" condition before he enters.
 
 ## Who gets to act after I Ambush a unit during a showdown? [#ambush-showdown-focus]
 
-After the <Ambush /> unit enters, ask whether anything remains on the <Term item="chain">chain</Term>.
+After the <Ambush /> unit enters, its entry causes a <Term item="cleanup">cleanup</Term>, during which <Term item="priority">priority</Term> and <Term item="focus">focus</Term> are not passed or awarded.<Rule number="319.6" /><Rule number="320.1" />
+After that cleanup, ask whether anything remains on the <Term item="chain">chain</Term>.
 
-- **Nothing remains on the chain:** If the unit started the chain and no ability triggered by its entry remains, the chain closes and <Term item="focus">focus</Term> passes to the next player.<Rule number="309.2" /><Rule number="347.1.b" />
-- **Another item remains on the chain:** An ability triggered by the unit's entry can <Term item="finalization">finalize</Term> and remain.<Rule number="383.2.c" /><Rule number="383.3" /><Rule number="406.2" />
+- **Nothing remains on the chain:** If the unit started the chain and no other item remains after cleanup, the chain closes,<Rule number="330" /> and the next player gains focus and priority.<Rule number="347.1.b" /><Rule number="313.2" />
+- **Another item remains on the chain:** An ability triggered by the unit's entry can <Term item="finalization">finalize</Term> and remain.<Rule number="383.2.c" /><Rule number="383.3" /><Rule number="407.2" />
   An older item can remain if the unit was played in response to it.<Rule number="337.2" /><Rule number="340.1" />
-  The newest remaining item's controller gains <Term item="priority">priority</Term>, and focus does not pass.<Rule number="309.1" /><Rule number="337.4" /><Rule number="340.4" />
+  The newest remaining item's controller gains priority, and focus does not pass.<Rule number="337.4" /><Rule number="340.4" /><Rule number="346" />
