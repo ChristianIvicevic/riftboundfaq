@@ -1,7 +1,7 @@
 ---
 title: "Empower"
 createdAt: "2026-08-01"
-reviewedCoreRulesVersion: "1.4"
+reviewedCoreRulesVersion: "1.5"
 authors:
 - name: "Christian “Near” Ivicevic"
   url: "https://x.com/civicevic"
@@ -11,23 +11,24 @@ authors:
 
 Yes.
 <Empower /> is an activated ability keyword,<Rule number="827.1" /> and activated abilities use the <Term item="chain">chain</Term>.<Rule number="377.3" />
-After the ability is <Term item="finalization">finalized</Term> and no other cards or abilities are waiting to finalize, opponents have an opportunity to play Reactions before it <Term item="resolution">resolves</Term>.<Rule number="337.4" /><Rule number="406.4" />
+After the ability is <Term item="finalization">finalized</Term> and no other cards or abilities are waiting to finalize, opponents have an opportunity to play Reactions before it <Term item="resolution">resolves</Term>.<Rule number="337.4" /><Rule number="407.4" />
 
 ## When can I activate an Empower ability? [#empower-timing]
 
-By default, you can activate it only while its source is not <Empowered /> and during your own Main Phase while no showdown, combat, or <Term item="chain">chain</Term> is in progress.<Rule number="310.1" /><Rule number="310.1.a" /><Rule number="312.2.a" /><Rule number="381" /><Rule number="827.1.c.1" />
-<Empower /> follows these restrictions because it is an activated ability.<Rule number="827.1" />
+By default, you can activate an <Empower /> ability whose source you control only while its source is not <Empowered /><Rule number="827.1.c.1" /> and during your own Main Phase when you have <Term item="priority">priority</Term> and no showdown, combat, or <Term item="chain">chain</Term> is in progress.<Rule number="310.1" /><Rule number="310.1.a" /><Rule number="381.1" />
+These timing rules apply because <Empower /> is an activated ability.<Rule number="827.1" />
 
-Card text may override the default activation restriction or change an <Empower /> ability's timing.<Rule number="002" /><Rule number="827.1.c.4" />
-If it explicitly has <Action />, you may activate it during showdowns on any player's turn.<Rule number="806.1.c.2" />
-If it has <Reaction />, you may also activate it on any player's turn during closed states, while a chain exists.<Rule number="309.1" /><Rule number="813.1.b" /><Rule number="813.1.c.2" />
+If the source has or gains permission to be empowered multiple times, it ignores <Empower />'s normal restriction against activating while already <Empowered />.<Rule number="827.1.c.5" />
+An <Empower /> ability may also include text that changes its timing.<Rule number="827.1.c.4" />
+If it has or gains <Action />, you may activate it during showdowns on any player's turn, but not while a chain exists.<Rule number="309.1" /><Rule number="309.1.a" /><Rule number="806.1.c.2" /><Rule number="806.4" />
+If it has <Reaction />, it gains all of <Action />'s permissions and may also be activated during closed states on any player's turn.<Rule number="813.1.b" /><Rule number="813.1.c.2" />
 
 ## Does a "When I become Empowered" ability trigger if the unit leaves the board before its Empower ability resolves? [#removed-source-trigger]
 
 No.
-If the unit leaves the board before its <Empower /> ability <Term item="resolution">resolves</Term>, it does not become <Empowered />, so its "When I become <Empowered />" ability does not trigger.<Rule number="441.2" /><Rule number="828.1.d" />
+If the unit leaves the board before its <Empower /> ability <Term item="resolution">resolves</Term>, it does not become <Empowered />, so its "When I become <Empowered />" ability does not trigger.<Rule number="442.2" /><Rule number="828.1.d" />
 
-Removing the unit does not counter its already-<Term item="finalization">finalized</Term> <Empower /> ability, so that ability remains on the <Term item="chain">chain</Term>.<Rule number="406.2" /><Rule number="425.1" /><Rule number="425.2.a" />
+Removing the unit does not counter its already-<Term item="finalization">finalized</Term> <Empower /> ability, so that ability remains on the <Term item="chain">chain</Term>.<Rule number="407.2" /><Rule number="426.1" /><Rule number="426.2.a" />
 
 <Callout type="idea" title="Example">
 	You activate <Card name="Mel, Defiant Soul" />'s <Empower /> ability and discard a spell to pay its cost.
@@ -36,7 +37,7 @@ Removing the unit does not counter its already-<Term item="finalization">finaliz
 	Mel's <Empower /> ability then resolves, but Mel cannot become <Empowered /> while she is off the board, so her banish ability does not trigger.
 </Callout>
 
-When the <Empower /> ability resolves, it tries to empower the unit whose ability was activated.<Rule number="406.5" /><Rule number="827.1.c.1" />
+When the <Empower /> ability resolves, it tries to empower the unit whose ability was activated.<Rule number="407.5" /><Rule number="827.1.c.1" />
 Only a game object on the board can become <Empowered />.
 While the original unit is off the board, it cannot become <Empowered /> or evaluate its triggered ability's condition.<Rule number="384.2" />
 
@@ -44,14 +45,8 @@ If the card returns from a non-board zone before the <Empower /> ability resolve
 
 ## Can a unit or gear without an Empower or Empowered ability become Empowered? [#empower-other-objects]
 
-Yes.
-A unit or gear does not need a printed <Empower /> or <Empowered /> ability to become <Empowered />.
-
-You can empower an object only when a game effect instructs you to do so.<Rule number="441.3.a" />
-The <Empowered /> state can apply to any game object on the board.<Rule number="441.2" />
-
-Normally, an object that is already <Empowered /> cannot become <Empowered /> again.<Rule number="441.1.b" />
-An effect can permit an already <Empowered /> object to be empowered again, subject to the limits of that effect.<Rule number="441.1.c.1" />
+Yes, if a game effect instructs you to empower it.<Rule number="442.3.a" />
+A unit or gear does not need a printed <Empower /> or <Empowered /> ability because the <Empowered /> state can apply to any game object on the board.<Rule number="442.2" />
 
 <Callout type="idea" title="Example">
 	<Card name="Sanction" /> can empower an unempowered legal unit and <Card name="Hextech Formula" /> can empower another gear; neither object needs a printed reference to <Empower /> or <Empowered />.
