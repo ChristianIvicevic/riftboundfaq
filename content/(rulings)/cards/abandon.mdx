@@ -1,0 +1,25 @@
+---
+title: "Abandon"
+createdAt: "2026-10-12"
+reviewedCoreRulesVersion: "1.5"
+authors:
+- name: "Christian “Near” Ivicevic"
+  url: "https://x.com/civicevic"
+---
+
+## Where does a Flow spell countered by Abandon go? [#flow-destination]
+
+If no other replacement effects apply, it is banished rather than returned to its owner's hand.
+
+Abandon's "Counter a spell" instruction targets a <Term item="finalization">finalized</Term> spell on the <Term item="chain">chain</Term>.<Rule number="355.10" /><Rule number="355.9.a.2" />
+Countering would clear that spell from the chain and put it in the trash.<Rule number="426.1.a" /><Rule number="426.1.a.1" />
+Abandon's later instruction replaces putting it in the trash with returning it to its owner's hand.<Rule number="158.2" /><Rule number="369.1" />
+Because Abandon's counter, rather than the spell's own execution, makes it leave the chain, the delayed replacement effect created by <Flow /> also applies and would banish it instead.<Rule number="829.1.b.1" />
+
+Both replacement effects apply to the same departure event, so the spell's controller chooses their order.<Rule number="372" />
+
+The result is the same in either order.
+If <Flow /> applies first, the spell is banished instead of going to the trash, so Abandon no longer has a qualifying event to replace.<Rule number="370.1" />
+If Abandon applies first, it replaces the original event with the spell leaving the chain for its owner's hand.<Rule number="370.1.b" />
+That replacement event still makes the spell leave the chain, so <Flow /> applies and banishes it instead.<Rule number="370.2" />
+An additional replacement effect joins this ordering and can change the final destination.<Rule number="370.2" /><Rule number="372" />

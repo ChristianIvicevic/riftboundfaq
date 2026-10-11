@@ -1,7 +1,7 @@
 ---
 title: "Flow"
 createdAt: "2026-08-01"
-reviewedCoreRulesVersion: "1.4"
+reviewedCoreRulesVersion: "1.5"
 authors:
 - name: "Christian “Near” Ivicevic"
   url: "https://x.com/civicevic"
@@ -11,31 +11,22 @@ authors:
 
 You can play it from your trash only when you otherwise have permission to play it at that timing.
 
-<Flow /> lets you play the spell from your trash for its <Flow /> cost, but it changes no other permissions or timing restrictions.<Rule number="829.1.b" /><Rule number="829.1.b.2" />
+<Flow /> lets you play the spell from your trash for its <Flow /> cost.<Rule number="829.1.b" />
+It changes no other permissions or timing restrictions.<Rule number="829.1.b.2" />
 For example, <Flow /> does not grant a spell <Reaction /> or let you play an <Action /> outside its normal timing.
 
 ## Where does a spell played using Flow go if it is countered? [#countered-destination]
 
-It is banished unless another replacement effect changes that result.<Rule number="372" />
+It is banished unless another replacement effect changes that result.<Rule number="370.2" /><Rule number="372" />
 
-Countering clears the spell from the <Term item="chain">chain</Term> and would normally put it in the trash.<Rule number="425.1.a" /><Rule number="425.1.a.1" />
-However, playing a spell using <Flow /> creates a delayed replacement effect that banishes it if it would leave the chain after becoming <Term item="finalization">finalized</Term>, unless its own execution instructed it to leave.<Rule number="829.1.b.1" />
-Being countered meets those conditions, so the <Flow /> replacement effect banishes the spell instead of letting it go to the trash.
+An effect that says "Counter a spell" can target only a <Term item="finalization">finalized</Term> spell on the <Term item="chain">chain</Term>.<Rule number="355.10" /><Rule number="355.9.a.2" />
+Countering clears the spell from the chain and would normally put it in the trash.<Rule number="426.1.a" /><Rule number="426.1.a.1" />
+However, playing a spell using <Flow /> creates a delayed replacement effect that banishes it if it would leave the chain after becoming finalized, unless its own execution instructed it to leave.<Rule number="829.1.b.1" />
+Countering, rather than the spell's own execution, makes it leave the chain, so the <Flow /> replacement effect banishes it instead.
 
-## Can Defy counter a spell whose Flow cost exceeds Defy's limit? [#printed-cost]
+## Which cost do effects use when they check a Flow spell's cost? [#printed-cost]
 
-Yes, provided the spell's printed or copied cost meets <Card name="Defy" />'s restrictions.
+Effects use the spell's printed or copied cost, not its <Flow /> cost or the amount paid.<Rule number="206" />
 
-Defy checks the cost of its target, and effects that determine a card's cost always use its printed or copied cost rather than the amount actually paid.<Rule number="206" />
-A <Flow /> cost is an alternate cost that replaces the spell's base cost during <Term item="finalization">finalization</Term>,<Rule number="829.1.c.1" /> but it does not change the printed or copied cost that Defy checks.
-
-## Where does a Flow spell countered by Abandon go? [#abandon-destination]
-
-It is banished rather than returned to its owner's hand.
-
-<Card name="Abandon" /> replaces putting the countered spell in the trash with returning it to its owner's hand,<Rule number="369.1" /><Rule number="425.1.a.1" /> while <Flow /> replaces the spell leaving the <Term item="chain">chain</Term> with banishing it.<Rule number="829.1.b.1" />
-Because both replacement effects apply to the affected spell's departure from the chain, that spell's controller chooses their order.<Rule number="372" />
-
-The result is the same in either order.
-If <Flow /> applies first, the spell is banished instead of going to the trash, so Abandon no longer has a qualifying event to replace.
-If Abandon applies first, it still replaces the original event with the spell leaving the chain for its owner's hand, so <Flow /> applies to that replacement event and banishes the spell instead.<Rule number="370.2" />
+A <Flow /> cost is an alternate cost that replaces the spell's base cost during <Term item="finalization">finalization</Term>.<Rule number="829.1.c.1" />
+For example, <Card name="Defy" /> can counter the spell if its printed or copied cost is no more than <Energy value={4} /> and no more than <Universal />, even when its <Flow /> cost exceeds either limit.
