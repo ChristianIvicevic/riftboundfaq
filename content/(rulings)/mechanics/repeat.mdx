@@ -1,7 +1,7 @@
 ---
 title: "Repeat"
 createdAt: "2026-02-02"
-reviewedCoreRulesVersion: "1.4"
+reviewedCoreRulesVersion: "1.5"
 authors:
 - name: "Christian “Near” Ivicevic"
   url: "https://x.com/civicevic"
@@ -9,47 +9,29 @@ authors:
 
 ## When do I decide whether to pay for Repeat? [#repeat-decision-timing]
 
-Decide whether to pay <Repeat /> as you play the spell or ability, before opponents can respond.
+Decide separately whether to pay each <Repeat /> cost while making the relevant choices as you play the spell or ability.<Rule number="355.1.a" /><Rule number="400" /><Rule number="820.1.c.2" /><Rule number="820.1.d" />
+Each cost can be paid only once.<Rule number="820.1.c.3" />
+For every <Repeat /> cost you choose to pay, make any required choices for its additional execution during that same step.<Rule number="820.2" />
+Those choices can be the same as or different from the choices for the initial execution.<Rule number="820.2.a" />
+After that step, the decisions and choices cannot change unless a spell or ability instructs otherwise.<Rule number="355.15" />
 
-<Steps>
-<Step>
-While making the relevant choices, choose whether to pay the <Repeat /> cost.<Rule number="355.1.a" /><Rule number="399" /><Rule number="820.1.d" />
-</Step>
-<Step>
-If you choose to pay it, include <Repeat /> as an optional additional cost when determining the total cost.<Rule number="356.2.b.1" /><Rule number="399" /><Rule number="820.1.d" />
-</Step>
-<Step>
-Pay the total cost and finish <Term item="finalization">finalization</Term>.<Rule number="357" /><Rule number="359.3.a" /><Rule number="406.2" />
-Finalization does not pass <Term item="priority">priority</Term>, so opponents cannot respond during these steps.<Rule number="337.1.a" />
-</Step>
-<Step>
-Once a <Repeat /> spell or ability is finalized and no <Term item="pending">pending</Term> items remain, the normal response window opens.<Rule number="337.4" /><Rule number="406.4" />
-The <Repeat /> decision is already locked in.<Rule number="355.15" />
-</Step>
-</Steps>
+Opponents cannot respond while you make these choices or pay the costs because <Term item="finalization">finalization</Term> does not pass <Term item="priority">priority</Term>.<Rule number="337.1.a" /><Rule number="357" /><Rule number="405.1" />
 
 <Callout type="idea" title="Example">
-	When playing <Card name="Blood Rush" />, choose whether to pay its <Repeat /> <Energy value={1} />.
-	If you pay, separately choose a target for each execution; both choices are locked in before you pay the spell's cost.<Rule number="820.2" /><Rule number="820.2.a" />
-	Include the extra <Energy value={1} /> in the total cost and pay it before finalizing the spell.
-	Only then can an opponent respond.
+	When playing <Card name="Blood Rush" />, if you pay its <Repeat /> <Energy value={1} /> cost, choose one unit for the initial execution and one for the additional execution.<Rule number="820.2" />
+	You can choose the same unit or different units.<Rule number="820.2.a" />
+	Both choices are locked before you pay the spell's cost.<Rule number="355.15" /><Rule number="357" />
 </Callout>
 
 ## What does Repeat repeat? [#repeated-instructions]
 
-<Repeat /> executes a spell or ability's instructions an additional time during the same <Term item="resolution">resolution</Term>; it does not create another copy or <Term item="chain">chain</Term> item.<Rule number="820.1.d.1" /><Rule number="820.3.a" />
-Instructions handled outside resolution are not repeated.<Rule number="820.1.d.2" />
-The spell or ability is played only once, so you determine and pay its play costs, including the <Repeat /> cost, only once.<Rule number="820.1.c.1" /><Rule number="820.1.c.3" /><Rule number="820.3.a" />
+Each <Repeat /> cost you pay makes the spell or ability execute its instructions performed during <Term item="resolution">resolution</Term> one additional time.<Rule number="820.1.d" /><Rule number="820.1.d.2" /><Rule number="820.3" />
+It does not play the spell or ability again or create another <Term item="chain">chain</Term> item.<Rule number="820.1.d" /><Rule number="820.3.a" />
+The play steps and costs are not repeated because only resolution instructions execute again.<Rule number="820.1.c.1" /><Rule number="820.1.d.2" /><Rule number="820.3.a" />
 
-You choose targets and modes and make other choices separately for each execution.<Rule number="820.2" /><Rule number="820.2.a" />
-You may make different choices for the original and additional executions.
+You choose targets, modes, and other required decisions separately for each execution.<Rule number="820.2" />
+The choices for an additional execution can differ from those for the initial execution.<Rule number="820.2.a" />
 
 ## What happens if a spell with Repeat is countered? [#repeated-spell-countering]
 
-Neither the initial nor any additional execution occurs, and the paid <Repeat /> cost is not refunded.
-
-<Repeat /> does *not* create a second instance of the spell on the <Term item="chain">chain</Term>.<Rule number="820.3.a" />
-Instead, it modifies how the spell <Term item="resolution">resolves</Term> by executing its instructions an additional time.<Rule number="820.1.d.1" />
-
-When a spell is countered, it does nothing and is cleared from the chain, so none of its executions happen.<Rule number="425.1.a" />
-Countering does not refund additional costs paid to play the spell.<Rule number="425.1.c" /><Rule number="425.1.c.1" />
+If a spell with <Repeat /> is countered, neither its initial execution nor any additional execution happens because the spell does nothing, and its paid <Repeat /> costs are not refunded because countering refunds no paid costs.<Rule number="426.1.a" /><Rule number="426.1.c" /><Rule number="426.1.c.1" /><Rule number="820.1.d" /><Rule number="820.3.a" />
