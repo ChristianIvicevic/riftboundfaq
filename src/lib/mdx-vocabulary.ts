@@ -15,6 +15,7 @@ export const TERM_DEFINITIONS = {
 	Burn: { label: 'Burn', variant: 'tertiary', hasValue: true },
 	Deathknell: { label: 'Deathknell', variant: 'secondary' },
 	Deflect: { label: 'Deflect', variant: 'secondary', hasValue: true },
+	Deploy: { label: 'Deploy', variant: 'primary' },
 	Equip: { label: 'Equip', variant: 'tertiary' },
 	Empower: { label: 'Empower', variant: 'tertiary' },
 	Empowered: { label: 'Empowered', variant: 'secondary' },
