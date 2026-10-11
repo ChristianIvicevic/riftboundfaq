@@ -1,17 +1,18 @@
 ---
 title: "Shady Spectacles"
 createdAt: "2026-07-15"
-reviewedCoreRulesVersion: "1.4"
+reviewedCoreRulesVersion: "1.5"
 authors:
 - name: "Christian “Near” Ivicevic"
   url: "https://x.com/civicevic"
 ---
 
-## Does a Reflection token with Temporary lose Temporary after Shady Spectacles makes it a copy of a unit that doesn't have Temporary? [#copying-temporary]
+## Does Shady Spectacles copy Temporary from the chosen unit? [#copying-temporary]
 
-It depends on where <Temporary /> came from.
-The <Card name="Reflection" /> token keeps <Temporary /> if a separate effect granted it, but loses the keyword if it had <Temporary /> only in rules text copied from another unit.
+Shady Spectacles copies <Temporary /> when the keyword comes from the chosen unit's card, its token definition, or a copy effect, but not when another effect granted it.
 
-Shady Spectacles replaces the token's copyable traits, the characteristics inherited through a copy effect, including its rules text.<Rule number="477.1.b" /><Rule number="477.1.b.1" /><Rule number="477.1.b.1.a" />
-The separate keyword grant applies afterward in the ability-altering layer.<Rule number="477.2.a" />
-Because the grant has no stated duration, it continues for as long as the token remains on the board.<Rule number="801.3.a.3" />
+For example, copying <Card name="Keeper of Masks" /> gives the equipped unit <Temporary /> because the keyword is printed on Keeper of Masks.
+If a unit has <Temporary /> only because it received the keyword from <Card name="Shadow's Call" />, <Card name="Deceiver" />, or <Card name="Mirror Image" />, Shady Spectacles does not copy it.
+
+In rules terms, copy effects use copyable traits: a card's printed or already-copied traits, or the traits a token had when it was created.<Rule number="479.1.b" /><Rule number="479.1.b.1" />
+A separate keyword grant changes what the unit currently has without changing those copyable traits.<Rule number="479.1.c" /><Rule number="479.3.a" />
