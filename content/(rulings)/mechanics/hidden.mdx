@@ -7,11 +7,63 @@ authors:
   url: "https://x.com/civicevic"
 ---
 
-## If an effect lets me play a permanent from face down to a battlefield other than where it was hidden, which battlefield can its play effect target? [#relocated-play-effect-targeting]
+## If an effect lets or instructs me to play a card with Hidden, does that let me hide it instead? [#hide-versus-play]
 
-The play effect can target only among options at the battlefield where the permanent was played, not where it was hidden, unless its own targeting restriction makes choosing there impossible.<Rule number="811.1.d.3" />
+No.
+Hiding is a separate action, not a type of playing, so permission to play a card does not grant permission to hide it and hiding does not fulfill an instruction to play.<Rule number="811.1.c.1" />
+The normal <Hidden /> permission allows you to hide a card only from your hand or champion zone.<Rule number="811.1.b" />
+For example, <Card name="Void Burrower" /> lets you play a card from banishment and <Card name="Endless Riches" /> lets you play cards from your trash, but neither permission lets you hide those cards from those zones.
 
-<Card name="Kennen, Keeper of Balance" />'s play effect targets the unit it would stun, and <Card name="Tornado Warrior" />'s play effect targets the "something" it would empower.<Rule number="355.10" />
-When <Card name="Last Caress" /> lets you play Kennen at a battlefield other than where Kennen was hidden, Kennen's play effect can target only a unit at the battlefield where Kennen was played.
-The same applies to Tornado Warrior: its play effect can target only something at the battlefield where Tornado Warrior was played.
-Its "here" also refers to Tornado Warrior's location as the ability's source, so its own text points to that same battlefield.<Rule number="359.3.f.1" />
+## What costs do I pay when I play a card from face down? [#face-down-costs]
+
+Playing a card from face down ignores only its base cost,<Rule number="811.1.b" /> so mandatory additional costs, any optional additional costs you choose, and cost increases still apply.<Rule number="356.1.b.3" /><Rule number="356.2" /><Rule number="356.3" />
+Applicable discounts are applied afterward and can reduce additional costs, including to zero.<Rule number="356.4" /><Rule number="356.4.f" />
+
+<Card name="Pyke, Dockside Butcher" />'s optional <Fury /> additional cost still adds <Fury /> to his total cost if you choose to pay it while playing him from face down.
+An opponent's <Card name="Helm of Suppression" /> and <Card name="Vex, Cheerless" /> instead impose cost increases on spells played from face down.
+Helm adds <Energy value={1} />, or <Energy value={1} /><Universal /> while <Empowered />.
+Vex adds <Energy value={1} /><Universal /> while she is in combat.
+
+## If I play a spell from face down, where can I choose its targets? [#spell-targeting]
+
+Each target must be chosen from among options at the battlefield where the spell was hidden unless the spell's own targeting restriction makes choosing that target there impossible.<Rule number="811.1.d.2" /><Rule number="811.1.d.4" />
+If the spell cannot make valid choices for every required target under these restrictions, you cannot play it from face down.<Rule number="355.8" /><Rule number="811.1.d" />
+
+## If I play a permanent from face down, where can its play effect choose targets? [#play-effect-targeting]
+
+The play effect must follow <Hidden />'s targeting restriction: you must choose each target from among options at the battlefield the permanent was played to, even if that differs from where it was hidden, unless the ability's own targeting restriction makes choosing that target there impossible.<Rule number="811.1.d.3" /><Rule number="811.1.d.4" />
+
+When you choose a battlefield for <Card name="Bedeviling Stranger" /> or a unit for <Card name="Kennen, Keeper of Balance" /> or <Card name="Windsinger" />, that battlefield or unit is a target.<Rule number="355.10" />
+For Bedeviling Stranger, you must choose the battlefield it was played to.<Rule number="199.1" />
+For Kennen and Windsinger, you can target only eligible units at the battlefield they were played to.
+
+## What happens to the targets of a finalized play effect when a Reaction makes its permanent leave the board after being played from face down? [#play-effect-source-removal]
+
+The <Term item="finalization">finalized</Term> play effect still <Term item="resolution">resolves</Term>, but its targets are unaffected because the missing source can no longer identify the battlefield required by <Hidden />.
+A finalized ability remains on the <Term item="chain">chain</Term> and resolves like a spell after its source leaves.<Rule number="407.2" /><Rule number="407.5" />
+A permanent played from face down supplies the battlefield information needed to apply the play effect's targeting restriction.<Rule number="811.1.d.3" /><Rule number="811.1.d.3.a" />
+Without that information, its targets are unaffected.<Rule number="359.3.e.5" />
+
+<Callout type="idea" title="Example">
+	An opponent responds to <Card name="Kennen, Keeper of Balance" />'s finalized play effect with <Card name="Gust" />.<Rule number="407.4" />
+	Gust resolves first.<Rule number="340.1" />
+	It returns Kennen to its owner's hand.
+	Kennen's play effect still resolves, but the chosen unit is not returned.
+</Callout>
+
+## If a card I played from face down causes me to play a unit, where can I play that unit? [#caused-unit-location]
+
+You must play the unit at the battlefield where the spell was hidden or, for a permanent's play effect, where that permanent was played.<Rule number="811.1.d.2" /><Rule number="811.1.d.3" /><Rule number="811.1.d.5" />
+For example, when you play <Card name="Guards!" /> from face down, you must play the Sand Soldier unit token at the battlefield where Guards! was hidden.
+
+## What happens to extra hidden cards when Green Father replaces Bandle Tree with a Brush token or Bushwhack Trap is killed? [#reduced-facedown-capacity]
+
+If the facedown zone contains more cards than it can hold after <Card name="Green Father" /> replaces <Card name="Bandle Tree" /> with a <Card name="Brush" /> token or <Card name="Bushwhack Trap" /> is killed, the zone's controller puts a number of cards equal to the excess into the trash.<Rule number="107.3.b.2" />
+If the maximum falls from two cards to one while two cards are there, that player puts one of them into the trash.
+
+## If my last unit leaves a battlefield while a chain is in progress, is my hidden card there put into the trash immediately? [#chain-battlefield-control]
+
+No.
+While an item remains on the <Term item="chain">chain</Term>, <Term item="cleanup">cleanup</Term> does not make you lose control of the battlefield solely because you have no units there, so the hidden card remains.<Rule number="309.1" /><Rule number="323.5" /><Rule number="811.1.b" />
+Removing the final chain item causes another cleanup.<Rule number="319.5" />
+If nothing remains on the chain, you still have no units at the battlefield, and no combat or showdown is ongoing there, you lose control during that cleanup and the hidden card is put into its owner's trash.<Rule number="190.4.c" /><Rule number="309.2" /><Rule number="323.6.a" /><Rule number="330" />
