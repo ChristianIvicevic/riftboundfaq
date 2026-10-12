@@ -1,7 +1,7 @@
 ---
 title: "Movement"
 createdAt: "2026-07-22"
-reviewedCoreRulesVersion: "1.4"
+reviewedCoreRulesVersion: "1.5"
 authors:
 - name: "Christian “Near” Ivicevic"
   url: "https://x.com/civicevic"
@@ -10,8 +10,8 @@ authors:
 ## Does a unit move when it enters the board? [#entering-board]
 
 No.
-Moving means changing a permanent's position from one space on the board to another.<Rule number="446.1" />
-A card entering the board from another game zone is a zone change, not a move.<Rule number="446.2" />
+Moving means changing a permanent's position from one space on the board to another.<Rule number="448.1" />
+A card entering the board from another game zone is a zone change, not a move.<Rule number="448.2" />
 
 Playing or creating a unit at a battlefield therefore does not fulfill an ability that triggers when the unit moves there.
 Replacing where a unit enters the board also does not turn that entry into a move.
@@ -20,15 +20,9 @@ Replacing where a unit enters the board also does not turn that entry into a mov
 
 No.
 A destination you choose must differ from the unit's current location, but if the card specifies the destination, you make no destination choice and the unit can still be a legal target while already there.<Rule number="002" /><Rule number="355.4" /><Rule number="355.4.a" /><Rule number="355.9.a" /><Rule number="355.9.b" />
-If the unit is already at that specified destination when the instruction <Term item="resolution">resolves</Term>, it cannot move because it would not change board spaces.<Rule number="446.1" />
+If the unit is already at that specified destination when the instruction <Term item="resolution">resolves</Term>, it cannot move because it would not change board spaces.<Rule number="448.1" />
 
 ## Does a later linked instruction still execute if a move is prevented or cannot happen? [#failed-move-linked-instructions]
 
-If the move is prevented or cannot happen for a reason other than an illegal or unavailable target, yes, unless the linked instruction specifically requires the move to have occurred.
-The [Vendetta FAQ](https://playriftbound.com/en-us/news/rules-and-releases/vendetta-rules-faq-and-clarifications) classifies the failed move as negated rather than ignored, so it does not cause other linked instructions to be ignored.
-
-<Callout type="warn" title="Rules citation needed">
-	Core Rules 1.4 still describes a move prevented by a location restriction as ignored.<Rule number="359.3.e.6" />
-	It would therefore also ignore a later linked instruction under the current Core Rules wording.<Rule number="359.3.e.14.a" />
-	The Vendetta FAQ takes precedence on this point until a later Core Rules Document says otherwise.
-</Callout>
+If the move is prevented or cannot happen for a reason other than an illegal or unavailable target, yes, unless the linked instruction specifically requires the move to have occurred.<Rule number="359.3.e.14.a" /><Rule number="359.3.e.14.b" />
+The failed move is negated rather than ignored, so it does not cause other linked instructions to be ignored.<Rule number="359.3.e.6" /><Rule number="359.3.e.14.a" />
