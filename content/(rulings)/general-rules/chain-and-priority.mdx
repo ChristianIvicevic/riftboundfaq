@@ -1,7 +1,7 @@
 ---
 title: "Chain and Priority"
 createdAt: "2026-01-23"
-reviewedCoreRulesVersion: "1.4"
+reviewedCoreRulesVersion: "1.5"
 authors:
 - name: "Christian “Near” Ivicevic"
   url: "https://x.com/civicevic"
@@ -13,18 +13,18 @@ You cannot react to another player's unit before it enters the board.
 <Term item="finalization">Finalizing</Term> the unit does not pass <Term item="priority">priority</Term>; the unit instead <Term item="resolution">resolves</Term> immediately and enters the board.<Rule number="337.1.a" /><Rule number="337.2" /><Rule number="359.2.c" />
 
 The unit's controller has one exception: while paying the unit's costs, they may activate an ability with <Reaction /> that uses <Add />.<Rule number="357.1.a" />
-That ability finalizes and resolves immediately during payment.<Rule number="444.2.c" />
+That ability finalizes and resolves immediately during payment.<Rule number="445.2.c" />
 
 After the unit enters, its play effect and any other fulfilled triggered abilities are put on the <Term item="chain">chain</Term>.<Rule number="383.2.c" /><Rule number="383.3" /><Rule number="383.4.a.2" />
 You may react once those abilities finalize and priority is granted, but the unit is already on the board by then.<Rule number="337.4" /><Rule number="338.1.a" /><Rule number="338.1.a.2" />
 
 ## In what order are multiple pending chain items finalized and resolved? [#pending-item-order]
 
-<Term item="pending">Pending</Term> items undergo <Term item="finalization">finalization</Term> from oldest to newest, finalized items still waiting on the <Term item="chain">chain</Term> <Term item="resolution">resolve</Term> from newest to oldest, and units, gear, and <Add /> abilities resolve as soon as they finalize.
+<Term item="pending">Pending</Term> items normally undergo <Term item="finalization">finalization</Term> from oldest to newest, finalized items still waiting on the <Term item="chain">chain</Term> <Term item="resolution">resolve</Term> from newest to oldest, and units and gear resolve as soon as they finalize; triggered and activated <Add /> abilities instead finalize and resolve immediately when played.
 
-- **Pending items:** Take them through finalization in the order they were added, from oldest to newest, until each item finalizes or leaves the chain.<Rule number="337.1" /><Rule number="337.1.b" />
+- **Pending items:** Normally, take them through finalization in the order they were added, from oldest to newest, until each item finalizes or leaves the chain.<Rule number="337.1" /><Rule number="337.1.b" />
 - **Finalized items:** Among those that remain on the chain, the newest resolves first.<Rule number="340.1" />
-- **Immediate resolution:** Units, gear, and abilities that use <Add /> resolve when they finalize, even if other pending items still need to finalize.<Rule number="337.2" />
+- **Immediate resolution:** Units and gear resolve when they finalize, even if other pending items still need to finalize.<Rule number="337.2" /> Triggered and activated <Add /> abilities instead finalize and resolve immediately when played.<Rule number="430.2" />
 
 ## Can I play a reaction after one, but not all, items on the chain have resolved? [#partial-chain-reactions]
 
@@ -38,6 +38,6 @@ The chain therefore does not have to resolve in its entirety once resolution beg
 If a <Term item="chain">chain</Term> is still in progress or combat is ongoing at that battlefield, your last unit leaving does not make you lose control during the resulting <Term item="cleanup">cleanup</Term>.
 
 Battlefield control is checked during cleanup.
-An item remaining on the chain keeps the empty battlefield under your control.<Rule number="323.6" /><Rule number="330" /><Rule number="309.1" />
+An item remaining on the chain keeps the empty battlefield under your control.<Rule number="323.5" /><Rule number="330" /><Rule number="309.1" />
 An ongoing combat at that battlefield also prevents control of that battlefield from changing.<Rule number="190.4.b" />
 Removing the chain's final item causes a later cleanup to check again; if the battlefield is still empty and no combat is ongoing there, you lose control then.<Rule number="190.4.c" /><Rule number="319.5" /><Rule number="309.2" />
