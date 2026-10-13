@@ -18,20 +18,15 @@ type RulesVersionSummary = RulesDocumentReference & {
 	readonly name: string | null
 }
 
-export type ArchivedRulesVersionSummary = RulesVersionSummary & {
+type ArchivedRulesVersionSummary = RulesVersionSummary & {
 	readonly status: 'archived'
 }
 
-export type CurrentRulesVersionSummary = RulesVersionSummary & {
+type CurrentRulesVersionSummary = RulesVersionSummary & {
 	readonly status: 'current'
 }
 
 export type RegisteredRulesVersionSummary = ArchivedRulesVersionSummary | CurrentRulesVersionSummary
-
-export type CurrentRulesTransition = Readonly<{
-	from: ArchivedRulesVersionSummary
-	to: CurrentRulesVersionSummary
-}>
 
 export type TraversedRulesHeading = {
 	readonly id: string
@@ -84,7 +79,6 @@ export type CompiledRulesDocument = {
 export type RulesDocumentFamilyCatalog = Readonly<{
 	registeredVersions: readonly RegisteredRulesVersionSummary[]
 	currentVersion: CurrentRulesVersionSummary
-	currentTransition: CurrentRulesTransition | undefined
 	readonly current: CompiledRulesDocument
 	get(version: string): CompiledRulesDocument
 	find(version: string): CompiledRulesDocument | undefined
@@ -173,9 +167,6 @@ export function createRulesDocumentFamilyCatalog<Document extends { readonly ver
 	])
 	const summaries = new Map(registeredVersions.map((summary) => [summary.version, summary]))
 	const previousSummary = archivedSummaries.at(-1)
-	const currentTransition = previousSummary
-		? Object.freeze({ from: previousSummary, to: currentSummary })
-		: undefined
 	const compiled = new Map<string, CompiledRulesDocument>()
 	const differences = new Map<string, readonly DiffEntry<RulesDiffRecord>[]>()
 	const difference = (from: string, to: string) => {
@@ -246,7 +237,6 @@ export function createRulesDocumentFamilyCatalog<Document extends { readonly ver
 		},
 		registeredVersions,
 		currentVersion: currentSummary,
-		currentTransition,
 		difference,
 		get(version: string) {
 			const document = find(version)

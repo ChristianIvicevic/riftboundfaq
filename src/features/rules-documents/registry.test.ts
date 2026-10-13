@@ -9,8 +9,6 @@ describe('rules documents registry', () => {
 
 		expect(coreRules.registeredVersions.filter(({ status }) => status === 'current')).toHaveLength(1)
 		expect(coreRules.currentVersion).toBe(current)
-		expect(coreRules.currentTransition?.from).toMatchObject({ version: '1.4', status: 'archived' })
-		expect(coreRules.currentTransition?.to).toBe(current)
 		expect(coreRules.current.identity).toBe(current)
 		expect(coreRules.current.identity.version).not.toBe('current')
 		expect(rulesDocuments.get({ type: 'core-rules', version: archived.version }).identity).toBe(archived)

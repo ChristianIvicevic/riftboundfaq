@@ -73,11 +73,9 @@ export type TournamentRulesForensicRow = {
 type ParsedLabel = Pick<TournamentRulesForensicRow, 'id' | 'label' | 'diagnostics'>
 type RowClassification = Pick<TournamentRulesForensicRow, 'kind' | 'fontSize'>
 
-export type TournamentRulesSourceRowReconstructionErrorCode =
-	| 'invalid-page-number'
-	| 'noncontiguous-page-order'
+type TournamentRulesSourceRowReconstructionErrorCode = 'invalid-page-number' | 'noncontiguous-page-order'
 
-export class TournamentRulesSourceRowReconstructionError extends Error {
+class TournamentRulesSourceRowReconstructionError extends Error {
 	constructor(
 		readonly code: TournamentRulesSourceRowReconstructionErrorCode,
 		readonly page: number,

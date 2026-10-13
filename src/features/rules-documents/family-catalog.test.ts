@@ -38,7 +38,7 @@ const invalidCatalogs: readonly {
 ]
 
 describe('Rules document family catalog', () => {
-	test('orders registered rules versions and identifies the transition into the current rules version', () => {
+	test('orders registered rules versions', () => {
 		const adapt = vi.fn(({ version }: { version: string }) => ({ version, sections: [] }))
 		const catalog = createRulesDocumentFamilyCatalog({
 			type: 'core-rules',
@@ -57,10 +57,6 @@ describe('Rules document family catalog', () => {
 			{ type: 'core-rules', version: '1.9', name: null, status: 'archived' },
 			{ type: 'core-rules', version: '1.10', name: null, status: 'current' },
 		])
-		expect(catalog.currentTransition).toEqual({
-			from: catalog.registeredVersions[1],
-			to: catalog.registeredVersions[2],
-		})
 		expect(adapt).not.toHaveBeenCalled()
 	})
 
@@ -89,7 +85,6 @@ describe('Rules document family catalog', () => {
 			'2026-04-29',
 			'2026-07-16',
 		])
-		expect(firstCatalog.currentTransition).toBeUndefined()
 		expect(firstCatalog.current.identity.status).toBe('current')
 	})
 
@@ -153,7 +148,6 @@ describe('Rules document family catalog', () => {
 		expect(() => catalog.get('1.2')).toThrow(UnknownRulesVersionError)
 		expect(Object.isFrozen(catalog)).toBe(true)
 		expect(Object.isFrozen(catalog.registeredVersions)).toBe(true)
-		expect(Object.isFrozen(catalog.currentTransition)).toBe(true)
 	})
 
 	test('reports source invariants lazily through the catalog interface', () => {

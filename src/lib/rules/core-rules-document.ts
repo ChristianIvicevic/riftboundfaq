@@ -10,7 +10,7 @@ export type RuleNode = {
 	children: RuleNode[]
 }
 
-export type CoreRulesSubsection = {
+type CoreRulesSubsection = {
 	heading: RulesHeading
 	rules: RuleNode[]
 }

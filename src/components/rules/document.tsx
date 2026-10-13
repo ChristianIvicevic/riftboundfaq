@@ -293,13 +293,7 @@ export function RulesDocumentRuleList({
 	)
 }
 
-export function RulesDocumentHeadingLink({
-	heading,
-	anchor,
-}: {
-	heading: DisplayRulesHeading
-	anchor: string
-}) {
+function RulesDocumentHeadingLink({ heading, anchor }: { heading: DisplayRulesHeading; anchor: string }) {
 	return (
 		<a className="group flex items-baseline gap-3 no-underline" href={`#${anchor}`}>
 			<span className="font-mono text-[0.7em] font-medium text-fd-muted-foreground group-hover:text-fd-primary">

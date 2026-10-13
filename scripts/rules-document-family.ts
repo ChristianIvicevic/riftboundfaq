@@ -12,7 +12,7 @@ export type ExtractedRulesDiagnostic = Readonly<{
 	message: string
 }>
 
-export type ExtractedRulesVersion<RegisteredVersion, Document, Transcript extends string | null> = Readonly<{
+type ExtractedRulesVersion<RegisteredVersion, Document, Transcript extends string | null> = Readonly<{
 	registeredVersion: RegisteredVersion
 	lastUpdated: string
 	document: Document
@@ -20,12 +20,12 @@ export type ExtractedRulesVersion<RegisteredVersion, Document, Transcript extend
 	diagnostics: readonly ExtractedRulesDiagnostic[]
 }>
 
-export type ExtractedRulesDocumentFamily<Version> = Readonly<{
+type ExtractedRulesDocumentFamily<Version> = Readonly<{
 	versions: readonly [Version, ...Version[]]
 	currentVersion: Version
 }>
 
-export type RulesDocumentFamilyAdapter<Family, Result> = Readonly<{
+type RulesDocumentFamilyAdapter<Family, Result> = Readonly<{
 	extract: (family: Family) => Promise<Result>
 }>
 
@@ -62,6 +62,3 @@ export type TournamentRulesFamilyAdapter = RulesDocumentFamilyAdapter<
 	TournamentRulesFamily,
 	ExtractedTournamentRulesFamily
 >
-
-export { coreRulesFamilyAdapter } from './core-rules/extract'
-export { tournamentRulesFamilyAdapter } from './tournament-rules/extract'

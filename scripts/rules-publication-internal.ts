@@ -15,7 +15,6 @@ type PreparedRulesDocumentFamily = Readonly<{
 }>
 
 export type PreparedRulesPublication = Readonly<{
-	metadata: string
 	coreRules: PreparedRulesDocumentFamily
 	tournamentRules: PreparedRulesDocumentFamily
 	reference: ReadonlyMap<string, string>
@@ -26,9 +25,9 @@ export type RulesPublicationOptions = Readonly<{
 	projectDirectory?: string
 }>
 
-export type RulesPublicationState = 'prior' | 'recovery-required'
+type RulesPublicationState = 'prior' | 'recovery-required'
 
-export class RulesPublicationError extends Error {
+class RulesPublicationError extends Error {
 	readonly publicationState: RulesPublicationState
 	declare readonly cause: unknown
 
@@ -93,12 +92,13 @@ const COMMITTED_TRANSACTION_DIRECTORY = '.rules-publication-committed'
 const JOURNAL_FILE = 'transaction.json'
 const CORE_TRANSCRIPT = /^CR-v\d+\.\d+\.txt$/u
 const TOURNAMENT_TRANSCRIPT = /^Tournament-Rules-\d{4}-\d{2}-\d{2}\.txt$/u
-const FIXED_MANAGED_PATHS = [
-	'src/generated/rules-metadata.ts',
+const RETIRED_MANAGED_PATH = 'src/generated/rules-metadata.ts'
+const REQUIRED_MANAGED_PATHS = [
 	'src/generated/core-rules',
 	'src/generated/tournament-rules',
 	'content/reference',
 ] as const
+const FIXED_MANAGED_PATHS = [RETIRED_MANAGED_PATH, ...REQUIRED_MANAGED_PATHS] as const
 const FIXED_MANAGED_PATH_SET = new Set<string>(FIXED_MANAGED_PATHS)
 
 function outputPath(root: string, path: string): string {
@@ -204,7 +204,7 @@ async function desiredEntries(
 	return [
 		{
 			livePath: FIXED_MANAGED_PATHS[0],
-			contents: prepared.metadata,
+			contents: null,
 			kind: 'file',
 		},
 		{
@@ -285,7 +285,11 @@ async function readJournalFile(journalPath: string): Promise<PublicationJournal>
 		if (index >= FIXED_MANAGED_PATHS.length && !entry.livePath.startsWith('sources/')) {
 			throw new Error(`Recovery journal transcript path does not match entry ${index}`)
 		}
-		if (index < FIXED_MANAGED_PATHS.length && entry.stagedPath === null) {
+		if (
+			index < FIXED_MANAGED_PATHS.length &&
+			entry.livePath !== RETIRED_MANAGED_PATH &&
+			entry.stagedPath === null
+		) {
 			throw new Error(`Recovery journal cannot remove required target ${entry.livePath}`)
 		}
 		if (!entry.hadPrior && entry.status === 'backing-up') {

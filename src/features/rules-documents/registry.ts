@@ -19,21 +19,13 @@ import {
 } from '@/generated/tournament-rules'
 import type { RulesDocumentFamilyId } from '@/lib/rules/document-family-conventions'
 
-export {
-	RulesDocumentInvariantError,
-	UnknownRulesVersionError,
-} from '@/features/rules-documents/family-catalog'
+export { UnknownRulesVersionError } from '@/features/rules-documents/family-catalog'
 export type {
 	CompiledRulesDocument,
-	RegisteredRulesVersionSummary,
 	RuleChangeMarker,
-	RulesDiffRecord,
 	RulesDocumentReference,
 	RulesReferenceTarget,
 	TraversedRule,
-	TraversedRulesBlock,
-	TraversedRulesHeading,
-	TraversedRulesSection,
 } from '@/features/rules-documents/family-catalog'
 
 const families = {

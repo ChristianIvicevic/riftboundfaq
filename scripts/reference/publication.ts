@@ -52,7 +52,6 @@ type PlannedOverviewTile = Readonly<{
 }>
 type ReferenceFamilyPlan = Readonly<{
 	versions: readonly string[]
-	currentVersion: string
 	currentVersionRoute: string
 	currentNavigationPath: string
 	archiveTiles: readonly PlannedOverviewTile[]
@@ -207,7 +206,6 @@ function planCoreRulesReference(
 	const currentConventions = coreRulesConventions.version(currentVersion)
 	return {
 		versions,
-		currentVersion,
 		currentVersionRoute: currentConventions.reference.documentRoute,
 		currentNavigationPath: currentConventions.reference.currentDocumentPath.replace(/\.mdx$/u, ''),
 		archiveTiles: archivedVersions.toReversed().map((version) => ({
@@ -284,7 +282,6 @@ function planTournamentRulesReference(
 	const currentConventions = tournamentRulesConventions.version(currentVersion)
 	return {
 		versions,
-		currentVersion,
 		currentVersionRoute: currentConventions.reference.documentRoute,
 		currentNavigationPath: currentConventions.reference.currentDocumentPath.replace(/\.mdx$/u, ''),
 		archiveTiles: archivedVersions.toReversed().map((version) => ({

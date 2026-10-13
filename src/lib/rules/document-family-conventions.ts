@@ -10,11 +10,11 @@ export type { RulesDocumentFamilyId }
 
 declare const rulesVersionBrand: unique symbol
 
-export type RulesVersion<Family extends RulesDocumentFamilyId> = string & {
+type RulesVersion<Family extends RulesDocumentFamilyId> = string & {
 	readonly [rulesVersionBrand]: Family
 }
 
-export type RulesDocumentVersionConventions<Family extends RulesDocumentFamilyId> = Readonly<{
+type RulesDocumentVersionConventions<Family extends RulesDocumentFamilyId> = Readonly<{
 	family: Family
 	version: RulesVersion<Family>
 	source: Readonly<{

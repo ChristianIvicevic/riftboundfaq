@@ -11,12 +11,12 @@ export type TournamentRuleNode = {
 	children: TournamentRuleNode[]
 }
 
-export type TournamentRulesRuleBlock = {
+type TournamentRulesRuleBlock = {
 	kind: 'rules'
 	rules: TournamentRuleNode[]
 }
 
-export type TournamentRulesSubsectionBlock = {
+type TournamentRulesSubsectionBlock = {
 	kind: 'subsection'
 	heading: TournamentRulesHeading
 	rules: TournamentRuleNode[]

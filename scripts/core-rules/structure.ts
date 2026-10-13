@@ -26,7 +26,7 @@ export type StructuredRuleNode = {
 	source: RuleSourceLocation
 }
 
-export type StructureDiagnostic = {
+type StructureDiagnostic = {
 	severity: 'warning' | 'error'
 	code: string
 	message: string
@@ -34,7 +34,7 @@ export type StructureDiagnostic = {
 	source: RuleSourceLocation
 }
 
-export type StructuredSubsection = { heading: StructuredHeading; rules: StructuredRuleNode[] }
+type StructuredSubsection = { heading: StructuredHeading; rules: StructuredRuleNode[] }
 export type StructuredSection = {
 	heading: StructuredHeading
 	preamble: StructuredRuleNode[]

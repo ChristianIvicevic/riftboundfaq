@@ -5,7 +5,6 @@ import { prepareCoreRulesArtifacts } from './core-rules/generate'
 import { inspectPdf } from './core-rules/inspect'
 import { prepareReferencePublication } from './reference/publication'
 import { parseRulesManifest } from './rules-manifest'
-import { prepareRulesMetadata } from './rules-metadata'
 import {
 	createRulesPublisher,
 	type PreparedRulesPublication,
@@ -16,12 +15,7 @@ import { createTournamentRulesFamilyAdapter } from './tournament-rules/extract-i
 import { prepareTournamentRulesArtifacts } from './tournament-rules/generate'
 import { readTournamentRulesSource } from './tournament-rules/inspect'
 
-export { RulesPublicationError } from './rules-publication-internal'
-export type {
-	RulesPublicationOptions,
-	RulesPublicationState,
-	RulesPublicationSummary,
-} from './rules-publication-internal'
+export type { RulesPublicationOptions, RulesPublicationSummary } from './rules-publication-internal'
 
 const DEFAULT_PROJECT_DIRECTORY = join(import.meta.dirname, '..')
 
@@ -29,7 +23,6 @@ async function prepareRulesPublication(projectDirectory: string): Promise<Prepar
 	const sourcesDirectory = join(projectDirectory, 'sources')
 	const manifestPath = join(sourcesDirectory, 'rules-manifest.json')
 	const manifest = parseRulesManifest(JSON.parse(await readFile(manifestPath, 'utf8')))
-	const metadata = prepareRulesMetadata(manifest)
 	const coreRulesAdapter = createCoreRulesFamilyAdapter({ inspectSource: inspectPdf, sourcesDirectory })
 	const tournamentRulesAdapter = createTournamentRulesFamilyAdapter({
 		readSource: readTournamentRulesSource,
@@ -47,7 +40,6 @@ async function prepareRulesPublication(projectDirectory: string): Promise<Prepar
 	})
 
 	return {
-		metadata: metadata.contents,
 		coreRules: {
 			artifacts: coreRules.artifacts,
 			registeredVersions: manifest.coreRules.registeredVersions.map(({ version }) => version),

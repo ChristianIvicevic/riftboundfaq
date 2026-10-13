@@ -11,7 +11,7 @@ import type {
 import type { RulesDocumentFamilyId } from '@/lib/rules/document-family-conventions'
 import type { RulesDocumentContent } from '@/lib/rules/document-types'
 
-export type SourceRulesHeading = {
+type SourceRulesHeading = {
 	sequence: number
 	id: string
 	text: string
@@ -28,11 +28,11 @@ export type SourceRule = {
 	children: readonly SourceRule[]
 }
 
-export type SourceRulesBlock =
+type SourceRulesBlock =
 	| { kind: 'rules'; rules: readonly SourceRule[] }
 	| { kind: 'subsection'; heading: SourceRulesHeading; rules: readonly SourceRule[] }
 
-export type SourceRulesSection = {
+type SourceRulesSection = {
 	heading: SourceRulesHeading
 	blocks: readonly SourceRulesBlock[]
 }

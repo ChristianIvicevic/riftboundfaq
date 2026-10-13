@@ -10,7 +10,7 @@ export type RegisteredTournamentRulesVersion = Readonly<{
 	version: string
 }>
 
-export type RulesFamilyHistory<RegisteredVersion> = Readonly<{
+type RulesFamilyHistory<RegisteredVersion> = Readonly<{
 	registeredVersions: readonly [RegisteredVersion, ...RegisteredVersion[]]
 	currentVersion: RegisteredVersion
 }>
@@ -23,7 +23,7 @@ export type RulesManifest = Readonly<{
 	tournamentRules: TournamentRulesFamily
 }>
 
-export type RulesManifestErrorCode =
+type RulesManifestErrorCode =
 	| 'EXPECTED_RECORD'
 	| 'EXPECTED_STRING'
 	| 'UNEXPECTED_PROPERTY'
@@ -34,7 +34,7 @@ export type RulesManifestErrorCode =
 	| 'CURRENT_NOT_REGISTERED'
 	| 'CURRENT_NOT_GREATEST'
 
-export class RulesManifestError extends TypeError {
+class RulesManifestError extends TypeError {
 	constructor(
 		message: string,
 		readonly code: RulesManifestErrorCode,

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-export interface GenerateProps {
+type GenerateProps = {
 	title: ReactNode
 	description?: ReactNode
 	icon?: ReactNode

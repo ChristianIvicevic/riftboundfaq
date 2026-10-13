@@ -1,7 +1,7 @@
 import type { RuleRecord } from '@/lib/rules/types'
 
-export type TokenType = 'same' | 'add' | 'remove'
-export type Token = { type: TokenType; text: string }
+type TokenType = 'same' | 'add' | 'remove'
+type Token = { type: TokenType; text: string }
 
 /**
  * A single row in a rendered diff between two rule sets.

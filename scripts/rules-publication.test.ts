@@ -18,6 +18,23 @@ const PRIOR_FILES = new Map([
 	['sources/Tournament-Rules-2026-01-01.txt', 'prior tournament transcript'],
 ])
 
+const LEGACY_MANAGED_PATHS = [
+	'src/generated/rules-metadata.ts',
+	'src/generated/core-rules',
+	'src/generated/tournament-rules',
+	'content/reference',
+] as const
+
+function legacyJournalEntries(statuses: readonly ('pending' | 'installed')[], metadataHadPrior = false) {
+	return LEGACY_MANAGED_PATHS.map((livePath, index) => ({
+		livePath,
+		stagedPath: `staged/entry-${index}`,
+		backupPath: `prior/entry-${index}`,
+		hadPrior: index === 0 && metadataHadPrior,
+		status: statuses[index],
+	}))
+}
+
 function preparedPublication(): PreparedRulesPublication {
 	return {
 		coreRules: {
@@ -29,7 +46,6 @@ function preparedPublication(): PreparedRulesPublication {
 			registeredVersions: ['0.9', '1.0'],
 			transcripts: new Map([['CR-v1.0.txt', 'core transcript']]),
 		},
-		metadata: 'rules metadata',
 		reference: new Map([
 			['index.mdx', 'Rules Documents page'],
 			['meta.json', 'reference navigation'],
@@ -106,9 +122,7 @@ describe('publishRules', () => {
 		const summary = await publishRules({ projectDirectory })
 
 		expect(summary).toStrictEqual(preparedPublication().summary)
-		expect(await readFile(join(projectDirectory, 'src/generated/rules-metadata.ts'), 'utf8')).toBe(
-			'rules metadata',
-		)
+		await expectMissing(join(projectDirectory, 'src/generated/rules-metadata.ts'))
 		expect(await readFile(join(projectDirectory, 'src/generated/core-rules/v1-0.ts'), 'utf8')).toBe(
 			'core version',
 		)
@@ -275,9 +289,7 @@ describe('publishRules', () => {
 
 		const publishRules = createRulesPublisher({ prepare: async () => preparedPublication() })
 		await publishRules({ projectDirectory })
-		expect(await readFile(join(projectDirectory, 'src/generated/rules-metadata.ts'), 'utf8')).toBe(
-			'rules metadata',
-		)
+		await expectMissing(join(projectDirectory, 'src/generated/rules-metadata.ts'))
 		await expectMissing(join(projectDirectory, '.rules-publication/transaction.json'))
 	})
 
@@ -331,6 +343,32 @@ describe('publishRules', () => {
 		await expectMissing(join(projectDirectory, '.rules-publication/transaction.json'))
 	})
 
+	test('recovers a legacy replacement journal that staged generated metadata', async () => {
+		const projectDirectory = await temporaryProject()
+		await writeProjectFile(projectDirectory, 'src/generated/rules-metadata.ts', 'replacement metadata')
+		await writeProjectFile(projectDirectory, '.rules-publication/prior/entry-0', 'prior metadata')
+		await writeProjectFile(
+			projectDirectory,
+			'.rules-publication/transaction.json',
+			JSON.stringify({
+				version: 1,
+				state: 'replacing',
+				entries: legacyJournalEntries(['installed', 'pending', 'pending', 'pending'], true),
+			}),
+		)
+		const publishRules = createRulesPublisher({
+			prepare: async () => {
+				throw new Error('stop after recovery')
+			},
+		})
+
+		await expect(publishRules({ projectDirectory })).rejects.toThrow(/stop after recovery/u)
+		expect(await readFile(join(projectDirectory, 'src/generated/rules-metadata.ts'), 'utf8')).toBe(
+			'prior metadata',
+		)
+		await expectMissing(join(projectDirectory, '.rules-publication/transaction.json'))
+	})
+
 	test('returns success when committed cleanup is interrupted and cleans up on the next invocation', async () => {
 		const projectDirectory = await temporaryProject()
 		const warnings: string[] = []
@@ -352,6 +390,27 @@ describe('publishRules', () => {
 
 		const publishRules = createRulesPublisher({ prepare: async () => preparedPublication() })
 		await publishRules({ projectDirectory })
+		await expectMissing(join(projectDirectory, '.rules-publication-committed/transaction.json'))
+	})
+
+	test('cleans up a legacy committed journal that staged generated metadata', async () => {
+		const projectDirectory = await temporaryProject()
+		await writeProjectFile(
+			projectDirectory,
+			'.rules-publication-committed/transaction.json',
+			JSON.stringify({
+				version: 1,
+				state: 'committed',
+				entries: legacyJournalEntries(['installed', 'installed', 'installed', 'installed']),
+			}),
+		)
+		const publishRules = createRulesPublisher({
+			prepare: async () => {
+				throw new Error('stop after cleanup')
+			},
+		})
+
+		await expect(publishRules({ projectDirectory })).rejects.toThrow(/stop after cleanup/u)
 		await expectMissing(join(projectDirectory, '.rules-publication-committed/transaction.json'))
 	})
 
@@ -380,7 +439,7 @@ describe('publishRules', () => {
 				entries: [
 					{
 						livePath: 'src/generated/rules-metadata.ts',
-						stagedPath: 'staged/entry-0',
+						stagedPath: null,
 						backupPath: 'prior/entry-0',
 						hadPrior: false,
 						status: 'unknown',
