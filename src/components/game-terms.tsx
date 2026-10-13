@@ -11,10 +11,10 @@ const termVariants = cva(
 	{
 		variants: {
 			variant: {
-				primary: 'bg-[#4e9f8b] text-white',
-				secondary: 'bg-[#9eb149] text-black',
-				accent: 'bg-[#b8416d] text-white',
-				tertiary: 'bg-[#6c7071] text-white',
+				primary: 'bg-[#107361] text-white',
+				secondary: 'bg-[#95b229] text-black',
+				accent: 'bg-[#cc366b] text-white',
+				tertiary: 'bg-[#6b6b6b] text-white',
 			} as const satisfies Record<TermVariant, string>,
 		},
 	},
