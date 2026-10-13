@@ -1,7 +1,6 @@
 'use client'
 
 import { Popover } from '@base-ui/react/popover'
-import { Images } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { RiftboundLogo } from '@/components/icons/riftbound-logo'
 import { buttonVariants } from '@/components/ui/button'
@@ -9,13 +8,11 @@ import { inlinePopoverTriggerVariants } from '@/components/ui/inline-popover-tri
 
 export function CardPreviewLink({
 	children,
-	galleryUrl,
 	imageUrl,
 	name,
 	wikiUrl,
 }: {
 	children: ReactNode
-	galleryUrl: string
 	imageUrl: string
 	name: string
 	wikiUrl: string
@@ -42,7 +39,7 @@ export function CardPreviewLink({
 							src={imageUrl}
 							width={300}
 						/>
-						<div className="mt-1 grid gap-1">
+						<div className="mt-1">
 							<a
 								className={buttonVariants({ variant: 'secondary', size: 'sm', className: 'w-full gap-2' })}
 								href={wikiUrl}
@@ -51,15 +48,6 @@ export function CardPreviewLink({
 							>
 								<RiftboundLogo className="size-3.5 text-[#EF7D00]!" />
 								Open in Riftbound Wiki
-							</a>
-							<a
-								className={buttonVariants({ variant: 'secondary', size: 'sm', className: 'w-full gap-2' })}
-								href={galleryUrl}
-								rel="noopener noreferrer"
-								target="_blank"
-							>
-								<Images className="size-3.5 text-fd-muted-foreground" />
-								Open in Card Gallery
 							</a>
 						</div>
 					</Popover.Popup>

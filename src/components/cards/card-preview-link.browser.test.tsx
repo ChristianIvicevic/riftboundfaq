@@ -11,7 +11,6 @@ describe('CardPreviewLink', () => {
 				<p style={{ lineHeight: '28px' }}>
 					{'If an effect refers to '}
 					<CardPreviewLink
-						galleryUrl="https://example.com/gallery"
 						imageUrl="https://example.com/card.webp"
 						name="Fizz, Trickster"
 						wikiUrl="https://example.com/wiki"
@@ -52,7 +51,6 @@ describe('CardPreviewLink', () => {
 	test('opens the card preview with keyboard activation', async () => {
 		const screen = await render(
 			<CardPreviewLink
-				galleryUrl="https://example.com/gallery"
 				imageUrl="https://example.com/card.webp"
 				name="Fizz, Trickster"
 				wikiUrl="https://example.com/wiki"
@@ -65,6 +63,26 @@ describe('CardPreviewLink', () => {
 		await userEvent.tab()
 		await expect.element(trigger).toHaveFocus()
 		await userEvent.keyboard('{Enter}')
+
+		await expect.element(screen.getByRole('dialog', { name: 'Fizz, Trickster card preview' })).toBeVisible()
+		await expect
+			.element(screen.getByRole('link', { name: 'Open in Riftbound Wiki' }))
+			.toHaveAttribute('href', 'https://example.com/wiki')
+		expect(screen.getByRole('link').elements()).toHaveLength(1)
+	})
+
+	test('opens the card preview on hover', async () => {
+		const screen = await render(
+			<CardPreviewLink
+				imageUrl="https://example.com/card.webp"
+				name="Fizz, Trickster"
+				wikiUrl="https://example.com/wiki"
+			>
+				Fizz, Trickster
+			</CardPreviewLink>,
+		)
+
+		await screen.getByRole('button', { name: 'Preview Fizz, Trickster' }).hover()
 
 		await expect.element(screen.getByRole('dialog', { name: 'Fizz, Trickster card preview' })).toBeVisible()
 	})
