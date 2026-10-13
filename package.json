@@ -4,7 +4,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"build": "pnpm rules:generate && pnpm build:app",
+		"build": "pnpm rules:generate && pnpm cards:generate && pnpm build:app",
 		"build:app": "next build",
 		"cards:extract": "jq -f scripts/cards/extract.jq sources/card-gallery-data.json > sources/card-catalog.json && oxfmt sources/card-catalog.json && pnpm cards:generate",
 		"cards:generate": "tsx scripts/cards/generate-index.ts",
