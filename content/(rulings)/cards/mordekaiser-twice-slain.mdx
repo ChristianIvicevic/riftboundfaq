@@ -1,0 +1,28 @@
+---
+title: "Mordekaiser, Twice Slain"
+createdAt: "2026-10-13"
+reviewedCoreRulesVersion: "1.5"
+authors:
+- name: "Christian “Near” Ivicevic"
+  url: "https://x.com/civicevic"
+---
+
+## Can I kill another friendly unit that would die simultaneously with Mordekaiser to pay for his replacement effect? [#simultaneous-death-cost]
+
+Yes, if Mordekaiser's replacement effect has not already been applied this turn.<Rule number="371.1" />
+It applies before either simultaneous death occurs.<Rule number="370.1.c" />
+The other friendly unit therefore remains on the board and can be killed to pay its cost.
+
+Killing the other friendly unit is Mordekaiser's cost.<Rule number="740.4.a" />
+Paying it performs a kill game action.<Rule number="203.1" />
+That game action occurs before any simultaneous death events left unmodified by the replacement effect.<Rule number="373.1.a" />
+Mordekaiser's death is replaced, so he is healed, exhausted, and recalled instead.
+
+This result is not limited to specific cards.
+Two common ways to create simultaneous deaths are:
+
+- **Lethal damage:** During a <Term item="cleanup">cleanup</Term>, all units with lethal damage are killed together.<Rule number="323.4" /><Rule number="370.1.a.2" />
+  This applies directly to combat damage: if it leaves Mordekaiser and another friendly unit with lethal damage, the combat cleanup that follows would kill them together.<Rule number="467.2.d" /><Rule number="468.1" />
+  Other examples include the cleanup after <Card name="Singularity" /> or <Card name="Bellows Breath" /> leaves Mordekaiser and another friendly unit with lethal damage.
+  A cleanup caused while either spell <Term item="resolution">resolves</Term> waits until that spell finishes.<Rule number="321" /><Rule number="321.1" />
+- **One kill instruction:** For example, <Card name="The Ruination" /> and <Card name="Cataclysmic Duel" /> each use one kill instruction that can affect multiple units, so those deaths are simultaneous.<Rule number="370.1.a.2" />
