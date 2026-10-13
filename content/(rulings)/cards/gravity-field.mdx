@@ -1,0 +1,30 @@
+---
+title: "Gravity Field"
+createdAt: "2026-10-13"
+reviewedCoreRulesVersion: "1.5"
+authors:
+- name: "Christian “Near” Ivicevic"
+  url: "https://x.com/civicevic"
+---
+
+## Does an opponent pay Gravity Field's cost when I move their unit to its battlefield? [#move-responsibility]
+
+No.
+The <Energy value={1} /><Universal /> cost does not apply because you perform the move action, not the opponent who controls the unit.
+
+The player who performs a game action is responsible for it.<Rule number="412.1" />
+For example, <Card name="Charm" /> and <Card name="Siren's Song" /> each instruct you to move an enemy unit, so you are responsible even though your opponent controls that unit.
+Gravity Field's applied cost applies only when an opponent performs the move action to its battlefield.<Rule number="204.4" /><Rule number="204.4.a" />
+
+## Must an opponent pay Gravity Field's cost when an effect tells them to move a unit to its battlefield, or can they decline? [#opponent-move-cost]
+
+They must pay <Energy value={1} /><Universal /> to perform the move, but they may decline.
+If they decline or cannot pay, they move no unit.
+
+For example, <Card name="Angler Wyrm" /> and <Card name="Call to Battle" /> each instruct a chosen opponent to perform the move, so that opponent is responsible for it.<Rule number="412.1" />
+Gravity Field therefore applies its cost to that move action.<Rule number="204.4" /><Rule number="204.4.a" />
+Applied costs are paid as their associated game actions are performed.<Rule number="204.4.b" />
+
+The word "must" does not remove the option to decline an applied cost.
+If the opponent declines or cannot pay, they cannot perform the move action.<Rule number="204.4.c" />
+The move instruction is negated rather than ignored because it cannot be followed for a reason other than an illegal target or unavailable information.<Rule number="359.3.e.6" /><Rule number="407.5" />
