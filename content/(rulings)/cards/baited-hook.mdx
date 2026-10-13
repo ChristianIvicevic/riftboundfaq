@@ -32,6 +32,19 @@ If the friendly unit is no longer a legal target when the ability <Term item="re
 Its might is then null, so the instructions that would use that might to banish and play a unit are ignored.<Rule number="359.3.e.12" />
 The independent instruction to recycle the rest still happens, and no card was banished, so every card you looked at is recycled.<Rule number="359.3.e.5" />
 
+## If Mordekaiser, Twice Slain replaces Baited Hook's kill, can I still banish and play a unit? [#replaced-kill]
+
+No.
+You still look at the top 5 cards of your main deck, but you cannot banish or play a unit from among them and must recycle every card you looked at.
+
+When <Card name="Mordekaiser, Twice Slain" /> replaces his death, Baited Hook's kill action does not occur.<Rule number="370.1.a.1" />
+The banish instruction directly references that action through "the killed unit," so it is ignored when the kill is negated.<Rule number="359.3.e.6" /><Rule number="359.3.e.14" /><Rule number="359.3.e.14.b" />
+The separate instruction to "play it" is also ignored because the banish instruction it refers to was ignored.<Rule number="135.2.b.5" /><Rule number="359.3.e.14.a" />
+
+The independent instruction to look at the top 5 cards still executes because it does not refer to the negated kill.<Rule number="359.3.e.14.b" />
+The recycle instruction refers to the cards you looked at rather than the kill, so it also executes.<Rule number="359.3.e.14" /><Rule number="359.3.e.14.a" />
+Because none was banished, every card you looked at is "the rest" and is recycled.
+
 ## Does a unit's Deathknell resolve before or after the unit played by Baited Hook and its triggers? [#deathknell-order]
 
 The unit played by Baited Hook enters before the killed unit's <Deathknell /> <Term item="resolution">resolves</Term>.
