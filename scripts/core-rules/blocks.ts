@@ -130,8 +130,7 @@ function sourceLine(
 
 function joinedText(lines: readonly SourceLine[]) {
 	return lines
-		.map((line) => line.text)
-		.filter(Boolean)
+		.flatMap((line) => (line.text ? [line.text] : []))
 		.join(' ')
 		.replaceAll(/\s+/gu, ' ')
 		.trim()

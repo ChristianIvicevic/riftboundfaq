@@ -1,19 +1,24 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { z } from 'zod'
+
+const cardCatalog = z.array(z.unknown())
+const cardCatalogEntry = z.object({
+	name: z.string(),
+	imageUrl: z.string(),
+})
 
 export async function generateCardIndex(catalogUrl: URL, outputUrl: URL) {
 	const catalog: unknown = JSON.parse(await readFile(catalogUrl, 'utf8'))
-	if (!Array.isArray(catalog)) throw new TypeError('Expected the card catalog to be an array')
+	const parsedCatalog = cardCatalog.safeParse(catalog)
+	if (!parsedCatalog.success) throw new TypeError('Expected the card catalog to be an array')
 
 	const imageUrls = new Map<string, string>()
-	for (const [index, value] of catalog.entries()) {
-		if (typeof value !== 'object' || value === null || Array.isArray(value)) {
-			throw new TypeError(`Expected card catalog entry ${index} to be an object`)
-		}
-
-		const { name, imageUrl } = value as Record<string, unknown>
-		if (typeof name !== 'string' || typeof imageUrl !== 'string') {
+	for (const [index, value] of parsedCatalog.data.entries()) {
+		const parsedEntry = cardCatalogEntry.safeParse(value)
+		if (!parsedEntry.success) {
 			throw new TypeError(`Expected card catalog entry ${index} to have string name and imageUrl fields`)
 		}
+		const { name, imageUrl } = parsedEntry.data
 		if (imageUrls.has(name)) throw new Error(`Duplicate card name in catalog: ${name}`)
 
 		imageUrls.set(name, imageUrl)

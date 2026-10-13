@@ -100,9 +100,9 @@ function trimHighlightEdges(tokens: Token[]): Token[] {
  * punctuation between changed words is left unhighlighted, keeping the highlight honest).
  */
 function sideTokens(ops: Op<string>[], change: 'remove' | 'add'): Token[] {
-	const tokens: Token[] = ops
-		.filter((op) => op.type === 'same' || op.type === change)
-		.map((op) => ({ type: op.type, text: op.value }))
+	const tokens: Token[] = ops.flatMap((op) =>
+		op.type === 'same' || op.type === change ? [{ type: op.type, text: op.value }] : [],
+	)
 	for (let i = 1; i < tokens.length - 1; i++) {
 		const token = tokens[i]
 		const bridges = tokens[i - 1].type === change && tokens[i + 1].type === change

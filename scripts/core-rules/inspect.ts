@@ -51,20 +51,24 @@ function groupOccurrences(records: readonly RuleBlock[]) {
 
 function duplicateDetails(occurrencesById: ReadonlyMap<string, RuleBlock[]>) {
 	return Object.fromEntries(
-		[...occurrencesById]
-			.filter(([, occurrences]) => occurrences.length > 1)
-			.map(([id, occurrences]) => [
-				id,
-				occurrences.map(({ sequence, label, page, x, y, bodyX, text }) => ({
-					sequence,
-					label,
-					page,
-					x,
-					y,
-					bodyX,
-					text,
-				})),
-			]),
+		[...occurrencesById].flatMap(([id, occurrences]) =>
+			occurrences.length > 1
+				? [
+						[
+							id,
+							occurrences.map(({ sequence, label, page, x, y, bodyX, text }) => ({
+								sequence,
+								label,
+								page,
+								x,
+								y,
+								bodyX,
+								text,
+							})),
+						] as const,
+					]
+				: [],
+		),
 	)
 }
 

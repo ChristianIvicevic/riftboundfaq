@@ -91,9 +91,11 @@ function assertEntriesPreserved(
 	sourceEntries: readonly TournamentRulesSourceEntry[],
 	sections: TournamentRulesSection[],
 ): void {
-	const expected = sourceEntries
-		.filter(({ activity }) => activity.status === 'active')
-		.map((entry) => ({ sequence: entry.sequence, id: entryId(entry), text: entry.text }))
+	const expected = sourceEntries.flatMap((entry) =>
+		entry.activity.status === 'active'
+			? [{ sequence: entry.sequence, id: entryId(entry), text: entry.text }]
+			: [],
+	)
 	const actual: PreservedEntry[] = []
 
 	for (const section of sections) {

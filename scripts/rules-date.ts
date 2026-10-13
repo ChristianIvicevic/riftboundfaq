@@ -1,20 +1,20 @@
 const ISO_DATE = /^(\d{4})-(\d{2})-(\d{2})$/u
 const SLASH_DATE = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/u
 const NAMED_DATE = /^([A-Za-z]+) (\d{1,2}), (\d{4})$/u
-const MONTH_NUMBERS: Readonly<Record<string, number>> = {
-	January: 1,
-	February: 2,
-	March: 3,
-	April: 4,
-	May: 5,
-	June: 6,
-	July: 7,
-	August: 8,
-	September: 9,
-	October: 10,
-	November: 11,
-	December: 12,
-}
+const MONTH_NUMBERS = new Map([
+	['January', 1],
+	['February', 2],
+	['March', 3],
+	['April', 4],
+	['May', 5],
+	['June', 6],
+	['July', 7],
+	['August', 8],
+	['September', 9],
+	['October', 10],
+	['November', 11],
+	['December', 12],
+])
 
 export function normalizeRulesDate(value: string, label = 'Last Updated'): string {
 	if (!value.trim()) throw new Error(`${label} is missing`)
@@ -22,7 +22,7 @@ export function normalizeRulesDate(value: string, label = 'Last Updated'): strin
 	const isoMatch = ISO_DATE.exec(input)
 	const slashMatch = SLASH_DATE.exec(input)
 	const namedMatch = NAMED_DATE.exec(input)
-	const namedMonth = namedMatch ? MONTH_NUMBERS[namedMatch[1]] : undefined
+	const namedMonth = namedMatch ? MONTH_NUMBERS.get(namedMatch[1]) : undefined
 	const parts = isoMatch
 		? { year: Number(isoMatch[1]), month: Number(isoMatch[2]), day: Number(isoMatch[3]) }
 		: slashMatch

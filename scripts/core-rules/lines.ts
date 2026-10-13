@@ -104,20 +104,22 @@ export function reconstructPhysicalLines(items: readonly unknown[], pageNumber: 
 		currentLine.items.push(item)
 	}
 
-	return lines
-		.filter((line) => line.items.some((item) => item.str.trim() !== ''))
-		.map((line, index) => {
-			const sortedItems = line.items.toSorted((left, right) => left.transform[4] - right.transform[4])
-			const x = Math.min(...sortedItems.map((item) => item.transform[4]))
-			const right = Math.max(...sortedItems.map((item) => item.transform[4] + item.width))
-			return {
-				page: line.page,
-				line: index + 1,
-				x: Math.round(x * 100) / 100,
-				y: Math.round(line.y * 100) / 100,
-				width: Math.round((right - x) * 100) / 100,
-				text: reconstructText(sortedItems),
-				items: sortedItems,
-			}
+	const physicalLines: PhysicalLine[] = []
+	for (const line of lines) {
+		if (!line.items.some((item) => item.str.trim() !== '')) continue
+
+		const sortedItems = line.items.toSorted((left, right) => left.transform[4] - right.transform[4])
+		const x = Math.min(...sortedItems.map((item) => item.transform[4]))
+		const right = Math.max(...sortedItems.map((item) => item.transform[4] + item.width))
+		physicalLines.push({
+			page: line.page,
+			line: physicalLines.length + 1,
+			x: Math.round(x * 100) / 100,
+			y: Math.round(line.y * 100) / 100,
+			width: Math.round((right - x) * 100) / 100,
+			text: reconstructText(sortedItems),
+			items: sortedItems,
 		})
+	}
+	return physicalLines
 }

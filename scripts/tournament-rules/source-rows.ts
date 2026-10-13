@@ -265,8 +265,7 @@ function rowFromItems(
 
 function tableBorders(lines: readonly DrawingBounds[]): number[] {
 	const candidates = lines
-		.filter(({ width, height, x }) => width > 500 && height <= 2 && x < 45)
-		.map(({ y, height }) => y + height / 2)
+		.flatMap(({ width, height, x, y }) => (width > 500 && height <= 2 && x < 45 ? [y + height / 2] : []))
 		.toSorted((left, right) => right - left)
 	const borders: number[] = []
 	for (const candidate of candidates) {
@@ -288,8 +287,11 @@ function pageRows(pageNumber: number, items: readonly PdfTextItem[], drawings: D
 		})
 		if (intervalItems.length === 0) continue
 		const labelBaselines = intervalItems
-			.filter((item) => item.transform[4] <= LABEL_CELL_LEFT_MAXIMUM && LABEL_LIKE.test(item.str.trim()))
-			.map((item) => item.transform[5])
+			.flatMap((item) =>
+				item.transform[4] <= LABEL_CELL_LEFT_MAXIMUM && LABEL_LIKE.test(item.str.trim())
+					? [item.transform[5]]
+					: [],
+			)
 			.toSorted((left, right) => right - left)
 		if (labelBaselines.length <= 1) {
 			rows.push(rowFromItems(pageNumber, index + 1, top, bottom, intervalItems, drawings))
