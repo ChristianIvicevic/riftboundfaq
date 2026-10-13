@@ -22,6 +22,40 @@ No.
 A destination you choose must differ from the unit's current location, but if the card specifies the destination, you make no destination choice and the unit can still be a legal target while already there.<Rule number="002" /><Rule number="355.4" /><Rule number="355.4.a" /><Rule number="355.9.a" /><Rule number="355.9.b" />
 If the unit is already at that specified destination when the instruction <Term item="resolution">resolves</Term>, it cannot move because it would not change board spaces.<Rule number="448.1" />
 
+## How are abilities triggered by exhaustion and movement ordered during one standard move? [#standard-move-trigger-sequence]
+
+Abilities triggered by exhaustion are placed on the <Term item="chain">chain</Term> before abilities triggered by movement, but abilities that remain on the chain <Term item="resolution">resolve</Term> in the opposite order.
+When several abilities trigger simultaneously, each player chooses the relative order of those they control.<Rule number="383.3.d" />
+If more than one player controls them, players order their abilities starting with the turn player and proceeding in turn order.<Rule number="383.3.d.1" />
+
+<Steps>
+<Step>
+A multi-unit standard move is one game action.<Rule number="144.3" />
+You exhaust all the chosen units simultaneously as its cost.<Rule number="144.3.c" /><Rule number="421.3.a" />
+Abilities triggered by that exhaustion trigger simultaneously before the movement occurs.<Rule number="383.2.c" /><Rule number="383.3" />
+</Step>
+<Step>
+Although the exhaustion-triggered abilities are already on the chain, the standard move continues through its move effect because the game action executes completely.<Rule number="303.1" />
+After that cost is paid, the move effect moves all the chosen units simultaneously.<Rule number="144.3" /><Rule number="203" /><Rule number="421.3.b" />
+The resulting movement does not use the chain and cannot be reacted to.<Rule number="448.3.c" />
+Abilities triggered by that movement trigger simultaneously and are placed after the exhaustion-triggered abilities.<Rule number="383.2.c" /><Rule number="383.3" />
+</Step>
+<Step>
+A <Term item="cleanup">cleanup</Term> follows the move.<Rule number="455" />
+Any abilities still <Term item="pending">pending</Term> wait until that cleanup and any other required tasks are completed.<Rule number="334.2" />
+They are then <Term item="finalization">finalized</Term> from oldest to newest.<Rule number="337.1.b" />
+</Step>
+<Step>
+The newest finalized ability resolves first.<Rule number="340.1" />
+Among those abilities, movement-triggered abilities resolve before exhaustion-triggered abilities, and abilities triggered by the same event resolve in reverse placement order.
+</Step>
+</Steps>
+
+<Callout type="idea" title="Example">
+If one standard move moves <Card name="Riven, Broken Blade" />, <Card name="Seraphine, Not Alone" />, and <Card name="Stellacorn Herder" />, Riven and Seraphine trigger from becoming exhausted before Stellacorn Herder triggers from moving.
+Among those three abilities, Stellacorn Herder's ability resolves first, followed by Riven's and Seraphine's abilities in the reverse of the order chosen for them.
+</Callout>
+
 ## Does a later linked instruction still execute if a move is prevented or cannot happen? [#failed-move-linked-instructions]
 
 If the move is prevented or cannot happen for a reason other than an illegal or unavailable target, yes, unless the linked instruction specifically requires the move to have occurred.<Rule number="359.3.e.14.a" /><Rule number="359.3.e.14.b" />
