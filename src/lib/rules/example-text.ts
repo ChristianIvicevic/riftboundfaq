@@ -1,4 +1,4 @@
-import { REGISTERED_CARD_NAMES } from '@/lib/cards/registry'
+import { CARD_NAMES } from '@/lib/cards/catalog'
 import type { RuleReference } from '@/lib/rules/types'
 
 export type RulesExampleTextSegment =
@@ -11,12 +11,15 @@ type LocatedSegment = Exclude<RulesExampleTextSegment, { kind: 'text' }> & {
 	end: number
 }
 
+const RULES_EXAMPLE_CARD_NAME_EXCLUSIONS = new Set(['Buff'])
+const RULES_EXAMPLE_CARD_NAMES = CARD_NAMES.filter((name) => !RULES_EXAMPLE_CARD_NAME_EXCLUSIONS.has(name))
+
 const CANONICAL_CARD_NAMES = new Map(
-	REGISTERED_CARD_NAMES.map((name) => [normalizeApostrophes(name), name] as const),
+	RULES_EXAMPLE_CARD_NAMES.map((name) => [normalizeApostrophes(name), name] as const),
 )
 
 const CARD_NAME_PATTERN = new RegExp(
-	`(?<![\\p{L}\\p{N}])(?:${REGISTERED_CARD_NAMES.toSorted((a, b) => b.length - a.length)
+	`(?<![\\p{L}\\p{N}])(?:${RULES_EXAMPLE_CARD_NAMES.toSorted((a, b) => b.length - a.length)
 		.map((name) => cardNameExpression(name))
 		.join('|')})(?![\\p{L}\\p{N}])`,
 	'gu',

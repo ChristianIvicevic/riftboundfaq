@@ -1,9 +1,7 @@
-import { Images } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { RiftboundLogo } from '@/components/icons/riftbound-logo'
 import { buttonVariants } from '@/components/ui/button'
 import { getRiftboundWikiUrl } from '@/lib/cards/links'
-import { getCardUrls } from '@/lib/cards/registry'
 
 function PageActionLink({ href, children }: { href: string; children: ReactNode }) {
 	return (
@@ -23,7 +21,6 @@ function PageActionLink({ href, children }: { href: string; children: ReactNode 
 }
 
 export function PageActions({ cardName }: { cardName?: string }) {
-	const galleryUrl = cardName ? getCardUrls(cardName)?.galleryUrl : undefined
 	const riftboundWikiUrl = cardName ? getRiftboundWikiUrl(cardName) : undefined
 
 	return (
@@ -32,12 +29,6 @@ export function PageActions({ cardName }: { cardName?: string }) {
 				<PageActionLink href={riftboundWikiUrl}>
 					<RiftboundLogo className="text-[#EF7D00]!" />
 					Open in Riftbound Wiki
-				</PageActionLink>
-			)}
-			{galleryUrl && (
-				<PageActionLink href={galleryUrl}>
-					<Images />
-					Open in Card Gallery
 				</PageActionLink>
 			)}
 		</div>

@@ -2,12 +2,25 @@ import { describe, expect, test } from 'vitest'
 import { segmentRulesExampleText } from '@/lib/rules/example-text'
 
 describe('segmentRulesExampleText', () => {
-	test('identifies a registered card without changing surrounding text', () => {
+	test('identifies a catalog card without changing surrounding text', () => {
 		expect(segmentRulesExampleText('Example: Loose Cannon has the tag Jinx.', [])).toStrictEqual([
 			{ kind: 'text', text: 'Example: ' },
 			{ kind: 'card', name: 'Loose Cannon', text: 'Loose Cannon' },
 			{ kind: 'text', text: ' has the tag Jinx.' },
 		])
+	})
+
+	test('identifies a card supplied by the generated catalog', () => {
+		expect(segmentRulesExampleText('Example: Clanging Sentry has Disarm.', [])).toStrictEqual([
+			{ kind: 'text', text: 'Example: ' },
+			{ kind: 'card', name: 'Clanging Sentry', text: 'Clanging Sentry' },
+			{ kind: 'text', text: ' has Disarm.' },
+		])
+	})
+
+	test('does not treat an ambiguous rules term as a card name', () => {
+		const text = 'Example: Buff a friendly unit.'
+		expect(segmentRulesExampleText(text, [])).toStrictEqual([{ kind: 'text', text }])
 	})
 
 	test('matches complete card names containing PDF apostrophes', () => {

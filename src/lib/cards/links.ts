@@ -1,6 +1,13 @@
 const RIFTBOUND_WIKI_BASE_URL = 'https://wiki.leagueoflegends.com/en-us/'
 
-const WIKI_TITLE_OVERRIDES: Readonly<Record<string, string>> = {}
+const WIKI_TITLE_OVERRIDES: Readonly<Record<string, string>> = {
+	'Recruit (DE)': 'Recruit',
+	'Recruit (NX)': 'Recruit',
+	'Recruit (ZN)': 'Recruit',
+	'XP Tracker': 'XP & Level',
+	'Yi, Honed': 'Master Yi, Honed',
+	'Yi, Meditative': 'Master Yi, Meditative',
+}
 
 export function getRiftboundWikiUrl(cardName: string) {
 	const wikiTitle = WIKI_TITLE_OVERRIDES[cardName] ?? cardName

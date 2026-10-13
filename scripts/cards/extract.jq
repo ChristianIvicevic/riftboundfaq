@@ -141,6 +141,7 @@ def accessibility_name:
   )
 | map({
     name,
+    imageUrl: .cardImage.url,
     energyCost: (.energy.value.id // null),
     powerCost: (.power.value.id // null),
     might: (.might.value.id // null),
