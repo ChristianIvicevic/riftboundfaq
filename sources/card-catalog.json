@@ -403,6 +403,19 @@
 		"effects": null
 	},
 	{
+		"name": "Angler Wyrm",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/e805eba9add03fd3e1b1601b15c12a46fd403282-744x1039.png?accountingTag=RB",
+		"energyCost": 8,
+		"powerCost": null,
+		"might": 8,
+		"domains": ["Chaos"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Deflect] (Opponents must pay [Universal] to choose me with a spell or ability.)\n[Exhaust]: Choose an opponent. They must move a unit they control to my battlefield.",
+		"effects": null
+	},
+	{
 		"name": "Anivia, Primal",
 		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/ca1a56035333e31b3a04d67ee9131bb4d533e5db-744x1039.png?accountingTag=RB",
 		"energyCost": 7,
@@ -582,6 +595,19 @@
 		"superTypes": [],
 		"tags": ["Noxus"],
 		"abilities": "[Accelerate] (You may pay [1][Fury] as an additional cost to have me enter ready.)\n[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for [Universal] less, even if it's already attached.)",
+		"effects": null
+	},
+	{
+		"name": "Armored Tusker",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/c479f2fda00506e71a57ac4e8cc297f7f3110a54-744x1039.png?accountingTag=RB",
+		"energyCost": 6,
+		"powerCost": 1,
+		"might": 4,
+		"domains": ["Body"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Shield 3] (+3 [Might] while I'm a defender.)\n[Tank] (I must be assigned combat damage first.)\nWhen I move, you may deal damage equal to my [Shield] to a unit at a battlefield.",
 		"effects": null
 	},
 	{
@@ -959,6 +985,19 @@
 		"superTypes": [],
 		"tags": ["Sivir"],
 		"abilities": "When you recycle a rune, you may exhaust me to play a Gold gear token exhausted.\nWhen one or more enemy units die, ready me.",
+		"effects": null
+	},
+	{
+		"name": "Battle Preparations",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/9422caf2fcd4cfb346cf0dce48245ef13a77180f-744x1039.png?accountingTag=RB",
+		"energyCost": 2,
+		"powerCost": null,
+		"might": null,
+		"domains": ["Calm"],
+		"cardTypes": ["Spell"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Reaction] (Play any time, even before spells and abilities resolve.)\n[Show Off] a gear. (As you play this, you may reveal a gear from hand or pick a friendly gear.)\nGive a unit +2 [Might] this turn. If you showed off, ready up to 2 runes.",
 		"effects": null
 	},
 	{
@@ -1365,6 +1404,19 @@
 		"effects": null
 	},
 	{
+		"name": "Bloodscent Swarm",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/775ccea752fb404be2433c4b870c7877e2445a8c-744x1039.png?accountingTag=RB",
+		"energyCost": 8,
+		"powerCost": 2,
+		"might": 8,
+		"domains": ["Body"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "I cost [2] less for each battlefield you've conquered this turn.",
+		"effects": null
+	},
+	{
 		"name": "Blossoming Dreamroot",
 		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/5b819cc232389f3ef1438350d68c7801e181961c-744x1039.png?accountingTag=RB",
 		"energyCost": 2,
@@ -1635,6 +1687,19 @@
 		"superTypes": ["Signature"],
 		"tags": ["Miss Fortune"],
 		"abilities": "[Action] (Play on your turn or in showdowns.)\nPay any amount of [Universal] to deal that much damage to all enemy units at a battlefield.",
+		"effects": null
+	},
+	{
+		"name": "Burn Away",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/751629a34ee6ba6476ce2f0a821b9f84b5562acd-744x1039.png?accountingTag=RB",
+		"energyCost": 3,
+		"powerCost": 1,
+		"might": null,
+		"domains": ["Body"],
+		"cardTypes": ["Gear"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "Banish a unit with 3 [Might] or less or a gear. [Burn 2]. (Put the top 2 cards of your Main Deck into your trash.)",
 		"effects": null
 	},
 	{
@@ -3848,6 +3913,19 @@
 		"effects": "I am a Mech."
 	},
 	{
+		"name": "Explosimian",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/f2590617229f3efc078aa2429f65b85101303200-744x1039.png?accountingTag=RB",
+		"energyCost": 6,
+		"powerCost": null,
+		"might": 6,
+		"domains": ["Chaos"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "When I hold, play three Bomb gear tokens to a single battlefield. (They have [Deploy]. When each dies, deal 2 to an enemy there and kill your other Bombs there.)",
+		"effects": null
+	},
+	{
 		"name": "Eye of Twilight",
 		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/54388a3124b7e1f0331e5970f952778db5f24500-744x1039.png?accountingTag=RB",
 		"energyCost": null,
@@ -4300,6 +4378,19 @@
 		"superTypes": [],
 		"tags": [],
 		"abilities": "[Reaction] (Play any time, even before spells and abilities resolve.)\nChoose a battlefield. Give friendly units there [Shield 2] this turn. (+2 [Might] while they're defenders.)",
+		"effects": null
+	},
+	{
+		"name": "Forbidden Technique",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/293518dcf6c2f9e3f59a2e259826fd813436b3a5-744x1039.png?accountingTag=RB",
+		"energyCost": 2,
+		"powerCost": null,
+		"might": null,
+		"domains": ["Fury"],
+		"cardTypes": ["Spell"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "Ready a unit.\nWhen you play a card with Energy cost [7] or more, you may play this from your trash for [1][Fury][Fury]. Banish this.",
 		"effects": null
 	},
 	{
@@ -5031,6 +5122,19 @@
 		"effects": null
 	},
 	{
+		"name": "Gutter Guardian",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/756827744317003e4992163ff9bf1dc991682de8-744x1039.png?accountingTag=RB",
+		"energyCost": 3,
+		"powerCost": null,
+		"might": 3,
+		"domains": ["Chaos"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Hidden] (Hide now for [Universal] to react with later for [0].)\n[Show Off] a card with [Hidden]. (As you play me, you may reveal such a card from hand or pick another friendly one on the board.)\nWhen you play me, if you showed off, [Add] [Universal].",
+		"effects": null
+	},
+	{
 		"name": "Gutter Palace",
 		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/f1addf7bb3925871cbcf4615f5a449dc61f762da-744x1039.png?accountingTag=RB",
 		"energyCost": 4,
@@ -5743,6 +5847,19 @@
 		"superTypes": [],
 		"tags": [],
 		"abilities": "[Action] (Play on your turn or in showdowns.)\nDeal 2 to a unit at a battlefield.",
+		"effects": null
+	},
+	{
+		"name": "Incorrigible Construct",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/e95470d5c2fbc9f7f8ab0b1c19f32fd704918c83-744x1039.png?accountingTag=RB",
+		"energyCost": 4,
+		"powerCost": null,
+		"might": 4,
+		"domains": ["Fury"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Show Off] a Mech. (As you play me, you may reveal a Mech from hand or pick another friendly Mech.)\nI enter ready if you showed off.",
 		"effects": null
 	},
 	{
@@ -8177,6 +8294,19 @@
 		"effects": null
 	},
 	{
+		"name": "Orianna, Exquisite",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/3e608c51698b6fb0cc6a00335dbd1bca84f57c73-744x1039.png?accountingTag=RB",
+		"energyCost": 3,
+		"powerCost": null,
+		"might": 4,
+		"domains": ["Calm"],
+		"cardTypes": ["Unit"],
+		"superTypes": ["Champion"],
+		"tags": ["Piltover", "Orianna"],
+		"abilities": "[Shield] (+1 [Might] while I'm a defender.)\nI don't deal combat damage unless there's a friendly gear here.",
+		"effects": null
+	},
+	{
 		"name": "Orianna, Mechanical Marvel",
 		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/00f5a081a085e9c3851daf79d9e39bd378f71fe3-744x1039.png?accountingTag=RB",
 		"energyCost": 5,
@@ -8593,6 +8723,19 @@
 		"effects": null
 	},
 	{
+		"name": "Pitiless Stalker",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/fc61b244fb3ed01d61617c3c2633a71424604130-744x1039.png?accountingTag=RB",
+		"energyCost": 5,
+		"powerCost": 1,
+		"might": 5,
+		"domains": [],
+		"cardTypes": [],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Exhaust]: [Stun] an enemy unit. (It doesn't deal combat damage this turn.)",
+		"effects": null
+	},
+	{
 		"name": "Platewyrm Egg",
 		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/f6a3940440a38e34fe306947d663018dd2df7ca8-744x1039.png?accountingTag=RB",
 		"energyCost": 3,
@@ -8931,6 +9074,19 @@
 		"effects": null
 	},
 	{
+		"name": "Protector's Shield",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/97618bc30e9b65a2e5223e6f94db58d7098d30a6-744x1039.png?accountingTag=RB",
+		"energyCost": 2,
+		"powerCost": 1,
+		"might": 1,
+		"domains": [],
+		"cardTypes": [],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Quick-Draw] (This has [Reaction]. When you play it, attach it to a unit you control.)\n[Equip] [1] ([1]: Attach this to a unit you control.)",
+		"effects": "[Tank] (I must be assigned combat damage first.)"
+	},
+	{
 		"name": "Public Execution",
 		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/c8348e2aef6bad5a38d4f71b1b1c277598670286-744x1039.png?accountingTag=RB",
 		"energyCost": 2,
@@ -9149,6 +9305,19 @@
 		"superTypes": [],
 		"tags": [],
 		"abilities": "As you play this, you may pay [Body] as an additional cost.\nChoose a friendly unit and an enemy unit. If you paid the additional cost, give the friendly unit +2 [Might] this turn. They deal damage equal to their Mights to each other.",
+		"effects": null
+	},
+	{
+		"name": "Raucous Anthem",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/0c307d5f4785efc4f0a4c8e486b53735f8cf04aa-744x1039.png?accountingTag=RB",
+		"energyCost": 7,
+		"powerCost": 1,
+		"might": null,
+		"domains": [],
+		"cardTypes": [],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "Ready your units and give them +3 [Might] this turn.",
 		"effects": null
 	},
 	{
@@ -9474,6 +9643,19 @@
 		"superTypes": [],
 		"tags": ["Ionia"],
 		"abilities": "When you play another unit, give me +2 [Might] this turn.",
+		"effects": null
+	},
+	{
+		"name": "Remember the Fallen",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/0bfd45446d5ffb816438ae2668ad4e5b7f188ad3-744x1039.png?accountingTag=RB",
+		"energyCost": 8,
+		"powerCost": 2,
+		"might": null,
+		"domains": ["Order"],
+		"cardTypes": ["Spell"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "Play up to 3 units and/or gear from your trash, each with Energy cost no more than [3] and Power cost no more than [Universal], ignoring their costs.",
 		"effects": null
 	},
 	{
@@ -10413,6 +10595,32 @@
 		"effects": null
 	},
 	{
+		"name": "Seraphic Wyvern",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/ad1793554440d8d5017eadc565ca6c787a969de1-744x1039.png?accountingTag=RB",
+		"energyCost": 7,
+		"powerCost": null,
+		"might": 7,
+		"domains": ["Body"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": ["Dragon"],
+		"abilities": "If you would channel runes, channel that many runes plus 1 exhausted rune instead.",
+		"effects": null
+	},
+	{
+		"name": "Seraphine, Inspiring",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/60e0711c64958cc3a59a3bd3bf4c013758b1b92b-744x1039.png?accountingTag=RB",
+		"energyCost": 4,
+		"powerCost": 1,
+		"might": 3,
+		"domains": ["Mind"],
+		"cardTypes": ["Unit"],
+		"superTypes": ["Champion"],
+		"tags": ["Piltover", "Seraphine"],
+		"abilities": "[Disarm 2] (When I attack, give an enemy unit here -2 [Might] this turn.)\nOnce each turn, when you exhaust three or more friendly units at the same time, you may draw 1.",
+		"effects": null
+	},
+	{
 		"name": "Seraphine, Not Alone",
 		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/756f0d5d9e83ba0ebcfaf1b69055fdc29458b084-744x1039.png?accountingTag=RB",
 		"energyCost": 5,
@@ -11297,6 +11505,19 @@
 		"effects": null
 	},
 	{
+		"name": "Spirit of the Forge",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/7a1f527e5910fbc18f7cb3cddf2aa59b483393f4-744x1039.png?accountingTag=RB",
+		"energyCost": 6,
+		"powerCost": 1,
+		"might": 4,
+		"domains": ["Mind"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "You may return a friendly gear to its owner's hand as an additional cost to play me.\nWhen you play me, if you paid the additional cost, ready me and give me +[Might] this turn equal to the Energy cost of the gear you returned.",
+		"effects": null
+	},
+	{
 		"name": "Spirit's Refuge",
 		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/26d5e54580d1f17ed6c35a66ac6a90ce56c99ec8-744x1039.png?accountingTag=RB",
 		"energyCost": 2,
@@ -11648,6 +11869,19 @@
 		"effects": null
 	},
 	{
+		"name": "Stoic Ferryman",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/8513fbe02a37f957b2a98bcee5badfdc56f41e82-744x1039.png?accountingTag=RB",
+		"energyCost": 4,
+		"powerCost": null,
+		"might": 2,
+		"domains": ["Calm"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Shield 3] (+3 [Might] while I'm a defender.)\nWhen you play me to a battlefield, you may move another unit you control here to your base.",
+		"effects": null
+	},
+	{
 		"name": "Storm Raptor",
 		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/fc59661dfc70a1fdb393d795c90779a2b5661609-744x1039.png?accountingTag=RB",
 		"energyCost": 6,
@@ -11684,6 +11918,19 @@
 		"superTypes": [],
 		"tags": ["Freljord"],
 		"abilities": "[Tank] (I must be assigned combat damage first.)\nWhen you play me, channel 1 rune exhausted.",
+		"effects": null
+	},
+	{
+		"name": "Strigian Oracle",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/5973b5036060f29e24f8778949bf6f01f360c0a4-744x1039.png?accountingTag=RB",
+		"energyCost": 2,
+		"powerCost": null,
+		"might": 2,
+		"domains": ["Mind"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "When I become exhausted, [Predict]. (Look at the top card of your Main Deck. You may recycle it.)",
 		"effects": null
 	},
 	{
@@ -12126,6 +12373,19 @@
 		"superTypes": [],
 		"tags": ["Dragon"],
 		"abilities": "[Show Off] a card. (As you play me, you may reveal a card from hand or pick another friendly one.)\nWhen you play me, if you showed off a card, [Predict] equal to its Power cost, then draw 2. (Look at that many cards from your Main Deck. Recycle any of them and put the rest back in any order.)",
+		"effects": null
+	},
+	{
+		"name": "The Exile",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/342befcaab98642a2348bd2f6fdb92c68563b6d7-744x1039.png?accountingTag=RB",
+		"energyCost": null,
+		"powerCost": null,
+		"might": null,
+		"domains": ["Calm", "Chaos"],
+		"cardTypes": ["Legend"],
+		"superTypes": [],
+		"tags": ["Riven"],
+		"abilities": "Units you play to battlefields you control enter ready.",
 		"effects": null
 	},
 	{
@@ -12595,6 +12855,19 @@
 		"tags": ["Equipment"],
 		"abilities": "[Equip] [Body] ([Body]: Attach this to a unit you control.)",
 		"effects": "When I hold, score 1 point."
+	},
+	{
+		"name": "Trinket Peddler",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/78106b7cea441b13d108e532adc5ce063f448165-744x1039.png?accountingTag=RB",
+		"energyCost": 3,
+		"powerCost": null,
+		"might": 3,
+		"domains": ["Mind"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Disarm] (When I attack, give an enemy unit here -1 [Might] this turn.)",
+		"effects": null
 	},
 	{
 		"name": "Trove Golem",
@@ -13426,6 +13699,19 @@
 		"superTypes": [],
 		"tags": ["Freljord"],
 		"abilities": "[Deathknell] — Draw 1. (When I die, get the effect.)",
+		"effects": null
+	},
+	{
+		"name": "Whirling Twirligig",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/a05ff95e5bb933664e09656973c72f4d39d8e701-744x1039.png?accountingTag=RB",
+		"energyCost": 4,
+		"powerCost": 1,
+		"might": null,
+		"domains": [],
+		"cardTypes": [],
+		"superTypes": [],
+		"tags": [],
+		"abilities": "[Exhaust]: Play a Gold gear token exhausted. (It has \"[Reaction][>] Kill this, [Exhaust]: [Add] [Universal].\")\nKill a friendly gear, [Exhaust]: Play a 1 [Might] Recruit unit token.\nKill a friendly unit, [Exhaust]: Play a 3 [Might] Mech unit token.",
 		"effects": null
 	},
 	{
