@@ -7,11 +7,38 @@ authors:
   url: "https://x.com/civicevic"
 ---
 
+## Is an equipment's effect text active while Lady of Clockwork makes it a unit gear? [#equipment-effect-text]
+
+No. An equipment's effect text is inactive while Lady of Clockwork makes it a unit gear.
+Effect text is inactive unless its card is attached to another card.<Rule number="136.2.b" />
+For example, a <Card name="Cloth Armor" /> unit gear's <Shield value={2} /> ability is inactive, so it does not get +2 might while defending.<Rule number="721.2" />
+
+## What happens when Lady of Clockwork makes attached equipment into a unit gear? [#attached-equipment]
+
+The equipment detaches as it becomes a unit gear and remains at the same location as the card it was attached to.<Rule number="718.6.a" /><Rule number="436.4" />
+After it detaches, its effect text becomes inactive and its printed rules text becomes active again.<Rule number="436.1.c" />
+The card it was attached to stops receiving the equipment's effect text and might bonus.<Rule number="436.1.d" /><Rule number="436.1.e" />
+
+## What happens when I activate Equip on equipment that Lady of Clockwork made into a unit gear? [#unit-gear-equip]
+
+You can activate and pay for the <Equip /> ability, but the unit gear does not attach when the ability <Term item="resolution">resolves</Term>.
+<Equip /> is an activated ability.<Rule number="818.1" />
+You choose its unit target and pay its cost before resolution.<Rule number="818.1.b.1" /><Rule number="403.2" /><Rule number="405.1" />
+Its effect then instructs the source gear to attach to that unit.<Rule number="818.1.c.2" />
+A unit cannot be attached, so the attach action does nothing.<Rule number="435.1.h" /><Rule number="435.1.h.1" />
+
+## What happens when Shady Spectacles or Mirror Image copies a non-unit gear that Lady of Clockwork made into a unit? [#copying-unit-gear]
+
+With either <Card name="Shady Spectacles" /> or <Card name="Mirror Image" />, the resulting copy is a gear, not a unit.
+
+While Lady of Clockwork's effect applies, the gear's current unit type satisfies the unit requirement for each effect's choice.<Rule number="141.1.a.3" /><Rule number="355.9.b" />
+Lady of Clockwork changes the gear's actual type and might without changing its copyable traits.<Rule number="479.1.c" /><Rule number="479.2" />
+Copy effects use the gear's printed traits, the traits it had when created as a token, or traits supplied by an existing copy effect, so they do not include Lady of Clockwork's changes.<Rule number="479.1.b" /><Rule number="479.1.b.1" />
+
 ## When does Lady of Clockwork's unit gear become a non-unit gear again? [#choosing-another-gear]
 
 Lady of Clockwork's previous effect stops granting the old gear its unit type and might as soon as her controller chooses another gear during <Term item="finalization">finalization</Term>, before the new ability <Term item="resolution">resolves</Term>.
 If this leaves it as an unattached non-unit gear at a battlefield and it does not have <Deploy />, the <Term item="cleanup">cleanup</Term> after finalization recalls it before players can respond.
-Any equipment attached to the old gear stays attached and changes locations with it to the old gear's controller's base.
 
 Lady of Clockwork's gear choice is made during finalization.<Rule number="403.2" />
 Lady of Clockwork's stated duration therefore ends when the new gear is chosen, not when the ability resolves.
@@ -21,13 +48,17 @@ The new ability cannot resolve during it.<Rule number="320" />
 <Term item="priority">Priority</Term> is not passed or awarded during it.<Rule number="320.1" />
 During that cleanup, an unattached non-unit gear at a battlefield is recalled unless it has <Deploy />.<Rule number="459.1" />
 
-Equipment attached to the old unit gear does not make that gear itself attached; the gear is the top-most card.<Rule number="717" />
-The equipment remains attached until something detaches it, and it changes locations with the top-most gear when that gear is recalled.<Rule number="718.1" /><Rule number="719.3.a" />
+## What happens to attached equipment when Lady of Clockwork's unit gear stops being a unit? [#equipment-on-unit-gear]
 
-## What happens when Shady Spectacles or Mirror Image copies a non-unit gear that Lady of Clockwork made into a unit? [#copying-unit-gear]
+The equipment stays attached when Lady of Clockwork's unit gear stops being a unit.
+The equipment is the attached card, while the unit gear is the top-most card.<Rule number="717" />
+Only the attached card must remain a non-unit.<Rule number="718.6" />
+It remains attached until something detaches it.<Rule number="718.1" />
+If the gear is recalled after losing its unit type, the attached equipment changes locations with it.<Rule number="719.3.a" />
 
-With either <Card name="Shady Spectacles" /> or <Card name="Mirror Image" />, the resulting copy is a gear, not a unit.
-
-While Lady of Clockwork's effect applies, the gear's current unit type satisfies the unit requirement for each effect's choice.<Rule number="141.1.a.3" /><Rule number="355.9.b" />
-Lady of Clockwork changes the gear's actual type and might without changing its copyable traits.<Rule number="479.1.c" /><Rule number="479.2" />
-Copy effects use the gear's printed traits, the traits it had when created as a token, or traits supplied by an existing copy effect, so they do not include Lady of Clockwork's changes.<Rule number="479.1.b" /><Rule number="479.1.b.1" />
+<Callout type="idea" title="Example">
+	Lady of Clockwork makes <Card name="Helm of Suppression" /> a unit gear, then <Card name="Svellsongur" /> attaches to it.
+	Svellsongur copies Helm of Suppression's printed rules text into its effect text for as long as it remains attached.<Rule number="479.1.b.1" />
+	When Lady of Clockwork chooses another gear, Helm of Suppression stops being a unit but Svellsongur remains attached.
+	The copied effect text remains appended to Helm of Suppression's rules text, so Helm of Suppression is a non-unit gear with two instances of its printed rules text.<Rule number="719.1" />
+</Callout>
