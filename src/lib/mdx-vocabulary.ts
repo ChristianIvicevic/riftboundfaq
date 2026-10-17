@@ -28,6 +28,7 @@ export const TERM_DEFINITIONS = {
 	Reaction: { label: 'Reaction', variant: 'primary' },
 	Repeat: { label: 'Repeat', variant: 'primary' },
 	Shield: { label: 'Shield', variant: 'accent', hasValue: true },
+	ShowOff: { label: 'Show Off', variant: 'primary' },
 	Stun: { label: 'Stun', variant: 'tertiary' },
 	Temporary: { label: 'Temporary', variant: 'secondary' },
 	Weaponmaster: { label: 'Weaponmaster', variant: 'tertiary' },

@@ -1,0 +1,38 @@
+---
+title: "Show Off"
+createdAt: "2026-10-18"
+reviewedCoreRulesVersion: "1.5"
+authors:
+- name: "Christian “Near” Ivicevic"
+  url: "https://x.com/civicevic"
+---
+
+## When do I decide whether to Show Off? [#decision-timing]
+
+Decide whether to use <ShowOff /> while the card is being <Term item="finalization">finalized</Term>, not when it <Term item="resolution">resolves</Term>.
+<ShowOff /> is shorthand for an optional "As you play" action.<Rule number="832.1.c" />
+Its controller makes that choice during finalization.<Rule number="832.1.c.2" />
+
+## Does picking a game object for Show Off trigger abilities that care when it is chosen? [#pick-targeting]
+
+No.
+Picking a game object for <ShowOff /> does not trigger an ability that cares when that object is chosen.
+Abilities whose condition says "When you choose" trigger from that choice specifically when the appropriate game object is targeted.<Rule number="383.4.b.3" />
+For board objects, <ShowOff /> tells you to pick a friendly object.<Rule number="832.1.c" />
+Picked objects are not targeted.<Rule number="355.7" />
+
+For example, picking <Card name="Irelia, Fervent" /> does not trigger her ability.
+Picking a friendly unit does not trigger <Card name="Blade Dancer" /> or <Card name="Spirit Wheel" />.
+Picking <Card name="Jae Medarda" /> does not trigger his ability even if the card with <ShowOff /> is a spell.
+
+## Can I Show Off my chosen champion from my chosen champion zone? [#champion-zone]
+
+No.
+<ShowOff /> can reveal a qualifying card only from your hand or pick a qualifying friendly game object only from the board.<Rule number="832.1.c" />
+The chosen champion zone is a non-board zone, so a chosen champion there is available through neither option.<Rule number="108" /><Rule number="108.3" />
+
+## Can I use a facedown card to Show Off a card with Hidden? [#facedown-hidden]
+
+No.
+A facedown card is not a card with <Hidden />, so it cannot satisfy a <ShowOff /> condition that requires that characteristic.<Rule number="811.5" /><Rule number="811.5.a" />
+For <Card name="Gutter Guardian" />, you may instead reveal a card with <Hidden /> from your hand or pick a non-facedown friendly card with <Hidden /> on the board.<Rule number="832.1.b.1" /><Rule number="832.1.c" />
