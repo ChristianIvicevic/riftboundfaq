@@ -5694,6 +5694,19 @@
 		"effects": null
 	},
 	{
+		"name": "Hunting Blind",
+		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/0a625c22d828c83302132b0465dceb3ab11a08bc-744x1039.png?accountingTag=RB",
+		"energyCost": 4,
+		"powerCost": 2,
+		"might": null,
+		"domains": ["Calm"],
+		"cardTypes": ["Unit"],
+		"superTypes": [],
+		"tags": ["Device"],
+		"abilities": "[Deploy] (Play this only to a battlefield. When an opponent holds here, kill this.)\nWhen you play this, you may move an enemy unit to this battlefield.\nFriendly units here have [Shield 2]. (+2 [Might] while they're defenders.)",
+		"effects": null
+	},
+	{
 		"name": "Hunting Dog",
 		"imageUrl": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/cefd575150527670879748a7212f80a1f4c1c4fc-744x1039.png?accountingTag=RB",
 		"energyCost": 3,
