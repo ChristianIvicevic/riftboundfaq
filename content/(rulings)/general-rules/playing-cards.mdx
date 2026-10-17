@@ -66,6 +66,18 @@ Both resolve immediately without passing <Term item="priority">priority</Term>.<
 A spell instead becomes a finalized chain item.<Rule number="359.3.a" />
 It resolves only after no pending items remain and all players pass priority in sequence without adding another item.<Rule number="337.4" /><Rule number="339.1" /><Rule number="340.1" />
 
+## Does changing control of a spell change its "you" checks for actions taken during finalization? [#finalization-action-checks]
+
+No.
+When an instruction uses "you" to check an action from that spell's <Term item="finalization">finalization</Term>, it keeps the same result after control changes: an action performed for the spell still fulfills the condition, and one not performed leaves it unfulfilled.
+These instructions check whether the action occurred, not which player performed it.<Rule number="135.2.b.7" />
+
+<Callout type="idea" title="Example">
+	If <Card name="Rampage" />'s original controller paid its additional cost, the "if you paid" condition remains fulfilled after <Card name="Rebuttal" /> or <Card name="Mystic Reversal" /> gives another player control of Rampage, even though the new controller did not pay.
+	Likewise, if <Card name="Back Off" /> was played from hand, that condition remains fulfilled after control changes.
+	The spell's new controller draws 1 when it <Term item="resolution">resolves</Term>.
+</Callout>
+
 ## When does a card leave my trash when I play it from there? [#playing-from-trash]
 
 It leaves your trash as soon as you begin playing it, although a failed legality check undoes that move and cancels the play.
