@@ -1,0 +1,38 @@
+---
+title: "Seraphine, Not Alone"
+createdAt: "2026-10-18"
+reviewedCoreRulesVersion: "1.5"
+authors:
+- name: "Christian “Near” Ivicevic"
+  url: "https://x.com/civicevic"
+---
+
+## Can Seraphine, Not Alone survive combat damage that becomes lethal when other exhausted units die in the same combat? [#might-loss-survival]
+
+Yes, if Seraphine, Not Alone does not have lethal damage when the combat <Term item="cleanup">cleanup</Term> checks her while those other exhausted units are still on the board.
+The cleanup checks all units for lethal damage only once, so damage that becomes lethal after those units leave does not kill Seraphine during that cleanup.<Rule number="323.4" />
+
+### Three-Recruit Sequence [#recruit-sequence]
+
+Suppose Seraphine has 3 damage marked and gets +3 might from three other exhausted 1-might Recruit tokens, each with 1 damage marked.
+She therefore has 4 might.
+
+<Steps>
+<Step>
+**Lethal-damage check:** Seraphine's 3 marked damage is less than her current 4 might, while each Recruit's 1 marked damage equals its 1 might.<Rule number="142.4.b" />
+Only the Recruits have lethal damage during the check, so the cleanup kills them and not Seraphine.<Rule number="323.4" />
+</Step>
+<Step>
+Once the Recruits leave the board, they are no longer exhausted units for Seraphine's ability to count.<Rule number="415.2" />
+Her continuously evaluated might bonus therefore drops from +3 to +0, returning her to 1 might.<Rule number="478.1" /><Rule number="479.4.a" />
+Her 3 marked damage is now lethal.<Rule number="142.4.b" />
+That cleanup does not check her again.
+</Step>
+<Step>
+**Combat healing:** The combat special cleanup next heals all units, clearing Seraphine's marked damage.<Rule number="468.1.a.1" />
+</Step>
+<Step>
+The Recruits' departure causes another cleanup after the combat cleanup finishes.<Rule number="319.6" /><Rule number="322" />
+Seraphine has no marked damage when that cleanup checks for lethal damage, so she survives.<Rule number="323.4" />
+</Step>
+</Steps>
