@@ -7,25 +7,26 @@ authors:
   url: "https://x.com/civicevic"
 ---
 
-## Can I pay Mordekaiser, Twice Slain's replacement cost by killing another friendly unit that would die simultaneously with him? [#simultaneous-death-cost]
+## Can Mordekaiser, Twice Slain save himself by killing another friendly unit that is about to die with him? [#simultaneous-death-cost]
 
-Yes, if Mordekaiser's replacement effect has not already been applied this turn.<Rule number="371.1" />
-It applies before either simultaneous death occurs.<Rule number="370.1.c" />
-The other friendly unit therefore remains on the board and can be killed to pay its cost.
+Yes, if Mordekaiser, Twice Slain's once-per-turn replacement effect is still available.<Rule number="371.1" />
+This includes another friendly unit that is about to die from the same combat.
 
-Killing the other friendly unit is Mordekaiser's cost.<Rule number="740.4.a" />
-Paying it performs a kill game action.<Rule number="203.1" />
-That game action occurs before any simultaneous death events left unmodified by the replacement effect.<Rule number="373.1.a" />
-Mordekaiser's death is replaced, so he is healed, exhausted, and recalled instead.
+Combat damage itself does not kill either unit.
+The kill action happens during the combat <Term item="cleanup">cleanup</Term> that follows, which would kill all units with lethal damage simultaneously.<Rule number="467.2.d" /><Rule number="468.1" /><Rule number="323.4" /><Rule number="370.1.a.2" />
+Here, "simultaneously" describes the kills that cleanup is about to perform; it does not mean those units are already dead.
 
-This result is not limited to specific cards.
-Two common ways to create simultaneous deaths are:
+Replacement effects apply before the events they replace, so his effect steps in before the cleanup kills happen.<Rule number="370.1.c" />
+At that point, the other friendly unit is still on the board.
+It may have lethal damage and be about to die, but you can still kill it to pay the cost of saving him.<Rule number="740.4.a" />
+Paying that cost performs a separate kill action before cleanup performs any simultaneous kills left unchanged.<Rule number="203.1" /><Rule number="373.1.a" />
+His own death is replaced, so he is healed, exhausted, and recalled instead.
 
-- **Lethal damage:** During a <Term item="cleanup">cleanup</Term>, all units with lethal damage are killed together.<Rule number="323.4" /><Rule number="370.1.a.2" />
-  This applies directly to combat damage: if it leaves Mordekaiser and another friendly unit with lethal damage, the combat cleanup that follows would kill them together.<Rule number="467.2.d" /><Rule number="468.1" />
-  Other examples include the cleanup after <Card name="Singularity" /> or <Card name="Bellows Breath" /> leaves Mordekaiser and another friendly unit with lethal damage.
-  A cleanup caused while either spell <Term item="resolution">resolves</Term> waits until that spell finishes.<Rule number="321" /><Rule number="321.1" />
-- **One kill instruction:** For example, <Card name="The Ruination" /> and <Card name="Cataclysmic Duel" /> each use one kill instruction that can affect multiple units, so those deaths are simultaneous.<Rule number="370.1.a.2" />
+The same timing applies to spells outside combat:
+
+- **Damage followed by a cleanup:** If <Card name="Singularity" /> or <Card name="Bellows Breath" /> leaves him and another friendly unit with lethal damage, the cleanup waits until the spell finishes <Term item="resolution">resolving</Term>.<Rule number="321" /><Rule number="321.1" />
+  That cleanup would then kill them simultaneously.<Rule number="323.4" /><Rule number="370.1.a.2" />
+- **One kill instruction:** <Card name="The Ruination" /> and <Card name="Cataclysmic Duel" /> each have one kill instruction that can kill multiple units, so any deaths caused by that instruction are simultaneous.<Rule number="370.1.a.2" />
 
 ## Can Mordekaiser, Twice Slain save himself while I control Endless Riches? [#endless-riches]
 
