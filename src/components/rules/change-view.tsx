@@ -1,5 +1,6 @@
 import { cva } from 'class-variance-authority'
 import type { ReactNode } from 'react'
+import { Del, Ins } from '@/components/diff-marks'
 import { rulesDocuments } from '@/features/rules-documents/registry'
 import type {
 	PreparedRulesChange,
@@ -47,17 +48,9 @@ const diffCellVariants = cva(
 function DiffText({ text }: { text: PreparedRulesChangeText }): ReactNode {
 	if (text.type === 'same') return text.text
 	if (text.type === 'remove') {
-		return (
-			<del className="rounded-sm bg-red-100 px-0.5 font-semibold text-red-900 line-through decoration-red-700 dark:bg-red-600/95 dark:text-white dark:decoration-white">
-				{text.text}
-			</del>
-		)
+		return <Del>{text.text}</Del>
 	}
-	return (
-		<ins className="rounded-sm bg-green-100 px-0.5 font-semibold text-green-900 no-underline dark:bg-green-700/95 dark:text-white">
-			{text.text}
-		</ins>
-	)
+	return <Ins>{text.text}</Ins>
 }
 
 function DiffTextSequence({ text }: { text: readonly PreparedRulesChangeText[] }) {
