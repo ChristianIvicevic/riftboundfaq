@@ -3,5 +3,13 @@
 	"description": "Answers to common rules questions",
 	"root": true,
 	"icon": "MessageCircleQuestionMark",
-	"pages": ["---Introduction---", "index", "---Browse Rulings---", "general-rules", "mechanics", "cards"]
+	"pages": [
+		"---Introduction---",
+		"index",
+		"---Browse Rulings---",
+		"card-errata-list",
+		"general-rules",
+		"mechanics",
+		"cards"
+	]
 }
