@@ -33,22 +33,27 @@ If the spell cannot make valid choices for every required target under these res
 
 The play effect must follow <Hidden />'s targeting restriction: you must choose each target from among options at the battlefield the permanent was played to, even if that differs from where it was hidden, unless the ability's own targeting restriction makes choosing that target there impossible.<Rule number="811.1.d.3" /><Rule number="811.1.d.4" />
 
-When you choose a battlefield for <Card name="Bedeviling Stranger" /> or a unit for <Card name="Kennen, Keeper of Balance" /> or <Card name="Windsinger" />, that battlefield or unit is a target.<Rule number="355.10" />
-For Bedeviling Stranger, you must choose the battlefield it was played to.<Rule number="199.1" />
+<Card name="Bedeviling Stranger" /> targets both the battlefield it tells you to choose and the enemy unit mentioned in its later return instruction.<Rule number="355.10" />
+Both targets are chosen during <Term item="finalization">finalization</Term>, even though its controller decides whether to return the enemy unit during <Term item="resolution">resolution</Term>.<Rule number="383.3.a.3" /><Rule number="403.2" />
+For Bedeviling Stranger, both targets must be at the battlefield it was played to, and the battlefield itself is a game object at that location.<Rule number="199.1" /><Rule number="811.1.d.3" />
+If no legal enemy unit is there, its <Term item="pending">pending</Term> play effect is removed from the <Term item="chain">chain</Term> without finalizing.<Rule number="403.4" />
+When you choose a unit for <Card name="Kennen, Keeper of Balance" /> or <Card name="Windsinger" />, that unit is a target.<Rule number="355.10" />
 For Kennen and Windsinger, you can target only eligible units at the battlefield they were played to.
 
-## What happens to the targets of a finalized play effect when a Reaction makes its permanent leave the board after being played from face down? [#play-effect-source-removal]
+## What happens to the targets of a finalized play effect when a Reaction makes its source leave the board after being played from face down? [#play-effect-source-removal]
 
-The <Term item="finalization">finalized</Term> play effect still <Term item="resolution">resolves</Term>, but its targets are unaffected because the missing source can no longer identify the battlefield required by <Hidden />.
-A finalized ability remains on the <Term item="chain">chain</Term> and resolves like a spell after its source leaves.<Rule number="407.2" /><Rule number="407.5" />
+The <Term item="finalization">finalized</Term> play effect still <Term item="resolution">resolves</Term>, but each target whose legality depends on <Hidden />'s played-to-battlefield restriction becomes illegal because the missing source can no longer identify that battlefield, so instructions related to those targets are ignored.<Rule number="359.3.e.5" /><Rule number="359.3.e.6" /><Rule number="407.5" /><Rule number="811.1.d.3.a" />
+A finalized ability remains on the <Term item="chain">chain</Term> after its source leaves.<Rule number="407.2" />
+A target choice does not change after finalization unless a spell or ability instructs a player to make new choices.<Rule number="355.15" />
+Instead, the ability rechecks whether the same targets still meet every targeting restriction when it resolves.<Rule number="359.3.e.2" /><Rule number="359.3.e.2.a" />
 A permanent played from face down supplies the battlefield information needed to apply the play effect's targeting restriction.<Rule number="811.1.d.3" /><Rule number="811.1.d.3.a" />
-Without that information, its targets are unaffected.<Rule number="359.3.e.5" />
+Targets exempt from that restriction because of the ability's own targeting restrictions do not become illegal solely because the source leaves the board.<Rule number="811.1.d.3" /><Rule number="811.1.d.4" />
 
 <Callout type="idea" title="Example">
 	An opponent responds to <Card name="Kennen, Keeper of Balance" />'s finalized play effect with <Card name="Gust" />.<Rule number="407.4" />
 	Gust resolves first.<Rule number="340.1" />
 	It returns Kennen to its owner's hand.
-	Kennen's play effect still resolves, but the chosen unit is not returned.
+	Kennen's play effect still resolves, but its <Stun /> instruction is ignored and the chosen unit is not stunned.
 </Callout>
 
 ## If a card I played from face down causes me to play a unit, where can I play that unit? [#caused-unit-location]

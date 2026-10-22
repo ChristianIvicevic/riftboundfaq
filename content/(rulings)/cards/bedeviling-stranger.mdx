@@ -9,34 +9,36 @@ authors:
 
 ## Can Bedeviling Stranger's play effect target any battlefield? [#battlefield-target]
 
-No, not when you play Bedeviling Stranger from face down: its play effect can target only that battlefield.
-If you play it from anywhere else, the effect can target any battlefield.
+When Bedeviling Stranger is played from face down, its play effect can choose only the battlefield it was played to and a legal enemy unit there; when played from anywhere else, it can choose any battlefield containing an enemy unit it can legally target.
 
-The instruction to choose a battlefield makes that battlefield a target.<Rule number="355.10" />
-When a permanent with <Hidden /> is played from face down, each target of its play effect must be chosen from options at the battlefield where that permanent was played unless the ability's own targeting restriction makes this impossible.<Rule number="811.1.d.3" />
+The play effect has two targets: the battlefield it tells you to choose and the enemy unit mentioned in its later return instruction.<Rule number="355.10" />
+You choose both targets while the ability <Term item="finalization">finalizes</Term>, even though you decide whether to return the enemy unit later during <Term item="resolution">resolution</Term>.<Rule number="383.3.a.3" /><Rule number="403.2" />
+When a permanent with <Hidden /> is played from face down, each target of its play effect must be chosen from options at the battlefield that permanent was played to unless the ability's own targeting restriction makes this impossible.<Rule number="811.1.d.3" />
 A battlefield is itself a game object at its own location, so only the battlefield where Bedeviling Stranger was played satisfies this restriction.<Rule number="199.1" />
+If no legal enemy unit is there, the <Term item="pending">pending</Term> play effect is removed from the <Term item="chain">chain</Term> without finalizing.<Rule number="403.4" />
 
 This targeting restriction applies only when a card is played from face down.<Rule number="811.1.d" />
-Playing Bedeviling Stranger from your hand, or from your trash through <Card name="Last Rites" /> or <Card name="Endless Riches" />, therefore leaves its battlefield choice unrestricted.
+Playing Bedeviling Stranger from your hand, or from your trash through <Card name="Last Rites" /> or <Card name="Endless Riches" />, therefore lets you choose any battlefield with a legal enemy unit there.
 
 ## Does Bedeviling Stranger check for four units during finalization or resolution? [#unit-count-timing]
 
 Bedeviling Stranger checks for four or more units at the chosen battlefield only when its ability <Term item="resolution">resolves</Term>, not during <Term item="finalization">finalization</Term>.
-You choose the battlefield as a target during finalization.<Rule number="355.10" /><Rule number="403.2" />
+You choose both the battlefield and an enemy unit there as targets during finalization, even if fewer than four units are there then.<Rule number="355.10" /><Rule number="403.2" />
 The later "if there are 4 or more units there" clause is part of the effect because it does not immediately follow the "When you play me" trigger condition.<Rule number="383.2.a.1" /><Rule number="383.2.b" />
 An instruction with no other stated timing executes during resolution.<Rule number="135.2.b.3" />
 
-After the ability finalizes on the <Term item="chain">chain</Term>, players can play Reactions before it resolves.<Rule number="407.4" />
-If those Reactions leave fewer than four units at the chosen battlefield, the ability still resolves, but its return instruction does not execute.<Rule number="135.2.b.5.b" /><Rule number="407.5" />
+After the ability finalizes on the <Term item="chain">chain</Term>, players can play cards and abilities with <Reaction /> before it resolves.<Rule number="407.4" />
+When the ability resolves, it rechecks whether the same targets still meet every targeting restriction.<Rule number="359.3.e.2" /><Rule number="359.3.e.2.a" /><Rule number="407.5" />
+If those responses leave fewer than four units at the chosen battlefield, the ability still resolves, but its return instruction does not execute.<Rule number="135.2.b.5.b" /><Rule number="407.5" />
 
 ## If I play Bedeviling Stranger from face down, does its play effect still work if it leaves the board in response? [#face-down-source-removal]
 
-If Bedeviling Stranger was played from face down and leaves the board after its play effect <Term item="finalization">finalizes</Term> but before it <Term item="resolution">resolves</Term>, the effect still resolves but its targets are unaffected, so no enemy unit is returned.
-The finalized ability remains on the <Term item="chain">chain</Term> and resolves like a spell after its source leaves.<Rule number="407.2" /><Rule number="407.5" />
+If Bedeviling Stranger was played from face down and leaves the board after its play effect <Term item="finalization">finalizes</Term> but before it <Term item="resolution">resolves</Term>, the effect still resolves, but both targets become illegal because the missing source cannot identify the battlefield required by <Hidden />, so its return instruction is ignored.<Rule number="359.3.e.5" /><Rule number="359.3.e.6" /><Rule number="407.5" /><Rule number="811.1.d.3.a" />
+The finalized ability remains on the <Term item="chain">chain</Term> after its source leaves.<Rule number="407.2" />
 
-Playing Bedeviling Stranger from face down imposes <Hidden />'s targeting restriction on its play effect.<Rule number="811.1.d.3" />
-Because the effect uses Bedeviling Stranger as its source to identify the battlefield it was played to and determine which targets are legal, it cannot retrieve that information and mistargets once Bedeviling Stranger is no longer on the board.<Rule number="811.1.d.3.a" />
-Its targets are therefore unaffected.<Rule number="359.3.e.5" />
+The target choices themselves do not change.<Rule number="355.15" />
+Instead, the ability rechecks whether those targets still satisfy every targeting restriction, including restrictions imposed by other effects.<Rule number="359.3.e.2" /><Rule number="359.3.e.2.a" />
+Both targets depend on the battlefield information supplied by Bedeviling Stranger as the source of an effect restricted by <Hidden />.<Rule number="811.1.d.3" /><Rule number="811.1.d.3.a" />
 
 An opponent can create this outcome by responding to the finalized play effect with <Card name="Gust" /> or <Card name="Star-Crossed" />.<Rule number="407.4" />
 The newer spell resolves first and returns Bedeviling Stranger to its owner's hand, so the play effect resolves afterward without returning an enemy unit.<Rule number="340.1" />
