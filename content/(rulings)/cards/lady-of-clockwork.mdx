@@ -35,6 +35,17 @@ While Lady of Clockwork's effect applies, the gear's current unit type satisfies
 Lady of Clockwork changes the gear's actual type and might without changing its copyable traits.<Rule number="479.1.c" /><Rule number="479.2" />
 Copy effects use the gear's printed traits, the traits it had when created as a token, or traits supplied by an existing copy effect, so they do not include Lady of Clockwork's changes.<Rule number="479.1.b" /><Rule number="479.1.b.1" />
 
+## What happens when Lady of Clockwork makes Deploy gear into a unit at an uncontested battlefield its controller does not control? [#deploy-contest]
+
+The gear applies contested status to that battlefield, and the next <Term item="cleanup">cleanup</Term> stages combat if an opposing unit is there or a non-combat showdown otherwise.
+That combat or showdown opens after the <Term item="chain">chain</Term> is empty.
+
+When Lady of Clockwork's ability <Term item="resolution">resolves</Term>, the <Deploy /> gear becomes a unit at its existing location.
+A unit that becomes present at a battlefield its controller does not control applies contested status there.<Rule number="190.3.a" />
+The resulting cleanup stages a showdown.<Rule number="323.7" />
+If opposing units are present, it also stages combat.<Rule number="323.8" />
+A staged showdown or combat waits until no items remain on the chain before opening.<Rule number="323.11" /><Rule number="323.12" /><Rule number="331.2" />
+
 ## When does Lady of Clockwork's unit gear become a non-unit gear again? [#choosing-another-gear]
 
 Lady of Clockwork's previous effect stops granting the old gear its unit type and might as soon as her controller chooses another gear during <Term item="finalization">finalization</Term>, before the new ability <Term item="resolution">resolves</Term>.
