@@ -25,6 +25,17 @@ For example, picking <Card name="Irelia, Fervent" /> does not trigger her abilit
 Picking a friendly unit does not trigger <Card name="Blade Dancer" /> or <Card name="Spirit Wheel" />.
 Picking <Card name="Jae Medarda" /> does not trigger his ability even if the card with <ShowOff /> is a spell.
 
+## What happens if something I showed off leaves the board or my hand? [#referenced-information]
+
+The card with <ShowOff /> keeps using the information recorded when you showed that card or game object off during <Term item="finalization">finalization</Term>.<Rule number="832.1.d" /><Rule number="832.1.d.1" />
+Leaving its zone or changing later does not alter that recorded information.<Rule number="832.1.d.1" />
+
+<Callout type="idea" title="Example">
+	For <Card name="Primordial Roar" />, returning the unit that was shown off to hand with <Card name="Star-Crossed" />, discarding it with <Card name="Lunar Boon" />, or changing its might afterward does not change the recorded damage amount.
+	Primordial Roar still deals that amount if its damage target remains legal.
+	If the shown off unit was also the damage target and leaves the board, that target is illegal and is unaffected.<Rule number="359.3.e.2" /><Rule number="359.3.e.5" />
+</Callout>
+
 ## Can I Show Off my chosen champion from my chosen champion zone? [#champion-zone]
 
 No.
