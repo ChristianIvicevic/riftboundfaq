@@ -1,0 +1,34 @@
+---
+title: "Chronobreak"
+createdAt: "2026-10-29"
+reviewedCoreRulesVersion: "1.5"
+authors:
+- name: "Christian “Near” Ivicevic"
+  url: "https://x.com/civicevic"
+---
+
+## In what order does Chronobreak play unit cards with different owners? [#unit-play-sequence]
+
+The turn player begins playing the units they own, choosing their order.
+Each other player then does the same in turn order.<Rule number="303.2.a" />
+
+Those units wait on the <Term item="chain">chain</Term> until Chronobreak finishes <Term item="resolution">resolving</Term>, then process in that order:<Rule number="354.2" /><Rule number="354.3" />
+
+<Steps>
+<Step>
+The first unit card put on the chain undergoes <Term item="finalization">finalization</Term> first.<Rule number="337.1.b" />
+A unit that finalizes resolves immediately and enters before the next unit card undergoes finalization.<Rule number="337.2" />
+</Step>
+<Step>
+Any play effect that unit triggers is added after every unit already waiting on the chain.<Rule number="383.4.a.2" />
+</Step>
+<Step>
+The remaining unit cards undergo finalization in the order they were put on the chain.<Rule number="337.1.b" />
+Any ordinary play effects then finalize oldest-first in the order they were added.<Rule number="337.1.b" /><Rule number="383.4.a.2" />
+</Step>
+</Steps>
+
+## Can Chronobreak play back a unit token? [#unit-tokens]
+
+No.
+The unit token ceases to exist immediately after Chronobreak banishes it, so it no longer exists when Chronobreak would instruct its owner to play it.<Rule number="186" /><Rule number="186.1" />
