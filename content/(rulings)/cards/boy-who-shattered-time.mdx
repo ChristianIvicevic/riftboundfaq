@@ -1,0 +1,31 @@
+---
+title: "Boy Who Shattered Time"
+createdAt: "2026-10-29"
+reviewedCoreRulesVersion: "1.5"
+authors:
+- name: "Christian “Near” Ivicevic"
+  url: "https://x.com/civicevic"
+---
+
+## If a unit survives Boy Who Shattered Time's end-of-turn kill, will it die on a later turn? [#end-turn-survival]
+
+Under the official [Radiance ruling](https://playriftbound.com/en-us/news/announcements/core-rules-radiance-patch-notes-effective-october-16-2026/), a unit whose death is replaced, for example by <Card name="Unlicensed Armory" /> or by <Card name="Mordekaiser, Twice Slain" /> replacing his own death, will not try to kill itself again on a later turn.
+
+Boy Who Shattered Time grants the unit "Kill me at end of turn."
+The rules treat "at end of turn" and "at the end of this turn" as synonymous, so its trigger condition occurs only during the current turn's Ending Step.<Rule number="359.3.e.16" />
+When that ability <Term item="resolution">resolves</Term>, either replacement causes its kill not to happen.<Rule number="370.1.a.1" /><Rule number="370.1.b" />
+The triggered ability still finishes resolving.<Rule number="407.5" />
+Its specified time has then passed, so it cannot trigger again on a later turn.<Rule number="391.2" /><Rule number="392" />
+
+## Does a unit affected by Boy Who Shattered Time still die if it is banished and played again? [#replayed-unit]
+
+No.
+If it is banished and played again before the ability triggers, the returned card is a new unit without the granted kill ability.
+Moving from the board to banishment makes the card a new object,<Rule number="124" /> and its temporary modifications, including the granted ability, cease to be tracked.<Rule number="124.1" />
+
+A legally timed effect can also banish and replay it after the kill ability is already on the <Term item="chain">chain</Term>.
+The ability remains on the chain, but "me" refers to its original source, not the returned card, which is a new unit.<Rule number="359.3.f.1" /><Rule number="359.3.f.2" /><Rule number="407.2" /><Rule number="407.5" />
+
+<Card name="Ekko, Revolutionary" />'s <Action /> ability and <Card name="Chronobreak" /> can use the first timing window, before the kill ability triggers.
+Neither can be used in response once the ability is on the chain because neither has <Reaction />.<Rule number="309.1.a" />
+By contrast, <Card name="Temporal Breach" /> can respond to the kill ability if it was played from face down after gaining <Reaction />.<Rule number="811.1.b" />
