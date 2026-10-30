@@ -35,8 +35,10 @@ export const source = loader({
 					if (isNewPage(content.data.createdAt))
 						node.name = (
 							<div key={content.path} className="flex w-full items-center gap-3">
-								<span>{node.name}</span>
-								<div className="size-2 rounded-full bg-fd-primary" />
+								<span className="flex-1">{node.name}</span>
+								<div className="rounded-md border-2 border-fd-primary px-2 text-xs font-bold text-fd-primary">
+									New
+								</div>
 							</div>
 						)
 					return node

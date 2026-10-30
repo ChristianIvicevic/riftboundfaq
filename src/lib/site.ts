@@ -6,6 +6,7 @@ export const SITE_DESCRIPTION =
 	'Unofficial, independently maintained Riftbound card rulings and rules answers for players and judges, with examples and Core Rules citations.'
 export const GITHUB_REPO_URL = 'https://github.com/ChristianIvicevic/riftboundfaq'
 export const X_HANDLE = '@civicevic'
+export const X_URL = 'https://x.com/civicevic'
 
 export const SITE_URL =
 	env.NODE_ENV === 'development' || !env.VERCEL_PROJECT_PRODUCTION_URL

@@ -1,4 +1,4 @@
-import { DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/layouts/docs/page'
+import { DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/layouts/spacious/page'
 import { createRelativeLink } from 'fumadocs-ui/mdx'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
@@ -67,7 +67,12 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 				: undefined
 
 	return (
-		<DocsPage toc={toc} full={page.data.full} footer={{ enabled: false }} tableOfContent={{ style: 'clerk' }}>
+		<DocsPage
+			toc={toc}
+			full={page.data.full}
+			footer={{ enabled: false }}
+			tableOfContent={{ style: 'normal' }}
+		>
 			{structuredData && (
 				<script
 					type="application/ld+json"

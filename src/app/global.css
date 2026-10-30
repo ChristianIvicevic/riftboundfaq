@@ -1,12 +1,7 @@
 @import 'tailwindcss';
+@import 'fumadocs-ui/css/generated/spacious.css';
 @import 'fumadocs-ui/css/vitepress.css';
 @import 'fumadocs-ui/css/preset.css';
-
-/* Give Next.js a measurable page-level scroll target instead of Fumadocs' boxless wrapper. */
-#nd-docs-layout > main.contents {
-	display: block;
-	grid-area: main;
-}
 
 @keyframes core-rule-target {
 	0% {
