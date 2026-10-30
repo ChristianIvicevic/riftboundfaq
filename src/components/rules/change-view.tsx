@@ -208,14 +208,14 @@ export function RulesChangeView({ change }: { change: PreparedRulesChange }) {
 					<tr>
 						<th
 							scope="col"
-							className="sticky top-0 z-10 border-b border-fd-border bg-fd-background/95 px-3 py-3 text-left align-bottom backdrop-blur"
+							className="border-b border-fd-border bg-fd-background px-3 py-3 text-left align-bottom"
 						>
 							Change
 						</th>
 						<th
 							scope="col"
 							aria-label={`Before ${from.label}`}
-							className="sticky top-0 z-10 border-b border-fd-border bg-fd-background/95 px-4 py-3 text-left align-bottom backdrop-blur"
+							className="border-b border-fd-border bg-fd-background px-4 py-3 text-left align-bottom"
 						>
 							<span className="block text-xs font-semibold tracking-wide text-fd-muted-foreground uppercase">
 								Before
@@ -225,7 +225,7 @@ export function RulesChangeView({ change }: { change: PreparedRulesChange }) {
 						<th
 							scope="col"
 							aria-label={`After ${to.label}`}
-							className="sticky top-0 z-10 border-b border-fd-border bg-fd-background/95 px-4 py-3 text-left align-bottom backdrop-blur"
+							className="border-b border-fd-border bg-fd-background px-4 py-3 text-left align-bottom"
 						>
 							<span className="block text-xs font-semibold tracking-wide text-fd-muted-foreground uppercase">
 								After

@@ -1,6 +1,6 @@
 'use client'
 
-import { DocsBody } from 'fumadocs-ui/layouts/docs/page'
+import { DocsBody } from 'fumadocs-ui/layouts/spacious/page'
 import type { ClipboardEvent, ComponentProps } from 'react'
 
 function handleCopy(event: ClipboardEvent<HTMLElement>) {
