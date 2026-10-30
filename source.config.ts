@@ -1,11 +1,10 @@
 import { remarkBlockId, type RemarkBlockIdOptions } from 'fumadocs-core/mdx-plugins/remark-block-id'
-import type { StructureOptions } from 'fumadocs-core/mdx-plugins/remark-structure'
 import { metaSchema, pageSchema } from 'fumadocs-core/source/schema'
 import { defineConfig, defineDocs } from 'fumadocs-mdx/config'
 import lastModified from 'fumadocs-mdx/plugins/last-modified'
 import { z } from 'zod'
 import { author } from '@/lib/content/author'
-import { stringifyMdxComponentForSearch } from '@/lib/content/mdx-search-text'
+import { remarkMdxSearchText } from '@/lib/content/mdx-search-text'
 import { coreRulesConventions, tournamentRulesConventions } from '@/lib/rules/document-family-conventions'
 
 const coreRulesVersion = z.string().refine(coreRulesConventions.isVersion)
@@ -37,13 +36,6 @@ export const docs = defineDocs({
 	meta: { schema: metaSchema },
 })
 
-const remarkStructureOptions: StructureOptions = {
-	stringify: {
-		// remarkStructure serializes the MDX AST rather than rendered React output.
-		stringify: stringifyMdxComponentForSearch,
-	},
-}
-
 const blockIdOptions: RemarkBlockIdOptions = {
 	addDataAttribute: 'feedback',
 	shouldGenerate(node) {
@@ -63,7 +55,6 @@ const blockIdOptions: RemarkBlockIdOptions = {
 export default defineConfig({
 	plugins: [lastModified()],
 	mdxOptions: {
-		remarkPlugins: [[remarkBlockId, blockIdOptions]],
-		remarkStructureOptions,
+		remarkPlugins: [[remarkBlockId, blockIdOptions], remarkMdxSearchText],
 	},
 })
