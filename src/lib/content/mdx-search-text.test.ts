@@ -1,5 +1,7 @@
+import { structure } from 'fumadocs-core/mdx-plugins/remark-structure'
+import remarkMdx from 'remark-mdx'
 import { describe, expect, test } from 'vitest'
-import { stringifyMdxComponentForSearch } from '@/lib/content/mdx-search-text'
+import { remarkMdxSearchText, stringifyMdxComponentForSearch } from '@/lib/content/mdx-search-text'
 import { RUNE_NAMES, TERM_DEFINITIONS } from '@/lib/mdx-vocabulary'
 
 type SearchNode = Parameters<typeof stringifyMdxComponentForSearch>[0]
@@ -65,5 +67,27 @@ describe('stringifyMdxComponentForSearch', () => {
 		expect(stringifyMdxComponentForSearch(component('Unknown'))).toBeUndefined()
 		expect(stringifyMdxComponentForSearch(component('Card'))).toBeUndefined()
 		expect(stringifyMdxComponentForSearch(component('Energy', [attribute('value', null)]))).toBeUndefined()
+	})
+})
+
+describe('remarkMdxSearchText', () => {
+	test('replaces inline components in structured search data', () => {
+		const data = structure(
+			'If <Card name="Hidden Blade" /> costs <Energy value={1} /><Universal /> while <Empowered />.',
+			[remarkMdx, remarkMdxSearchText],
+		)
+
+		expect(data.contents).toEqual([
+			{
+				heading: undefined,
+				content: 'If Hidden Blade costs [1][Power] while [Empowered].',
+			},
+		])
+	})
+
+	test('adds a search record for standalone components', () => {
+		const data = structure('<Energy value={1} />', [remarkMdx, remarkMdxSearchText])
+
+		expect(data.contents).toEqual([{ heading: undefined, content: '[1]' }])
 	})
 })

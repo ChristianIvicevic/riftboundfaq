@@ -23,7 +23,6 @@ export function TermPopover({
 				data-copy-text={text}
 				id={triggerId}
 				nativeButton={false}
-				onBlur={() => setOpen(false)}
 				onFocus={(event) => {
 					if (event.currentTarget.matches(':focus-visible')) setOpen(true)
 				}}

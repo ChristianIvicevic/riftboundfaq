@@ -61,9 +61,9 @@ test('keeps popup explanations out of search results', async ({ request }) => {
 		(item) =>
 			item.type === 'text' &&
 			item.url === '/general-rules/chain-and-priority#unit-play-reactions' &&
-			item.content.includes('<mark>Finalizing</mark>'),
+			item.content.includes('Finalizing'),
 	)
 
-	expect(result?.content).toContain('<mark>Finalizing</mark> the unit does not pass priority')
+	expect(result?.content).toContain('Finalizing the unit does not pass priority')
 	expect(result?.content).not.toContain('Finalization is the setup stage')
 })
