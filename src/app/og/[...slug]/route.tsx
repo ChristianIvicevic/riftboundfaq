@@ -21,8 +21,12 @@ export async function GET(_req: Request, { params }: RouteContext<'/og/[...slug]
 
 	return new ImageResponse(
 		<DefaultImage
-			title={page.data.title}
-			description={publishingDetails.description}
+			title={page.url === '/' ? 'Rulings and Rules References' : page.data.title}
+			description={
+				page.url === '/'
+					? 'Unofficial rulings, rules references, and card errata for Riftbound players and judges.'
+					: publishingDetails.description
+			}
 			site={SITE_NAME}
 			icon={<img src="logo" alt="" width={56} height={56} style={{ objectFit: 'contain' }} />}
 			primaryColor="#f4cc52"
