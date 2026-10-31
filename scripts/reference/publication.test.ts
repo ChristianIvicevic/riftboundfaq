@@ -82,7 +82,7 @@ async function createTemplates(directory: string): Promise<void> {
 		writeFile(join(directory, 'meta.json.template'), '{\n\t"pages": [\n{{PAGES}}\n\t]\n}\n'),
 		writeFile(
 			join(directory, 'group-meta.json.template'),
-			'{\n\t"title": "{{TITLE}}",\n\t"defaultOpen": false,\n\t"collapsible": true,\n\t"pages": [\n{{PAGES}}\n\t]\n}\n',
+			'{\n\t"title": "{{TITLE}}",\n\t"icon": "{{ICON}}",\n\t"defaultOpen": false,\n\t"collapsible": true,\n\t"pages": [\n{{PAGES}}\n\t]\n}\n',
 		),
 		writeFile(
 			join(directory, 'core-rules-current.mdx'),
@@ -144,6 +144,17 @@ describe('prepareReferencePublication', () => {
 
 		expect(artifacts.get('core-rules/1.2.mdx')).toMatch(/version: "1\.2"/u)
 		expect(artifacts.get('tournament-rules/2026-04-29.mdx')).toMatch(/version: "2026-04-29"/u)
+	})
+
+	test.each([
+		['core-rules/changes/meta.json', 'FileDiff'],
+		['core-rules/(archive)/meta.json', 'Archive'],
+		['tournament-rules/changes/meta.json', 'FileDiff'],
+		['tournament-rules/(archive)/meta.json', 'Archive'],
+	])('assigns the %s navigation root its icon', async (path, icon) => {
+		const { artifacts } = await prepareFixture()
+
+		expect(artifacts.get(path)).toContain(`"icon": "${icon}"`)
 	})
 
 	test.each([

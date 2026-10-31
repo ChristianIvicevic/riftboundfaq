@@ -420,6 +420,7 @@ function renderReferencePublication(
 			renderTemplate(
 				getReferenceTemplate(templates, 'group-meta.json.template'),
 				{
+					ICON: 'FileDiff',
 					PAGES: metadataPages(coreRules.changeNavigationPages),
 					TITLE: 'Changes',
 				},
@@ -431,6 +432,7 @@ function renderReferencePublication(
 			renderTemplate(
 				getReferenceTemplate(templates, 'group-meta.json.template'),
 				{
+					ICON: 'Archive',
 					PAGES: metadataPages(coreRules.archiveNavigationPages),
 					TITLE: 'Archive',
 				},
@@ -442,6 +444,7 @@ function renderReferencePublication(
 			renderTemplate(
 				getReferenceTemplate(templates, 'group-meta.json.template'),
 				{
+					ICON: 'FileDiff',
 					PAGES: metadataPages(tournamentRules.changeNavigationPages),
 					TITLE: 'Changes',
 				},
@@ -453,6 +456,7 @@ function renderReferencePublication(
 			renderTemplate(
 				getReferenceTemplate(templates, 'group-meta.json.template'),
 				{
+					ICON: 'Archive',
 					PAGES: metadataPages(tournamentRules.archiveNavigationPages),
 					TITLE: 'Archive',
 				},

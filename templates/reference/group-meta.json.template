@@ -1,5 +1,6 @@
 {
 	"title": "{{TITLE}}",
+	"icon": "{{ICON}}",
 	"defaultOpen": false,
 	"collapsible": true,
 	"pages": [
