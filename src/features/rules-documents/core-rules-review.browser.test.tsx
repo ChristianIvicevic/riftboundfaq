@@ -1,28 +1,42 @@
 import { describe, expect, test } from 'vitest'
 import { render } from 'vitest-browser-react'
-import { CoreRulesReviewCallout } from '@/components/core-rules/review-callout'
+import { userEvent } from 'vitest/browser'
+import { OutdatedCoreRulesReviewCallout } from '@/components/core-rules/review-callout'
+import { CurrentCoreRulesReviewStatus } from '@/components/core-rules/review-status'
 import { Rule } from '@/components/core-rules/rule'
 import { resolveCoreRulesReview } from '@/features/rules-documents/core-rules-review'
 
 describe('Core Rules review rendering', () => {
-	test('renders an up-to-date review callout and interactive citation', async () => {
+	test('renders a compact current review status and interactive citation', async () => {
 		const review = resolveCoreRulesReview({
 			url: '/cards/alpha-strike',
 			reviewedVersion: '1.5',
 		})!
 		const screen = await render(
 			<>
-				<CoreRulesReviewCallout
-					currentVersion={review.currentVersion}
-					reviewedVersion={review.reviewedVersion}
-					reviewStatus={review.reviewStatus}
-				/>
+				<CurrentCoreRulesReviewStatus currentVersion={review.currentVersion} />
 				<Rule document={review.document} number="355.14.a" />
 			</>,
 		)
+		const status = screen.getByRole('button', { name: 'Reviewed against current Core Rules 1.5' })
 
-		await expect.element(screen.getByText('Up-to-date:')).toBeVisible()
+		await expect.element(status).toHaveTextContent('Reviewed')
+		await status.click()
+		await expect.element(screen.getByRole('dialog', { name: 'Current Core Rules' })).toBeVisible()
+		await expect
+			.element(screen.getByText('This page has been reviewed against the current Core Rules, version 1.5.'))
+			.toBeVisible()
 		await expect.element(screen.getByRole('button', { name: 'Preview rule 355.14.a' })).toBeVisible()
+	})
+
+	test('opens current review details on keyboard focus', async () => {
+		const screen = await render(<CurrentCoreRulesReviewStatus currentVersion="1.5" />)
+		const status = screen.getByRole('button', { name: 'Reviewed against current Core Rules 1.5' })
+
+		await userEvent.tab()
+
+		await expect.element(status).toHaveFocus()
+		await expect.element(screen.getByRole('dialog', { name: 'Current Core Rules' })).toBeVisible()
 	})
 
 	test('renders an outdated review callout and version-specific citation', async () => {
@@ -32,10 +46,9 @@ describe('Core Rules review rendering', () => {
 		})!
 		const screen = await render(
 			<>
-				<CoreRulesReviewCallout
+				<OutdatedCoreRulesReviewCallout
 					currentVersion={review.currentVersion}
 					reviewedVersion={review.reviewedVersion}
-					reviewStatus={review.reviewStatus}
 				/>
 				<Rule document={review.document} number="999.999" />
 			</>,
