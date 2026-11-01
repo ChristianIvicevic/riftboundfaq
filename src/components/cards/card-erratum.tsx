@@ -1,6 +1,9 @@
 import { cva } from 'class-variance-authority'
 import type { ReactNode } from 'react'
-import { Card } from '@/components/cards/card'
+import { CardReferenceImage } from '@/components/cards/card-reference-image'
+import { RiftboundLogo } from '@/components/icons/riftbound-logo'
+import { getCardReference } from '@/lib/cards/catalog'
+import { getRiftboundWikiUrl } from '@/lib/cards/links'
 
 type CardErratumTextVariant = 'original' | 'current'
 
@@ -30,13 +33,50 @@ const cardErratumTextLabelVariants = cva('border-b px-4 py-2 text-xs font-semibo
 })
 
 export function CardErratum({ name, children }: { name: string; children: ReactNode }) {
+	const reference = getCardReference(name)
+	if (!reference) {
+		throw new Error(`Card erratum name is missing from the card catalog: ${name}`)
+	}
+	const wikiUrl = getRiftboundWikiUrl(name)
+
 	return (
-		<>
-			<div className="not-prose -mt-3 mb-4 text-sm">
-				<Card name={name}>View card</Card>
+		<section
+			aria-label={`${name} erratum comparison`}
+			className="not-prose mb-14 overflow-hidden rounded-xl border border-fd-border bg-fd-muted/20 shadow-sm"
+		>
+			<div className="grid md:grid-cols-[11rem_minmax(0,1fr)]">
+				<div className="flex flex-col items-center justify-start gap-3 bg-fd-muted/30 p-4 md:border-r md:border-fd-border">
+					<a
+						aria-label={`View ${name} on Riftbound Wiki`}
+						className="block w-full max-w-36 rounded-lg transition hover:brightness-105 focus-visible:ring-2 focus-visible:ring-fd-ring focus-visible:outline-none"
+						href={wikiUrl}
+						rel="noopener noreferrer"
+						target="_blank"
+					>
+						<CardReferenceImage
+							className="max-w-36! sm:max-w-36!"
+							height={reference.imageHeight}
+							loading="lazy"
+							name={name}
+							src={reference.imageUrl}
+							width={reference.imageWidth}
+						/>
+					</a>
+					<a
+						className="inline-flex items-center gap-1.5 text-xs font-medium text-fd-muted-foreground underline decoration-fd-border underline-offset-4 transition-colors hover:text-fd-foreground hover:decoration-fd-foreground focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-fd-ring focus-visible:outline-none"
+						href={wikiUrl}
+						rel="noopener noreferrer"
+						target="_blank"
+					>
+						<RiftboundLogo className="size-3.5 text-[#EF7D00]!" />
+						Riftbound Wiki
+					</a>
+				</div>
+				<div className="min-w-0 border-t border-fd-border p-4 md:border-t-0 md:p-5">
+					<div className="grid gap-3">{children}</div>
+				</div>
 			</div>
-			<div className="not-prose mb-12 grid gap-3 lg:grid-cols-2">{children}</div>
-		</>
+		</section>
 	)
 }
 
