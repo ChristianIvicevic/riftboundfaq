@@ -3,13 +3,15 @@ import { createRelativeLink } from 'fumadocs-ui/mdx'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { CopyableDocsBody } from '@/app/(wiki)/[[...slug]]/_components/copyable-docs-body'
-import { PageActions } from '@/app/(wiki)/[[...slug]]/_components/page-actions'
 import { PageAttribution } from '@/app/(wiki)/[[...slug]]/_components/page-attribution'
-import { CoreRulesReviewCallout } from '@/components/core-rules/review-callout'
+import { CardReference } from '@/components/cards/card-reference'
+import { OutdatedCoreRulesReviewCallout } from '@/components/core-rules/review-callout'
+import { CurrentCoreRulesReviewStatus } from '@/components/core-rules/review-status'
 import { submitBlockFeedback, submitPageFeedback } from '@/features/feedback/actions'
 import { Feedback, FeedbackText } from '@/features/feedback/feedback'
 import { resolveCoreRulesReview } from '@/features/rules-documents/core-rules-review'
 import { resolveVersionedRulesRoute } from '@/features/rules-documents/versioned-route'
+import { getCardReference } from '@/lib/cards/catalog'
 import { getPagePublishingDetails } from '@/lib/content/page-publishing-details'
 import { getPageImage, PAGE_IMAGE_SIZE, source } from '@/lib/content/source'
 import { SITE_NAME, SITE_URL, X_HANDLE } from '@/lib/site'
@@ -28,6 +30,10 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 		reviewedVersion: page.data.reviewedCoreRulesVersion,
 	})
 	const cardName = page.url.startsWith('/cards/') ? page.data.title : undefined
+	const cardReference = cardName ? getCardReference(cardName) : undefined
+	if (cardName && !cardReference) {
+		throw new Error(`Card page title is missing from the catalog: ${cardName}`)
+	}
 	const resolvedRulesDocumentPage = resolveVersionedRulesRoute({
 		url: page.url,
 		rulesDocument: page.data.rulesDocument,
@@ -81,18 +87,32 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 					}}
 				/>
 			)}
-			<DocsTitle>{page.data.title}</DocsTitle>
+			{coreRulesReview?.reviewStatus === 'up-to-date' ? (
+				<div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
+					<DocsTitle className="min-w-0">{page.data.title}</DocsTitle>
+					<CurrentCoreRulesReviewStatus currentVersion={coreRulesReview.currentVersion} />
+				</div>
+			) : (
+				<DocsTitle>{page.data.title}</DocsTitle>
+			)}
 			<DocsDescription className="mb-0">{publishingDetails.description}</DocsDescription>
-			<PageActions cardName={cardName} />
-			{coreRulesReview && (
-				<CoreRulesReviewCallout
+			{cardName && cardReference ? (
+				<CardReference
+					errataHref={`/card-errata-list#${page.url.slice('/cards/'.length)}`}
+					name={cardName}
+					reference={cardReference}
+				/>
+			) : (
+				<div className="mb-5 border-b pb-6" />
+			)}
+			{coreRulesReview?.reviewStatus === 'outdated' && (
+				<OutdatedCoreRulesReviewCallout
 					currentVersion={coreRulesReview.currentVersion}
 					reviewedVersion={coreRulesReview.reviewedVersion}
-					reviewStatus={coreRulesReview.reviewStatus}
 				/>
 			)}
 			<FeedbackText onSendAction={submitBlockFeedback}>
-				<CopyableDocsBody className="[&>p:first-child]:mt-5">
+				<CopyableDocsBody>
 					<MDX
 						components={getMDXComponents(
 							createRelativeLink(source, page),

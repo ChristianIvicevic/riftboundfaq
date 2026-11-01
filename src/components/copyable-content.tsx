@@ -1,0 +1,33 @@
+'use client'
+
+import type { ClipboardEvent, ReactNode } from 'react'
+
+export function handleCopy(event: ClipboardEvent<HTMLElement>) {
+	const selection = window.getSelection()
+
+	if (!selection || selection.isCollapsed || selection.rangeCount === 0) return
+
+	const fragment = selection.getRangeAt(0).cloneContents()
+	const replacements = fragment.querySelectorAll<HTMLElement>('[data-copy-text]')
+
+	if (replacements.length === 0) return
+
+	for (const element of replacements) {
+		element.replaceWith(element.dataset.copyText ?? element.textContent ?? '')
+	}
+
+	const container = document.createElement('div')
+	container.append(fragment)
+
+	event.clipboardData.setData('text/plain', container.textContent ?? '')
+	event.clipboardData.setData('text/html', container.innerHTML)
+	event.preventDefault()
+}
+
+export function CopyableContent({ children, className }: { children: ReactNode; className?: string }) {
+	return (
+		<div className={className} onCopy={handleCopy}>
+			{children}
+		</div>
+	)
+}
