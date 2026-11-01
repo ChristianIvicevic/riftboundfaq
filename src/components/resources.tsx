@@ -34,6 +34,14 @@ export function CardTextSymbol({ name }: { name: CardTextSymbolName }) {
 	)
 }
 
+export function Exhaust() {
+	return <CardTextSymbol name="Exhaust" />
+}
+
+export function Might() {
+	return <CardTextSymbol name="Might" />
+}
+
 type RuneName = (typeof RUNE_NAMES)[number]
 
 function createRuneComponent(name: RuneName) {

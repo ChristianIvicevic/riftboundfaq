@@ -8,7 +8,7 @@ import { CardErratum, CardErratumText } from '@/components/cards/card-erratum'
 import { Rule } from '@/components/core-rules/rule'
 import { Del, Ins } from '@/components/diff-marks'
 import { MDX_TERMS } from '@/components/game-terms'
-import { Energy, RUNES, Universal } from '@/components/resources'
+import { Energy, Exhaust, Might, RUNES, Universal } from '@/components/resources'
 import { CoreRulesDiff, TournamentRulesDiff } from '@/components/rules/change-view'
 import { Term } from '@/components/term'
 import type { CompiledRulesDocument } from '@/features/rules-documents/registry'
@@ -33,6 +33,8 @@ const wikiMdxComponents = {
 	Ins,
 	TournamentRulesDiff,
 	Energy,
+	Exhaust,
+	Might,
 	Universal,
 	Term,
 	del: Del,

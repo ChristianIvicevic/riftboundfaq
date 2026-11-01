@@ -5,6 +5,8 @@ import { RUNE_NAMES, TERM_DEFINITIONS } from '@/lib/mdx-vocabulary'
 
 const COMPONENT_SEARCH_TEXT = new Map<string, string>([
 	...Object.entries(TERM_DEFINITIONS).map(([name, definition]) => [name, definition.label] as const),
+	['Exhaust', 'Exhaust'],
+	['Might', 'Might'],
 	['Universal', 'Power'],
 	...RUNE_NAMES.map((name) => [name, name] as const),
 ])
