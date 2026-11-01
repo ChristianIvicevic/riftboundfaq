@@ -1,4 +1,6 @@
 import { DocsLayout } from 'fumadocs-ui/layouts/spacious'
+import Image from 'next/image'
+import pageIcon from '@/app/icon.png'
 import { source } from '@/lib/content/source'
 import { GITHUB_REPO_URL, SITE_NAME, X_URL } from '@/lib/site'
 
@@ -14,7 +16,14 @@ export default function Layout({ children }: LayoutProps<'/'>) {
 	return (
 		<DocsLayout
 			tree={source.getPageTree()}
-			nav={{ title: SITE_NAME }}
+			nav={{
+				title: (
+					<>
+						<Image src={pageIcon} alt="" className="size-6" />
+						{SITE_NAME}
+					</>
+				),
+			}}
 			githubUrl={GITHUB_REPO_URL}
 			links={[
 				{
