@@ -17,7 +17,8 @@ function renderToken(token: string, key: string, associatedAbility: boolean) {
 	if (!associatedAbility) {
 		if (/^\d+$/u.test(token)) return <Energy key={key} value={Number(token)} />
 
-		const Rune = RUNES[token as keyof typeof RUNES]
+		// SAFETY: Object.hasOwn establishes that token is one of RUNES' own keys before the guarded lookup.
+		const Rune = Object.hasOwn(RUNES, token) ? RUNES[token as keyof typeof RUNES] : undefined
 		if (Rune) return <Rune key={key} />
 		if (token === 'Universal') return <Universal key={key} label="Universal" />
 		if (token === 'Exhaust' || token === 'Might') {

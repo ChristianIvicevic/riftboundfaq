@@ -157,6 +157,41 @@ describe('CardReference', () => {
 		expect(clipboardData.getData('text/plain')).toBe('[Action] Pay [1][Order].')
 	})
 
+	test('preserves paragraphs and list markers when copying multiline card text', async () => {
+		const screen = await render(
+			<CardReference
+				name="Riven, Broken Blade"
+				errataHref="/card-errata-list#riven-broken-blade"
+				reference={{
+					currentText: '[Action] Choose one:\n- Pay [1][Order].\n- Gain +2[Might].\nThen draw 1.',
+					effectText: null,
+					hasErrata: false,
+					imageHeight: 1039,
+					imageUrl: '/images/rune_order.svg',
+					imageWidth: 744,
+				}}
+			/>,
+		)
+		const firstParagraph = screen.getByText('Choose one:', { exact: false }).element()
+		const cardText = firstParagraph.parentElement
+		if (!cardText) throw new Error('Expected card text container')
+		const selection = window.getSelection()
+		const range = document.createRange()
+		range.selectNodeContents(cardText)
+		selection?.removeAllRanges()
+		selection?.addRange(range)
+		const clipboardData = new DataTransfer()
+		const copyEvent = new ClipboardEvent('copy', { bubbles: true })
+		Object.defineProperty(copyEvent, 'clipboardData', { value: clipboardData })
+
+		cardText.dispatchEvent(copyEvent)
+
+		expect(clipboardData.getData('text/plain')).toBe(
+			'[Action] Choose one:\n\n- Pay [1][Order].\n- Gain +2[Might].\n\nThen draw 1.',
+		)
+		expect(clipboardData.getData('text/html')).not.toContain('<li>- ')
+	})
+
 	test('renders and copies a keyword-associated ability marker as part of its badge', async () => {
 		const screen = await render(
 			<CardReference
