@@ -40,12 +40,12 @@ Card previews may still show the original wording.
 <CardErratum name="Arise!">
   <CardErratumText variant="original">
 
-Play a 2 [M] Sand Soldier unit token for each Equipment you control. Then <Del>ready</Del> two of them.
+Play a 2<Might /> Sand Soldier unit token for each Equipment you control. Then <Del>ready</Del> two of them.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-Play a 2 [M] Sand Soldier unit token for each Equipment you control. Then <Ins>do this: Ready up to</Ins> two of them.
+Play a 2<Might /> Sand Soldier unit token for each Equipment you control. Then <Ins>do this: Ready up to</Ins> two of them.
 
   </CardErratumText>
 </CardErratum>
@@ -55,12 +55,12 @@ Play a 2 [M] Sand Soldier unit token for each Equipment you control. Then <Ins>d
 <CardErratum name="Astral Heron">
   <CardErratumText variant="original">
 
-When you play your first card each turn, if I'm at a battlefield, <Del>your</Del> next card costs [2][A][A] less.
+When you play your first card each turn, if I'm at a battlefield, <Del>your</Del> next card costs <Energy value={2} /><Universal label="Universal" /><Universal label="Universal" /> less.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-When you play your first card each turn, if I'm at a battlefield, <Ins>the</Ins> next card <Ins>you play this turn</Ins> costs [2][A][A] less.
+When you play your first card each turn, if I'm at a battlefield, <Ins>the</Ins> next card <Ins>you play this turn</Ins> costs <Energy value={2} /><Universal label="Universal" /><Universal label="Universal" /> less.
 
   </CardErratumText>
 </CardErratum>
@@ -70,12 +70,12 @@ When you play your first card each turn, if I'm at a battlefield, <Ins>the</Ins>
 <CardErratum name="Ava Achiever">
   <CardErratumText variant="original">
 
-When I attack, you may pay [B] to play a card with [Hidden] from your hand <Del>here</Del>, ignoring its cost.
+When I attack, you may pay <Mind /> to play a card with <Hidden /> from your hand <Del>here</Del>, ignoring its cost.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-When I attack, you may pay [B] to play a card with [Hidden] from your hand, ignoring its cost. <Ins>If it’s a unit, play it here.</Ins>
+When I attack, you may pay <Mind /> to play a card with <Hidden /> from your hand, ignoring its cost. <Ins>If it’s a unit, play it here.</Ins>
 
   </CardErratumText>
 </CardErratum>
@@ -85,12 +85,12 @@ When I attack, you may pay [B] to play a card with [Hidden] from your hand, igno
 <CardErratum name="Baited Hook">
   <CardErratumText variant="original">
 
-[1][Y], [E]: Kill a friendly unit. Look at the top 5 cards of your Main Deck. You may <Del>play</Del> a unit from among them that has Might up to 1 more than the killed unit, ignoring its cost. Then recycle the rest.
+<Energy value={1} /><Order />, <Exhaust />: Kill a friendly unit. Look at the top 5 cards of your Main Deck. You may <Del>play</Del> a unit from among them that has Might up to 1 more than the killed unit, ignoring its cost. Then recycle the rest.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[1][Y], [E]: Kill a friendly unit. Look at the top 5 cards of your Main Deck. You may <Ins>banish</Ins> a unit from among them that has Might up to 1 more than the killed unit <Ins>and play it</Ins>, ignoring its cost. Then recycle the rest.
+<Energy value={1} /><Order />, <Exhaust />: Kill a friendly unit. Look at the top 5 cards of your Main Deck. You may <Ins>banish</Ins> a unit from among them that has Might up to 1 more than the killed unit <Ins>and play it</Ins>, ignoring its cost. Then recycle the rest.
 
   </CardErratumText>
 </CardErratum>
@@ -100,12 +100,16 @@ When I attack, you may pay [B] to play a card with [Hidden] from your hand, igno
 <CardErratum name="Blind Fury">
   <CardErratumText variant="original">
 
-[Action] (Play on your turn or in showdowns.)&#10;Each opponent reveals the top card of their Main Deck. Choose one and play it, ignoring its cost. Then recycle the rest.
+<Action /> <em>(Play on your turn or in showdowns.)</em>
+
+Each opponent reveals the top card of their Main Deck. Choose one and play it, ignoring its cost. Then recycle the rest.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Action] (Play on your turn or in showdowns.)&#10;Each opponent reveals the top card of their Main Deck. Choose one and <Ins>banish it, then</Ins> play it, ignoring its cost. Then recycle the rest.
+<Action /> <em>(Play on your turn or in showdowns.)</em>
+
+Each opponent reveals the top card of their Main Deck. Choose one and <Ins>banish it, then</Ins> play it, ignoring its cost. Then recycle the rest.
 
   </CardErratumText>
 </CardErratum>
@@ -115,12 +119,20 @@ When I attack, you may pay [B] to play a card with [Hidden] from your hand, igno
 <CardErratum name="Blood Rush">
   <CardErratumText variant="original">
 
-[Action] (Play on your turn or in showdowns.)&#10;[Repeat] [1] (You may pay the additional cost to repeat this spell's effect.)&#10;Give a unit [Assault 2]. (+2 [M] while it's an attacker.)
+<p><Action /> <em>(Play on your turn or in showdowns.)</em></p>
+
+<p><Repeat /> <Energy value={1} /> <em>(You may pay the additional cost to repeat this spell's effect.)</em></p>
+
+Give a unit <Assault value={2} />. <em>(+2<Might /> while it's an attacker.)</em>
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Action] (Play on your turn or in showdowns.)&#10;[Repeat] [1] (You may pay the additional cost to repeat this spell's effect.)&#10;Give a unit [Assault 2] <Ins>this turn</Ins>. (+2 [M] while it's an attacker.)
+<p><Action /> <em>(Play on your turn or in showdowns.)</em></p>
+
+<p><Repeat /> <Energy value={1} /> <em>(You may pay the additional cost to repeat this spell's effect.)</em></p>
+
+Give a unit <Assault value={2} /> <Ins>this turn</Ins>. <em>(+2<Might /> while it's an attacker.)</em>
 
   </CardErratumText>
 </CardErratum>
@@ -130,12 +142,16 @@ When I attack, you may pay [B] to play a card with [Hidden] from your hand, igno
 <CardErratum name="Bone Skewer">
   <CardErratumText variant="original">
 
-[Hidden] (Hide now for [A] to react with later for [0].)&#10;Choose a battlefield. An opponent reveals their hand. You may choose a unit from it. They play that unit to that battlefield, ignoring any and all costs. <Del>When</Del> they do, [Stun] it. (It doesn't deal combat damage this turn.)
+<Hidden /> <em>(Hide now for <Universal label="Universal" /> to react with later for <Energy value={0} />.)</em>
+
+Choose a battlefield. An opponent reveals their hand. You may choose a unit from it. They play that unit to that battlefield, ignoring any and all costs. <Del>When</Del> they do, <Stun /> it. <em>(It doesn't deal combat damage this turn.)</em>
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Hidden] (Hide now for [A] to react with later for [0].)&#10;Choose a battlefield. An opponent reveals their hand. You may choose a unit from it. They play that unit to that battlefield, ignoring any and all costs. <Ins>If</Ins> they do, <Ins>then do this:</Ins> [Stun] it. (It doesn't deal combat damage this turn.)
+<Hidden /> <em>(Hide now for <Universal label="Universal" /> to react with later for <Energy value={0} />.)</em>
+
+Choose a battlefield. An opponent reveals their hand. You may choose a unit from it. They play that unit to that battlefield, ignoring any and all costs. <Ins>If</Ins> they do, <Ins>then do this:</Ins> <Stun /> it. <em>(It doesn't deal combat damage this turn.)</em>
 
   </CardErratumText>
 </CardErratum>
@@ -145,12 +161,14 @@ When I attack, you may pay [B] to play a card with [Hidden] from your hand, igno
 <CardErratum name="Clockwork Keeper">
   <CardErratumText variant="original">
 
-<Del>As you play me, you</Del> may pay [G] as an additional cost. <Del>If you do</Del>, draw 1.
+<Del>As you play me, you</Del> may pay <Calm /> as an additional cost. <Del>If you do</Del>, draw 1.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-<Ins>You</Ins> may pay [G] as an additional cost <Ins>to play me.&#10;When you play me, if you paid the additional cost,</Ins> draw 1.
+<p><Ins>You</Ins> may pay <Calm /> as an additional cost <Ins>to play me.</Ins></p>
+
+<p><Ins>When you play me, if you paid the additional cost,</Ins> draw 1.</p>
 
   </CardErratumText>
 </CardErratum>
@@ -160,12 +178,16 @@ When I attack, you may pay [B] to play a card with [Hidden] from your hand, igno
 <CardErratum name="Convergent Mutation">
   <CardErratumText variant="original">
 
-[Reaction] (Play any time, even before spells and abilities resolve.)&#10;Choose a friendly unit. <Del>Increase</Del> its Might <Del>until it equals</Del> the Might of another friendly unit.
+<Reaction /> <em>(Play any time, even before spells and abilities resolve.)</em>
+
+Choose a friendly unit. <Del>Increase</Del> its Might <Del>until it equals</Del> the Might of another friendly unit.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Reaction] (Play any time, even before spells and abilities resolve.)&#10;Choose a friendly unit. <Ins>This turn, increase</Ins> its Might <Ins>to</Ins> the Might of another friendly unit.
+<Reaction /> <em>(Play any time, even before spells and abilities resolve.)</em>
+
+Choose a friendly unit. <Ins>This turn, increase</Ins> its Might <Ins>to</Ins> the Might of another friendly unit.
 
   </CardErratumText>
 </CardErratum>
@@ -205,12 +227,12 @@ At the end of your turn, reveal cards from the top of your Main Deck until you r
 <CardErratum name="Death from Below">
   <CardErratumText variant="original">
 
-Kill a unit at a battlefield. Then, if it had 3 [M] or less, <Del>you</Del> may play this from your trash for [A].
+Kill a unit at a battlefield. Then, if it had 3<Might /> or less, <Del>you</Del> may play this from your trash for <Universal label="Universal" />.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-Kill a unit at a battlefield. Then, if it had 3 [M] or less, <Ins>do this: You</Ins> may play this from your trash for [A].
+Kill a unit at a battlefield. Then, if it had 3<Might /> or less, <Ins>do this: You</Ins> may play this from your trash for <Universal label="Universal" />.
 
   </CardErratumText>
 </CardErratum>
@@ -220,12 +242,18 @@ Kill a unit at a battlefield. Then, if it had 3 [M] or less, <Ins>do this: You</
 <CardErratum name="Deathgrip">
   <CardErratumText variant="original">
 
-[Reaction] (Play any time, even before spells and abilities resolve.)&#10;Kill a friendly unit <Del>to</Del> give +[M] equal to its Might to another friendly unit this turn. Draw 1.
+<Reaction /> <em>(Play any time, even before spells and abilities resolve.)</em>
+
+Kill a friendly unit <Del>to</Del> give +<Might /> equal to its Might to another friendly unit this turn. Draw 1.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Reaction] (Play any time, even before spells and abilities resolve.)&#10;Kill a friendly unit<Ins>. If you do,</Ins> give +[M] equal to its Might to another friendly unit this turn.&#10;Draw 1.
+<Reaction /> <em>(Play any time, even before spells and abilities resolve.)</em>
+
+Kill a friendly unit<Ins>. If you do,</Ins> give +<Might /> equal to its Might to another friendly unit this turn.
+
+Draw 1.
 
   </CardErratumText>
 </CardErratum>
@@ -235,12 +263,12 @@ Kill a unit at a battlefield. Then, if it had 3 [M] or less, <Ins>do this: You</
 <CardErratum name="Deceiver">
   <CardErratumText variant="original">
 
-When you conquer or hold, you may discard 1 and exhaust me to play a ready Reflection unit token there. It becomes a copy of another unit there. Give it [Temporary].
+When you conquer or hold, you may discard 1 and exhaust me to play a ready Reflection unit token there. It becomes a copy of another unit there. Give it <Temporary />.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-When you conquer or hold, you may discard 1 and exhaust me to play a ready Reflection unit token there. <Ins>Then do this:</Ins> It becomes a copy of another unit there. Give it [Temporary].
+When you conquer or hold, you may discard 1 and exhaust me to play a ready Reflection unit token there. <Ins>Then do this:</Ins> It becomes a copy of another unit there. Give it <Temporary />.
 
   </CardErratumText>
 </CardErratum>
@@ -250,12 +278,12 @@ When you conquer or hold, you may discard 1 and exhaust me to play a ready Refle
 <CardErratum name="Diana, Lunari">
   <CardErratumText variant="original">
 
-When a showdown begins here, you may pay [1]<Del>. If you do,</Del> [Predict], then reveal the top card of your Main Deck. If it's a spell, draw it. (To Predict, look at the top card of your Main Deck. You may recycle it.)
+When a showdown begins here, you may pay <Energy value={1} /><Del>. If you do,</Del> <Predict />, then reveal the top card of your Main Deck. If it's a spell, draw it. <em>(To Predict, look at the top card of your Main Deck. You may recycle it.)</em>
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-When a showdown begins here, you may pay [1] <Ins>to</Ins> [Predict], then reveal the top card of your Main Deck. If it's a spell, draw it. (To Predict, look at the top card of your Main Deck. You may recycle it.)
+When a showdown begins here, you may pay <Energy value={1} /> <Ins>to</Ins> <Predict />, then reveal the top card of your Main Deck. If it's a spell, draw it. <em>(To Predict, look at the top card of your Main Deck. You may recycle it.)</em>
 
   </CardErratumText>
 </CardErratum>
@@ -265,12 +293,16 @@ When a showdown begins here, you may pay [1] <Ins>to</Ins> [Predict], then revea
 <CardErratum name="Disintegrate">
   <CardErratumText variant="original">
 
-[Action] (Play on your turn or in showdowns.)&#10;Deal 3 to a unit at a battlefield. If this kills it, draw 1.
+<Action /> <em>(Play on your turn or in showdowns.)</em>
+
+Deal 3 to a unit at a battlefield. If this kills it, draw 1.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Action] (Play on your turn or in showdowns.)&#10;Deal 3 to a unit at a battlefield. If this kills it, <Ins>do this:</Ins> draw 1.
+<Action /> <em>(Play on your turn or in showdowns.)</em>
+
+Deal 3 to a unit at a battlefield. If this kills it, <Ins>do this:</Ins> draw 1.
 
   </CardErratumText>
 </CardErratum>
@@ -295,12 +327,16 @@ Move an enemy unit. Then <Ins>do this: Choose</Ins> another enemy unit at its de
 <CardErratum name="Draven, Vanquisher">
   <CardErratumText variant="original">
 
-When I win a combat, play a Gold gear token exhausted.&#10;When I attack or defend, you may pay [R]<Del>. If you do,</Del> give me +2 [M] this turn.
+When I win a combat, play a Gold gear token exhausted.
+
+When I attack or defend, you may pay <Fury /><Del>. If you do,</Del> give me +2<Might /> this turn.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-When I win a combat, play a Gold gear token exhausted.&#10;When I attack or defend, you may pay [R] <Ins>to</Ins> give me +2 [M] this turn.
+When I win a combat, play a Gold gear token exhausted.
+
+When I attack or defend, you may pay <Fury /> <Ins>to</Ins> give me +2<Might /> this turn.
 
   </CardErratumText>
 </CardErratum>
@@ -310,12 +346,12 @@ When I win a combat, play a Gold gear token exhausted.&#10;When I attack or defe
 <CardErratum name="Dune Drake">
   <CardErratumText variant="original">
 
-When I attack, give me +2 [M] if there is a ready enemy unit here.
+When I attack, give me +2<Might /> if there is a ready enemy unit here.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-When I attack, give me +2 [M] <Ins>this turn</Ins> if there is a ready enemy unit here.
+When I attack, give me +2<Might /> <Ins>this turn</Ins> if there is a ready enemy unit here.
 
   </CardErratumText>
 </CardErratum>
@@ -325,12 +361,20 @@ When I attack, give me +2 [M] <Ins>this turn</Ins> if there is a ready enemy uni
 <CardErratum name="Edge of Night">
   <CardErratumText variant="original">
 
-[Hidden] (Hide now for [A] to react with later for [0].)&#10;When you play this from face down, attach it to a unit you control here.&#10;[Equip] [P] ([P]: Attach this to a unit you control.)
+<Hidden /> <em>(Hide now for <Universal label="Universal" /> to react with later for <Energy value={0} />.)</em>
+
+When you play this from face down, attach it to a unit you control here.
+
+<Equip /> <Chaos /> <em>(<Chaos />: Attach this to a unit you control.)</em>
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Hidden] (Hide now for [A] to react with later for [0].)&#10;When you play this from face down, attach it to a unit you control <Ins>(here)</Ins>.&#10;[Equip] [P] ([P]: Attach this to a unit you control.)
+<Hidden /> <em>(Hide now for <Universal label="Universal" /> to react with later for <Energy value={0} />.)</em>
+
+When you play this from face down, attach it to a unit you control <Ins><em>(here)</em></Ins>.
+
+<Equip /> <Chaos /> <em>(<Chaos />: Attach this to a unit you control.)</em>
 
   </CardErratumText>
 </CardErratum>
@@ -340,12 +384,16 @@ When I attack, give me +2 [M] <Ins>this turn</Ins> if there is a ready enemy uni
 <CardErratum name="Elnuk Herd">
   <CardErratumText variant="original">
 
-[Hidden] (Hide now for [A] to react with later for [0].)&#10;When you play me, give <Del>another</Del> friendly unit +3 [M] this turn, then recycle me if I was played from face down.
+<Hidden /> <em>(Hide now for <Universal label="Universal" /> to react with later for <Energy value={0} />.)</em>
+
+When you play me, give <Del>another</Del> friendly unit +3<Might /> this turn, then recycle me if I was played from face down.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Hidden] (Hide now for [A] to react with later for [0].)&#10;When you play me, give <Ins>a</Ins> friendly unit +3 [M] this turn, then recycle me if I was played from face down.
+<Hidden /> <em>(Hide now for <Universal label="Universal" /> to react with later for <Energy value={0} />.)</em>
+
+When you play me, give <Ins>a</Ins> friendly unit +3<Might /> this turn, then recycle me if I was played from face down.
 
   </CardErratumText>
 </CardErratum>
@@ -355,12 +403,12 @@ When I attack, give me +2 [M] <Ins>this turn</Ins> if there is a ready enemy uni
 <CardErratum name="Emperor's Dais">
   <CardErratumText variant="original">
 
-When you conquer here, you may pay [1] and return a unit you control here to its owner's hand<Del>. If you do,</Del> play a 2 [M] Sand Soldier unit token here.
+When you conquer here, you may pay <Energy value={1} /> and return a unit you control here to its owner's hand<Del>. If you do,</Del> play a 2<Might /> Sand Soldier unit token here.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-When you conquer here, you may pay [1] and return a unit you control here to its owner's hand <Ins>to</Ins> play a 2 [M] Sand Soldier unit token here.
+When you conquer here, you may pay <Energy value={1} /> and return a unit you control here to its owner's hand <Ins>to</Ins> play a 2<Might /> Sand Soldier unit token here.
 
   </CardErratumText>
 </CardErratum>
@@ -370,12 +418,16 @@ When you conquer here, you may pay [1] and return a unit you control here to its
 <CardErratum name="Falling Star">
   <CardErratumText variant="original">
 
-<Del>Do this twice:</Del>&#10;Deal 3 to a unit. <Del>(You can choose different units.)</Del>
+<Del>Do this twice:</Del>
+
+Deal 3 to a unit. <Del><em>(You can choose different units.)</em></Del>
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-Deal 3 to a unit.&#10;<Ins>Deal 3 to a unit</Ins>.
+Deal 3 to a unit.
+
+<Ins>Deal 3 to a unit</Ins>.
 
   </CardErratumText>
 </CardErratum>
@@ -385,12 +437,12 @@ Deal 3 to a unit.&#10;<Ins>Deal 3 to a unit</Ins>.
 <CardErratum name="Fizz, Trickster">
   <CardErratumText variant="original">
 
-When you play me, you may play a spell from your trash with Energy cost no more than [3], ignoring its Energy cost. <Del>Recycle that spell after you play</Del> it. (You must still pay its Power cost.)
+When you play me, you may play a spell from your trash with Energy cost no more than <Energy value={3} />, ignoring its Energy cost. <Del>Recycle that spell after you play</Del> it. <em>(You must still pay its Power cost.)</em>
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-When you play me, you may play a spell from your trash with Energy cost no more than [3], ignoring its Energy cost. <Ins>Then recycle</Ins> it. (You must still pay its Power cost.)
+When you play me, you may play a spell from your trash with Energy cost no more than <Energy value={3} />, ignoring its Energy cost. <Ins>Then recycle</Ins> it. <em>(You must still pay its Power cost.)</em>
 
   </CardErratumText>
 </CardErratum>
@@ -400,12 +452,16 @@ When you play me, you may play a spell from your trash with Energy cost no more 
 <CardErratum name="Forbidden Technique">
   <CardErratumText variant="original">
 
-Ready a unit.&#10;When you play a card with Energy cost [7] or more, you may play this from your trash for [1][R][R]. <Del>Banish</Del> this.
+Ready a unit.
+
+When you play a card with Energy cost <Energy value={7} /> or more, you may play this from your trash for <Energy value={1} /><Fury /><Fury />. <Del>Banish</Del> this.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-Ready a unit.&#10;When you play a card with Energy cost [7] or more, you may play this from your trash for [1][R][R]. <Ins>Then banish</Ins> this.
+Ready a unit.
+
+When you play a card with Energy cost <Energy value={7} /> or more, you may play this from your trash for <Energy value={1} /><Fury /><Fury />. <Ins>Then banish</Ins> this.
 
   </CardErratumText>
 </CardErratum>
@@ -415,12 +471,16 @@ Ready a unit.&#10;When you play a card with Energy cost [7] or more, you may pla
 <CardErratum name="Gangplank, Naval">
   <CardErratumText variant="original">
 
-[Empower] [O][O] ([O][O]: Empower me. Use only if not Empowered.)&#10;[Empowered][&gt;] If a spell or ability that chooses me would stun me, give me -[M], or return me to hand, give me +3 [M] instead.
+<p><Empower /> <Body /><Body /> <em>(<Body /><Body />: Empower me. Use only if not Empowered.)</em></p>
+
+<p><Empowered associatedAbility /> If a spell or ability that chooses me would stun me, give me -<Might />, or return me to hand, give me +3<Might /> instead.</p>
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Empower] [O][O] ([O][O]: Empower me. Use only if not Empowered.)&#10;[Empowered][&gt;] If a spell or ability that chooses me would stun me, give me -[M], or return me to hand, give me +3 [M] <Ins>this turn</Ins> instead.
+<p><Empower /> <Body /><Body /> <em>(<Body /><Body />: Empower me. Use only if not Empowered.)</em></p>
+
+<p><Empowered associatedAbility /> If a spell or ability that chooses me would stun me, give me -<Might />, or return me to hand, give me +3<Might /> <Ins>this turn</Ins> instead.</p>
 
   </CardErratumText>
 </CardErratum>
@@ -430,12 +490,16 @@ Ready a unit.&#10;When you play a card with Energy cost [7] or more, you may pla
 <CardErratum name="Guards!">
   <CardErratumText variant="original">
 
-[Hidden] (Hide now for [A] to react with later for [0].)&#10;Play a 2 [M] Sand Soldier unit token. You may pay [Y] to ready it.
+<Hidden /> <em>(Hide now for <Universal label="Universal" /> to react with later for <Energy value={0} />.)</em>
+
+Play a 2<Might /> Sand Soldier unit token. You may pay <Order /> to ready it.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Hidden] (Hide now for [A] to react with later for [0].)&#10;Play a 2 [M] Sand Soldier unit token. <Ins>Then do this:</Ins> You may pay [Y] to ready it.
+<Hidden /> <em>(Hide now for <Universal label="Universal" /> to react with later for <Energy value={0} />.)</em>
+
+Play a 2<Might /> Sand Soldier unit token. <Ins>Then do this:</Ins> You may pay <Order /> to ready it.
 
   </CardErratumText>
 </CardErratum>
@@ -445,12 +509,16 @@ Ready a unit.&#10;When you play a card with Energy cost [7] or more, you may pla
 <CardErratum name="Highlander">
   <CardErratumText variant="original">
 
-[Reaction] (Play any time, even before spells and abilities resolve.)&#10;Choose a friendly unit. The next time it <Del>dies</Del> this turn, recall it <Del>exhausted</Del> instead. (Send it to base. This isn't a move.)
+<Reaction /> <em>(Play any time, even before spells and abilities resolve.)</em>
+
+Choose a friendly unit. The next time it <Del>dies</Del> this turn, recall it <Del>exhausted</Del> instead. <em>(Send it to base. This isn't a move.)</em>
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Reaction] (Play any time, even before spells and abilities resolve.)&#10;Choose a friendly unit. The next time it <Ins>would die</Ins> this turn, <Ins>heal it, exhaust it, and</Ins> recall it instead. (Send it to base. This isn't a move.)
+<Reaction /> <em>(Play any time, even before spells and abilities resolve.)</em>
+
+Choose a friendly unit. The next time it <Ins>would die</Ins> this turn, <Ins>heal it, exhaust it, and</Ins> recall it instead. <em>(Send it to base. This isn't a move.)</em>
 
   </CardErratumText>
 </CardErratum>
@@ -460,12 +528,24 @@ Ready a unit.&#10;When you play a card with Energy cost [7] or more, you may pla
 <CardErratum name="Icathian Rain">
   <CardErratumText variant="original">
 
-<Del>Do this 6 times:</Del>&#10;Deal 2 to a unit. <Del>(You can choose different units.)</Del>
+<Del>Do this 6 times:</Del>
+
+Deal 2 to a unit. <Del><em>(You can choose different units.)</em></Del>
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-Deal 2 to a unit.&#10;<Ins>Deal 2 to a unit.&#10;Deal 2 to a unit.&#10;Deal 2 to a unit.&#10;Deal 2 to a unit.&#10;Deal 2 to a unit.</Ins>
+Deal 2 to a unit.
+
+<p><Ins>Deal 2 to a unit.</Ins></p>
+
+<p><Ins>Deal 2 to a unit.</Ins></p>
+
+<p><Ins>Deal 2 to a unit.</Ins></p>
+
+<p><Ins>Deal 2 to a unit.</Ins></p>
+
+<p><Ins>Deal 2 to a unit.</Ins></p>
 
   </CardErratumText>
 </CardErratum>
@@ -475,12 +555,16 @@ Deal 2 to a unit.&#10;<Ins>Deal 2 to a unit.&#10;Deal 2 to a unit.&#10;Deal 2 to
 <CardErratum name="Janna, Savior">
   <CardErratumText variant="original">
 
-[Reaction] (Play any time, even before spells and abilities resolve, including to a battlefield you control.)&#10;When you play me, heal your units here, then move <Del>an</Del> enemy unit from here to its base.
+<Reaction /> <em>(Play any time, even before spells and abilities resolve, including to a battlefield you control.)</em>
+
+When you play me, heal your units here, then move <Del>an</Del> enemy unit from here to its base.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Reaction] (Play any time, even before spells and abilities resolve, including to a battlefield you control.)&#10;When you play me, heal your units here, then move <Ins>up to one</Ins> enemy unit from here to its base.
+<Reaction /> <em>(Play any time, even before spells and abilities resolve, including to a battlefield you control.)</em>
+
+When you play me, heal your units here, then move <Ins>up to one</Ins> enemy unit from here to its base.
 
   </CardErratumText>
 </CardErratum>
@@ -490,12 +574,16 @@ Deal 2 to a unit.&#10;<Ins>Deal 2 to a unit.&#10;Deal 2 to a unit.&#10;Deal 2 to
 <CardErratum name="Jax, Unmatched">
   <CardErratumText variant="original">
 
-[Deflect] (Opponents must pay [A] to choose me with a spell or ability.)&#10;<Del>Each</Del> Equipment <Del>in your hand has</Del> [Quick-Draw]. (<Del>It</Del> gains [Reaction]. When you play it, attach it to a unit you control.)
+<p><Deflect /> <em>(Opponents must pay <Universal label="Universal" /> to choose me with a spell or ability.)</em></p>
+
+<p><Del>Each</Del> Equipment <Del>in your hand has</Del> <QuickDraw />. <em>(<Del>It</Del> gains <Reaction />. When you play it, attach it to a unit you control.)</em></p>
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Deflect] (Opponents must pay [A] to choose me with a spell or ability.)&#10;<Ins>Your</Ins> Equipment <Ins>everywhere have</Ins> [Quick-Draw]. (<Ins>Each</Ins> gains [Reaction]. When you play it, attach it to a unit you control.)
+<p><Deflect /> <em>(Opponents must pay <Universal label="Universal" /> to choose me with a spell or ability.)</em></p>
+
+<p><Ins>Your</Ins> Equipment <Ins>everywhere have</Ins> <QuickDraw />. <em>(<Ins>Each</Ins> gains <Reaction />. When you play it, attach it to a unit you control.)</em></p>
 
   </CardErratumText>
 </CardErratum>
@@ -505,12 +593,16 @@ Deal 2 to a unit.&#10;<Ins>Deal 2 to a unit.&#10;Deal 2 to a unit.&#10;Deal 2 to
 <CardErratum name="Karma, Channeler">
   <CardErratumText variant="original">
 
-[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)&#10;When you recycle one or more cards, buff a friendly unit. (If it doesn't have a buff, it gets a +1 [M] buff. Runes aren't cards.)
+<Vision /> <em>(When you play me, look at the top card of your Main Deck. You may recycle it.)</em>
+
+When you recycle one or more cards, buff a friendly unit. <em>(If it doesn't have a buff, it gets a +1<Might /> buff. Runes aren't cards.)</em>
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)&#10;When you recycle one or more cards <Ins>to your Main Deck</Ins>, buff a friendly unit. (If it doesn't have a buff, it gets a +1 [M] buff. Runes aren't cards.)
+<Vision /> <em>(When you play me, look at the top card of your Main Deck. You may recycle it.)</em>
+
+When you recycle one or more cards <Ins>to your Main Deck</Ins>, buff a friendly unit. <em>(If it doesn't have a buff, it gets a +1<Might /> buff. Runes aren't cards.)</em>
 
   </CardErratumText>
 </CardErratum>
@@ -520,12 +612,16 @@ Deal 2 to a unit.&#10;<Ins>Deal 2 to a unit.&#10;Deal 2 to a unit.&#10;Deal 2 to
 <CardErratum name="Kato the Arm">
   <CardErratumText variant="original">
 
-[Deflect] (Opponents must pay [A] to choose me with a spell or ability.)&#10;When I move to a battlefield, give <Del>a</Del> friendly unit my keywords and +[M] equal to my Might this turn.
+<Deflect /> <em>(Opponents must pay <Universal label="Universal" /> to choose me with a spell or ability.)</em>
+
+When I move to a battlefield, give <Del>a</Del> friendly unit my keywords and +<Might /> equal to my Might this turn.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Deflect] (Opponents must pay [A] to choose me with a spell or ability.)&#10;When I move to a battlefield, give <Ins>another</Ins> friendly unit my keywords and +[M] equal to my Might this turn.
+<Deflect /> <em>(Opponents must pay <Universal label="Universal" /> to choose me with a spell or ability.)</em>
+
+When I move to a battlefield, give <Ins>another</Ins> friendly unit my keywords and +<Might /> equal to my Might this turn.
 
   </CardErratumText>
 </CardErratum>
@@ -535,12 +631,20 @@ Deal 2 to a unit.&#10;<Ins>Deal 2 to a unit.&#10;Deal 2 to a unit.&#10;Deal 2 to
 <CardErratum name="Keeper of Masks">
   <CardErratumText variant="original">
 
-[Hidden] (Hide now for [A] to react with later for [0].)&#10;[Temporary] (Kill me at the start of my controller's Beginning Phase, before scoring.)&#10;When you play me, play two Reflection unit tokens here. They become copies of me.
+<p><Hidden /> <em>(Hide now for <Universal label="Universal" /> to react with later for <Energy value={0} />.)</em></p>
+
+<p><Temporary /> <em>(Kill me at the start of my controller's Beginning Phase, before scoring.)</em></p>
+
+When you play me, play two Reflection unit tokens here. They become copies of me.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Hidden] (Hide now for [A] to react with later for [0].)&#10;[Temporary] (Kill me at the start of my controller's Beginning Phase, before scoring.)&#10;When you play me, play two Reflection unit tokens here. <Ins>Then do this:</Ins> They become copies of me.
+<p><Hidden /> <em>(Hide now for <Universal label="Universal" /> to react with later for <Energy value={0} />.)</em></p>
+
+<p><Temporary /> <em>(Kill me at the start of my controller's Beginning Phase, before scoring.)</em></p>
+
+When you play me, play two Reflection unit tokens here. <Ins>Then do this:</Ins> They become copies of me.
 
   </CardErratumText>
 </CardErratum>
@@ -550,12 +654,12 @@ Deal 2 to a unit.&#10;<Ins>Deal 2 to a unit.&#10;Deal 2 to a unit.&#10;Deal 2 to
 <CardErratum name="Kinkou Monk">
   <CardErratumText variant="original">
 
-When you play me, buff two other friendly units. (Each one that doesn't have a buff gets a +1 [M] buff.)
+When you play me, buff two other friendly units. <em>(Each one that doesn't have a buff gets a +1<Might /> buff.)</em>
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-When you play me, buff <Ins>up to</Ins> two other friendly units. (Each one that doesn't have a buff gets a +1 [M] buff.)
+When you play me, buff <Ins>up to</Ins> two other friendly units. <em>(Each one that doesn't have a buff gets a +1<Might /> buff.)</em>
 
   </CardErratumText>
 </CardErratum>
@@ -565,12 +669,16 @@ When you play me, buff <Ins>up to</Ins> two other friendly units. (Each one that
 <CardErratum name="Last Caress">
   <CardErratumText variant="original">
 
-[Reaction] (Play any time, even before spells and abilities resolve.)&#10;The next unit you play this turn <Del>(</Del>even from face down<Del>)</Del> can be played to any battlefield. When you play it, [Buff] it. (Give it a +1 [M] buff if it doesn't have one.)
+<Reaction /> <em>(Play any time, even before spells and abilities resolve.)</em>
+
+The next unit you play this turn <em><Del>(</Del>even from face down<Del>)</Del></em> can be played to any battlefield. When you play it, <Buff /> it. <em>(Give it a +1<Might /> buff if it doesn't have one.)</em>
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Reaction] (Play any time, even before spells and abilities resolve.)&#10;The next unit you play this turn<Ins>,</Ins> even from face down<Ins>,</Ins> can be played to any battlefield. When you play it, [Buff] it. (Give it a +1 [M] buff if it doesn't have one.)
+<Reaction /> <em>(Play any time, even before spells and abilities resolve.)</em>
+
+The next unit you play this turn<Ins>,</Ins> even from face down<Ins>,</Ins> can be played to any battlefield. When you play it, <Buff /> it. <em>(Give it a +1<Might /> buff if it doesn't have one.)</em>
 
   </CardErratumText>
 </CardErratum>
@@ -580,12 +688,12 @@ When you play me, buff <Ins>up to</Ins> two other friendly units. (Each one that
 <CardErratum name="Mirror Image">
   <CardErratumText variant="original">
 
-Choose a unit. Play a ready Reflection unit token to your base. It becomes a copy of that unit. Give it [Temporary]. (Kill it at the start of its controller's Beginning Phase, before scoring.)
+Choose a unit. Play a ready Reflection unit token to your base. It becomes a copy of that unit. Give it <Temporary />. <em>(Kill it at the start of its controller's Beginning Phase, before scoring.)</em>
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-Choose a unit. Play a ready Reflection unit token to your base. <Ins>Then do this:</Ins> It becomes a copy of that unit. Give it [Temporary]. (Kill it at the start of its controller's Beginning Phase, before scoring.)
+Choose a unit. Play a ready Reflection unit token to your base. <Ins>Then do this:</Ins> It becomes a copy of that unit. Give it <Temporary />. <em>(Kill it at the start of its controller's Beginning Phase, before scoring.)</em>
 
   </CardErratumText>
 </CardErratum>
@@ -595,12 +703,20 @@ Choose a unit. Play a ready Reflection unit token to your base. <Ins>Then do thi
 <CardErratum name="Neeko, Blending In">
   <CardErratumText variant="original">
 
-(Neutral cards can go in decks of any Domain.)&#10;If Neeko is in your deck, choose 3 different legends in addition to your starting legend. (Different means none match names.)&#10;When you play me, choose one of those <Del>l</Del>egends and add it to your Legend Zone while I'm on the board.
+<em>(Neutral cards can go in decks of any Domain.)</em>
+
+If Neeko is in your deck, choose 3 different legends in addition to your starting legend. <em>(Different means none match names.)</em>
+
+When you play me, choose one of those <Del>l</Del>egends and add it to your Legend Zone while I'm on the board.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-(Neutral cards can go in decks of any Domain.)&#10;If Neeko is in your deck, choose <Ins>up to</Ins> 3 different legends in addition to your starting legend. (Different means none match names.)&#10;When you play me, choose one of those <Ins>L</Ins>egends and add it to your Legend Zone while I'm on the board.
+<em>(Neutral cards can go in decks of any Domain.)</em>
+
+If Neeko is in your deck, choose <Ins>up to</Ins> 3 different legends in addition to your starting legend. <em>(Different means none match names.)</em>
+
+When you play me, choose one of those <Ins>L</Ins>egends and add it to your Legend Zone while I'm on the board.
 
   </CardErratumText>
 </CardErratum>
@@ -610,12 +726,16 @@ Choose a unit. Play a ready Reflection unit token to your base. <Ins>Then do thi
 <CardErratum name="Nocturne, Horrifying">
   <CardErratumText variant="original">
 
-[Ganking] (I can move from battlefield to battlefield.)&#10;<Del>When</Del> you look at <Del>cards</Del> from the top of your deck <Del>(and don't draw them) and see</Del> me, you may play me for [A].
+<p><Ganking /> <em>(I can move from battlefield to battlefield.)</em></p>
+
+<p><Del>When</Del> you look at <Del>cards</Del> from the top of your deck <Del><em>(and don't draw them)</em> and see</Del> me, you may play me for <Universal label="Universal" />.</p>
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Ganking] (I can move from battlefield to battlefield.)&#10;<Ins>As</Ins> you look at <Ins>or reveal me</Ins> from the top of your deck<Ins>, you may banish me. If you do</Ins>, you may play me for [A].
+<p><Ganking /> <em>(I can move from battlefield to battlefield.)</em></p>
+
+<p><Ins>As</Ins> you look at <Ins>or reveal me</Ins> from the top of your deck<Ins>, you may banish me. If you do</Ins>, you may play me for <Universal label="Universal" />.</p>
 
   </CardErratumText>
 </CardErratum>
@@ -625,12 +745,12 @@ Choose a unit. Play a ready Reflection unit token to your base. <Ins>Then do thi
 <CardErratum name="Pack of Wonders">
   <CardErratumText variant="original">
 
-[E]: Return another friendly gear, unit, or <Del>[Hidden]</Del> card to its owner's hand.
+<Exhaust />: Return another friendly gear, unit, or <Del><Hidden /></Del> card to its owner's hand.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[E]: Return another friendly gear, unit, or <Ins>facedown</Ins> card to its owner's hand.
+<Exhaust />: Return another friendly gear, unit, or <Ins>facedown</Ins> card to its owner's hand.
 
   </CardErratumText>
 </CardErratum>
@@ -640,12 +760,16 @@ Choose a unit. Play a ready Reflection unit token to your base. <Ins>Then do thi
 <CardErratum name="Portal Rescue">
   <CardErratumText variant="original">
 
-[Action] (Play on your turn or in showdowns.)&#10;Banish a friendly unit, then <Del>play</Del> it to base, ignoring its cost.
+<Action /> <em>(Play on your turn or in showdowns.)</em>
+
+Banish a friendly unit, then <Del>play</Del> it to base, ignoring its cost.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Action] (Play on your turn or in showdowns.)&#10;Banish a friendly unit, then <Ins>its owner plays</Ins> it to <Ins>their</Ins> base, ignoring its cost.
+<Action /> <em>(Play on your turn or in showdowns.)</em>
+
+Banish a friendly unit, then <Ins>its owner plays</Ins> it to <Ins>their</Ins> base, ignoring its cost.
 
   </CardErratumText>
 </CardErratum>
@@ -655,12 +779,12 @@ Choose a unit. Play a ready Reflection unit token to your base. <Ins>Then do thi
 <CardErratum name="Promising Future">
   <CardErratumText variant="original">
 
-Each player looks at the top 5 cards of their Main Deck, <Del>chooses</Del> one, then recycles the rest. Starting with the next player, each player plays those cards, ignoring Energy costs. (They must still pay Power costs.)
+Each player looks at the top 5 cards of their Main Deck, <Del>chooses</Del> one, then recycles the rest. Starting with the next player, each player plays those cards, ignoring Energy costs. <em>(They must still pay Power costs.)</em>
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-Each player looks at the top 5 cards of their Main Deck, <Ins>banishes one of them</Ins>, then recycles the rest. Starting with the next player, each player plays those cards, ignoring Energy costs. (They must still pay Power costs.)
+Each player looks at the top 5 cards of their Main Deck, <Ins>banishes one of them</Ins>, then recycles the rest. Starting with the next player, each player plays those cards, ignoring Energy costs. <em>(They must still pay Power costs.)</em>
 
   </CardErratumText>
 </CardErratum>
@@ -670,12 +794,12 @@ Each player looks at the top 5 cards of their Main Deck, <Ins>banishes one of th
 <CardErratum name="Ravenborn Tome">
   <CardErratumText variant="original">
 
-[E]: The next spell you play deals 1 Bonus Damage. (Each instance of damage the spell deals is increased by 1.)
+<Exhaust />: The next spell you play deals 1 Bonus Damage. <em>(Each instance of damage the spell deals is increased by 1.)</em>
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[E]: The next spell you play <Ins>this turn</Ins> deals 1 Bonus Damage. (Each instance of damage the spell deals is increased by 1.)
+<Exhaust />: The next spell you play <Ins>this turn</Ins> deals 1 Bonus Damage. <em>(Each instance of damage the spell deals is increased by 1.)</em>
 
   </CardErratumText>
 </CardErratum>
@@ -685,12 +809,12 @@ Each player looks at the top 5 cards of their Main Deck, <Ins>banishes one of th
 <CardErratum name="Reinforce">
   <CardErratumText variant="original">
 
-Look at the top 5 cards of your Main Deck. You may <Del>play</Del> a unit from among them<Del>. Its Energy cost is reduced</Del> by [5]. <Del>Then recycle</Del> the remaining cards.
+Look at the top 5 cards of your Main Deck. You may <Del>play</Del> a unit from among them<Del>. Its Energy cost is reduced</Del> by <Energy value={5} />. <Del>Then recycle</Del> the remaining cards.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-Look at the top 5 cards of your Main Deck. You may <Ins>banish</Ins> a unit from among them<Ins>, then play it, reducing its</Ins> cost by [5]. <Ins>Recycle</Ins> the remaining cards.
+Look at the top 5 cards of your Main Deck. You may <Ins>banish</Ins> a unit from among them<Ins>, then play it, reducing its</Ins> cost by <Energy value={5} />. <Ins>Recycle</Ins> the remaining cards.
 
   </CardErratumText>
 </CardErratum>
@@ -715,12 +839,16 @@ When I attack, you may reveal the top 2 cards of your Main Deck. You may <Ins>ba
 <CardErratum name="Relentless Pursuit">
   <CardErratumText variant="original">
 
-[Action] (Play on your turn or in showdowns.)&#10;Move a friendly unit. You may attach <Del>an</Del> Equipment with the same controller to it. This turn, that unit has "When I conquer, you may move me to my base."
+<Action /> <em>(Play on your turn or in showdowns.)</em>
+
+Move a friendly unit. You may attach <Del>an</Del> Equipment with the same controller to it. This turn, that unit has "When I conquer, you may move me to my base."
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Action] (Play on your turn or in showdowns.)&#10;Move a friendly unit. You may attach <Ins>up to one</Ins> Equipment with the same controller to it. This turn, that unit has "When I conquer, you may move me to my base."
+<Action /> <em>(Play on your turn or in showdowns.)</em>
+
+Move a friendly unit. You may attach <Ins>up to one</Ins> Equipment with the same controller to it. This turn, that unit has "When I conquer, you may move me to my base."
 
   </CardErratumText>
 </CardErratum>
@@ -730,12 +858,16 @@ When I attack, you may reveal the top 2 cards of your Main Deck. You may <Ins>ba
 <CardErratum name="Rell, Magnetic">
   <CardErratumText variant="original">
 
-[Tank] (I must be assigned combat damage first.)&#10;When I attack, you may play an Equipment with Energy cost no more than [2], ignoring its cost, <Del>and attach</Del> it to me.
+<Tank /> <em>(I must be assigned combat damage first.)</em>
+
+When I attack, you may play an Equipment with Energy cost no more than <Energy value={2} />, ignoring its cost, <Del>and attach</Del> it to me.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Tank] (I must be assigned combat damage first.)&#10;When I attack, you may play an Equipment with Energy cost no more than [2], ignoring its cost<Ins>. If you do, then do this: Attach</Ins> it to me.
+<Tank /> <em>(I must be assigned combat damage first.)</em>
+
+When I attack, you may play an Equipment with Energy cost no more than <Energy value={2} />, ignoring its cost<Ins>. If you do, then do this: Attach</Ins> it to me.
 
   </CardErratumText>
 </CardErratum>
@@ -745,12 +877,16 @@ When I attack, you may reveal the top 2 cards of your Main Deck. You may <Ins>ba
 <CardErratum name="Rengar, Trophy Hunter">
   <CardErratumText variant="original">
 
-[Ambush] (You may play me as a [Reaction] to a battlefield where you have units.)&#10;I can <Del>be played</Del> to a battlefield where there are enemy units <Del>(</Del>even if you don't have units there<Del>)</Del>.
+<Ambush /> <em>(You may play me as a <Reaction /> to a battlefield where you have units.)</em>
+
+I can <Del>be played</Del> to a battlefield where there are enemy units <em><Del>(</Del>even if you don't have units there<Del>)</Del></em>.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Ambush] (You may play me as a [Reaction] to a battlefield where you have units.)&#10;I can <Ins>[Ambush]</Ins> to a battlefield where there are enemy units<Ins>,</Ins> even if you don't have units there.
+<Ambush /> <em>(You may play me as a <Reaction /> to a battlefield where you have units.)</em>
+
+I can <Ins><Ambush /></Ins> to a battlefield where there are enemy units<Ins>,</Ins> even if you don't have units there.
 
   </CardErratumText>
 </CardErratum>
@@ -760,12 +896,20 @@ When I attack, you may reveal the top 2 cards of your Main Deck. You may <Ins>ba
 <CardErratum name="Resonating Strike">
   <CardErratumText variant="original">
 
-[Hidden] (Hide now for [A] to react with later for [0].)&#10;[Reaction] (Play <Del>on your turn or in showdowns</Del>.)&#10;Choose a battlefield you control and a unit you control at a different location. Move that unit to that battlefield and give it +2 [M] this turn.
+<p><Hidden /> <em>(Hide now for <Universal label="Universal" /> to react with later for <Energy value={0} />.)</em></p>
+
+<p><Reaction /> <em>(Play <Del>on your turn or in showdowns</Del>.)</em></p>
+
+Choose a battlefield you control and a unit you control at a different location. Move that unit to that battlefield and give it +2<Might /> this turn.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Hidden] (Hide now for [A] to react with later for [0].)&#10;[Reaction] (Play <Ins>any time, even before spells and abilities resolve</Ins>.)&#10;Choose a battlefield you control and a unit you control at a different location. Move that unit to that battlefield and give it +2 [M] this turn.
+<p><Hidden /> <em>(Hide now for <Universal label="Universal" /> to react with later for <Energy value={0} />.)</em></p>
+
+<p><Reaction /> <em>(Play <Ins>any time, even before spells and abilities resolve</Ins>.)</em></p>
+
+Choose a battlefield you control and a unit you control at a different location. Move that unit to that battlefield and give it +2<Might /> this turn.
 
   </CardErratumText>
 </CardErratum>
@@ -775,12 +919,16 @@ When I attack, you may reveal the top 2 cards of your Main Deck. You may <Ins>ba
 <CardErratum name="Salvage">
   <CardErratumText variant="original">
 
-[Action] (Play on your turn or in showdowns.)&#10;You may kill <Del>a</Del> gear. Draw 1.
+<Action /> <em>(Play on your turn or in showdowns.)</em>
+
+You may kill <Del>a</Del> gear. Draw 1.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Action] (Play on your turn or in showdowns.)&#10;You may kill <Ins>up to one</Ins> gear. Draw 1.
+<Action /> <em>(Play on your turn or in showdowns.)</em>
+
+You may kill <Ins>up to one</Ins> gear. Draw 1.
 
   </CardErratumText>
 </CardErratum>
@@ -795,7 +943,7 @@ When you conquer here, recycle one of your runes.
   </CardErratumText>
   <CardErratumText variant="current">
 
-When you conquer here, <Ins>you must</Ins> recycle one of your runes. <Ins>(This doesn’t choose anything.)</Ins>
+When you conquer here, <Ins>you must</Ins> recycle one of your runes. <Ins><em>(This doesn’t choose anything.)</em></Ins>
 
   </CardErratumText>
 </CardErratum>
@@ -820,12 +968,16 @@ When you conquer here, <Ins>you must</Ins> recycle one of your runes. <Ins>(This
 <CardErratum name="Stalking Wolf">
   <CardErratumText variant="original">
 
-[Ambush] (You may play me as a [Reaction] to a battlefield where you have units.)&#10;As an additional cost to play me, kill a Bird, Cat, Dog, or Poro you control. You may <Del>play</Del> me to its battlefield <Del>(</Del>even if you don't have other units there<Del>)</Del>.
+<Ambush /> <em>(You may play me as a <Reaction /> to a battlefield where you have units.)</em>
+
+As an additional cost to play me, kill a Bird, Cat, Dog, or Poro you control. You may <Del>play</Del> me to its battlefield <em><Del>(</Del>even if you don't have other units there<Del>)</Del></em>.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Ambush] (You may play me as a [Reaction] to a battlefield where you have units.)&#10;As an additional cost to play me, kill a Bird, Cat, Dog, or Poro you control. You may <Ins>[Ambush]</Ins> me to its battlefield<Ins>,</Ins> even if you don't have other units there.
+<Ambush /> <em>(You may play me as a <Reaction /> to a battlefield where you have units.)</em>
+
+As an additional cost to play me, kill a Bird, Cat, Dog, or Poro you control. You may <Ins><Ambush /></Ins> me to its battlefield<Ins>,</Ins> even if you don't have other units there.
 
   </CardErratumText>
 </CardErratum>
@@ -850,12 +1002,16 @@ When you conquer here, ready <Ins>up to</Ins> 2 runes at the end of this turn.
 <CardErratum name="Teemo, Strategist">
   <CardErratumText variant="original">
 
-[Hidden] (Hide now for [A] to react with later for [0].)&#10;When I defend <Del>or I'm played from [Hidden]</Del>, reveal the top 5 cards of your Main Deck. Deal 1 to <Del>an enemy unit here</Del> for each card with [Hidden], then recycle <Del>them</Del>.
+<Hidden /> <em>(Hide now for <Universal label="Universal" /> to react with later for <Energy value={0} />.)</em>
+
+When I defend <Del>or I'm played from <Hidden /></Del>, reveal the top 5 cards of your Main Deck. Deal 1 to <Del>an enemy unit here</Del> for each card with <Hidden />, then recycle <Del>them</Del>.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Hidden] (Hide now for [A] to react with later for [0].)&#10;When I defend, <Ins>choose an enemy unit here and</Ins> reveal the top 5 cards of your Main Deck. Deal 1 to <Ins>that</Ins> unit for each card with [Hidden] <Ins>revealed this way</Ins>, then recycle <Ins>the revealed cards</Ins>.
+<Hidden /> <em>(Hide now for <Universal label="Universal" /> to react with later for <Energy value={0} />.)</em>
+
+When I defend, <Ins>choose an enemy unit here and</Ins> reveal the top 5 cards of your Main Deck. Deal 1 to <Ins>that</Ins> unit for each card with <Hidden /> <Ins>revealed this way</Ins>, then recycle <Ins>the revealed cards</Ins>.
 
   </CardErratumText>
 </CardErratum>
@@ -865,12 +1021,16 @@ When you conquer here, ready <Ins>up to</Ins> 2 runes at the end of this turn.
 <CardErratum name="The Boss">
   <CardErratumText variant="original">
 
-<Del>When</Del> a buffed unit you control would die, you may pay [A] <Del>and</Del> exhaust me <Del>to</Del> spend its buff and recall it <Del>exhausted</Del> instead. (Send it to base. This isn't a move.)&#10;When you conquer, ready me.
+<Del>When</Del> a buffed unit you control would die, you may pay <Universal label="Universal" /> <Del>and</Del> exhaust me <Del>to</Del> spend its buff and recall it <Del>exhausted</Del> instead. <em>(Send it to base. This isn't a move.)</em>
+
+When you conquer, ready me.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-<Ins>If</Ins> a buffed unit you control would die, you may pay [A]<Ins>,</Ins> exhaust me<Ins>, and</Ins> spend its buff <Ins>to heal it, exhaust it,</Ins> and recall it instead. (Send it to base. This isn't a move.)&#10;When you conquer, ready me.
+<Ins>If</Ins> a buffed unit you control would die, you may pay <Universal label="Universal" /><Ins>,</Ins> exhaust me<Ins>, and</Ins> spend its buff <Ins>to heal it, exhaust it,</Ins> and recall it instead. <em>(Send it to base. This isn't a move.)</em>
+
+When you conquer, ready me.
 
   </CardErratumText>
 </CardErratum>
@@ -895,12 +1055,12 @@ When you conquer here, ready <Ins>up to</Ins> 2 runes at the end of this turn.
 <CardErratum name="The Syren">
   <CardErratumText variant="original">
 
-[1], [E]: Move a friendly unit at a battlefield to <Del>your</Del> base.
+<Energy value={1} />, <Exhaust />: Move a friendly unit at a battlefield to <Del>your</Del> base.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[1], [E]: Move a friendly unit at a battlefield to <Ins>its</Ins> base.
+<Energy value={1} />, <Exhaust />: Move a friendly unit at a battlefield to <Ins>its</Ins> base.
 
   </CardErratumText>
 </CardErratum>
@@ -910,12 +1070,16 @@ When you conquer here, ready <Ins>up to</Ins> 2 runes at the end of this turn.
 <CardErratum name="Tianna Crownguard">
   <CardErratumText variant="original">
 
-[Deflect] (Opponents must pay [A] to choose me with a spell or ability.)&#10;While I'm at a battlefield, opponents can't <Del>score</Del> points.
+<Deflect /> <em>(Opponents must pay <Universal label="Universal" /> to choose me with a spell or ability.)</em>
+
+While I'm at a battlefield, opponents can't <Del>score</Del> points.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Deflect] (Opponents must pay [A] to choose me with a spell or ability.)&#10;While I'm at a battlefield, opponents can't <Ins>gain</Ins> points.
+<Deflect /> <em>(Opponents must pay <Universal label="Universal" /> to choose me with a spell or ability.)</em>
+
+While I'm at a battlefield, opponents can't <Ins>gain</Ins> points.
 
   </CardErratumText>
 </CardErratum>
@@ -925,12 +1089,16 @@ When you conquer here, ready <Ins>up to</Ins> 2 runes at the end of this turn.
 <CardErratum name="Tideturner">
   <CardErratumText variant="original">
 
-[Hidden] (Hide now for [A] to react with later for [0].)&#10;When you play me, you may choose a <Del>friendly</Del> unit. Move me to its location and it to my original location.
+<Hidden /> <em>(Hide now for <Universal label="Universal" /> to react with later for <Energy value={0} />.)</em>
+
+When you play me, you may choose a <Del>friendly</Del> unit. Move me to its location and it to my original location.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Hidden] (Hide now for [A] to react with later for [0].)&#10;When you play me, you may choose a unit <Ins>you control at another location</Ins>. Move me to its location and it to my original location.
+<Hidden /> <em>(Hide now for <Universal label="Universal" /> to react with later for <Energy value={0} />.)</em>
+
+When you play me, you may choose a unit <Ins>you control at another location</Ins>. Move me to its location and it to my original location.
 
   </CardErratumText>
 </CardErratum>
@@ -940,12 +1108,12 @@ When you conquer here, ready <Ins>up to</Ins> 2 runes at the end of this turn.
 <CardErratum name="Unforgiven">
   <CardErratumText variant="original">
 
-[2], [E]: Move a friendly unit to or from <Del>your</Del> base.
+<Energy value={2} />, <Exhaust />: Move a friendly unit to or from <Del>your</Del> base.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[2], [E]: Move a friendly unit to or from <Ins>its</Ins> base.
+<Energy value={2} />, <Exhaust />: Move a friendly unit to or from <Ins>its</Ins> base.
 
   </CardErratumText>
 </CardErratum>
@@ -955,12 +1123,12 @@ When you conquer here, ready <Ins>up to</Ins> 2 runes at the end of this turn.
 <CardErratum name="Unlicensed Armory">
   <CardErratumText variant="original">
 
-Discard 1, [E]: Choose a friendly unit. The next time it <Del>dies</Del> this turn, you may pay [R] to recall it <Del>exhausted</Del> instead. (Send it to base. This isn't a move.)
+Discard 1, <Exhaust />: Choose a friendly unit. The next time it <Del>dies</Del> this turn, you may pay <Fury /> to recall it <Del>exhausted</Del> instead. <em>(Send it to base. This isn't a move.)</em>
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-Discard 1, [E]: Choose a friendly unit. The next time it <Ins>would die</Ins> this turn, you may pay [R] to <Ins>heal it, exhaust it, and</Ins> recall it instead. (Send it to base. This isn't a move.)
+Discard 1, <Exhaust />: Choose a friendly unit. The next time it <Ins>would die</Ins> this turn, you may pay <Fury /> to <Ins>heal it, exhaust it, and</Ins> recall it instead. <em>(Send it to base. This isn't a move.)</em>
 
   </CardErratumText>
 </CardErratum>
@@ -985,12 +1153,12 @@ When you conquer, you may exhaust me to reveal the top 2 cards of your Main Deck
 <CardErratum name="Void Gate">
   <CardErratumText variant="original">
 
-Spells and abilities <Del>affecting units here each</Del> deal 1 Bonus Damage. (Each instance of damage the spell deals is increased by 1.)
+Spells and abilities <Del>affecting units here each</Del> deal 1 Bonus Damage. <em>(Each instance of damage the spell deals is increased by 1.)</em>
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-Spells and abilities deal 1 Bonus Damage <Ins>to units here</Ins>. (Each instance of damage the spell deals <Ins>to a unit here</Ins> is increased by 1.)
+Spells and abilities deal 1 Bonus Damage <Ins>to units here</Ins>. <em>(Each instance of damage the spell deals <Ins>to a unit here</Ins> is increased by 1.)</em>
 
   </CardErratumText>
 </CardErratum>
@@ -1000,12 +1168,12 @@ Spells and abilities deal 1 Bonus Damage <Ins>to units here</Ins>. (Each instanc
 <CardErratum name="Void Rush">
   <CardErratumText variant="original">
 
-Reveal the top 2 cards of your Main Deck. You may <Del>play one of them</Del>, reducing its cost by [2]. Draw any you <Del>did not play this way</Del>.
+Reveal the top 2 cards of your Main Deck. You may <Del>play one of them</Del>, reducing its cost by <Energy value={2} />. Draw any you <Del>did not play this way</Del>.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-Reveal the top 2 cards of your Main Deck. You may <Ins>banish</Ins> one, <Ins>then play it,</Ins> reducing its cost by [2]. Draw any you <Ins>didn't banish</Ins>.
+Reveal the top 2 cards of your Main Deck. You may <Ins>banish</Ins> one, <Ins>then play it,</Ins> reducing its cost by <Energy value={2} />. Draw any you <Ins>didn't banish</Ins>.
 
   </CardErratumText>
 </CardErratum>
@@ -1015,12 +1183,16 @@ Reveal the top 2 cards of your Main Deck. You may <Ins>banish</Ins> one, <Ins>th
 <CardErratum name="Yone, Blademaster">
   <CardErratumText variant="original">
 
-[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for [A] less, even if it's already attached.)&#10;When I conquer <Del>an open</Del> battlefield, deal damage equal to my Might to an enemy unit in a base.
+<Weaponmaster /> <em>(When you play me, you may <Equip /> one of your Equipment to me for <Universal label="Universal" /> less, even if it's already attached.)</em>
+
+When I conquer <Del>an open</Del> battlefield, deal damage equal to my Might to an enemy unit in a base.
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for [A] less, even if it's already attached.)&#10;When I conquer <Ins>a</Ins> battlefield <Ins>that was uncontrolled</Ins>, deal damage equal to my Might to an enemy unit in a base.
+<Weaponmaster /> <em>(When you play me, you may <Equip /> one of your Equipment to me for <Universal label="Universal" /> less, even if it's already attached.)</em>
+
+When I conquer <Ins>a</Ins> battlefield <Ins>that was uncontrolled</Ins>, deal damage equal to my Might to an enemy unit in a base.
 
   </CardErratumText>
 </CardErratum>
@@ -1030,12 +1202,16 @@ Reveal the top 2 cards of your Main Deck. You may <Ins>banish</Ins> one, <Ins>th
 <CardErratum name="Zhonya's Hourglass">
   <CardErratumText variant="original">
 
-[Hidden] (Hide now for [A] to react with later for [0].)&#10;<Del>The next time</Del> a friendly unit would die, kill this instead. <Del>Recall</Del> that unit <Del>exhausted</Del>. (Send it to base. This isn't a move.)
+<p><Hidden /> <em>(Hide now for <Universal label="Universal" /> to react with later for <Energy value={0} />.)</em></p>
+
+<p><Del>The next time</Del> a friendly unit would die, kill this instead. <Del>Recall</Del> that unit <Del>exhausted</Del>. <em>(Send it to base. This isn't a move.)</em></p>
 
   </CardErratumText>
   <CardErratumText variant="current">
 
-[Hidden] (Hide now for [A] to react with later for [0].)&#10;<Ins>If</Ins> a friendly unit would die, kill this instead. <Ins>Heal</Ins> that unit<Ins>, exhaust it, and recall it</Ins>. (Send it to base. This isn't a move.)
+<p><Hidden /> <em>(Hide now for <Universal label="Universal" /> to react with later for <Energy value={0} />.)</em></p>
+
+<p><Ins>If</Ins> a friendly unit would die, kill this instead. <Ins>Heal</Ins> that unit<Ins>, exhaust it, and recall it</Ins>. <em>(Send it to base. This isn't a move.)</em></p>
 
   </CardErratumText>
 </CardErratum>

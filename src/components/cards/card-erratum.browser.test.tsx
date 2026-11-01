@@ -1,3 +1,4 @@
+import 'tailwindcss/index.css'
 import { describe, expect, test, vi } from 'vitest'
 import { render } from 'vitest-browser-react'
 import { CardErratum, CardErratumText } from '@/components/cards/card-erratum'
@@ -18,6 +19,9 @@ describe('CardErratum', () => {
 		const screen = await render(
 			<CardErratum name="Arise!">
 				<CardErratumText variant="original">
+					<p>
+						<em>(Printed reminder.)</em>
+					</p>
 					<p>Printed wording.</p>
 				</CardErratumText>
 				<CardErratumText variant="current">
@@ -29,9 +33,11 @@ describe('CardErratum', () => {
 		await expect.element(screen.getByRole('region', { name: 'Arise! erratum comparison' })).toBeVisible()
 		await expect.element(screen.getByRole('img', { name: 'Arise! card' })).toHaveAttribute('loading', 'lazy')
 		await expect
-			.element(screen.getByRole('link', { name: 'View Arise! on Riftbound Wiki' }))
+			.element(screen.getByRole('link', { name: 'View on Riftbound Wiki' }))
 			.toHaveAttribute('href', 'https://wiki.leagueoflegends.com/en-us/Riftbound:Arise!')
 		await expect.element(screen.getByText('Printed wording.')).toBeVisible()
 		await expect.element(screen.getByText('Current wording.')).toBeVisible()
+		expect(getComputedStyle(screen.getByText('(Printed reminder.)').element()).fontStyle).toBe('italic')
+		expect(getComputedStyle(screen.getByText('Printed wording.').element()).marginTop).toBe('6px')
 	})
 })

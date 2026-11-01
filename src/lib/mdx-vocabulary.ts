@@ -33,7 +33,9 @@ export const TERM_DEFINITIONS = {
 	Shield: { label: 'Shield', variant: 'accent', hasValue: true },
 	ShowOff: { label: 'Show Off', variant: 'primary' },
 	Stun: { label: 'Stun', variant: 'tertiary' },
+	Tank: { label: 'Tank', variant: 'accent' },
 	Temporary: { label: 'Temporary', variant: 'secondary' },
+	Vision: { label: 'Vision', variant: 'tertiary' },
 	Weaponmaster: { label: 'Weaponmaster', variant: 'tertiary' },
 } as const satisfies Record<string, TermDefinition>
 

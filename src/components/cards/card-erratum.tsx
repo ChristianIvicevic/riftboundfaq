@@ -44,24 +44,15 @@ export function CardErratum({ name, children }: { name: string; children: ReactN
 			aria-label={`${name} erratum comparison`}
 			className="not-prose mb-14 overflow-hidden rounded-xl border border-fd-border bg-fd-muted/20 shadow-sm"
 		>
-			<div className="grid md:grid-cols-[11rem_minmax(0,1fr)]">
+			<div className="grid md:grid-cols-[13.5rem_minmax(0,1fr)]">
 				<div className="flex flex-col items-center justify-start gap-3 bg-fd-muted/30 p-4 md:border-r md:border-fd-border">
-					<a
-						aria-label={`View ${name} on Riftbound Wiki`}
-						className="block w-full max-w-36 rounded-lg transition hover:brightness-105 focus-visible:ring-2 focus-visible:ring-fd-ring focus-visible:outline-none"
-						href={wikiUrl}
-						rel="noopener noreferrer"
-						target="_blank"
-					>
-						<CardReferenceImage
-							className="max-w-36! sm:max-w-36!"
-							height={reference.imageHeight}
-							loading="lazy"
-							name={name}
-							src={reference.imageUrl}
-							width={reference.imageWidth}
-						/>
-					</a>
+					<CardReferenceImage
+						height={reference.imageHeight}
+						loading="lazy"
+						name={name}
+						src={reference.imageUrl}
+						width={reference.imageWidth}
+					/>
 					<a
 						className="inline-flex items-center gap-1.5 text-xs font-medium text-fd-muted-foreground underline decoration-fd-border underline-offset-4 transition-colors hover:text-fd-foreground hover:decoration-fd-foreground focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-fd-ring focus-visible:outline-none"
 						href={wikiUrl}
@@ -69,10 +60,10 @@ export function CardErratum({ name, children }: { name: string; children: ReactN
 						target="_blank"
 					>
 						<RiftboundLogo className="size-3.5 text-[#EF7D00]!" />
-						Riftbound Wiki
+						View on Riftbound Wiki
 					</a>
 				</div>
-				<div className="min-w-0 border-t border-fd-border p-4 md:border-t-0 md:p-5">
+				<div className="min-w-0 border-t border-fd-border p-4 md:border-t-0">
 					<div className="grid gap-3">{children}</div>
 				</div>
 			</div>
@@ -96,7 +87,7 @@ export function CardErratumText({
 				</span>{' '}
 				{label}
 			</div>
-			<div className="p-4 text-sm leading-6 wrap-anywhere whitespace-pre-wrap text-fd-foreground [&>p]:m-0">
+			<div className="p-4 text-sm leading-6 wrap-anywhere text-fd-foreground [&>p]:my-1.5 [&>p:first-child]:mt-0 [&>p:last-child]:mb-0">
 				{children}
 			</div>
 		</div>

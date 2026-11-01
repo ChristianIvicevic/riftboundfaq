@@ -7,6 +7,8 @@ describe('getGameTermComponentByLabel', () => {
 		expect(getGameTermComponentByLabel('Buff')).toBe(MDX_TERMS.Buff)
 		expect(getGameTermComponentByLabel('Ganking')).toBe(MDX_TERMS.Ganking)
 		expect(getGameTermComponentByLabel('Quick-Draw')).toBe(MDX_TERMS.QuickDraw)
+		expect(getGameTermComponentByLabel('Tank')).toBe(MDX_TERMS.Tank)
+		expect(getGameTermComponentByLabel('Vision')).toBe(MDX_TERMS.Vision)
 	})
 
 	test('leaves non-keyword mechanic categories unresolved', () => {
