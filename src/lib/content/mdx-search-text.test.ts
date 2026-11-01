@@ -58,6 +58,10 @@ describe('stringifyMdxComponentForSearch', () => {
 		expect(stringifyMdxComponentForSearch(component(name))).toBe(`[${name}]`)
 	})
 
+	test.each(['Exhaust', 'Might'])('serializes the %s card-text symbol', (name) => {
+		expect(stringifyMdxComponentForSearch(component(name))).toBe(`[${name}]`)
+	})
+
 	test('serializes Universal as Power', () => {
 		expect(stringifyMdxComponentForSearch(component('Universal'))).toBe('[Power]')
 	})
@@ -73,14 +77,14 @@ describe('stringifyMdxComponentForSearch', () => {
 describe('remarkMdxSearchText', () => {
 	test('replaces inline components in structured search data', () => {
 		const data = structure(
-			'If <Card name="Hidden Blade" /> costs <Energy value={1} /><Universal /> while <Empowered />.',
+			'If <Card name="Hidden Blade" /> costs <Energy value={1} /><Universal /> while <Empowered /> with +2<Might />.',
 			[remarkMdx, remarkMdxSearchText],
 		)
 
 		expect(data.contents).toEqual([
 			{
 				heading: undefined,
-				content: 'If Hidden Blade costs [1][Power] while [Empowered].',
+				content: 'If Hidden Blade costs [1][Power] while [Empowered] with +2[Might].',
 			},
 		])
 	})

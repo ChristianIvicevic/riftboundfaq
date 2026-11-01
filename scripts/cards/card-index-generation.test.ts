@@ -15,17 +15,34 @@ test('generates the card index when the output directory does not exist', async 
 		catalogUrl,
 		JSON.stringify([
 			{
-				name: 'Alpha Strike',
-				imageUrl: 'https://example.com/alpha-strike-744x1039.png',
-				abilities: 'Deal 2.',
-				effects: null,
+				name: 'Gangplank, Naval',
+				imageUrl: 'https://example.com/gangplank-naval-744x1039.png',
+				abilities: 'Give me +2 [Might].',
+				effects: 'Set me to 3 [Might], then give me -1 [Might] and - [Might].',
 			},
 		]),
 	)
-	await writeFile(errataUrl, '{}')
+	await writeFile(
+		errataUrl,
+		JSON.stringify({
+			'Gangplank, Naval': [
+				{
+					oldText: 'Give me +2 [Might].',
+					newText: 'Give me +3 [Might]. I am Mighty while I have 5+ [Might].',
+				},
+			],
+		}),
+	)
 
 	await expect(generateCardIndex(catalogUrl, errataUrl, outputUrl)).resolves.toBe(1)
 	await expect(readFile(outputUrl, 'utf8')).resolves.toContain(
-		'"imageUrl": "https://example.com/alpha-strike-744x1039.png"',
+		'"imageUrl": "https://example.com/gangplank-naval-744x1039.png"',
 	)
+	await expect(readFile(outputUrl, 'utf8')).resolves.toContain(
+		'"currentText": "Give me +3[Might]. I am Mighty while I have 5+[Might]."',
+	)
+	await expect(readFile(outputUrl, 'utf8')).resolves.toContain(
+		'"effectText": "Set me to 3[Might], then give me -1[Might] and -[Might]."',
+	)
+	await expect(readFile(outputUrl, 'utf8')).resolves.toContain('"hasErrata": true')
 })

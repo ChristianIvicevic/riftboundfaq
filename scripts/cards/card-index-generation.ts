@@ -22,6 +22,10 @@ function parseImageDimensions(imageUrl: string, cardName: string) {
 	return { imageWidth: Number(match[1]), imageHeight: Number(match[2]) }
 }
 
+function normalizeCardText(text: string | null) {
+	return text?.replaceAll(/([+\d-])[ \t]+\[Might\]/gu, '$1[Might]') ?? null
+}
+
 export async function generateCardIndex(catalogUrl: URL, errataUrl: URL, outputUrl: URL) {
 	const catalog: unknown = JSON.parse(await readFile(catalogUrl, 'utf8'))
 	const parsedCatalog = cardCatalog.safeParse(catalog)
@@ -46,8 +50,8 @@ export async function generateCardIndex(catalogUrl: URL, errataUrl: URL, outputU
 			imageUrl,
 			imageWidth,
 			imageHeight,
-			currentText: correction?.newText ?? abilities,
-			effectText: effects,
+			currentText: normalizeCardText(correction?.newText ?? abilities),
+			effectText: normalizeCardText(effects),
 			hasErrata: correction !== undefined,
 		})
 		unmatchedErrataNames.delete(name)

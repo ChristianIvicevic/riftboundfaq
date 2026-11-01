@@ -18,8 +18,8 @@ If the units have equal might when Switcheroo resolves, the Swap has no effect.<
 
 No, each existing modifier is counted once as part of the unit's current might, and it continues applying normally after Switcheroo <Term item="resolution">resolves</Term>.<Rule number="478.2" /><Rule number="479.4.a" /><Rule number="479.4.d" />
 Switcheroo calculates one difference from the complete current values and creates separate increase and decrease effects; it does not remove, reapply, or replace the existing modifiers.<Rule number="434.1.a" /><Rule number="434.1.b" />
-For example, if a unit has 2 base might and an active +3 bonus, its current might is 5 for the Swap calculation.
-After the Swap, the +3 remains one part of that unit's might rather than being added a second time.
+For example, if a unit has a base might of 2<Might /> and an active +3<Might /> bonus, its current might is 5<Might /> for the Swap calculation.
+After the Swap, the +3<Might /> remains one part of that unit's might rather than being added a second time.
 
 ## What happens when equipment detaches or passives stop applying after Switcheroo? [#later-modifier-changes]
 
@@ -28,23 +28,23 @@ Switcheroo's increase or decrease keeps its originally calculated amount until e
 The Swap creates effects with fixed amounts when it <Term item="resolution">resolves</Term>, so later changes do not cause it to recalculate the difference.<Rule number="434.1.a" /><Rule number="434.1.b" />
 
 <Callout type="idea" title="Example">
-	<Card name="Wuju Bladesman - Starter" /> grants a friendly unit +2 might while it defends alone.
-	Suppose your <Card name="Pakaa Cub" /> has 3 might before that bonus and defends alone, while an opposing <Card name="Determined Sentry" /> attacks with 1 might.
-	The bonus from Wuju Bladesman raises Pakaa Cub to 5 current might.
+	<Card name="Wuju Bladesman - Starter" /> grants a friendly unit +2<Might /> while it defends alone.
+	Suppose your <Card name="Pakaa Cub" /> has 3<Might /> before that bonus and defends alone, while an opposing <Card name="Determined Sentry" /> attacks with 1<Might />.
+	The bonus from Wuju Bladesman raises Pakaa Cub to 5<Might />.
 	Your opponent plays Switcheroo targeting both units.
-	Switcheroo gives Pakaa Cub -4 might and Determined Sentry +4 might, leaving them at 1 and 5 might respectively.
-	If Pakaa Cub stops defending alone, it loses that +2 bonus but keeps Switcheroo's -4 decrease, leaving it at -1 might.
+	Switcheroo gives Pakaa Cub -4<Might /> and Determined Sentry +4<Might />, leaving them at 1<Might /> and 5<Might />, respectively.
+	If Pakaa Cub stops defending alone, it loses that +2<Might /> bonus but keeps Switcheroo's -4<Might /> decrease, leaving it at -1<Might />.
 </Callout>
 
 ## Can Switcheroo result in negative might? [#negative-might]
 
 Yes, a unit can have negative might if a bonus included in Switcheroo's calculation stops applying while Switcheroo's decrease remains.<Rule number="434.1.a" /><Rule number="434.1.b" /><Rule number="478.4" />
-Spells, abilities, and combat-damage assignment treat negative might as 0.<Rule number="143.2.c" />
+Spells, abilities, and combat-damage assignment treat negative might as 0<Might />.<Rule number="143.2.c" />
 Might increases and decreases instead use the actual negative value.<Rule number="143.2.c.1" />
-The unit does not die merely for having 0 or negative might.
+The unit does not die merely for having 0<Might /> or negative might.
 At <Term item="cleanup">cleanup</Term>, it is killed only if it has a non-zero amount of marked damage equal to or greater than its might.<Rule number="142.4.b" /><Rule number="323.4" />
 
 <Callout type="idea" title="Example">
-	A <Card name="Scuttle Crab" /> at -2 might is targeted with <Card name="Punch First" />, which reads "Give a unit +5 Might this turn."
-	Scuttle Crab ends up with 3 might because the +5 increase uses its actual -2 value.
+	A <Card name="Scuttle Crab" /> at -2<Might /> is targeted with <Card name="Punch First" />, which reads "Give a unit +5<Might /> this turn."
+	Scuttle Crab ends up with 3<Might /> because the +5<Might /> increase uses -2<Might />, not 0<Might />.
 </Callout>
