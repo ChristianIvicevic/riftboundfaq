@@ -154,8 +154,10 @@ export function CardReference({
 					</a>
 				</div>
 				<CopyableContent className="min-w-0 border-t border-fd-border p-5 sm:border-t-0">
-					<div className="mb-3 flex flex-wrap items-center gap-2">
-						<h2 className="m-0 text-base font-semibold tracking-tight text-fd-foreground">Current text</h2>
+					<div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+						<h2 className="m-0 text-xs font-semibold tracking-wide text-fd-foreground uppercase">
+							Current text
+						</h2>
 						{reference.hasErrata && (
 							<a
 								className="inline-flex h-5 items-center rounded-full border border-amber-300 bg-amber-100 px-2 text-xs font-medium text-amber-900 transition-colors hover:bg-amber-200 focus-visible:ring-2 focus-visible:ring-fd-ring focus-visible:outline-none dark:border-amber-700 dark:bg-amber-950/60 dark:text-amber-200 dark:hover:bg-amber-900/70"
@@ -176,7 +178,9 @@ export function CardReference({
 					)}
 					{reference.effectText && (
 						<div className="mt-5 border-t border-fd-border pt-4">
-							<h3 className="mt-0 mb-3 text-sm font-semibold tracking-tight text-fd-foreground">Effect</h3>
+							<h3 className="mt-0 mb-3 text-xs font-semibold tracking-wide text-fd-foreground uppercase">
+								Effect
+							</h3>
 							<CardText>{reference.effectText}</CardText>
 						</div>
 					)}
