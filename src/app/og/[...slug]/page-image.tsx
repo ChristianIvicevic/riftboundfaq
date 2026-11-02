@@ -47,7 +47,9 @@ export function createPageImageResponse(page: PageImagePage) {
 	const publishingDetails = getPagePublishingDetails(page)
 	const pageImageProps = {
 		title: getPageImageDisplayTitle(page, treatment),
-		description: treatment.kind === 'landing' ? treatment.displayDescription : publishingDetails.description,
+		description:
+			(treatment.kind === 'landing' ? treatment.displayDescription : undefined) ??
+			publishingDetails.description,
 		logoSrc: 'logo',
 		site: SITE_NAME,
 	}

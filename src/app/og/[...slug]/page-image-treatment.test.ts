@@ -8,6 +8,7 @@ function page(url: string, title = 'Example') {
 describe('resolvePageImageTreatment', () => {
 	test.each([
 		{ url: '/', title: 'About', kind: 'landing' },
+		{ url: '/about-riftbound-faq', title: 'About Riftbound FAQ', kind: 'landing' },
 		{ url: '/the-future-of-riftbound-faq', title: 'The Future', kind: 'editorial' },
 		{ url: '/card-errata-list', title: 'Card Errata List', kind: 'index-cover' },
 		{ url: '/reference', title: 'Rules Documents', kind: 'index-cover' },
@@ -32,6 +33,15 @@ describe('resolvePageImageTreatment', () => {
 	test('uses the generic mechanics cover for non-keyword topics', () => {
 		expect(resolvePageImageTreatment(page('/mechanics/equipment', 'Equipment'))).toEqual({
 			kind: 'mechanic-topic',
+		})
+	})
+
+	test('uses concise reference labels for the Card Errata cover', () => {
+		expect(resolvePageImageTreatment(page('/card-errata-list', 'Card Errata List'))).toEqual({
+			kind: 'index-cover',
+			eyebrow: 'REFERENCE',
+			coverAccent: 'ERRATA',
+			coverAccentFontSize: '88px',
 		})
 	})
 

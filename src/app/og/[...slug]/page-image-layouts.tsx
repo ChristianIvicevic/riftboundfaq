@@ -129,7 +129,7 @@ function TiltedCategoryCover({
 	primaryFontSize = '88px',
 	accentLineHeight = 0.98,
 }: {
-	primary: string
+	primary?: string
 	accent: string
 	accentFontSize: string
 	kicker?: string
@@ -175,9 +175,11 @@ function TiltedCategoryCover({
 					backgroundColor: 'rgba(244, 204, 82, 0.55)',
 				}}
 			/>
-			<span style={{ fontSize: primaryFontSize, fontWeight: 850, lineHeight: 0.92, letterSpacing: '-3px' }}>
-				{primary}
-			</span>
+			{primary ? (
+				<span style={{ fontSize: primaryFontSize, fontWeight: 850, lineHeight: 0.92, letterSpacing: '-3px' }}>
+					{primary}
+				</span>
+			) : null}
 			<span
 				style={{
 					color: '#f4cc52',
@@ -269,7 +271,7 @@ export function IndexCoverPageImage({
 	coverAccentFontSize,
 }: Omit<PageImageProps, 'cardImageSrc'> & {
 	eyebrow: string
-	coverPrimary: string
+	coverPrimary?: string
 	coverAccent: string
 	coverAccentFontSize: string
 }) {

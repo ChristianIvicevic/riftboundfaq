@@ -17,14 +17,14 @@ type KeywordStyle = {
 export type PageImageTreatment =
 	| {
 			kind: 'landing'
-			displayTitle: string
-			displayDescription: string
+			displayTitle?: string
+			displayDescription?: string
 	  }
 	| { kind: 'editorial' }
 	| {
 			kind: 'index-cover'
 			eyebrow: string
-			coverPrimary: string
+			coverPrimary?: string
 			coverAccent: string
 			coverAccentFontSize: string
 	  }
@@ -109,14 +109,14 @@ export function resolvePageImageTreatment(page: PageImagePage): PageImageTreatme
 		}
 	}
 
+	if (page.url === '/about-riftbound-faq') return { kind: 'landing' }
 	if (page.url === '/the-future-of-riftbound-faq') return { kind: 'editorial' }
 	if (page.url === '/card-errata-list') {
 		return {
 			kind: 'index-cover',
-			eyebrow: 'CARD ERRATA',
-			coverPrimary: 'CARD',
+			eyebrow: 'REFERENCE',
 			coverAccent: 'ERRATA',
-			coverAccentFontSize: '76px',
+			coverAccentFontSize: '88px',
 		}
 	}
 	if (page.url === '/reference') {
