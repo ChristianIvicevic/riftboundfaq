@@ -7,14 +7,14 @@ authors:
   url: "https://x.com/civicevic"
 ---
 
-## Does an opponent pay Gravity Field's cost when I move their unit to its battlefield? [#move-responsibility]
+## Does Gravity Field's cost depend on who performs the move or who controls the moved unit? [#move-responsibility]
 
-No.
-The <Energy value={1} /><Universal /> cost does not apply because you perform the move action, not the opponent who controls the unit.
+The player performing the move must pay <Energy value={1} /><Universal /> if they are an opponent of Gravity Field's controller, regardless of who controls the moved unit.
 
 The player who performs a game action is responsible for it.<Rule number="412.1" />
-For example, <Card name="Charm" /> and <Card name="Siren's Song" /> each instruct you to move an enemy unit, so you are responsible even though your opponent controls that unit.
-Gravity Field's applied cost applies only when an opponent performs the move action to its battlefield.<Rule number="204.4" /><Rule number="204.4.a" />
+<Card name="Charm" /> and <Card name="Siren's Song" /> each instruct you to move an enemy unit, so you perform the move even though your opponent controls that unit.
+If an opponent controls Gravity Field at the destination, you must pay the cost; if you control it there, neither player pays.<Rule number="204.4" /><Rule number="204.4.a" />
+By contrast, <Card name="Call to Battle" /> instructs the chosen opponent to move one of their units, so that opponent must pay the cost if you control Gravity Field at the destination.
 
 ## Must an opponent pay Gravity Field's cost when an effect tells them to move a unit to its battlefield, or can they decline? [#opponent-move-cost]
 
