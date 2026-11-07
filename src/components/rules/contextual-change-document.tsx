@@ -1,0 +1,337 @@
+import { cva } from 'class-variance-authority'
+import type { ReactNode } from 'react'
+import { Del, Ins } from '@/components/diff-marks'
+import { RulesContentBlock } from '@/components/rules/content-block'
+import {
+	RulesDocumentShell,
+	RulesHeadingShell,
+	RulesRuleListShell,
+	RulesRuleShell,
+	RulesSectionBody,
+	RulesSectionPreamble,
+	type RulesDocumentTone,
+} from '@/components/rules/document-shell'
+import type {
+	ContextualChangeBlock,
+	ContextualChangeNode,
+	ContextualChangeStatus,
+	ContextualChangeText,
+	ContextualRulesChange,
+} from '@/features/rules-documents/contextual-change'
+import { cn } from '@/lib/cn'
+import type { RulesDocumentFamilyId } from '@/lib/rules/document-family-conventions'
+
+const STATUS_LABELS = {
+	new: 'Added',
+	deleted: 'Removed',
+	changed: 'Changed',
+} satisfies Record<ContextualChangeStatus, string>
+
+const statusBadgeVariants = cva(
+	'inline-flex h-5 shrink-0 items-center rounded-full border px-2 text-xs font-semibold',
+	{
+		variants: {
+			status: {
+				new: 'border-green-200 bg-green-50 text-green-800 dark:border-green-900 dark:bg-green-950 dark:text-green-200',
+				deleted:
+					'border-red-200 bg-red-50 text-red-800 dark:border-red-900 dark:bg-red-950 dark:text-red-200',
+				changed:
+					'border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-200',
+			},
+		},
+	},
+)
+
+const nodeStatusVariants = cva('flex flex-wrap items-center gap-2', {
+	variants: {
+		placement: {
+			mobile: 'mt-1 sm:hidden',
+			desktop: 'hidden shrink-0 justify-end self-start sm:flex',
+		},
+	},
+})
+
+function StatusBadge({ status }: { status: ContextualChangeStatus }) {
+	return <span className={statusBadgeVariants({ status })}>{STATUS_LABELS[status]}</span>
+}
+
+function LinkedText({ segment }: { segment: ContextualChangeText }) {
+	const content = segment.href ? (
+		<a
+			className="font-medium text-fd-primary underline decoration-fd-primary/35 underline-offset-2 hover:decoration-fd-primary"
+			href={segment.href}
+			rel="noopener noreferrer"
+			target="_blank"
+		>
+			{segment.text}
+			<span className="sr-only"> in {segment.sourceLabel} (opens source rules in a new tab)</span>
+		</a>
+	) : (
+		segment.text
+	)
+	if (segment.type === 'remove') return <Del>{content}</Del>
+	if (segment.type === 'add') return <Ins>{content}</Ins>
+	return content
+}
+
+function TextSequence({ text }: { text: readonly ContextualChangeText[] }) {
+	return text.map((segment, index) => <LinkedText key={index} segment={segment} />)
+}
+
+function SemanticChange({
+	change,
+	children,
+}: {
+	change: 'added' | 'removed' | undefined
+	children: ReactNode
+}) {
+	if (change === 'added') return <ins className="block no-underline">{children}</ins>
+	if (change === 'removed') return <del className="block no-underline">{children}</del>
+	return children
+}
+
+function ContentBlock({
+	block,
+	nodeStatus,
+}: {
+	block: ContextualChangeBlock
+	nodeStatus?: ContextualChangeStatus
+}) {
+	const semanticChange = nodeStatus === 'new' ? 'added' : nodeStatus === 'deleted' ? 'removed' : undefined
+	const content = (
+		<RulesContentBlock kind={block.kind}>
+			<TextSequence text={block.text} />
+		</RulesContentBlock>
+	)
+	return <SemanticChange change={semanticChange}>{content}</SemanticChange>
+}
+
+function ContentBlocks({
+	blocks,
+	nodeStatus,
+}: {
+	blocks: readonly ContextualChangeBlock[]
+	nodeStatus?: ContextualChangeStatus
+}) {
+	return blocks.map((block, index) => {
+		if (!nodeStatus || index !== blocks.length - 1) {
+			return <ContentBlock block={block} key={index} nodeStatus={nodeStatus} />
+		}
+		return (
+			<div key={index}>
+				<ContentBlock block={block} nodeStatus={nodeStatus} />
+				<NodeStatus status={nodeStatus} placement="mobile" />
+			</div>
+		)
+	})
+}
+
+function NodeLabel({ node, heading = false }: { node: ContextualChangeNode; heading?: boolean }) {
+	return (
+		<a
+			className={cn(
+				'font-mono font-medium whitespace-nowrap text-fd-muted-foreground no-underline hover:text-fd-primary',
+				heading ? 'text-[0.7em]' : 'text-sm leading-6',
+			)}
+			href={node.href}
+			rel="noopener noreferrer"
+			target="_blank"
+		>
+			{node.label}
+			<span className="sr-only"> in {node.sourceLabel} (opens in a new tab)</span>
+		</a>
+	)
+}
+
+function NodeStatus({
+	status,
+	placement,
+}: {
+	status?: ContextualChangeStatus
+	placement: 'mobile' | 'desktop'
+}) {
+	if (!status) return null
+	return (
+		<span className={nodeStatusVariants({ placement })}>
+			<StatusBadge status={status} />
+		</span>
+	)
+}
+
+function nodeTone(status: ContextualChangeStatus | undefined): RulesDocumentTone {
+	if (status === 'new') return 'added'
+	return status ?? 'neutral'
+}
+
+function HeadingNode({ node }: { node: ContextualChangeNode }) {
+	const title = <TextSequence text={node.content[0]?.text ?? []} />
+	return (
+		<RulesHeadingShell
+			depth={node.headingDepth === 2 ? 'section' : 'subsection'}
+			tone={nodeTone(node.status)}
+			trailing={node.status ? <NodeStatus status={node.status} placement="desktop" /> : undefined}
+		>
+			<span className="min-w-0">
+				<span className="flex min-w-0 items-baseline gap-3">
+					<NodeLabel heading node={node} />
+					<span
+						className={cn(
+							'min-w-0 font-semibold tracking-tight text-fd-foreground',
+							node.status === 'deleted' && 'text-fd-muted-foreground',
+						)}
+					>
+						<SemanticChange
+							change={node.status === 'new' ? 'added' : node.status === 'deleted' ? 'removed' : undefined}
+						>
+							{title}
+						</SemanticChange>
+					</span>
+				</span>
+				<NodeStatus status={node.status} placement="mobile" />
+			</span>
+		</RulesHeadingShell>
+	)
+}
+
+function RuleNode({ node }: { node: ContextualChangeNode }) {
+	const hasLabel = node.label !== null
+	return (
+		<RulesRuleShell
+			content={
+				<>
+					{!hasLabel && (
+						<a
+							className="sr-only focus:not-sr-only focus:mb-1 focus:block focus:w-fit focus:text-sm focus:font-medium focus:text-fd-primary focus:underline"
+							href={node.href}
+							rel="noopener noreferrer"
+							target="_blank"
+						>
+							Open unnumbered entry in {node.sourceLabel} (opens in a new tab)
+						</a>
+					)}
+					<ContentBlocks blocks={node.content} nodeStatus={node.status} />
+				</>
+			}
+			label={hasLabel ? <NodeLabel node={node} /> : undefined}
+			nestedRules={node.children.length > 0 ? <ContextualRuleList items={node.children} nested /> : undefined}
+			tone={nodeTone(node.status)}
+			trailing={node.status ? <NodeStatus status={node.status} placement="desktop" /> : undefined}
+		/>
+	)
+}
+
+function ContextualRuleList({
+	items,
+	nested = false,
+}: {
+	items: readonly ContextualChangeNode[]
+	nested?: boolean
+}) {
+	return (
+		<RulesRuleListShell nested={nested}>
+			{items.map((item) => item.kind === 'rule' && <RuleNode key={item.key} node={item} />)}
+		</RulesRuleListShell>
+	)
+}
+
+type ContextualNodeGroup =
+	| { kind: 'rules'; key: string; items: readonly ContextualChangeNode[] }
+	| { kind: 'heading'; key: string; item: ContextualChangeNode }
+
+function groupContextualNodes(items: readonly ContextualChangeNode[]): ContextualNodeGroup[] {
+	const groups: ContextualNodeGroup[] = []
+	let rules: ContextualChangeNode[] = []
+	const flushRules = () => {
+		if (rules.length === 0) return
+		groups.push({ kind: 'rules', key: `rules:${rules[0].key}`, items: rules })
+		rules = []
+	}
+	for (const item of items) {
+		if (item.kind === 'rule') rules.push(item)
+		else {
+			flushRules()
+			groups.push({ kind: 'heading', key: item.key, item })
+		}
+	}
+	flushRules()
+	return groups
+}
+
+function ContextualNodeGroupView({
+	family,
+	group,
+	nestedRules = false,
+}: {
+	family: RulesDocumentFamilyId
+	group: ContextualNodeGroup
+	nestedRules?: boolean
+}) {
+	return group.kind === 'rules' ? (
+		<ContextualRuleList items={group.items} nested={nestedRules} />
+	) : (
+		<ContextualHeadingBranch family={family} node={group.item} />
+	)
+}
+
+function ContextualHeadingBranch({
+	family,
+	node,
+}: {
+	family: RulesDocumentFamilyId
+	node: ContextualChangeNode
+}) {
+	const groups = groupContextualNodes(node.children)
+	if (node.headingDepth === 2) {
+		const [firstGroup, ...remainingGroups] = groups
+		const preamble = family === 'core-rules' && firstGroup?.kind === 'rules' ? firstGroup : undefined
+		const bodyGroups = preamble ? remainingGroups : groups
+		return (
+			<section>
+				<HeadingNode node={node} />
+				{preamble && (
+					<RulesSectionPreamble>
+						<ContextualRuleList items={preamble.items} />
+					</RulesSectionPreamble>
+				)}
+				{bodyGroups.length > 0 && (
+					<RulesSectionBody>
+						{bodyGroups.map((group) => (
+							<ContextualNodeGroupView family={family} group={group} key={group.key} />
+						))}
+					</RulesSectionBody>
+				)}
+			</section>
+		)
+	}
+
+	return (
+		<section className="scroll-mt-20">
+			<HeadingNode node={node} />
+			{groups.map((group) => (
+				<ContextualNodeGroupView
+					family={family}
+					group={group}
+					key={group.key}
+					nestedRules={family === 'tournament-rules'}
+				/>
+			))}
+		</section>
+	)
+}
+
+export function ContextualRulesChangeDocument({
+	data,
+	family,
+}: {
+	data: ContextualRulesChange
+	family: RulesDocumentFamilyId
+}) {
+	const groups = groupContextualNodes(data.items)
+	return (
+		<RulesDocumentShell>
+			{groups.map((group) => (
+				<ContextualNodeGroupView family={family} group={group} key={group.key} />
+			))}
+		</RulesDocumentShell>
+	)
+}

@@ -126,12 +126,16 @@ export function compileRulesDocument({
 		diffLabel,
 		lines,
 		anchor,
+		kind,
+		headingDepth,
 	}: {
 		sequence: number
 		id: string | null
 		diffLabel: string
 		lines: string[]
 		anchor: string
+		kind: 'heading' | 'rule'
+		headingDepth?: 2 | 3
 	}) => {
 		const occurrenceKey = id ?? 'unnumbered'
 		const occurrence = (diffOccurrences.get(occurrenceKey) ?? 0) + 1
@@ -155,7 +159,16 @@ export function compileRulesDocument({
 				'invalid diff identity',
 			)
 		}
-		diffRecords.push(Object.freeze({ id: recordId, lines: Object.freeze(lines), anchor, label: diffLabel }))
+		diffRecords.push(
+			Object.freeze({
+				id: recordId,
+				lines: Object.freeze(lines),
+				anchor,
+				label: diffLabel,
+				kind,
+				...(headingDepth ? { headingDepth } : {}),
+			}),
+		)
 		if (id !== null) {
 			if (!referenceTargets.has(id)) referenceTargets.set(id, Object.freeze({ id, anchor }))
 			if (!lookup.has(id)) lookup.set(id, lines.join(' '))
@@ -173,6 +186,8 @@ export function compileRulesDocument({
 			diffLabel: heading.label,
 			lines: [heading.text],
 			anchor,
+			kind: 'heading',
+			headingDepth: heading.depth,
 		})
 		return compiled
 	}
@@ -188,6 +203,7 @@ export function compileRulesDocument({
 					diffLabel: rule.diffLabel,
 					lines: rule.content.map(({ text }) => text),
 					anchor,
+					kind: 'rule',
 				})
 				return Object.freeze({
 					id: rule.id,

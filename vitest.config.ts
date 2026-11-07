@@ -4,6 +4,9 @@ import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
 	plugins: [react()],
+	optimizeDeps: {
+		include: ['@base-ui/react/toggle', '@base-ui/react/toggle-group'],
+	},
 	test: {
 		projects: [
 			{

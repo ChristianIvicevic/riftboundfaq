@@ -87,14 +87,14 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 					}}
 				/>
 			)}
-			{coreRulesReview?.reviewStatus === 'up-to-date' ? (
-				<div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
-					<DocsTitle className="min-w-0">{page.data.title}</DocsTitle>
-					<CurrentCoreRulesReviewStatus currentVersion={coreRulesReview.currentVersion} />
+			<div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
+				<DocsTitle className="min-w-0 flex-1">{page.data.title}</DocsTitle>
+				<div className="flex shrink-0 flex-wrap items-center gap-2 empty:hidden" data-page-title-actions>
+					{coreRulesReview?.reviewStatus === 'up-to-date' && (
+						<CurrentCoreRulesReviewStatus currentVersion={coreRulesReview.currentVersion} />
+					)}
 				</div>
-			) : (
-				<DocsTitle>{page.data.title}</DocsTitle>
-			)}
+			</div>
 			<DocsDescription className="mb-0">{publishingDetails.description}</DocsDescription>
 			{cardName && cardReference ? (
 				<CardReference

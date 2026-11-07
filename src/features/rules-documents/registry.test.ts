@@ -28,8 +28,8 @@ describe('rules documents registry', () => {
 		expect(document.sections[0].heading).toMatchObject({ id: '000', anchor: 'R000', depth: 2 })
 		expect(gearHeading).toMatchObject({ text: 'Gear', anchor: 'R143', depth: 3 })
 		expect(gearRecords).toEqual([
-			{ id: '143', lines: ['Gear'], anchor: 'R143', label: '143.' },
-			{ id: '143', lines: ['Gear are:'], anchor: 'R143-2', label: '143.' },
+			{ id: '143', lines: ['Gear'], anchor: 'R143', label: '143.', kind: 'heading', headingDepth: 3 },
+			{ id: '143', lines: ['Gear are:'], anchor: 'R143-2', label: '143.', kind: 'rule' },
 		])
 		expect(document.referenceTarget('143')).toEqual({ id: '143', anchor: 'R143' })
 		expect(document.lookupText('143')).toBe('Gear')
@@ -59,6 +59,7 @@ describe('rules documents registry', () => {
 			],
 			anchor: 'U474',
 			label: 'Unnumbered',
+			kind: 'rule',
 		})
 		expect(document.referenceTarget('701')).toMatchObject({ id: '701', anchor: 'R701' })
 	})

@@ -1,4 +1,6 @@
+import { tokenizeRulesText } from '@/lib/rules/text-tokens'
 import type { RuleRecord } from '@/lib/rules/types'
+import { alignIndicesByScore } from '@/lib/sequence-alignment'
 
 type TokenType = 'same' | 'add' | 'remove'
 type Token = { type: TokenType; text: string }
@@ -17,7 +19,18 @@ export type DiffEntry<Rule extends RuleRecord = RuleRecord> =
 	| { kind: 'removed'; rule: Rule }
 	| { kind: 'modified'; oldRule: Rule; newRule: Rule; oldText: Token[]; newText: Token[] }
 
-export type DiffOptions = {
+export type RuleMatch<Rule extends RuleRecord = RuleRecord> = {
+	oldRule: Rule
+	newRule: Rule
+}
+
+export type RuleSetComparison<Rule extends RuleRecord = RuleRecord> = {
+	entries: DiffEntry<Rule>[]
+	matches: RuleMatch<Rule>[]
+}
+
+export type DiffOptions<Rule extends RuleRecord = RuleRecord> = {
+	canMatch?: (oldRule: Rule, newRule: Rule) => boolean
 	hideRenumbering?: boolean
 	hideReferenceOnlyChanges?: boolean
 	referenceSyntax?: 'generic' | 'tournament'
@@ -27,40 +40,13 @@ type Op<T> = { type: TokenType; value: T }
 
 /** Longest-common-subsequence diff of two sequences, returned as an ordered op list. */
 function diffSequence<T>(a: T[], b: T[], eq: (x: T, y: T) => boolean): Op<T>[] {
-	const n = a.length
-	const m = b.length
-	// dp[i][j] = LCS length of a[i:] and b[j:]
-	const dp: Int32Array[] = Array.from({ length: n + 1 }, () => new Int32Array(m + 1))
-	for (let i = n - 1; i >= 0; i--) {
-		for (let j = m - 1; j >= 0; j--) {
-			dp[i][j] = eq(a[i], b[j]) ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1])
-		}
-	}
-
-	const ops: Op<T>[] = []
-	let i = 0
-	let j = 0
-	while (i < n && j < m) {
-		if (eq(a[i], b[j])) {
-			ops.push({ type: 'same', value: a[i] })
-			i++
-			j++
-		} else if (dp[i + 1][j] >= dp[i][j + 1]) {
-			ops.push({ type: 'remove', value: a[i] })
-			i++
-		} else {
-			ops.push({ type: 'add', value: b[j] })
-			j++
-		}
-	}
-	while (i < n) ops.push({ type: 'remove', value: a[i++] })
-	while (j < m) ops.push({ type: 'add', value: b[j++] })
-	return ops
-}
-
-/** Split text into a token stream of words, whitespace runs, and single punctuation characters. */
-function tokenize(text: string): string[] {
-	return text.match(/\s+|[\p{L}\p{N}​]+|[^\p{L}\p{N}\s]/gu) ?? []
+	return alignIndicesByScore(a.length, b.length, (leftIndex, rightIndex) =>
+		eq(a[leftIndex], b[rightIndex]) ? 1 : 0,
+	).map((alignment): Op<T> => {
+		if (alignment.type === 'left') return { type: 'remove', value: a[alignment.leftIndex] }
+		if (alignment.type === 'right') return { type: 'add', value: b[alignment.rightIndex] }
+		return { type: 'same', value: a[alignment.leftIndex] }
+	})
 }
 
 /** Collapse adjacent tokens of the same type and drop empties. */
@@ -114,8 +100,8 @@ function sideTokens(ops: Op<string>[], change: 'remove' | 'add'): Token[] {
 /** Build a modified entry: word-level diff of the two rules' joined text. */
 function buildModified<Rule extends RuleRecord>(oldRule: Rule, newRule: Rule): DiffEntry<Rule> {
 	const ops = diffSequence(
-		tokenize(oldRule.lines.join(' ')),
-		tokenize(newRule.lines.join(' ')),
+		tokenizeRulesText(oldRule.lines.join(' ')),
+		tokenizeRulesText(newRule.lines.join(' ')),
 		(x, y) => x === y,
 	)
 	return {
@@ -131,8 +117,8 @@ function buildModified<Rule extends RuleRecord>(oldRule: Rule, newRule: Rule): D
  * Two non-identical rules are treated as the same rule (a modification) when either measure over
  * their word-level LCS clears its threshold; otherwise they are reported as an independent removal
  * + addition. `SIMILARITY` (Dice) handles balanced edits; `CONTAINMENT` (LCS over the shorter rule)
- * handles asymmetric ones, e.g. a short rule that gained a long example. Tunable; mispairs are only
- * cosmetic.
+ * handles asymmetric ones, e.g. a short rule that gained a long example. Tunable; callers can
+ * constrain eligible pairs further with `canMatch`.
  */
 const SIMILARITY_THRESHOLD = 0.5
 const CONTAINMENT_THRESHOLD = 0.8
@@ -196,62 +182,27 @@ function textsMatch(a: string, b: string): boolean {
 	return dice >= SIMILARITY_THRESHOLD || containment >= CONTAINMENT_THRESHOLD
 }
 
-type AlignOp =
-	| { type: 'same'; oldIndex: number; newIndex: number }
-	| { type: 'remove'; oldIndex: number }
-	| { type: 'add'; newIndex: number }
-
-/** Order-preserving alignment that prefers matches with higher scores. Zero means no match. */
-function alignIndicesByScore(n: number, m: number, score: (i: number, j: number) => number): AlignOp[] {
-	const dp: Int32Array[] = Array.from({ length: n + 1 }, () => new Int32Array(m + 1))
-	for (let i = n - 1; i >= 0; i--) {
-		for (let j = m - 1; j >= 0; j--) {
-			const matchScore = score(i, j)
-			dp[i][j] = Math.max(dp[i + 1][j], dp[i][j + 1], matchScore > 0 ? dp[i + 1][j + 1] + matchScore : 0)
-		}
-	}
-	const ops: AlignOp[] = []
-	let i = 0
-	let j = 0
-	while (i < n && j < m) {
-		const matchScore = score(i, j)
-		if (matchScore > 0 && dp[i][j] === dp[i + 1][j + 1] + matchScore) {
-			ops.push({ type: 'same', oldIndex: i, newIndex: j })
-			i++
-			j++
-		} else if (dp[i + 1][j] >= dp[i][j + 1]) {
-			ops.push({ type: 'remove', oldIndex: i })
-			i++
-		} else {
-			ops.push({ type: 'add', newIndex: j })
-			j++
-		}
-	}
-	while (i < n) ops.push({ type: 'remove', oldIndex: i++ })
-	while (j < m) ops.push({ type: 'add', newIndex: j++ })
-	return ops
-}
-
-/** Longest-common-subsequence alignment under an arbitrary equality predicate. */
-function alignIndices(n: number, m: number, eq: (i: number, j: number) => boolean): AlignOp[] {
-	return alignIndicesByScore(n, m, (i, j) => (eq(i, j) ? 1 : 0))
-}
-
 /**
  * Diff two ordered rule sets by **content**. By default, rules that were only renumbered and rules
  * changed only by a `rule N` reference are omitted. Callers can retain either category. Remaining
  * gaps are re-aligned by similarity (and, with the default behavior, matching IDs): matched rules
  * become modifications, while the rest are genuine additions/removals. Document order is preserved.
  */
-export function diffRuleSets<Rule extends RuleRecord>(
+export function compareRuleSets<Rule extends RuleRecord>(
 	oldRules: readonly Rule[],
 	newRules: readonly Rule[],
-	{ hideRenumbering = true, hideReferenceOnlyChanges = true, referenceSyntax = 'generic' }: DiffOptions = {},
-): DiffEntry<Rule>[] {
+	{
+		canMatch = () => true,
+		hideRenumbering = true,
+		hideReferenceOnlyChanges = true,
+		referenceSyntax = 'generic',
+	}: DiffOptions<Rule> = {},
+): RuleSetComparison<Rule> {
 	const oldText = oldRules.map((rule) => normalizedText(rule))
 	const newText = newRules.map((rule) => normalizedText(rule))
 
 	const entries: DiffEntry<Rule>[] = []
+	const matches: RuleMatch<Rule>[] = []
 	let gapOld: number[] = []
 	let gapNew: number[] = []
 
@@ -261,6 +212,7 @@ export function diffRuleSets<Rule extends RuleRecord>(
 		const matchScore = (i: number, j: number) => {
 			const oldRule = oldRules[gapOld[i]]
 			const newRule = newRules[gapNew[j]]
+			if (!canMatch(oldRule, newRule)) return 0
 			const oldNorm = oldText[gapOld[i]]
 			const newNorm = newText[gapNew[j]]
 			const oldWithoutOrdinal = textWithoutLeadingOrdinal(oldNorm)
@@ -273,15 +225,16 @@ export function diffRuleSets<Rule extends RuleRecord>(
 		}
 		const gapOps = alignIndicesByScore(gapOld.length, gapNew.length, matchScore)
 		for (const op of gapOps) {
-			if (op.type === 'remove') {
-				entries.push({ kind: 'removed', rule: oldRules[gapOld[op.oldIndex]] })
-			} else if (op.type === 'add') {
-				entries.push({ kind: 'added', rule: newRules[gapNew[op.newIndex]] })
+			if (op.type === 'left') {
+				entries.push({ kind: 'removed', rule: oldRules[gapOld[op.leftIndex]] })
+			} else if (op.type === 'right') {
+				entries.push({ kind: 'added', rule: newRules[gapNew[op.rightIndex]] })
 			} else {
-				const oldRule = oldRules[gapOld[op.oldIndex]]
-				const newRule = newRules[gapNew[op.newIndex]]
-				const oldNorm = oldText[gapOld[op.oldIndex]]
-				const newNorm = newText[gapNew[op.newIndex]]
+				const oldRule = oldRules[gapOld[op.leftIndex]]
+				const newRule = newRules[gapNew[op.rightIndex]]
+				matches.push({ oldRule, newRule })
+				const oldNorm = oldText[gapOld[op.leftIndex]]
+				const newNorm = newText[gapNew[op.rightIndex]]
 				// Identical text is just a renumber. A change limited to referenced rule numbers is
 				// likewise noise (the referenced rule moved, not this one's meaning) by default.
 				if (oldNorm === newNorm && (oldRule.id === newRule.id || hideRenumbering)) continue
@@ -301,16 +254,20 @@ export function diffRuleSets<Rule extends RuleRecord>(
 	}
 
 	// Exact text remains the stable alignment anchor even when a renumbering should be displayed.
-	const anchorOps = alignIndices(oldRules.length, newRules.length, (i, j) => oldText[i] === newText[j])
+	const anchorOps = alignIndicesByScore(oldRules.length, newRules.length, (oldIndex, newIndex) => {
+		if (!canMatch(oldRules[oldIndex], newRules[newIndex])) return 0
+		return oldText[oldIndex] === newText[newIndex] ? 1 : 0
+	})
 	for (const op of anchorOps) {
-		if (op.type === 'remove') {
-			gapOld.push(op.oldIndex)
-		} else if (op.type === 'add') {
-			gapNew.push(op.newIndex)
+		if (op.type === 'left') {
+			gapOld.push(op.leftIndex)
+		} else if (op.type === 'right') {
+			gapNew.push(op.rightIndex)
 		} else {
 			flushGap()
-			const oldRule = oldRules[op.oldIndex]
-			const newRule = newRules[op.newIndex]
+			const oldRule = oldRules[op.leftIndex]
+			const newRule = newRules[op.rightIndex]
+			matches.push({ oldRule, newRule })
 			if (!hideRenumbering && oldRule.id !== newRule.id) {
 				entries.push(buildModified(oldRule, newRule))
 			}
@@ -318,5 +275,13 @@ export function diffRuleSets<Rule extends RuleRecord>(
 	}
 	flushGap()
 
-	return entries
+	return { entries, matches }
+}
+
+export function diffRuleSets<Rule extends RuleRecord>(
+	oldRules: readonly Rule[],
+	newRules: readonly Rule[],
+	options: DiffOptions<Rule> = {},
+): DiffEntry<Rule>[] {
+	return compareRuleSets(oldRules, newRules, options).entries
 }

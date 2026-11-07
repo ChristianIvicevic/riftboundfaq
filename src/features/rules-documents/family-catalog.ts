@@ -3,7 +3,7 @@ import {
 	RulesDocumentInvariantError,
 	type SourceRulesDocument,
 } from '@/features/rules-documents/compile'
-import { diffRuleSets, type DiffEntry } from '@/lib/rules/diff'
+import { compareRuleSets, type DiffEntry, type DiffOptions, type RuleMatch } from '@/lib/rules/diff'
 import { rulesDocumentFamily, type RulesDocumentFamilyId } from '@/lib/rules/document-family-conventions'
 import type { RulesDocumentContent } from '@/lib/rules/document-types'
 
@@ -60,6 +60,8 @@ export type RulesDiffRecord = {
 	readonly lines: readonly string[]
 	readonly anchor: string
 	readonly label: string
+	readonly kind: 'heading' | 'rule'
+	readonly headingDepth?: 2 | 3
 }
 
 export type RulesReferenceTarget = {
@@ -83,6 +85,7 @@ export type RulesDocumentFamilyCatalog = Readonly<{
 	get(version: string): CompiledRulesDocument
 	find(version: string): CompiledRulesDocument | undefined
 	difference(from: string, to: string): readonly DiffEntry<RulesDiffRecord>[]
+	matches(from: string, to: string): readonly RuleMatch<RulesDiffRecord>[]
 }>
 
 export class UnknownRulesVersionError extends Error {
@@ -168,23 +171,32 @@ export function createRulesDocumentFamilyCatalog<Document extends { readonly ver
 	const summaries = new Map(registeredVersions.map((summary) => [summary.version, summary]))
 	const previousSummary = archivedSummaries.at(-1)
 	const compiled = new Map<string, CompiledRulesDocument>()
-	const differences = new Map<string, readonly DiffEntry<RulesDiffRecord>[]>()
-	const difference = (from: string, to: string) => {
+	const comparisons = new Map<
+		string,
+		Readonly<{
+			entries: readonly DiffEntry<RulesDiffRecord>[]
+			matches: readonly RuleMatch<RulesDiffRecord>[]
+		}>
+	>()
+	const comparison = (from: string, to: string) => {
 		const key = `${from}\0${to}`
-		const existing = differences.get(key)
+		const existing = comparisons.get(key)
 		if (existing) return existing
-		const options =
-			type === 'tournament-rules'
-				? {
-						hideRenumbering: true,
-						hideReferenceOnlyChanges: true,
-						referenceSyntax: 'tournament' as const,
-					}
-				: undefined
-		const entries = Object.freeze(diffRuleSets(find(from)!.diffRecords, find(to)!.diffRecords, options))
-		differences.set(key, entries)
-		return entries
+		const options: DiffOptions<RulesDiffRecord> = {
+			canMatch: (oldRecord, newRecord) =>
+				oldRecord.kind === newRecord.kind && oldRecord.headingDepth === newRecord.headingDepth,
+			...(type === 'tournament-rules' ? { referenceSyntax: 'tournament' as const } : {}),
+		}
+		const result = compareRuleSets(find(from)!.diffRecords, find(to)!.diffRecords, options)
+		const prepared = Object.freeze({
+			entries: Object.freeze(result.entries),
+			matches: Object.freeze(result.matches.map((match) => Object.freeze(match))),
+		})
+		comparisons.set(key, prepared)
+		return prepared
 	}
+	const difference = (from: string, to: string) => comparison(from, to).entries
+	const matches = (from: string, to: string) => comparison(from, to).matches
 
 	const find = (version: string) => {
 		const existing = compiled.get(version)
@@ -238,6 +250,7 @@ export function createRulesDocumentFamilyCatalog<Document extends { readonly ver
 		registeredVersions,
 		currentVersion: currentSummary,
 		difference,
+		matches,
 		get(version: string) {
 			const document = find(version)
 			if (!document) throw new UnknownRulesVersionError(type, version)

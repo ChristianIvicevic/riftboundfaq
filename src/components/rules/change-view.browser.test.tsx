@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import { render } from 'vitest-browser-react'
-import { RulesChangeView } from '@/components/rules/change-view'
+import { RulesChangeTable } from '@/components/rules/side-by-side-change-view'
 import type { PreparedRulesChange } from '@/features/rules-documents/rules-change'
 
 const CHANGE: PreparedRulesChange = {
@@ -66,7 +66,7 @@ const RENUMBERED_CHANGE: PreparedRulesChange = {
 
 describe('rules changes page rendering', () => {
 	test('renders one semantic comparison table', async () => {
-		const screen = await render(<RulesChangeView change={CHANGE} />)
+		const screen = await render(<RulesChangeTable change={CHANGE} />)
 
 		await expect
 			.element(
@@ -85,23 +85,8 @@ describe('rules changes page rendering', () => {
 		await expect.element(screen.getByRole('rowheader', { name: 'Changed' })).toBeInTheDocument()
 	})
 
-	test('summarizes the visible changes and disclosed omissions', async () => {
-		const screen = await render(<RulesChangeView change={ALL_KINDS_CHANGE} />)
-
-		await expect.element(screen.getByRole('list', { name: 'Change summary' })).toBeInTheDocument()
-		await expect.element(screen.getByText('3 changes', { exact: true })).toBeInTheDocument()
-		await expect.element(screen.getByText('1 added', { exact: true })).toBeInTheDocument()
-		await expect.element(screen.getByText('1 removed', { exact: true })).toBeInTheDocument()
-		await expect.element(screen.getByText('1 changed', { exact: true })).toBeInTheDocument()
-		await expect
-			.element(
-				screen.getByText('Routine renumbering and reference-only updates are omitted.', { exact: true }),
-			)
-			.toBeInTheDocument()
-	})
-
 	test('identifies historical link destinations and absent sides', async () => {
-		const screen = await render(<RulesChangeView change={ALL_KINDS_CHANGE} />)
+		const screen = await render(<RulesChangeTable change={ALL_KINDS_CHANGE} />)
 
 		const addedRuleLink = screen.getByRole('link', {
 			name: '200. in Core Rules 1.1 (opens in a new tab)',
@@ -120,7 +105,7 @@ describe('rules changes page rendering', () => {
 	})
 
 	test('renders passive prepared labels, links, and differences', async () => {
-		const screen = await render(<RulesChangeView change={CHANGE} />)
+		const screen = await render(<RulesChangeTable change={CHANGE} />)
 
 		await expect
 			.element(screen.getByRole('link', { name: '100. in Core Rules 1.0 (opens in a new tab)' }))
@@ -137,7 +122,7 @@ describe('rules changes page rendering', () => {
 	})
 
 	test('places version-specific rule links in their comparison cells', async () => {
-		const screen = await render(<RulesChangeView change={ALL_KINDS_CHANGE} />)
+		const screen = await render(<RulesChangeTable change={ALL_KINDS_CHANGE} />)
 		const linkedCellText = [
 			['200. in Core Rules 1.1 (opens in a new tab)', 'Added rule'],
 			['300. in Core Rules 1.0 (opens in a new tab)', 'Removed rule'],
@@ -154,7 +139,7 @@ describe('rules changes page rendering', () => {
 	})
 
 	test('marks only modified entries with different displayed labels as renumbered', async () => {
-		const screen = await render(<RulesChangeView change={RENUMBERED_CHANGE} />)
+		const screen = await render(<RulesChangeTable change={RENUMBERED_CHANGE} />)
 		const unchangedNumberRow = screen
 			.getByRole('link', { name: '100. in Core Rules 1.0 (opens in a new tab)' })
 			.element()
