@@ -3,7 +3,11 @@ import {
 	RulesDocumentInvariantError,
 	type SourceRulesDocument,
 } from '@/features/rules-documents/compile'
-import { diffRuleSets, type DiffEntry } from '@/lib/rules/diff'
+import {
+	compareRulesDocuments,
+	type RulesDiffRecord,
+	type RulesDocumentComparison,
+} from '@/features/rules-documents/document-comparison'
 import { rulesDocumentFamily, type RulesDocumentFamilyId } from '@/lib/rules/document-family-conventions'
 import type { RulesDocumentContent } from '@/lib/rules/document-types'
 
@@ -33,6 +37,7 @@ export type TraversedRulesHeading = {
 	readonly text: string
 	readonly anchor: string
 	readonly depth: 2 | 3
+	readonly changeMarker?: RuleChangeMarker
 }
 
 export type TraversedRule = {
@@ -55,13 +60,6 @@ export type TraversedRulesSection = {
 	readonly blocks: readonly TraversedRulesBlock[]
 }
 
-export type RulesDiffRecord = {
-	readonly id: string
-	readonly lines: readonly string[]
-	readonly anchor: string
-	readonly label: string
-}
-
 export type RulesReferenceTarget = {
 	readonly id: string
 	readonly anchor: string
@@ -82,7 +80,7 @@ export type RulesDocumentFamilyCatalog = Readonly<{
 	readonly current: CompiledRulesDocument
 	get(version: string): CompiledRulesDocument
 	find(version: string): CompiledRulesDocument | undefined
-	difference(from: string, to: string): readonly DiffEntry<RulesDiffRecord>[]
+	compare(from: string, to: string): RulesDocumentComparison
 }>
 
 export class UnknownRulesVersionError extends Error {
@@ -101,14 +99,12 @@ export function createRulesDocumentFamilyCatalog<Document extends { readonly ver
 	documents,
 	names = {},
 	adapt,
-	diffId,
 }: Readonly<{
 	type: RulesDocumentFamilyId
 	currentVersion: string
 	documents: Readonly<Record<string, Document>>
 	names?: Readonly<Record<string, string>>
 	adapt: (document: Document) => SourceRulesDocument
-	diffId: (id: string | null, occurrence: number) => string
 }>): RulesDocumentFamilyCatalog {
 	const conventions = rulesDocumentFamily(type)
 	const sources = new Map(Object.entries(documents))
@@ -166,40 +162,46 @@ export function createRulesDocumentFamilyCatalog<Document extends { readonly ver
 		currentSummary,
 	])
 	const summaries = new Map(registeredVersions.map((summary) => [summary.version, summary]))
-	const previousSummary = archivedSummaries.at(-1)
+	const previousVersions = new Map(
+		versions.slice(1).map((version, index) => [version, versions[index]!] as const),
+	)
 	const compiled = new Map<string, CompiledRulesDocument>()
-	const differences = new Map<string, readonly DiffEntry<RulesDiffRecord>[]>()
-	const difference = (from: string, to: string) => {
-		const key = `${from}\0${to}`
-		const existing = differences.get(key)
-		if (existing) return existing
-		const options =
-			type === 'tournament-rules'
-				? {
-						hideRenumbering: true,
-						hideReferenceOnlyChanges: true,
-						referenceSyntax: 'tournament' as const,
-					}
-				: undefined
-		const entries = Object.freeze(diffRuleSets(find(from)!.diffRecords, find(to)!.diffRecords, options))
-		differences.set(key, entries)
-		return entries
-	}
-
-	const find = (version: string) => {
+	const marked = new Map<string, CompiledRulesDocument>()
+	const compile = (version: string) => {
 		const existing = compiled.get(version)
 		if (existing) return existing
 		const source = sources.get(version)
 		if (!source) return
-		let document = compileRulesDocument({
+		const document = compileRulesDocument({
 			identity: summaries.get(version)!,
 			source: adapt(source),
-			diffId,
 		})
 		compiled.set(version, document)
-		if (version === currentVersion && previousSummary) {
+		return document
+	}
+	const comparisons = new Map<string, RulesDocumentComparison>()
+	const comparison = (from: string, to: string) => {
+		const key = `${from}\0${to}`
+		const existing = comparisons.get(key)
+		if (existing) return existing
+		const prepared = compareRulesDocuments(
+			compile(from)!.diffRecords,
+			compile(to)!.diffRecords,
+			type === 'tournament-rules' ? 'tournament' : 'generic',
+		)
+		comparisons.set(key, prepared)
+		return prepared
+	}
+
+	const find = (version: string) => {
+		const existing = marked.get(version)
+		if (existing) return existing
+		let document = compile(version)
+		if (!document) return
+		const previousVersion = previousVersions.get(version)
+		if (previousVersion) {
 			const markers = new Map<string, RuleChangeMarker>()
-			for (const entry of difference(previousSummary.version, currentVersion)) {
+			for (const entry of comparison(previousVersion, version).entries) {
 				if (entry.kind === 'added') markers.set(entry.rule.anchor, 'new')
 				if (entry.kind === 'modified') markers.set(entry.newRule.anchor, 'changed')
 			}
@@ -213,21 +215,37 @@ export function createRulesDocumentFamilyCatalog<Document extends { readonly ver
 						}),
 					),
 				)
+			const markedHeadings = new Map(
+				document.navigation.map((heading) => [
+					heading.anchor,
+					Object.freeze({ ...heading, changeMarker: markers.get(heading.anchor) }),
+				]),
+			)
 			document = Object.freeze({
 				...document,
+				navigation: Object.freeze(document.navigation.map(({ anchor }) => markedHeadings.get(anchor)!)),
 				sections: Object.freeze(
 					document.sections.map((section) =>
 						Object.freeze({
 							...section,
+							heading: markedHeadings.get(section.heading.anchor)!,
 							blocks: Object.freeze(
-								section.blocks.map((block) => Object.freeze({ ...block, rules: addMarkers(block.rules) })),
+								section.blocks.map((block) => {
+									const rules = addMarkers(block.rules)
+									if (block.kind === 'rules') return Object.freeze({ ...block, rules })
+									return Object.freeze({
+										...block,
+										heading: markedHeadings.get(block.heading.anchor)!,
+										rules,
+									})
+								}),
 							),
 						}),
 					),
 				),
 			})
-			compiled.set(version, document)
 		}
+		marked.set(version, document)
 		return document
 	}
 
@@ -237,7 +255,7 @@ export function createRulesDocumentFamilyCatalog<Document extends { readonly ver
 		},
 		registeredVersions,
 		currentVersion: currentSummary,
-		difference,
+		compare: comparison,
 		get(version: string) {
 			const document = find(version)
 			if (!document) throw new UnknownRulesVersionError(type, version)

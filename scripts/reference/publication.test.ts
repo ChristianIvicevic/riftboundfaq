@@ -146,6 +146,24 @@ describe('prepareReferencePublication', () => {
 		expect(artifacts.get('tournament-rules/2026-04-29.mdx')).toMatch(/version: "2026-04-29"/u)
 	})
 
+	test('assigns current rules documents their navigation icons', async () => {
+		const { artifacts } = await prepareFixture()
+
+		expect(artifacts.get('core-rules/1.2.mdx')).toContain('icon: "Scale"')
+		expect(artifacts.get('tournament-rules/2026-04-29.mdx')).toContain('icon: "Trophy"')
+		expect(artifacts.get('core-rules/(archive)/1.0.mdx')).not.toContain('icon:')
+		expect(artifacts.get('tournament-rules/(archive)/2025-07-21.mdx')).not.toContain('icon:')
+	})
+
+	test('assigns the rules overview its home navigation label and icon', async () => {
+		const { artifacts } = await prepareFixture()
+		const overview = artifacts.get('index.mdx')
+
+		expect(overview).toContain('title: "Rules Documents"')
+		expect(overview).toContain('sidebarTitle: "Home"')
+		expect(overview).toContain('icon: "House"')
+	})
+
 	test.each([
 		['core-rules/changes/meta.json', 'FileDiff'],
 		['core-rules/(archive)/meta.json', 'Archive'],

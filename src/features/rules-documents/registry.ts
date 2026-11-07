@@ -1,13 +1,9 @@
-import { adaptCoreRulesDocument, coreRulesDiffId } from '@/features/rules-documents/core-rules-adapter'
+import { adaptCoreRulesDocument } from '@/features/rules-documents/core-rules-adapter'
 import {
 	createRulesDocumentFamilyCatalog,
 	type RulesDocumentReference,
 } from '@/features/rules-documents/family-catalog'
-import { prepareRulesChange } from '@/features/rules-documents/rules-change'
-import {
-	adaptTournamentRulesDocument,
-	tournamentRulesDiffId,
-} from '@/features/rules-documents/tournament-rules-adapter'
+import { adaptTournamentRulesDocument } from '@/features/rules-documents/tournament-rules-adapter'
 import {
 	CURRENT_PDF_CORE_RULES_VERSION,
 	PDF_CORE_RULES_VERSION_NAMES,
@@ -35,21 +31,16 @@ const families = {
 		documents: PDF_CORE_RULES_VERSIONS,
 		names: PDF_CORE_RULES_VERSION_NAMES,
 		adapt: adaptCoreRulesDocument,
-		diffId: coreRulesDiffId,
 	}),
 	'tournament-rules': createRulesDocumentFamilyCatalog({
 		type: 'tournament-rules',
 		currentVersion: CURRENT_PDF_TOURNAMENT_RULES_VERSION,
 		documents: PDF_TOURNAMENT_RULES_DOCUMENTS,
 		adapt: adaptTournamentRulesDocument,
-		diffId: tournamentRulesDiffId,
 	}),
 }
 
 export const rulesDocuments = {
-	change({ type, from, to }: { type: RulesDocumentFamilyId; from: string; to: string }) {
-		return prepareRulesChange(families[type], { from, to })
-	},
 	get(reference: RulesDocumentReference) {
 		return families[reference.type].get(reference.version)
 	},

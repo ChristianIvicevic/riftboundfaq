@@ -23,9 +23,7 @@ describe('resolvePageImageTreatment', () => {
 			kind: 'mechanic-keyword',
 			keyword: {
 				backgroundColor: '#95b229',
-				textColor: '#090909',
 				accentColor: '#b8d343',
-				fontSize: '64px',
 			},
 		})
 	})
@@ -36,23 +34,24 @@ describe('resolvePageImageTreatment', () => {
 		})
 	})
 
-	test('uses concise reference labels for the Card Errata cover', () => {
-		expect(resolvePageImageTreatment(page('/card-errata-list', 'Card Errata List'))).toEqual({
-			kind: 'index-cover',
-			eyebrow: 'REFERENCE',
-			coverAccent: 'ERRATA',
-			coverAccentFontSize: '88px',
-		})
-	})
-
 	test('derives Core Rules covers and transitions from the manifest', () => {
 		expect(resolvePageImageTreatment(page('/reference/core-rules/1.5'))).toMatchObject({
 			kind: 'rules-reference',
-			cover: { versionLabel: '1.5', editionLabel: 'RADIANCE' },
+			cover: {
+				kind: 'core-rules',
+				versionLabel: '1.5',
+				editionName: 'Radiance',
+			},
 		})
 		expect(resolvePageImageTreatment(page('/reference/core-rules/changes/1.5'))).toMatchObject({
 			kind: 'rules-diff',
-			transition: { fromLabel: '1.4', toLabel: '1.5' },
+			transition: {
+				kind: 'core-rules',
+				fromLabel: '1.4',
+				toLabel: '1.5',
+				fromEditionName: 'Vendetta',
+				toEditionName: 'Radiance',
+			},
 		})
 	})
 
@@ -62,7 +61,7 @@ describe('resolvePageImageTreatment', () => {
 		expect(referenceTreatment).toMatchObject({
 			kind: 'rules-reference',
 			displayTitle: 'Tournament Rules (October 2026)',
-			cover: { versionLabel: 'OCTOBER', editionLabel: '2026' },
+			cover: { kind: 'generic', versionLabel: 'OCTOBER', editionLabel: '2026' },
 		})
 		expect(getPageImageDisplayTitle(referencePage, referenceTreatment)).toBe(
 			'Tournament Rules (October 2026)',
@@ -70,7 +69,7 @@ describe('resolvePageImageTreatment', () => {
 		expect(resolvePageImageTreatment(page('/reference/tournament-rules/changes/2026-10-09'))).toMatchObject({
 			kind: 'rules-diff',
 			displayTitle: 'Tournament Rules Changes (October 2026)',
-			transition: { fromLabel: 'JUL 2026', toLabel: 'OCT 2026' },
+			transition: { kind: 'generic', fromLabel: 'JUL 2026', toLabel: 'OCT 2026' },
 		})
 	})
 

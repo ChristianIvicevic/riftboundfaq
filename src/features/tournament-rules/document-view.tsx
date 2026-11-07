@@ -3,19 +3,20 @@ import {
 	RulesDocumentSectionHeading,
 	RulesDocumentSubsectionHeading,
 } from '@/components/rules/document'
+import { RulesDocumentShell, RulesSectionBody } from '@/components/rules/document-shell'
 import type { CompiledRulesDocument } from '@/features/rules-documents/registry'
 import { findTournamentRuleReferences } from '@/features/tournament-rules/references'
 
 export function TournamentRulesDocumentView({ document }: { document: CompiledRulesDocument }) {
 	return (
-		<div className="not-prose mt-8 space-y-14">
+		<RulesDocumentShell>
 			{document.sections.map((section) => {
 				const sectionAnchor = section.heading.anchor
 				return (
 					<section aria-labelledby={sectionAnchor} key={sectionAnchor}>
 						<RulesDocumentSectionHeading anchor={sectionAnchor} heading={section.heading} />
 
-						<div className="mt-6 space-y-10">
+						<RulesSectionBody>
 							{section.blocks.map((block) => {
 								if (block.kind === 'rules') {
 									return (
@@ -43,10 +44,10 @@ export function TournamentRulesDocumentView({ document }: { document: CompiledRu
 									</section>
 								)
 							})}
-						</div>
+						</RulesSectionBody>
 					</section>
 				)
 			})}
-		</div>
+		</RulesDocumentShell>
 	)
 }
