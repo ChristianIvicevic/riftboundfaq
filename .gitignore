@@ -159,6 +159,9 @@ coverage
 playwright-report/
 test-results/
 
+# Vitest
+.vitest/attachments/
+
 # nyc test coverage
 .nyc_output
 

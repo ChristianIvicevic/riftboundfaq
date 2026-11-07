@@ -3,12 +3,13 @@ import {
 	RulesDocumentSectionHeading,
 	RulesDocumentSubsectionHeading,
 } from '@/components/rules/document'
+import { RulesDocumentShell, RulesSectionBody, RulesSectionPreamble } from '@/components/rules/document-shell'
 import { findCoreRuleReferences } from '@/features/core-rules/references'
 import type { CompiledRulesDocument } from '@/features/rules-documents/registry'
 
 export function CoreRulesDocumentView({ document }: { document: CompiledRulesDocument }) {
 	return (
-		<div className="not-prose mt-8 space-y-14">
+		<RulesDocumentShell>
 			{document.sections.map((section) => {
 				const sectionAnchor = section.heading.anchor
 				const preamble = section.blocks.find((block) => block.kind === 'rules')
@@ -18,17 +19,17 @@ export function CoreRulesDocumentView({ document }: { document: CompiledRulesDoc
 						<RulesDocumentSectionHeading anchor={sectionAnchor} heading={section.heading} />
 
 						{preamble && preamble.rules.length > 0 && (
-							<div className="mt-6">
+							<RulesSectionPreamble>
 								<RulesDocumentRuleList
 									findReferences={findCoreRuleReferences}
 									labelMode="id-with-period"
 									referenceTarget={document.referenceTarget}
 									rules={preamble.rules}
 								/>
-							</div>
+							</RulesSectionPreamble>
 						)}
 
-						<div className="mt-6 space-y-10">
+						<RulesSectionBody>
 							{subsections.map((subsection) => {
 								const subsectionAnchor = subsection.heading.anchor
 								return (
@@ -43,10 +44,10 @@ export function CoreRulesDocumentView({ document }: { document: CompiledRulesDoc
 									</section>
 								)
 							})}
-						</div>
+						</RulesSectionBody>
 					</section>
 				)
 			})}
-		</div>
+		</RulesDocumentShell>
 	)
 }

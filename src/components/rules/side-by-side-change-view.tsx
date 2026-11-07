@@ -1,7 +1,6 @@
 import { cva } from 'class-variance-authority'
 import type { ReactNode } from 'react'
 import { Del, Ins } from '@/components/diff-marks'
-import { rulesDocuments } from '@/features/rules-documents/registry'
 import type {
 	PreparedRulesChange,
 	PreparedRulesChangeEntry,
@@ -178,84 +177,61 @@ function DiffRow({
 	)
 }
 
-export function RulesChangeView({ change }: { change: PreparedRulesChange }) {
+export function RulesChangeTable({ change }: { change: PreparedRulesChange }) {
 	const { entries, from, to } = change
-	const counts = { added: 0, removed: 0, modified: 0 }
-	for (const entry of entries) counts[entry.kind]++
 	return (
-		<div className="relative my-6 prose-no-margin">
-			<ul aria-label="Change summary" className="not-prose mb-3 flex flex-wrap gap-2 text-sm">
-				<li className={statusPillVariants({ status: 'neutral' })}>
-					{entries.length} {entries.length === 1 ? 'change' : 'changes'}
-				</li>
-				<li className={statusPillVariants({ status: 'added' })}>{counts.added} added</li>
-				<li className={statusPillVariants({ status: 'removed' })}>{counts.removed} removed</li>
-				<li className={statusPillVariants({ status: 'changed' })}>{counts.modified} changed</li>
-			</ul>
-			<p className="mb-4 text-sm text-fd-muted-foreground">
-				Routine renumbering and reference-only updates are omitted.
-			</p>
-			<table className="block w-full border-separate border-spacing-0 text-sm max-lg:overflow-visible! max-lg:rounded-none! max-lg:border-0! max-lg:bg-transparent! lg:table lg:table-fixed lg:overflow-visible!">
-				<caption className="sr-only">
-					Changes from {from.label} to {to.label}
-				</caption>
-				<colgroup className="hidden lg:table-column-group">
-					<col className="w-40" />
-					<col />
-					<col />
-				</colgroup>
-				<thead className="sr-only lg:not-sr-only lg:table-header-group">
-					<tr>
-						<th
-							scope="col"
-							className="border-b border-fd-border bg-fd-background px-3 py-3 text-left align-bottom"
-						>
-							Change
-						</th>
-						<th
-							scope="col"
-							aria-label={`Before ${from.label}`}
-							className="border-b border-fd-border bg-fd-background px-4 py-3 text-left align-bottom"
-						>
-							<span className="block text-xs font-semibold tracking-wide text-fd-muted-foreground uppercase">
-								Before
-							</span>
-							<span className="text-sm">{from.label}</span>
-						</th>
-						<th
-							scope="col"
-							aria-label={`After ${to.label}`}
-							className="border-b border-fd-border bg-fd-background px-4 py-3 text-left align-bottom"
-						>
-							<span className="block text-xs font-semibold tracking-wide text-fd-muted-foreground uppercase">
-								After
-							</span>
-							<span className="text-sm">{to.label}</span>
-						</th>
-					</tr>
-				</thead>
-				<tbody className="block space-y-3 lg:table-row-group lg:space-y-0">
-					{entries.map((entry, index) => {
-						const id = entry.kind === 'modified' ? entry.newRule.id : entry.rule.id
-						return (
-							<DiffRow
-								key={`${entry.kind}:${id}:${index}`}
-								entry={entry}
-								fromLabel={from.label}
-								toLabel={to.label}
-							/>
-						)
-					})}
-				</tbody>
-			</table>
-		</div>
+		<table className="block w-full border-separate border-spacing-0 text-sm max-lg:overflow-visible! max-lg:rounded-none! max-lg:border-0! max-lg:bg-transparent! lg:table lg:table-fixed lg:overflow-visible!">
+			<caption className="sr-only">
+				Changes from {from.label} to {to.label}
+			</caption>
+			<colgroup className="hidden lg:table-column-group">
+				<col className="w-40" />
+				<col />
+				<col />
+			</colgroup>
+			<thead className="sr-only lg:not-sr-only lg:table-header-group">
+				<tr>
+					<th
+						scope="col"
+						className="border-b border-fd-border bg-fd-background px-3 py-3 text-left align-bottom"
+					>
+						Change
+					</th>
+					<th
+						scope="col"
+						aria-label={`Before ${from.label}`}
+						className="border-b border-fd-border bg-fd-background px-4 py-3 text-left align-bottom"
+					>
+						<span className="block text-xs font-semibold tracking-wide text-fd-muted-foreground uppercase">
+							Before
+						</span>
+						<span className="text-sm">{from.label}</span>
+					</th>
+					<th
+						scope="col"
+						aria-label={`After ${to.label}`}
+						className="border-b border-fd-border bg-fd-background px-4 py-3 text-left align-bottom"
+					>
+						<span className="block text-xs font-semibold tracking-wide text-fd-muted-foreground uppercase">
+							After
+						</span>
+						<span className="text-sm">{to.label}</span>
+					</th>
+				</tr>
+			</thead>
+			<tbody className="block space-y-3 lg:table-row-group lg:space-y-0">
+				{entries.map((entry, index) => {
+					const id = entry.kind === 'modified' ? entry.newRule.id : entry.rule.id
+					return (
+						<DiffRow
+							key={`${entry.kind}:${id}:${index}`}
+							entry={entry}
+							fromLabel={from.label}
+							toLabel={to.label}
+						/>
+					)
+				})}
+			</tbody>
+		</table>
 	)
-}
-
-export function CoreRulesDiff({ from, to }: { from: string; to: string }) {
-	return <RulesChangeView change={rulesDocuments.change({ type: 'core-rules', from, to })} />
-}
-
-export function TournamentRulesDiff({ from, to }: { from: string; to: string }) {
-	return <RulesChangeView change={rulesDocuments.change({ type: 'tournament-rules', from, to })} />
 }

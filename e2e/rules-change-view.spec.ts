@@ -1,13 +1,13 @@
 import { expect, test } from '@playwright/test'
 
 test('keeps visual change indicators visible in dark mode', async ({ page }) => {
-	await page.goto('/reference/core-rules/changes/1.4')
+	await page.goto('/reference/core-rules/changes/1.4?view=before-and-after')
+	await expect(page.getByRole('button', { name: 'Before & after' })).toHaveAttribute('aria-pressed', 'true')
 	await page.locator('html').evaluate((element) => element.classList.add('dark'))
 
 	const contrastMeasurements = await page
 		.locator('table del:not(.block), table ins:not(.block)')
 		.or(page.getByText('Renumbered', { exact: true }))
-		.or(page.getByRole('list', { name: 'Change summary' }).getByRole('listitem').first())
 		.evaluateAll((elements) => {
 			type Rgba = [red: number, green: number, blue: number, alpha: number]
 
@@ -70,11 +70,7 @@ test('keeps visual change indicators visible in dark mode', async ({ page }) => 
 				const surroundingBackground = effectiveBackground(element.parentElement)
 				const highlightBackground = effectiveBackground(element)
 				const textColor = parseColor(getComputedStyle(element).color)
-				const kind = element.matches('del, ins')
-					? 'inline-diff'
-					: element.tagName === 'LI'
-						? 'summary-pill'
-						: 'renumbered-pill'
+				const kind = element.matches('del, ins') ? 'inline-diff' : 'renumbered-pill'
 				return {
 					tag: element.tagName,
 					kind,
@@ -91,7 +87,6 @@ test('keeps visual change indicators visible in dark mode', async ({ page }) => 
 	expect(contrastMeasurements.some(({ tag }) => tag === 'DEL')).toBe(true)
 	expect(contrastMeasurements.some(({ tag }) => tag === 'INS')).toBe(true)
 	expect(contrastMeasurements.some(({ kind }) => kind === 'renumbered-pill')).toBe(true)
-	expect(contrastMeasurements.some(({ kind }) => kind === 'summary-pill')).toBe(true)
 	for (const measurement of contrastMeasurements) {
 		if (measurement.kind !== 'inline-diff') {
 			expect(measurement.borderContrast, `${measurement.kind} border contrast`).toBeGreaterThanOrEqual(3)
@@ -104,7 +99,7 @@ test('keeps visual change indicators visible in dark mode', async ({ page }) => 
 })
 
 test('styles removed rules as deleted content', async ({ page }) => {
-	await page.goto('/reference/core-rules/changes/1.4')
+	await page.goto('/reference/core-rules/changes/1.4?view=before-and-after')
 
 	const removedRule = page.locator('table del.block').first()
 	await expect(removedRule).toBeVisible()
@@ -115,7 +110,7 @@ test('styles removed rules as deleted content', async ({ page }) => {
 
 test('does not render outer table chrome around mobile row cards', async ({ page }) => {
 	await page.setViewportSize({ width: 390, height: 844 })
-	await page.goto('/reference/core-rules/changes/1.4')
+	await page.goto('/reference/core-rules/changes/1.4?view=before-and-after')
 
 	const table = page.getByRole('table', { name: /Changes from/u })
 	const getTableChrome = () =>
@@ -148,6 +143,9 @@ test('does not render outer table chrome around mobile row cards', async ({ page
 		overflow: 'visible',
 	})
 	expect(firstRowBorderWidth).toBe('1px')
+	expect(
+		await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth),
+	).toBe(0)
 
 	await page.setViewportSize({ width: 1440, height: 900 })
 	const desktopTableChrome = await getTableChrome()
@@ -156,4 +154,51 @@ test('does not render outer table chrome around mobile row cards', async ({ page
 	expect(desktopTableChrome.borderWidths).toEqual(['1px', '1px', '1px', '1px'])
 	expect(desktopTableChrome.borderRadius).toBe('8px')
 	expect(desktopTableChrome.overflow).toBe('visible')
+})
+
+for (const comparison of [
+	{ name: 'Core Rules', path: '/reference/core-rules/changes/1.4' },
+	{ name: 'Tournament Rules', path: '/reference/tournament-rules/changes/2026-03-30' },
+]) {
+	test(`renders ${comparison.name} contextual changes without page overflow on mobile by default`, async ({
+		page,
+	}) => {
+		await page.setViewportSize({ width: 390, height: 844 })
+		await page.goto(comparison.path)
+
+		await expect(page.getByRole('button', { name: 'Changes in context' })).toHaveAttribute(
+			'aria-pressed',
+			'true',
+		)
+		await expect(page.getByRole('button', { name: 'Before & after' })).toHaveAttribute(
+			'aria-pressed',
+			'false',
+		)
+		await expect(page.getByRole('table', { name: /Changes from/u })).not.toBeAttached()
+		await expect(page.locator('article del').first()).toBeVisible()
+		await expect(page.locator('article ins').first()).toBeVisible()
+
+		const overflow = await page.evaluate(
+			() => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+		)
+		expect(overflow).toBe(0)
+	})
+}
+
+test('keeps Context as the no-JavaScript fallback for a before-and-after URL', async ({ browser }) => {
+	const context = await browser.newContext({
+		baseURL: 'http://localhost:3000',
+		javaScriptEnabled: false,
+	})
+	const page = await context.newPage()
+	try {
+		await page.goto('/reference/core-rules/changes/1.4?view=before-and-after')
+
+		await expect(page.getByRole('button', { name: 'Changes in context' })).not.toBeAttached()
+		await expect(page.getByRole('table', { name: /Changes from/u })).not.toBeAttached()
+		await expect(page.locator('article del').first()).toBeVisible()
+		await expect(page.locator('article ins').first()).toBeVisible()
+	} finally {
+		await context.close()
+	}
 })
