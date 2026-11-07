@@ -3,13 +3,19 @@ import { createRelativeLink } from 'fumadocs-ui/mdx'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { CopyableDocsBody } from '@/app/(wiki)/[[...slug]]/_components/copyable-docs-body'
+import {
+	CoreRulesSetLogoHeader,
+	type CoreRulesSetLogoHeaderData,
+} from '@/app/(wiki)/[[...slug]]/_components/core-rules-set-logo-header'
 import { PageAttribution } from '@/app/(wiki)/[[...slug]]/_components/page-attribution'
 import { CardReference } from '@/components/cards/card-reference'
 import { OutdatedCoreRulesReviewCallout } from '@/components/core-rules/review-callout'
 import { CurrentCoreRulesReviewStatus } from '@/components/core-rules/review-status'
 import { submitBlockFeedback, submitPageFeedback } from '@/features/feedback/actions'
 import { Feedback, FeedbackText } from '@/features/feedback/feedback'
+import { resolveRulesChangeRoute } from '@/features/rules-documents/change-route'
 import { resolveCoreRulesReview } from '@/features/rules-documents/core-rules-review'
+import { rulesDocuments } from '@/features/rules-documents/registry'
 import { resolveVersionedRulesRoute } from '@/features/rules-documents/versioned-route'
 import { getCardReference } from '@/lib/cards/catalog'
 import { getPagePublishingDetails } from '@/lib/content/page-publishing-details'
@@ -38,7 +44,26 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 		url: page.url,
 		rulesDocument: page.data.rulesDocument,
 	})
-	const toc = resolvedRulesDocumentPage ? [...resolvedRulesDocumentPage.toc] : page.data.toc
+	const resolvedRulesChangePage = resolveRulesChangeRoute(page.url)
+	let coreRulesSetLogoHeaderData: CoreRulesSetLogoHeaderData | undefined
+	if (resolvedRulesDocumentPage?.document.identity.type === 'core-rules') {
+		coreRulesSetLogoHeaderData = {
+			kind: 'document',
+			edition: resolvedRulesDocumentPage.document.identity,
+		}
+	} else if (resolvedRulesChangePage?.type === 'core-rules') {
+		const coreRules = rulesDocuments.family('core-rules')
+		coreRulesSetLogoHeaderData = {
+			kind: 'change',
+			from: coreRules.get(resolvedRulesChangePage.from).identity,
+			to: coreRules.get(resolvedRulesChangePage.to).identity,
+		}
+	}
+	const toc = resolvedRulesDocumentPage
+		? [...resolvedRulesDocumentPage.toc]
+		: resolvedRulesChangePage
+			? [...resolvedRulesChangePage.toc]
+			: page.data.toc
 	const structuredData =
 		page.url === '/'
 			? {
@@ -87,22 +112,32 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 					}}
 				/>
 			)}
-			{coreRulesReview?.reviewStatus === 'up-to-date' ? (
-				<div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
-					<DocsTitle className="min-w-0">{page.data.title}</DocsTitle>
-					<CurrentCoreRulesReviewStatus currentVersion={coreRulesReview.currentVersion} />
-				</div>
+			{coreRulesSetLogoHeaderData ? (
+				<CoreRulesSetLogoHeader
+					data={coreRulesSetLogoHeaderData}
+					description={publishingDetails.description}
+					title={page.data.title}
+				/>
 			) : (
-				<DocsTitle>{page.data.title}</DocsTitle>
+				<>
+					{coreRulesReview?.reviewStatus === 'up-to-date' ? (
+						<div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
+							<DocsTitle className="min-w-0">{page.data.title}</DocsTitle>
+							<CurrentCoreRulesReviewStatus currentVersion={coreRulesReview.currentVersion} />
+						</div>
+					) : (
+						<DocsTitle>{page.data.title}</DocsTitle>
+					)}
+					<DocsDescription className="mb-0">{publishingDetails.description}</DocsDescription>
+				</>
 			)}
-			<DocsDescription className="mb-0">{publishingDetails.description}</DocsDescription>
 			{cardName && cardReference ? (
 				<CardReference
 					errataHref={`/card-errata-list#${page.url.slice('/cards/'.length)}`}
 					name={cardName}
 					reference={cardReference}
 				/>
-			) : (
+			) : coreRulesSetLogoHeaderData ? null : (
 				<div className="mb-5 border-b pb-6" />
 			)}
 			{coreRulesReview?.reviewStatus === 'outdated' && (
@@ -118,6 +153,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 							createRelativeLink(source, page),
 							coreRulesReview?.document,
 							resolvedRulesDocumentPage,
+							resolvedRulesChangePage,
 						)}
 					/>
 				</CopyableDocsBody>

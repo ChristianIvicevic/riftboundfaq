@@ -9,9 +9,7 @@ type PageImagePage = {
 
 type KeywordStyle = {
 	backgroundColor: string
-	textColor: string
 	accentColor: string
-	fontSize: string
 }
 
 export type PageImageTreatment =
@@ -21,13 +19,7 @@ export type PageImageTreatment =
 			displayDescription?: string
 	  }
 	| { kind: 'editorial' }
-	| {
-			kind: 'index-cover'
-			eyebrow: string
-			coverPrimary?: string
-			coverAccent: string
-			coverAccentFontSize: string
-	  }
+	| { kind: 'index-cover' }
 	| { kind: 'card' }
 	| { kind: 'mechanic-keyword'; keyword: KeywordStyle }
 	| { kind: 'mechanic-topic' }
@@ -35,31 +27,39 @@ export type PageImageTreatment =
 	| {
 			kind: 'rules-reference'
 			displayTitle?: string
-			cover: {
-				documentLabel: string
-				versionLabel: string
-				editionLabel: string
-				versionFontSize: string
-			}
+			cover:
+				| { kind: 'core-rules'; versionLabel: string; editionName: string }
+				| {
+						kind: 'generic'
+						documentLabel: string
+						versionLabel: string
+						editionLabel: string
+				  }
 	  }
 	| {
 			kind: 'rules-diff'
 			displayTitle?: string
-			transition: {
-				documentLabel: string
-				fromLabel: string
-				toLabel: string
-				fromFontSize: string
-				toFontSize: string
-				titleFontSize: string
-			}
+			transition:
+				| {
+						kind: 'core-rules'
+						fromLabel: string
+						toLabel: string
+						fromEditionName: string
+						toEditionName: string
+				  }
+				| {
+						kind: 'generic'
+						documentLabel: string
+						fromLabel: string
+						toLabel: string
+				  }
 	  }
 
-const KEYWORD_STYLES: Record<TermVariant, Omit<KeywordStyle, 'fontSize'>> = {
-	primary: { backgroundColor: '#107361', textColor: '#ffffff', accentColor: '#3fae91' },
-	secondary: { backgroundColor: '#95b229', textColor: '#090909', accentColor: '#b8d343' },
-	accent: { backgroundColor: '#cc366b', textColor: '#ffffff', accentColor: '#e36d97' },
-	tertiary: { backgroundColor: '#6b6b6b', textColor: '#ffffff', accentColor: '#9a9a9a' },
+const KEYWORD_STYLES: Record<TermVariant, KeywordStyle> = {
+	primary: { backgroundColor: '#107361', accentColor: '#3fae91' },
+	secondary: { backgroundColor: '#95b229', accentColor: '#b8d343' },
+	accent: { backgroundColor: '#cc366b', accentColor: '#e36d97' },
+	tertiary: { backgroundColor: '#6b6b6b', accentColor: '#9a9a9a' },
 }
 
 const TERM_DEFINITION_VALUES = Object.values(TERM_DEFINITIONS)
@@ -70,14 +70,6 @@ const CORE_RULES_VERSION_KEYS = Object.keys(CORE_RULES_VERSIONS).toSorted(
 const TOURNAMENT_RULES_VERSIONS = Object.keys(rulesManifest.tournamentRules.versions).toSorted(
 	tournamentRulesConventions.compareVersions,
 )
-
-function keywordFontSize(label: string) {
-	if (label.length <= 4) return '92px'
-	if (label.length <= 6) return '82px'
-	if (label.length <= 8) return '72px'
-	if (label.length <= 10) return '64px'
-	return '54px'
-}
 
 function previousVersion(versions: readonly string[], to: string, family: string) {
 	const index = versions.indexOf(to)
@@ -111,23 +103,7 @@ export function resolvePageImageTreatment(page: PageImagePage): PageImageTreatme
 
 	if (page.url === '/about-riftbound-faq') return { kind: 'landing' }
 	if (page.url === '/the-future-of-riftbound-faq') return { kind: 'editorial' }
-	if (page.url === '/card-errata-list') {
-		return {
-			kind: 'index-cover',
-			eyebrow: 'REFERENCE',
-			coverAccent: 'ERRATA',
-			coverAccentFontSize: '88px',
-		}
-	}
-	if (page.url === '/reference') {
-		return {
-			kind: 'index-cover',
-			eyebrow: 'RULES REFERENCE',
-			coverPrimary: 'RULES',
-			coverAccent: 'DOCUMENTS',
-			coverAccentFontSize: '52px',
-		}
-	}
+	if (page.url === '/card-errata-list' || page.url === '/reference') return { kind: 'index-cover' }
 
 	if (page.url.startsWith('/cards/')) return { kind: 'card' }
 	if (page.url.startsWith('/general-rules/')) return { kind: 'general-rules' }
@@ -136,10 +112,7 @@ export function resolvePageImageTreatment(page: PageImagePage): PageImageTreatme
 		if (!definition) return { kind: 'mechanic-topic' }
 		return {
 			kind: 'mechanic-keyword',
-			keyword: {
-				...KEYWORD_STYLES[definition.variant],
-				fontSize: keywordFontSize(definition.label),
-			},
+			keyword: KEYWORD_STYLES[definition.variant],
 		}
 	}
 
@@ -151,12 +124,11 @@ export function resolvePageImageTreatment(page: PageImagePage): PageImageTreatme
 		return {
 			kind: 'rules-diff',
 			transition: {
-				documentLabel: 'CORE RULES',
+				kind: 'core-rules',
 				fromLabel: from,
 				toLabel: to,
-				fromFontSize: '126px',
-				toFontSize: '150px',
-				titleFontSize: '58px',
+				fromEditionName: CORE_RULES_VERSIONS[from]?.name ?? from,
+				toEditionName: CORE_RULES_VERSIONS[to]?.name ?? to,
 			},
 		}
 	}
@@ -169,10 +141,9 @@ export function resolvePageImageTreatment(page: PageImagePage): PageImageTreatme
 		return {
 			kind: 'rules-reference',
 			cover: {
-				documentLabel: 'CORE RULES',
+				kind: 'core-rules',
 				versionLabel: version,
-				editionLabel: (registered.name ?? version).toUpperCase(),
-				versionFontSize: '190px',
+				editionName: registered.name ?? version,
 			},
 		}
 	}
@@ -187,12 +158,10 @@ export function resolvePageImageTreatment(page: PageImagePage): PageImageTreatme
 			kind: 'rules-diff',
 			displayTitle: `Tournament Rules Changes (${toLabels.month} ${toLabels.year})`,
 			transition: {
+				kind: 'generic',
 				documentLabel: 'TOURNAMENT RULES',
 				fromLabel: `${fromLabels.shortMonth} ${fromLabels.year}`,
 				toLabel: `${toLabels.shortMonth} ${toLabels.year}`,
-				fromFontSize: '64px',
-				toFontSize: '72px',
-				titleFontSize: '52px',
 			},
 		}
 	}
@@ -204,10 +173,10 @@ export function resolvePageImageTreatment(page: PageImagePage): PageImageTreatme
 			kind: 'rules-reference',
 			displayTitle: `Tournament Rules (${labels.month} ${labels.year})`,
 			cover: {
+				kind: 'generic',
 				documentLabel: 'TOURNAMENT RULES',
 				versionLabel: labels.month.toUpperCase(),
 				editionLabel: labels.year,
-				versionFontSize: labels.month.length > 7 ? '58px' : '68px',
 			},
 		}
 	}

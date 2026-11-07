@@ -9,8 +9,8 @@ import { Rule } from '@/components/core-rules/rule'
 import { Del, Ins } from '@/components/diff-marks'
 import { MDX_TERMS } from '@/components/game-terms'
 import { Energy, Exhaust, Might, RUNES, Universal } from '@/components/resources'
-import { CoreRulesDiff, TournamentRulesDiff } from '@/components/rules/change-view'
 import { Term } from '@/components/term'
+import { renderRulesChange, type ResolvedRulesChangePage } from '@/features/rules-documents/change-route'
 import type { CompiledRulesDocument } from '@/features/rules-documents/registry'
 import {
 	renderVersionedRulesDocument,
@@ -28,10 +28,8 @@ const wikiMdxComponents = {
 	Card,
 	CardErratum,
 	CardErratumText,
-	CoreRulesDiff,
 	Del,
 	Ins,
-	TournamentRulesDiff,
 	Energy,
 	Exhaust,
 	Might,
@@ -47,13 +45,18 @@ export function getMDXComponents(
 	relativeLink: NonNullable<MDXComponents['a']>,
 	reviewedCoreRulesDocument?: CompiledRulesDocument,
 	resolvedRulesDocumentPage?: ResolvedRulesDocumentPage,
+	resolvedRulesChangePage?: ResolvedRulesChangePage,
 ): MDXComponents {
 	return {
 		...wikiMdxComponents,
 		a: relativeLink,
+		CoreRulesDiff: (props: { from: string; to: string }) =>
+			renderRulesChange(resolvedRulesChangePage, { type: 'core-rules', ...props }),
 		RulesDocument: () => renderVersionedRulesDocument(resolvedRulesDocumentPage),
 		Rule: (props: Omit<ComponentProps<typeof Rule>, 'document'>) => (
 			<Rule {...props} document={reviewedCoreRulesDocument} />
 		),
+		TournamentRulesDiff: (props: { from: string; to: string }) =>
+			renderRulesChange(resolvedRulesChangePage, { type: 'tournament-rules', ...props }),
 	}
 }

@@ -1,7 +1,8 @@
-import { cva } from 'class-variance-authority'
 import type { ReactNode } from 'react'
 import { Card } from '@/components/cards/card'
-import { Badge } from '@/components/ui/badge'
+import { RulesChangeBadge } from '@/components/rules/change-badge'
+import { RulesContentBlock } from '@/components/rules/content-block'
+import { RulesHeadingShell, RulesRuleListShell, RulesRuleShell } from '@/components/rules/document-shell'
 import type {
 	RuleChangeMarker,
 	RulesReferenceTarget,
@@ -13,20 +14,9 @@ import type { RuleIdLookup, RuleReference } from '@/lib/rules/types'
 
 type FindRuleReferences = (text: string, ruleIds: RuleIdLookup) => RuleReference[]
 type FindReferenceTarget = (id: string) => RulesReferenceTarget | undefined
-type DisplayRulesHeading = Pick<RulesDocumentHeading, 'id' | 'text'>
-
-const ruleChangeBadgeVariants = cva('', {
-	variants: {
-		marker: {
-			new: 'bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300',
-			changed: 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
-		},
-		placement: {
-			mobile: 'mt-1 flex sm:hidden',
-			desktop: 'hidden self-start sm:mt-0.5 sm:inline-flex',
-		},
-	},
-})
+type DisplayRulesHeading = Pick<RulesDocumentHeading, 'id' | 'text'> & {
+	readonly changeMarker?: RuleChangeMarker
+}
 
 function RuleChangeBadge({
 	marker,
@@ -36,12 +26,10 @@ function RuleChangeBadge({
 	placement: 'mobile' | 'desktop'
 }) {
 	return (
-		<Badge
-			className={ruleChangeBadgeVariants({ marker, placement })}
-			variant={marker === 'new' ? 'default' : 'secondary'}
-		>
-			{marker === 'new' ? 'New' : 'Changed'}
-		</Badge>
+		<RulesChangeBadge
+			className={placement === 'mobile' ? 'mt-1 sm:hidden' : 'hidden self-start sm:mt-0.5 sm:inline-flex'}
+			status={marker}
+		/>
 	)
 }
 
@@ -136,74 +124,24 @@ function RuleContentView({
 	findReferences: FindRuleReferences
 }) {
 	return (
-		<div className="min-w-0 space-y-2 leading-6 wrap-anywhere">
+		<>
 			{content.map((entry, index) => {
 				const mobileBadge =
 					index === 0 && changeMarker ? <RuleChangeBadge marker={changeMarker} placement="mobile" /> : null
-				if (entry.kind === 'example') {
-					return (
-						<div
-							className="border-l-2 border-amber-600 bg-amber-500/5 py-1 pr-2 pl-3 text-sm text-fd-muted-foreground dark:border-amber-400"
-							key={index}
-						>
-							<LinkedRuleText
-								findReferences={findReferences}
-								linkCards
-								referenceTarget={referenceTarget}
-								ruleIds={ruleIds}
-								text={entry.text}
-							/>
-							{mobileBadge}
-						</div>
-					)
-				}
-
-				if (entry.kind === 'reference') {
-					return (
-						<p className="text-sm text-fd-muted-foreground" key={index}>
-							<LinkedRuleText
-								findReferences={findReferences}
-								referenceTarget={referenceTarget}
-								ruleIds={ruleIds}
-								text={entry.text}
-							/>
-							{mobileBadge}
-						</p>
-					)
-				}
-
-				if (entry.kind === 'bullet') {
-					return (
-						<div className="flex gap-2" key={index}>
-							<span aria-hidden="true" className="text-fd-muted-foreground">
-								•
-							</span>
-							<p>
-								<LinkedRuleText
-									findReferences={findReferences}
-									referenceTarget={referenceTarget}
-									ruleIds={ruleIds}
-									text={entry.text}
-								/>
-								{mobileBadge}
-							</p>
-						</div>
-					)
-				}
-
 				return (
-					<p key={index}>
+					<RulesContentBlock key={index} kind={entry.kind}>
 						<LinkedRuleText
 							findReferences={findReferences}
+							linkCards={entry.kind === 'example'}
 							referenceTarget={referenceTarget}
 							ruleIds={ruleIds}
 							text={entry.text}
 						/>
 						{mobileBadge}
-					</p>
+					</RulesContentBlock>
 				)
 			})}
-		</div>
+		</>
 	)
 }
 
@@ -224,72 +162,61 @@ export function RulesDocumentRuleList({
 	const ruleIds: RuleIdLookup = { has: (id) => referenceTarget(id) !== undefined }
 
 	return (
-		<ol
-			className={
-				nested
-					? 'mt-2 ml-2 list-none space-y-2 border-l border-fd-border pl-2 sm:ml-5 sm:pl-5'
-					: 'm-0 list-none space-y-2 p-0'
-			}
-		>
+		<RulesRuleListShell nested={nested}>
 			{rules.map((rule) => {
 				const anchor = rule.anchor
+				const hasLabel = rule.id || (labelMode === 'source' && rule.label)
+				const label = hasLabel ? (
+					labelMode === 'id-with-period' ? (
+						<a
+							aria-label={`Link to rule ${rule.id}`}
+							className="font-mono text-sm leading-6 font-medium whitespace-nowrap text-fd-muted-foreground no-underline hover:text-fd-primary"
+							href={`#${anchor}`}
+						>
+							{rule.id}.
+						</a>
+					) : (
+						<a
+							aria-label={`Link to rule ${rule.id ?? rule.label}`}
+							className="font-mono text-sm leading-6 font-medium whitespace-nowrap text-fd-muted-foreground no-underline hover:text-fd-primary"
+							href={`#${anchor}`}
+						>
+							{rule.label}
+						</a>
+					)
+				) : undefined
 				return (
-					<li
-						className="core-rules-anchor scroll-mt-20 target:border-l-2 target:border-sky-600 target:bg-sky-500/10 target:pr-2 target:pl-3 dark:target:border-sky-400"
+					<RulesRuleShell
+						content={
+							<RuleContentView
+								changeMarker={rule.changeMarker}
+								content={rule.content}
+								findReferences={findReferences}
+								referenceTarget={referenceTarget}
+								ruleIds={ruleIds}
+							/>
+						}
 						id={anchor}
 						key={anchor}
-					>
-						{rule.id || (labelMode === 'source' && rule.label) ? (
-							<div className="grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] items-start gap-x-2 py-1.5 sm:grid-cols-[max-content_minmax(0,1fr)_max-content] sm:gap-x-4">
-								{labelMode === 'id-with-period' ? (
-									<a
-										aria-label={`Link to rule ${rule.id}`}
-										className="font-mono text-sm leading-6 font-medium whitespace-nowrap text-fd-muted-foreground no-underline hover:text-fd-primary"
-										href={`#${anchor}`}
-									>
-										{rule.id}.
-									</a>
-								) : (
-									<a
-										aria-label={`Link to rule ${rule.id ?? rule.label}`}
-										className="font-mono text-sm leading-6 font-medium whitespace-nowrap text-fd-muted-foreground no-underline hover:text-fd-primary"
-										href={`#${anchor}`}
-									>
-										{rule.label}
-									</a>
-								)}
-								<RuleContentView
-									changeMarker={rule.changeMarker}
-									content={rule.content}
-									findReferences={findReferences}
-									referenceTarget={referenceTarget}
-									ruleIds={ruleIds}
-								/>
-								{rule.changeMarker && <RuleChangeBadge marker={rule.changeMarker} placement="desktop" />}
-							</div>
-						) : (
-							<div className="grid min-w-0 grid-cols-1 items-start py-1.5 sm:grid-cols-[minmax(0,1fr)_max-content] sm:gap-x-4">
-								<RuleContentView
-									changeMarker={rule.changeMarker}
-									content={rule.content}
-									findReferences={findReferences}
-									referenceTarget={referenceTarget}
-									ruleIds={ruleIds}
-								/>
-								{rule.changeMarker && <RuleChangeBadge marker={rule.changeMarker} placement="desktop" />}
-							</div>
-						)}
-						<RulesDocumentRuleList
-							findReferences={findReferences}
-							labelMode={labelMode}
-							nested
-							referenceTarget={referenceTarget}
-							rules={rule.children}
-						/>
-					</li>
+						label={label}
+						nestedRules={
+							<RulesDocumentRuleList
+								findReferences={findReferences}
+								labelMode={labelMode}
+								nested
+								referenceTarget={referenceTarget}
+								rules={rule.children}
+							/>
+						}
+						trailing={
+							rule.changeMarker ? (
+								<RuleChangeBadge marker={rule.changeMarker} placement="desktop" />
+							) : undefined
+						}
+					/>
 				)
 			})}
-		</ol>
+		</RulesRuleListShell>
 	)
 }
 
@@ -304,6 +231,33 @@ function RulesDocumentHeadingLink({ heading, anchor }: { heading: DisplayRulesHe
 	)
 }
 
+function RulesDocumentHeadingView({
+	heading,
+	anchor,
+	depth,
+}: {
+	heading: DisplayRulesHeading
+	anchor: string
+	depth: 'section' | 'subsection'
+}) {
+	return (
+		<RulesHeadingShell
+			depth={depth}
+			id={anchor}
+			trailing={
+				heading.changeMarker ? (
+					<RuleChangeBadge marker={heading.changeMarker} placement="desktop" />
+				) : undefined
+			}
+		>
+			<span className="min-w-0">
+				<RulesDocumentHeadingLink anchor={anchor} heading={heading} />
+				{heading.changeMarker && <RuleChangeBadge marker={heading.changeMarker} placement="mobile" />}
+			</span>
+		</RulesHeadingShell>
+	)
+}
+
 export function RulesDocumentSectionHeading({
 	heading,
 	anchor,
@@ -311,14 +265,7 @@ export function RulesDocumentSectionHeading({
 	heading: DisplayRulesHeading
 	anchor: string
 }) {
-	return (
-		<h2
-			className="core-rules-anchor scroll-mt-20 border-b border-fd-border py-3 text-2xl font-semibold tracking-tight target:border-l-2 target:border-l-sky-600 target:bg-sky-500/10 target:pr-2 target:pl-3 sm:text-3xl dark:target:border-l-sky-400"
-			id={anchor}
-		>
-			<RulesDocumentHeadingLink anchor={anchor} heading={heading} />
-		</h2>
-	)
+	return <RulesDocumentHeadingView anchor={anchor} depth="section" heading={heading} />
 }
 
 export function RulesDocumentSubsectionHeading({
@@ -328,12 +275,5 @@ export function RulesDocumentSubsectionHeading({
 	heading: DisplayRulesHeading
 	anchor: string
 }) {
-	return (
-		<h3
-			className="core-rules-anchor mb-4 scroll-mt-20 py-2 text-xl font-semibold tracking-tight target:border-l-2 target:border-sky-600 target:bg-sky-500/10 target:pr-2 target:pl-3 sm:text-2xl dark:target:border-sky-400"
-			id={anchor}
-		>
-			<RulesDocumentHeadingLink anchor={anchor} heading={heading} />
-		</h3>
-	)
+	return <RulesDocumentHeadingView anchor={anchor} depth="subsection" heading={heading} />
 }

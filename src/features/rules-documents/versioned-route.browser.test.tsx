@@ -19,6 +19,22 @@ describe('version-specific rules page rendering', () => {
 			.toHaveAttribute('id', 'R000')
 	})
 
+	test('renders a reference-only change badge in an archived Core Rules document', async () => {
+		const route = resolveVersionedRulesRoute({
+			url: '/reference/core-rules/1.1',
+			rulesDocument: { type: 'core-rules', version: '1.1' },
+		})
+		const screen = await render(renderVersionedRulesDocument(route))
+		const changedRule = screen.container.querySelector('[id="R106.4.d"]')!
+		const changedBadges = [...changedRule.querySelectorAll('span')].filter(
+			({ textContent }) => textContent === 'Changed',
+		)
+		const addedHeading = screen.container.querySelector('[id="R712"]')!
+
+		expect(changedBadges.length).toBeGreaterThan(0)
+		expect(addedHeading.textContent).toContain('Added')
+	})
+
 	test('renders the current Tournament Rules through its family adapter', async () => {
 		const route = resolveVersionedRulesRoute({
 			url: '/reference/tournament-rules/2026-10-09',

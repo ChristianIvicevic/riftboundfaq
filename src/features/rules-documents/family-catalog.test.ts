@@ -1,14 +1,38 @@
 import { describe, expect, test, vi } from 'vitest'
+import type { SourceRulesDocument } from '@/features/rules-documents/compile'
 import {
 	createRulesDocumentFamilyCatalog,
 	RulesDocumentInvariantError,
 	UnknownRulesVersionError,
 } from '@/features/rules-documents/family-catalog'
 
-const diffId = (id: string | null) => id ?? 'unnumbered'
-
 function emptySource(version: string) {
 	return { version, sections: [] }
+}
+
+function sourceWithReference(version: string, reference: string): SourceRulesDocument {
+	return {
+		version,
+		sections: [
+			{
+				heading: { sequence: 1, id: '300', text: 'Rules', depth: 2 },
+				blocks: [
+					{
+						kind: 'rules',
+						rules: [
+							{
+								sequence: 2,
+								id: '300.1',
+								label: '300.1.',
+								content: [{ kind: 'paragraph', text: `Follow rule ${reference}.` }],
+								children: [],
+							},
+						],
+					},
+				],
+			},
+		],
+	}
 }
 
 const invalidCatalogs: readonly {
@@ -49,7 +73,6 @@ describe('Rules document family catalog', () => {
 				'1.9': { version: '1.9' },
 			},
 			adapt,
-			diffId,
 		})
 
 		expect(catalog.registeredVersions).toEqual([
@@ -70,14 +93,12 @@ describe('Rules document family catalog', () => {
 				'2026-04-29': { version: '2026-04-29' },
 			},
 			adapt: ({ version }) => emptySource(version),
-			diffId,
 		})
 		const firstCatalog = createRulesDocumentFamilyCatalog({
 			type: 'tournament-rules',
 			currentVersion: '2026-03-30',
 			documents: { '2026-03-30': { version: '2026-03-30' } },
 			adapt: ({ version }) => emptySource(version),
-			diffId,
 		})
 
 		expect(catalog.registeredVersions.map(({ version }) => version)).toEqual([
@@ -86,6 +107,24 @@ describe('Rules document family catalog', () => {
 			'2026-07-16',
 		])
 		expect(firstCatalog.current.identity.status).toBe('current')
+	})
+
+	test('marks reference-only changes on every target version', () => {
+		const catalog = createRulesDocumentFamilyCatalog({
+			type: 'core-rules',
+			currentVersion: '1.2',
+			documents: {
+				'1.0': sourceWithReference('1.0', '301'),
+				'1.1': sourceWithReference('1.1', '302'),
+				'1.2': sourceWithReference('1.2', '303'),
+			},
+			adapt: (document) => document,
+		})
+		const marker = (version: string) => catalog.get(version).sections[0]!.blocks[0]!.rules[0]!.changeMarker
+
+		expect(marker('1.0')).toBeUndefined()
+		expect(marker('1.1')).toBe('changed')
+		expect(marker('1.2')).toBe('changed')
 	})
 
 	test.each(invalidCatalogs)(
@@ -97,7 +136,6 @@ describe('Rules document family catalog', () => {
 					currentVersion,
 					documents,
 					adapt: ({ version }) => emptySource(version),
-					diffId,
 				}),
 			).toThrow(message)
 		},
@@ -111,7 +149,6 @@ describe('Rules document family catalog', () => {
 				currentVersion: '1.0',
 				documents: { bogus: { version: 'bogus' } },
 				adapt: ({ version }) => emptySource(version),
-				diffId,
 			})
 		} catch (cause) {
 			error = cause
@@ -135,7 +172,6 @@ describe('Rules document family catalog', () => {
 			currentVersion: '1.1',
 			documents,
 			adapt,
-			diffId,
 		})
 		Reflect.deleteProperty(documents, '1.0')
 		Object.assign(documents, { '1.2': { version: '1.2' } })
@@ -159,7 +195,7 @@ describe('Rules document family catalog', () => {
 				version,
 				sections: [
 					{
-						heading: { sequence: 2, id: '100', text: 'Section', label: '100.', depth: 2 },
+						heading: { sequence: 2, id: '100', text: 'Section', depth: 2 },
 						blocks: [
 							{
 								kind: 'rules',
@@ -168,7 +204,6 @@ describe('Rules document family catalog', () => {
 										sequence: 1,
 										id: '101',
 										label: '101.',
-										diffLabel: '101.',
 										content: [{ kind: 'paragraph', text: 'Rule' }],
 										children: [],
 									},
@@ -178,7 +213,6 @@ describe('Rules document family catalog', () => {
 					},
 				],
 			}),
-			diffId,
 		})
 
 		expect(catalog.registeredVersions).toHaveLength(1)

@@ -1,6 +1,6 @@
+import type { RulesDiffRecord } from '@/features/rules-documents/document-comparison'
 import type {
 	RegisteredRulesVersionSummary,
-	RulesDiffRecord,
 	RulesReferenceTarget,
 	TraversedRule,
 	TraversedRulesBlock,
@@ -15,7 +15,6 @@ type SourceRulesHeading = {
 	sequence: number
 	id: string
 	text: string
-	label: string
 	depth: 2 | 3
 }
 
@@ -23,7 +22,6 @@ export type SourceRule = {
 	sequence: number
 	id: string | null
 	label: string | null
-	diffLabel: string
 	content: readonly RulesDocumentContent[]
 	children: readonly SourceRule[]
 }
@@ -60,11 +58,9 @@ export class RulesDocumentInvariantError extends Error {
 export function compileRulesDocument({
 	identity,
 	source,
-	diffId,
 }: {
 	identity: RegisteredRulesVersionSummary
 	source: SourceRulesDocument
-	diffId: (id: string | null, occurrence: number) => string
 }): CompiledRulesDocument {
 	if (source.version !== identity.version) {
 		throw new RulesDocumentInvariantError(
@@ -80,7 +76,6 @@ export function compileRulesDocument({
 	const referenceTargets = new Map<string, RulesReferenceTarget>()
 	const lookup = new Map<string, string>()
 	const anchorOccurrences = new Map<string, number>()
-	const diffOccurrences = new Map<string, number>()
 	const sequences = new Set<number>()
 	let previousSequence = 0
 
@@ -121,95 +116,91 @@ export function compileRulesDocument({
 	}
 
 	const appendRecord = ({
-		sequence,
 		id,
-		diffLabel,
-		lines,
+		content,
 		anchor,
+		parentAnchor,
+		kind,
+		headingDepth,
 	}: {
-		sequence: number
 		id: string | null
-		diffLabel: string
-		lines: string[]
+		content: readonly RulesDocumentContent[]
 		anchor: string
+		parentAnchor: string | null
+		kind: 'heading' | 'rule'
+		headingDepth?: 2 | 3
 	}) => {
-		const occurrenceKey = id ?? 'unnumbered'
-		const occurrence = (diffOccurrences.get(occurrenceKey) ?? 0) + 1
-		diffOccurrences.set(occurrenceKey, occurrence)
-		let recordId: string
-		try {
-			recordId = diffId(id, occurrence)
-		} catch {
-			throw new RulesDocumentInvariantError(
-				identity.type,
-				identity.version,
-				sequence,
-				'invalid diff identity',
-			)
+		let record: RulesDiffRecord = {
+			id,
+			content: Object.freeze(content.map((entry) => Object.freeze({ ...entry }))),
+			anchor,
+			parentAnchor,
+			kind,
 		}
-		if (!recordId) {
-			throw new RulesDocumentInvariantError(
-				identity.type,
-				identity.version,
-				sequence,
-				'invalid diff identity',
-			)
-		}
-		diffRecords.push(Object.freeze({ id: recordId, lines: Object.freeze(lines), anchor, label: diffLabel }))
+		if (headingDepth !== undefined) record = { ...record, headingDepth }
+		diffRecords.push(Object.freeze(record))
 		if (id !== null) {
 			if (!referenceTargets.has(id)) referenceTargets.set(id, Object.freeze({ id, anchor }))
-			if (!lookup.has(id)) lookup.set(id, lines.join(' '))
+			if (!lookup.has(id)) lookup.set(id, content.map(({ text }) => text).join(' '))
 		}
 	}
 
-	const compileHeading = (heading: SourceRulesHeading): TraversedRulesHeading => {
+	const compileHeading = (
+		heading: SourceRulesHeading,
+		parentAnchor: string | null,
+	): TraversedRulesHeading => {
 		registerSequence(heading.sequence)
 		const anchor = allocateAnchor(heading.id, heading.sequence)
 		const compiled = Object.freeze({ id: heading.id, text: heading.text, anchor, depth: heading.depth })
 		navigation.push(compiled)
 		appendRecord({
-			sequence: heading.sequence,
 			id: heading.id,
-			diffLabel: heading.label,
-			lines: [heading.text],
+			content: [{ kind: 'paragraph', text: heading.text }],
 			anchor,
+			parentAnchor,
+			kind: 'heading',
+			headingDepth: heading.depth,
 		})
 		return compiled
 	}
 
-	const compileRules = (rules: readonly SourceRule[]): readonly TraversedRule[] =>
+	const compileRules = (rules: readonly SourceRule[], parentAnchor: string): readonly TraversedRule[] =>
 		Object.freeze(
 			rules.map((rule) => {
 				registerSequence(rule.sequence)
 				const anchor = allocateAnchor(rule.id, rule.sequence)
 				appendRecord({
-					sequence: rule.sequence,
 					id: rule.id,
-					diffLabel: rule.diffLabel,
-					lines: rule.content.map(({ text }) => text),
+					content: rule.content,
 					anchor,
+					parentAnchor,
+					kind: 'rule',
 				})
 				return Object.freeze({
 					id: rule.id,
 					label: rule.label,
 					anchor,
 					content: Object.freeze(rule.content.map((entry) => Object.freeze({ ...entry }))),
-					children: compileRules(rule.children),
+					children: compileRules(rule.children, anchor),
 				})
 			}),
 		)
 
 	const sections: TraversedRulesSection[] = source.sections.map((section) => {
-		const heading = compileHeading(section.heading)
+		const heading = compileHeading(section.heading, null)
 		const blocks: readonly TraversedRulesBlock[] = Object.freeze(
 			section.blocks.map((block) => {
 				if (block.kind === 'rules') {
-					return Object.freeze({ kind: 'rules' as const, rules: compileRules(block.rules) })
+					return Object.freeze({
+						kind: 'rules' as const,
+						rules: compileRules(block.rules, heading.anchor),
+					})
 				}
+				const subsectionHeading = compileHeading(block.heading, heading.anchor)
 				return Object.freeze({
 					kind: 'subsection',
-					heading: compileHeading(block.heading),
-					rules: compileRules(block.rules),
+					heading: subsectionHeading,
+					rules: compileRules(block.rules, subsectionHeading.anchor),
 				})
 			}),
 		)

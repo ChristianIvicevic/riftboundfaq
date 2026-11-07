@@ -1,5 +1,43 @@
 import { describe, expect, test } from 'vitest'
-import { rulesDocuments, UnknownRulesVersionError } from '@/features/rules-documents/registry'
+import {
+	rulesDocuments,
+	type CompiledRulesDocument,
+	type RuleChangeMarker,
+	type TraversedRule,
+	UnknownRulesVersionError,
+} from '@/features/rules-documents/registry'
+
+function collectChangeMarkers(
+	rules: readonly TraversedRule[],
+): readonly (readonly [string, RuleChangeMarker])[] {
+	return rules.flatMap((rule) => [
+		...(rule.changeMarker ? ([[rule.anchor, rule.changeMarker]] as const) : []),
+		...collectChangeMarkers(rule.children),
+	])
+}
+
+function compareChangeMarkersByAnchor(
+	[left]: readonly [string, RuleChangeMarker],
+	[right]: readonly [string, RuleChangeMarker],
+) {
+	return left.localeCompare(right)
+}
+
+function collectDocumentChangeMarkers(
+	document: CompiledRulesDocument,
+): (readonly [string, RuleChangeMarker])[] {
+	const markers: (readonly [string, RuleChangeMarker])[] = []
+	for (const { heading, blocks } of document.sections) {
+		if (heading.changeMarker) markers.push([heading.anchor, heading.changeMarker])
+		for (const block of blocks) {
+			if (block.kind === 'subsection' && block.heading.changeMarker) {
+				markers.push([block.heading.anchor, block.heading.changeMarker])
+			}
+			markers.push(...collectChangeMarkers(block.rules))
+		}
+	}
+	return markers
+}
 
 describe('rules documents registry', () => {
 	test('distinguishes exact registered versions from the current rules version', () => {
@@ -28,8 +66,21 @@ describe('rules documents registry', () => {
 		expect(document.sections[0].heading).toMatchObject({ id: '000', anchor: 'R000', depth: 2 })
 		expect(gearHeading).toMatchObject({ text: 'Gear', anchor: 'R143', depth: 3 })
 		expect(gearRecords).toEqual([
-			{ id: '143', lines: ['Gear'], anchor: 'R143', label: '143.' },
-			{ id: '143', lines: ['Gear are:'], anchor: 'R143-2', label: '143.' },
+			{
+				id: '143',
+				content: [{ kind: 'paragraph', text: 'Gear' }],
+				anchor: 'R143',
+				parentAnchor: 'R100',
+				kind: 'heading',
+				headingDepth: 3,
+			},
+			{
+				id: '143',
+				content: [{ kind: 'paragraph', text: 'Gear are:' }],
+				anchor: 'R143-2',
+				parentAnchor: 'R143',
+				kind: 'rule',
+			},
 		])
 		expect(document.referenceTarget('143')).toEqual({ id: '143', anchor: 'R143' })
 		expect(document.lookupText('143')).toBe('Gear')
@@ -39,26 +90,30 @@ describe('rules documents registry', () => {
 		const document = rulesDocuments.get({ type: 'core-rules', version: '1.2' })
 
 		expect(document.diffRecords.filter(({ id }) => id === '744.5')).toMatchObject([
-			{ anchor: 'R744.5', label: '744.5.' },
-			{ anchor: 'R744.5-2', label: '744.5.' },
+			{ anchor: 'R744.5' },
+			{ anchor: 'R744.5-2' },
 		])
 		expect(document.referenceTarget('744.5')).toEqual({ id: '744.5', anchor: 'R744.5' })
 	})
 
-	test('preserves Tournament Rules block order, source labels, and unnumbered diff identities', () => {
+	test('preserves Tournament Rules block order and unnumbered entries', () => {
 		const family = rulesDocuments.family('tournament-rules')
 		const document = family.get('2026-03-30')
-		const unnumbered = document.diffRecords.find(({ id }) => id === 'unnumbered::1')
+		const unnumbered = document.diffRecords.find(({ anchor }) => anchor === 'U474')
 
 		expect(family.current.identity.status).toBe('current')
 		expect(document.navigation[0]).toBe(document.sections[0].heading)
 		expect(unnumbered).toEqual({
-			id: 'unnumbered::1',
-			lines: [
-				'Players may utilize as many “blank” battlefields as they need for limited gameplay. See 602.3.d. below for more information on “blank” battlefields.',
+			id: null,
+			content: [
+				{
+					kind: 'paragraph',
+					text: 'Players may utilize as many “blank” battlefields as they need for limited gameplay. See 602.3.d. below for more information on “blank” battlefields.',
+				},
 			],
 			anchor: 'U474',
-			label: 'Unnumbered',
+			parentAnchor: 'R602.1.a',
+			kind: 'rule',
 		})
 		expect(document.referenceTarget('701')).toMatchObject({ id: '701', anchor: 'R701' })
 	})
@@ -72,12 +127,29 @@ describe('rules documents registry', () => {
 		}
 	})
 
-	test('prepares a production rules changes page through the generated-data composition', () => {
-		const change = rulesDocuments.change({ type: 'core-rules', from: '1.0', to: '1.1' })
+	test('gives each target rules page the same change badges as its changes page', () => {
+		for (const type of ['core-rules', 'tournament-rules'] as const) {
+			const family = rulesDocuments.family(type)
+			const versions = family.registeredVersions.map(({ version }) => version)
+			for (let index = 1; index < versions.length; index++) {
+				const from = versions[index - 1]!
+				const to = versions[index]!
+				const expected: (readonly [string, RuleChangeMarker])[] = []
+				for (const entry of family.compare(from, to).entries) {
+					if (entry.kind === 'added') {
+						expected.push([entry.rule.anchor, 'new'])
+					}
+					if (entry.kind === 'modified') {
+						expected.push([entry.newRule.anchor, 'changed'])
+					}
+				}
+				const actual = collectDocumentChangeMarkers(family.get(to))
 
-		expect(change.from).toMatchObject({ version: '1.0' })
-		expect(change.to).toMatchObject({ version: '1.1' })
-		expect(change.entries.length).toBeGreaterThan(0)
+				expect(actual.toSorted(compareChangeMarkersByAnchor), `${type} ${from} -> ${to}`).toEqual(
+					expected.toSorted(compareChangeMarkersByAnchor),
+				)
+			}
+		}
 	})
 
 	test('memoizes immutable documents whose navigation headings are the rendered headings', () => {
