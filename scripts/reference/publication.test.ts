@@ -155,13 +155,13 @@ describe('prepareReferencePublication', () => {
 		expect(artifacts.get('tournament-rules/(archive)/2025-07-21.mdx')).not.toContain('icon:')
 	})
 
-	test('assigns the rules overview its home navigation label and icon', async () => {
+	test('assigns the rules overview its navigation label and icon', async () => {
 		const { artifacts } = await prepareFixture()
 		const overview = artifacts.get('index.mdx')
 
 		expect(overview).toContain('title: "Rules Documents"')
-		expect(overview).toContain('sidebarTitle: "Home"')
-		expect(overview).toContain('icon: "House"')
+		expect(overview).toContain('sidebarTitle: "Overview"')
+		expect(overview).toContain('icon: "Library"')
 	})
 
 	test.each([

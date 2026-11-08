@@ -1,6 +1,10 @@
 import { DocsLayout } from 'fumadocs-ui/layouts/spacious'
-import Image from 'next/image'
-import pageIcon from '@/app/icon.png'
+import { CurrentSectionTitle, GlobalHeader } from '@/app/(wiki)/_components/global-header'
+import {
+	NavigationSidebar,
+	NavigationSidebarDrawer,
+	NavigationSidebarProvider,
+} from '@/app/(wiki)/_components/navigation-sidebar'
 import { source } from '@/lib/content/source'
 import { GITHUB_REPO_URL, SITE_NAME, X_URL } from '@/lib/site'
 
@@ -14,29 +18,34 @@ function XIcon() {
 
 export default function Layout({ children }: LayoutProps<'/'>) {
 	return (
-		<DocsLayout
-			tree={source.getPageTree()}
-			nav={{
-				title: (
-					<>
-						<Image src={pageIcon} alt="" className="size-6" />
-						{SITE_NAME}
-					</>
-				),
-			}}
-			githubUrl={GITHUB_REPO_URL}
-			links={[
-				{
-					type: 'icon',
-					label: 'View @civicevic on X',
-					text: '@civicevic on X',
-					url: X_URL,
-					external: true,
-					icon: <XIcon />,
-				},
-			]}
-		>
-			{children}
-		</DocsLayout>
+		<div className="min-h-screen bg-fd-card [--fd-banner-height:var(--global-header-height)] [--global-header-height:3.5rem] print:[--fd-banner-height:0px]">
+			<GlobalHeader siteName={SITE_NAME} />
+			<DocsLayout
+				githubUrl={GITHUB_REPO_URL}
+				links={[
+					{
+						type: 'icon',
+						label: 'View @civicevic on X',
+						text: '@civicevic on X',
+						url: X_URL,
+						external: true,
+						icon: <XIcon />,
+					},
+				]}
+				nav={{ title: CurrentSectionTitle }}
+				searchToggle={{ full: { className: 'md:hidden' } }}
+				slots={{
+					sidebar: {
+						provider: NavigationSidebarProvider,
+						main: NavigationSidebar,
+						drawer: NavigationSidebarDrawer,
+					},
+				}}
+				tabs={false}
+				tree={source.getPageTree()}
+			>
+				{children}
+			</DocsLayout>
+		</div>
 	)
 }
