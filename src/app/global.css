@@ -3,6 +3,11 @@
 @import 'fumadocs-ui/css/vitepress.css';
 @import 'fumadocs-ui/css/preset.css';
 
+/* Prevent a compositor seam between the adjacent mobile sticky bars. */
+#fd-spacious-layout > [class~='[grid-area:toc-popover]'] {
+	background-color: var(--color-fd-card);
+}
+
 @keyframes core-rule-target {
 	0% {
 		border-left-color: transparent;

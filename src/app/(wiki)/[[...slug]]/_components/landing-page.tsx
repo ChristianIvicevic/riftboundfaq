@@ -1,67 +1,71 @@
-import { Card, Cards } from 'fumadocs-ui/components/card'
-import { Bookmark, FileDiff, Info, type LucideIcon } from 'lucide-react'
+import Link from 'next/link'
 import { LandingSearchTrigger } from '@/app/(wiki)/[[...slug]]/_components/landing-search-trigger'
+import { source } from '@/lib/content/source'
 
-type LandingResource = Readonly<{
-	title: string
-	description: string
-	href: string
-	icon: LucideIcon
-}>
+const RULING_FAMILIES = [
+	{ prefix: '/cards/', label: 'Card' },
+	{ prefix: '/mechanics/', label: 'Mechanic' },
+	{ prefix: '/general-rules/', label: 'General Rules' },
+] as const
 
-const LANDING_RESOURCES: readonly LandingResource[] = [
-	{
-		title: 'Rules Documents',
-		description: 'Current and historical Core Rules and Tournament Rules, plus version comparisons.',
-		href: '/reference',
-		icon: Bookmark,
-	},
-	{
-		title: 'Card Errata List',
-		description: 'Compare printed card text with the corrected wording currently in effect.',
-		href: '/card-errata-list',
-		icon: FileDiff,
-	},
-	{
-		title: 'About Riftbound FAQ',
-		description: 'Learn how this independent resource works and how to send corrections.',
-		href: '/about-riftbound-faq',
-		icon: Info,
-	},
-]
+const PUBLICATION_DATE_FORMATTER = new Intl.DateTimeFormat('en-GB', {
+	day: 'numeric',
+	month: 'short',
+	year: 'numeric',
+	timeZone: 'UTC',
+})
+
+function getLatestRulings() {
+	return source
+		.getPages()
+		.flatMap((page) => {
+			const family = RULING_FAMILIES.find(({ prefix }) => page.url.startsWith(prefix))
+			if (!family || !page.data.createdAt) return []
+
+			return [
+				{
+					createdAt: page.data.createdAt,
+					family: family.label,
+					href: page.url,
+					title: page.data.title,
+				},
+			]
+		})
+		.toSorted(
+			(left, right) => right.createdAt.localeCompare(left.createdAt) || left.title.localeCompare(right.title),
+		)
+		.slice(0, 5)
+}
 
 export function LandingPage() {
+	const latestRulings = getLatestRulings()
+
 	return (
-		<section className="not-prose space-y-5" aria-labelledby="landing-heading">
-			<div className="max-w-2xl">
-				<p className="mb-2 text-xs font-semibold tracking-widest text-fd-muted-foreground uppercase">
-					Start here
-				</p>
-				<h2 id="landing-heading" className="text-xl font-semibold tracking-tight text-fd-foreground">
-					Find an answer
-				</h2>
-				<p className="mt-2 text-sm leading-6 text-fd-muted-foreground">
-					Search every ruling or use the navigation to browse General Rules, Mechanics, and Card Rulings.
-				</p>
-			</div>
+		<div className="not-prose space-y-8">
 			<LandingSearchTrigger />
-			<p className="pt-1 text-xs font-semibold tracking-widest text-fd-muted-foreground uppercase">
-				Resources
-			</p>
-			<Cards className="grid-cols-1 gap-3 sm:grid-cols-3">
-				{LANDING_RESOURCES.map((resource) => {
-					const Icon = resource.icon
-					return (
-						<Card
-							key={resource.title}
-							description={resource.description}
-							href={resource.href}
-							icon={<Icon />}
-							title={resource.title}
-						/>
-					)
-				})}
-			</Cards>
-		</section>
+			<section aria-labelledby="latest-rulings-heading">
+				<h2 id="latest-rulings-heading" className="text-xl font-semibold tracking-tight text-fd-foreground">
+					Latest rulings
+				</h2>
+				<ul className="mt-3 divide-y divide-fd-border overflow-hidden rounded-xl border border-fd-border bg-fd-card">
+					{latestRulings.map((ruling) => (
+						<li key={ruling.href}>
+							<Link
+								className="flex flex-col gap-1 px-4 py-3.5 transition-colors hover:bg-fd-accent/70 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
+								href={ruling.href}
+							>
+								<span className="font-medium text-fd-foreground">{ruling.title}</span>
+								<span className="flex shrink-0 items-center gap-3 text-xs text-fd-muted-foreground">
+									<span>{ruling.family}</span>
+									<time className="border-s border-fd-border ps-3" dateTime={ruling.createdAt}>
+										{PUBLICATION_DATE_FORMATTER.format(new Date(`${ruling.createdAt}T00:00:00Z`))}
+									</time>
+								</span>
+							</Link>
+						</li>
+					))}
+				</ul>
+			</section>
+		</div>
 	)
 }
