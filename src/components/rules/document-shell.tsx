@@ -28,9 +28,11 @@ const headingVariants = cva(
 
 const ruleRowVariants = cva('grid min-w-0 items-start py-1.5 wrap-anywhere', {
 	variants: {
-		labeled: {
-			true: 'grid-cols-[max-content_minmax(0,1fr)] gap-x-2 sm:grid-cols-[max-content_minmax(0,1fr)_max-content] sm:gap-x-4',
-			false: 'grid-cols-1 sm:grid-cols-[minmax(0,1fr)_max-content] sm:gap-x-4',
+		layout: {
+			labeled:
+				'grid-cols-[max-content_minmax(0,1fr)] gap-x-2 sm:grid-cols-[max-content_minmax(0,1fr)_max-content] sm:gap-x-4',
+			'labeled-stacked': 'grid-cols-1 sm:grid-cols-[max-content_minmax(0,1fr)_max-content] sm:gap-x-4',
+			unlabeled: 'grid-cols-1 sm:grid-cols-[minmax(0,1fr)_max-content] sm:gap-x-4',
 		},
 		tone: {
 			neutral: '',
@@ -103,6 +105,7 @@ export function RulesRuleShell({
 	id,
 	label,
 	nestedRules,
+	stackLabelOnMobile = false,
 	tone = 'neutral',
 	trailing,
 }: {
@@ -110,16 +113,18 @@ export function RulesRuleShell({
 	id?: string
 	label?: ReactNode
 	nestedRules?: ReactNode
+	stackLabelOnMobile?: boolean
 	tone?: RulesDocumentTone
 	trailing?: ReactNode
 }) {
 	const labeled = label !== undefined && label !== null
+	const layout = labeled ? (stackLabelOnMobile ? 'labeled-stacked' : 'labeled') : 'unlabeled'
 	return (
 		<li
 			className="core-rules-anchor scroll-mt-20 target:border-l-2 target:border-l-sky-600 target:bg-sky-500/10 target:pr-2 target:pl-3 dark:target:border-l-sky-400"
 			id={id}
 		>
-			<div className={cn(ruleRowVariants({ labeled, tone }))}>
+			<div className={cn(ruleRowVariants({ layout, tone }))}>
 				{label}
 				<div className="min-w-0 space-y-2 leading-6 wrap-anywhere">{content}</div>
 				{trailing}
