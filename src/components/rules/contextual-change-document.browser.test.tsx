@@ -1,5 +1,7 @@
+import 'tailwindcss/index.css'
 import { describe, expect, test } from 'vitest'
 import { render } from 'vitest-browser-react'
+import { page } from 'vitest/browser'
 import { ContextualRulesChangeDocument } from '@/components/rules/contextual-change-document'
 import type { ContextualRulesChange } from '@/features/rules-documents/contextual-change'
 
@@ -132,5 +134,59 @@ describe('contextual rules change document', () => {
 		expect(screen.getByText('New timing rule.', { exact: true }).element().closest('ins')).not.toBeNull()
 		const removedRule = screen.getByText('Retired timing rule.', { exact: true }).element().closest('del')
 		expect(removedRule).not.toBeNull()
+	})
+
+	test('stacks mobile rule content with the status on the label line', async () => {
+		await page.viewport(390, 844)
+		try {
+			const screen = await render(<ContextualRulesChangeDocument data={CHANGE} family="core-rules" />)
+			const label = screen
+				.getByRole('link', { name: '101.1 in Core Rules 1.1 (opens in a new tab)' })
+				.element()
+			const changedRule = label.closest('li')
+			const content = changedRule?.querySelector('p')
+			const mobileBadge = [...(label.parentElement?.querySelectorAll('.rounded-full') ?? [])].find(
+				(element) => element.textContent === 'Changed' && element.getBoundingClientRect().width > 0,
+			)
+			const unnumberedLink = screen
+				.getByRole('link', { name: 'Open unnumbered entry in Core Rules 1.1 (opens in a new tab)' })
+				.element()
+			const unnumberedBadge = [
+				...(unnumberedLink.closest('li')?.querySelectorAll('.rounded-full') ?? []),
+			].find((element) => element.textContent === 'Added' && element.getBoundingClientRect().width > 0)
+			if (!content || !mobileBadge)
+				throw new Error('Expected changed rule content and a visible status badge')
+			if (!unnumberedBadge) throw new Error('Expected a visible status badge for the unnumbered rule')
+
+			const mobileLabelBox = label.getBoundingClientRect()
+			const mobileContentBox = content.getBoundingClientRect()
+			const mobileBadgeBox = mobileBadge.getBoundingClientRect()
+			const labelCenter = mobileLabelBox.top + mobileLabelBox.height / 2
+			const badgeCenter = mobileBadgeBox.top + mobileBadgeBox.height / 2
+			expect(mobileContentBox.top).toBeGreaterThanOrEqual(mobileLabelBox.bottom)
+			expect(Math.abs(labelCenter - badgeCenter)).toBeLessThanOrEqual(2)
+
+			await page.viewport(1280, 720)
+			const desktopLabelBox = label.getBoundingClientRect()
+			const desktopContentBox = content.getBoundingClientRect()
+			const desktopRow = changedRule?.firstElementChild
+			const desktopRowBox = desktopRow?.getBoundingClientRect()
+			const desktopBadge = [...(changedRule?.querySelectorAll('.rounded-full') ?? [])].find(
+				(element) => element.textContent === 'Changed' && element.getBoundingClientRect().width > 0,
+			)
+			if (!desktopRow || !desktopRowBox || !desktopBadge)
+				throw new Error('Expected a visible desktop status badge')
+			const desktopBadgeBox = desktopBadge.getBoundingClientRect()
+			const desktopLabelCenter = desktopLabelBox.top + desktopLabelBox.height / 2
+			const desktopBadgeCenter = desktopBadgeBox.top + desktopBadgeBox.height / 2
+			const desktopRightPadding = Number(getComputedStyle(desktopRow).paddingRight.replace('px', ''))
+			expect(Math.abs(desktopLabelBox.top - desktopContentBox.top)).toBeLessThanOrEqual(2)
+			expect(Math.abs(desktopLabelCenter - desktopBadgeCenter)).toBeLessThanOrEqual(0.5)
+			expect(Math.abs(desktopRowBox.right - desktopBadgeBox.right - desktopRightPadding)).toBeLessThanOrEqual(
+				0.5,
+			)
+		} finally {
+			await page.viewport(1280, 720)
+		}
 	})
 })

@@ -167,29 +167,32 @@ export function RulesDocumentRuleList({
 				const anchor = rule.anchor
 				const hasLabel = rule.id || (labelMode === 'source' && rule.label)
 				const label = hasLabel ? (
-					labelMode === 'id-with-period' ? (
-						<a
-							aria-label={`Link to rule ${rule.id}`}
-							className="font-mono text-sm leading-6 font-medium whitespace-nowrap text-fd-muted-foreground no-underline hover:text-fd-primary"
-							href={`#${anchor}`}
-						>
-							{rule.id}.
-						</a>
-					) : (
-						<a
-							aria-label={`Link to rule ${rule.id ?? rule.label}`}
-							className="font-mono text-sm leading-6 font-medium whitespace-nowrap text-fd-muted-foreground no-underline hover:text-fd-primary"
-							href={`#${anchor}`}
-						>
-							{rule.label}
-						</a>
-					)
+					<span className="flex min-w-0 items-center justify-between gap-2">
+						{labelMode === 'id-with-period' ? (
+							<a
+								aria-label={`Link to rule ${rule.id}`}
+								className="font-mono text-sm leading-6 font-medium whitespace-nowrap text-fd-muted-foreground no-underline hover:text-fd-primary"
+								href={`#${anchor}`}
+							>
+								{rule.id}.
+							</a>
+						) : (
+							<a
+								aria-label={`Link to rule ${rule.id ?? rule.label}`}
+								className="font-mono text-sm leading-6 font-medium whitespace-nowrap text-fd-muted-foreground no-underline hover:text-fd-primary"
+								href={`#${anchor}`}
+							>
+								{rule.label}
+							</a>
+						)}
+						{rule.changeMarker ? <RulesChangeBadge className="sm:hidden" status={rule.changeMarker} /> : null}
+					</span>
 				) : undefined
 				return (
 					<RulesRuleShell
 						content={
 							<RuleContentView
-								changeMarker={rule.changeMarker}
+								changeMarker={hasLabel ? undefined : rule.changeMarker}
 								content={rule.content}
 								findReferences={findReferences}
 								referenceTarget={referenceTarget}
@@ -208,6 +211,7 @@ export function RulesDocumentRuleList({
 								rules={rule.children}
 							/>
 						}
+						stackLabelOnMobile
 						trailing={
 							rule.changeMarker ? (
 								<RuleChangeBadge marker={rule.changeMarker} placement="desktop" />

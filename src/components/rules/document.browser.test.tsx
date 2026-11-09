@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import { render } from 'vitest-browser-react'
+import { page } from 'vitest/browser'
 import { RulesDocumentRuleList } from '@/components/rules/document'
 
 describe('RulesDocumentRuleList', () => {
@@ -65,6 +66,60 @@ describe('RulesDocumentRuleList', () => {
 		const label = screen.getByRole('link', { name: 'Link to rule 701.4.b2.' })
 		await expect.element(label).toHaveTextContent('701.4.b2.')
 		await expect.element(label).toHaveAttribute('href', '#U667')
+	})
+
+	test('places a mobile change badge on the rule-number line', async () => {
+		await page.viewport(390, 844)
+		try {
+			const screen = await render(
+				<RulesDocumentRuleList
+					findReferences={() => []}
+					labelMode="id-with-period"
+					referenceTarget={() => {}}
+					rules={[
+						{
+							id: '107.3.d',
+							label: '107.3.d.',
+							anchor: 'R107.3.d',
+							changeMarker: 'changed',
+							content: [{ kind: 'paragraph', text: 'Changed rule.' }],
+							children: [],
+						},
+						{
+							id: null,
+							label: 'Unnumbered',
+							anchor: 'U3',
+							changeMarker: 'new',
+							content: [{ kind: 'paragraph', text: 'Unnumbered rule.' }],
+							children: [],
+						},
+					]}
+				/>,
+			)
+			const rule = screen.container.querySelector('[id="R107.3.d"]')
+			const unnumberedRule = screen.container.querySelector('[id="U3"]')
+			const label = rule?.querySelector('a')
+			const content = rule?.querySelector('p')
+			const badge = [...(rule?.querySelectorAll('span') ?? [])].find(
+				(element) => element.textContent === 'Changed' && getComputedStyle(element).display !== 'none',
+			)
+			const unnumberedBadge = [...(unnumberedRule?.querySelectorAll('span') ?? [])].find(
+				(element) => element.textContent === 'Added' && getComputedStyle(element).display !== 'none',
+			)
+			if (!label || !content || !badge)
+				throw new Error('Expected rule content, label, and a visible change badge')
+			if (!unnumberedBadge) throw new Error('Expected a visible change badge for the unnumbered rule')
+
+			const labelBox = label.getBoundingClientRect()
+			const contentBox = content.getBoundingClientRect()
+			const badgeBox = badge.getBoundingClientRect()
+			const labelCenter = labelBox.top + labelBox.height / 2
+			const badgeCenter = badgeBox.top + badgeBox.height / 2
+			expect(contentBox.top).toBeGreaterThanOrEqual(labelBox.bottom)
+			expect(Math.abs(labelCenter - badgeCenter)).toBeLessThanOrEqual(2)
+		} finally {
+			await page.viewport(1280, 720)
+		}
 	})
 
 	test('uses the inline popover treatment for card previews in rules examples', async () => {

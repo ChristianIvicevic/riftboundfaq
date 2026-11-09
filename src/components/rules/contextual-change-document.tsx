@@ -1,4 +1,4 @@
-import { cva } from 'class-variance-authority'
+import { cva, type VariantProps } from 'class-variance-authority'
 import type { ReactNode } from 'react'
 import { Del, Ins } from '@/components/diff-marks'
 import { RulesChangeBadge } from '@/components/rules/change-badge'
@@ -26,7 +26,8 @@ const nodeStatusVariants = cva('flex flex-wrap items-center gap-2', {
 	variants: {
 		placement: {
 			mobile: 'mt-1 sm:hidden',
-			desktop: 'hidden shrink-0 justify-end self-start sm:flex',
+			'mobile-inline': 'shrink-0 sm:hidden',
+			desktop: 'hidden shrink-0 justify-end self-start sm:mt-0.5 sm:flex',
 		},
 	},
 })
@@ -85,12 +86,14 @@ function ContentBlock({
 function ContentBlocks({
 	blocks,
 	nodeStatus,
+	showMobileStatus,
 }: {
 	blocks: readonly ContextualChangeBlock[]
 	nodeStatus?: ContextualChangeStatus
+	showMobileStatus: boolean
 }) {
 	return blocks.map((block, index) => {
-		if (!nodeStatus || index !== blocks.length - 1) {
+		if (!nodeStatus || !showMobileStatus || index !== blocks.length - 1) {
 			return <ContentBlock block={block} key={index} nodeStatus={nodeStatus} />
 		}
 		return (
@@ -134,7 +137,7 @@ function NodeStatus({
 	placement,
 }: {
 	status?: ContextualChangeStatus
-	placement: 'mobile' | 'desktop'
+	placement: NonNullable<VariantProps<typeof nodeStatusVariants>['placement']>
 }) {
 	if (!status) return null
 	return (
@@ -182,6 +185,12 @@ function HeadingNode({ node }: { node: ContextualChangeNode }) {
 
 function RuleNode({ node }: { node: ContextualChangeNode }) {
 	const hasLabel = node.label !== null
+	const label = hasLabel ? (
+		<span className="flex min-w-0 items-center justify-between gap-2">
+			<NodeLabel node={node} />
+			<NodeStatus placement="mobile-inline" status={node.status} />
+		</span>
+	) : undefined
 	return (
 		<RulesRuleShell
 			content={
@@ -196,11 +205,12 @@ function RuleNode({ node }: { node: ContextualChangeNode }) {
 							Open unnumbered entry in {node.sourceLabel} (opens in a new tab)
 						</a>
 					)}
-					<ContentBlocks blocks={node.content} nodeStatus={node.status} />
+					<ContentBlocks blocks={node.content} nodeStatus={node.status} showMobileStatus={!hasLabel} />
 				</>
 			}
-			label={hasLabel ? <NodeLabel node={node} /> : undefined}
+			label={label}
 			nestedRules={node.children.length > 0 ? <ContextualRuleList items={node.children} nested /> : undefined}
+			stackLabelOnMobile
 			tone={nodeTone(node.status)}
 			trailing={node.status ? <NodeStatus status={node.status} placement="desktop" /> : undefined}
 		/>
