@@ -16,7 +16,7 @@ describe('getPageImageData', () => {
 		['/about-riftbound-faq', 'About Riftbound FAQ'],
 		['/the-future-of-riftbound-faq', 'The Future of Riftbound FAQ'],
 		['/card-errata-list', 'Card Errata List'],
-		['/reference', 'Rules Documents'],
+		['/rules-documents', 'Rules Documents'],
 	])('uses the shared site-mark composition for %s', (url, title) => {
 		expect(getPageImageData(page(url, title), noSetLogo)).toEqual({
 			title,
@@ -86,7 +86,7 @@ describe('getPageImageData', () => {
 	test('maps Tournament Rules references and changes to the exact shared site mark', () => {
 		expect(
 			getPageImageData(
-				page('/reference/tournament-rules/2026-10-09', 'Tournament Rules (October 9, 2026)'),
+				page('/rules-documents/tournament-rules/2026-10-09', 'Tournament Rules (October 9, 2026)'),
 				noSetLogo,
 			),
 		).toMatchObject({
@@ -97,7 +97,10 @@ describe('getPageImageData', () => {
 		})
 		expect(
 			getPageImageData(
-				page('/reference/tournament-rules/changes/2026-10-09', 'Tournament Rules Changes (October 9, 2026)'),
+				page(
+					'/rules-documents/tournament-rules/changes/2026-10-09',
+					'Tournament Rules Changes (October 9, 2026)',
+				),
 				noSetLogo,
 			),
 		).toMatchObject({
@@ -112,7 +115,7 @@ describe('getPageImageData', () => {
 		const setLogoSrc = vi.fn(noSetLogo)
 
 		expect(
-			getPageImageData(page('/reference/core-rules/1.0', 'Core Rules 1.0 (Pre-Origins)'), setLogoSrc),
+			getPageImageData(page('/rules-documents/core-rules/1.0', 'Core Rules 1.0 (Pre-Origins)'), setLogoSrc),
 		).toMatchObject({
 			railLabel: 'CORE RULES · REFERENCE',
 			railContext: 'Pre-Origins · 1.0',
@@ -129,7 +132,7 @@ describe('getPageImageData', () => {
 
 		expect(
 			getPageImageData(
-				page('/reference/core-rules/changes/1.5', 'Core Rules 1.5 Changes (Radiance)'),
+				page('/rules-documents/core-rules/changes/1.5', 'Core Rules 1.5 Changes (Radiance)'),
 				setLogoSrc,
 			),
 		).toMatchObject({

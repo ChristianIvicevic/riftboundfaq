@@ -75,7 +75,7 @@ const journalEntryValue = z.object({
 	status: z.enum(['pending', 'backing-up', 'backed-up', 'installing', 'installed', 'rolled-back']),
 })
 const publicationJournalValue = z.object({
-	version: z.literal(1),
+	version: z.union([z.literal(1), z.literal(2)]),
 	state: z.enum(['staging', 'replacing', 'rolling-back', 'committed']),
 	entries: z.array(journalEntryValue),
 })
@@ -85,20 +85,22 @@ type JournalEntry = z.infer<typeof journalEntryValue>
 type PublicationJournal = z.infer<typeof publicationJournalValue>
 type DesiredEntry =
 	| { livePath: string; contents: string | null; kind: 'file' }
-	| { livePath: string; contents: ReadonlyMap<string, string>; kind: 'directory' }
+	| { livePath: string; contents: ReadonlyMap<string, string> | null; kind: 'directory' }
 
 const TRANSACTION_DIRECTORY = '.rules-publication'
 const COMMITTED_TRANSACTION_DIRECTORY = '.rules-publication-committed'
 const JOURNAL_FILE = 'transaction.json'
 const CORE_TRANSCRIPT = /^CR-v\d+\.\d+\.txt$/u
 const TOURNAMENT_TRANSCRIPT = /^Tournament-Rules-\d{4}-\d{2}-\d{2}\.txt$/u
-const RETIRED_MANAGED_PATH = 'src/generated/rules-metadata.ts'
-const REQUIRED_MANAGED_PATHS = [
+const RETIRED_RULES_METADATA_PATH = 'src/generated/rules-metadata.ts'
+const RETIRED_REFERENCE_PATH = 'content/reference'
+const LEGACY_FIXED_MANAGED_PATHS = [
+	RETIRED_RULES_METADATA_PATH,
 	'src/generated/core-rules',
 	'src/generated/tournament-rules',
-	'content/reference',
+	RETIRED_REFERENCE_PATH,
 ] as const
-const FIXED_MANAGED_PATHS = [RETIRED_MANAGED_PATH, ...REQUIRED_MANAGED_PATHS] as const
+const FIXED_MANAGED_PATHS = [...LEGACY_FIXED_MANAGED_PATHS, 'content/rules-documents'] as const
 const FIXED_MANAGED_PATH_SET = new Set<string>(FIXED_MANAGED_PATHS)
 
 function outputPath(root: string, path: string): string {
@@ -154,19 +156,30 @@ async function publishedVersions(directory: string, pattern: RegExp): Promise<st
 }
 
 async function rejectRemovedRegisteredVersions(projectDirectory: string, prepared: PreparedRulesPublication) {
-	const referenceDirectory = join(projectDirectory, 'content', 'reference')
+	const rulesDocumentDirectories = ['rules-documents', 'reference'].map((directory) =>
+		join(projectDirectory, 'content', directory),
+	)
 	const families = [
 		{
 			label: 'Core Rules',
-			published: await publishedVersions(join(referenceDirectory, 'core-rules'), /^(\d+\.\d+)\.mdx$/u),
+			published: (
+				await Promise.all(
+					rulesDocumentDirectories.map((directory) =>
+						publishedVersions(join(directory, 'core-rules'), /^(\d+\.\d+)\.mdx$/u),
+					),
+				)
+			).flat(),
 			registered: new Set(prepared.coreRules.registeredVersions),
 		},
 		{
 			label: 'Tournament Rules',
-			published: await publishedVersions(
-				join(referenceDirectory, 'tournament-rules'),
-				/^(\d{4}-\d{2}-\d{2})\.mdx$/u,
-			),
+			published: (
+				await Promise.all(
+					rulesDocumentDirectories.map((directory) =>
+						publishedVersions(join(directory, 'tournament-rules'), /^(\d{4}-\d{2}-\d{2})\.mdx$/u),
+					),
+				)
+			).flat(),
 			registered: new Set(prepared.tournamentRules.registeredVersions),
 		},
 	]
@@ -219,6 +232,11 @@ async function desiredEntries(
 		},
 		{
 			livePath: FIXED_MANAGED_PATHS[3],
+			contents: null,
+			kind: 'directory',
+		},
+		{
+			livePath: FIXED_MANAGED_PATHS[4],
 			contents: prepared.reference,
 			kind: 'directory',
 		},
@@ -266,7 +284,13 @@ async function readJournalFile(journalPath: string): Promise<PublicationJournal>
 	const parsed = publicationJournalValue.safeParse(JSON.parse(await readFile(journalPath, 'utf8')))
 	if (!parsed.success) throw new Error('Unrecognized rules publication recovery journal')
 	const value = parsed.data
-	if (value.state !== 'staging' && value.entries.length < FIXED_MANAGED_PATHS.length) {
+	const fixedManagedPaths = value.version === 1 ? LEGACY_FIXED_MANAGED_PATHS : FIXED_MANAGED_PATHS
+	const retiredManagedPaths = new Set<string>(
+		value.version === 1
+			? [RETIRED_RULES_METADATA_PATH]
+			: [RETIRED_RULES_METADATA_PATH, RETIRED_REFERENCE_PATH],
+	)
+	if (value.state !== 'staging' && value.entries.length < fixedManagedPaths.length) {
 		throw new Error('Recovery journal does not contain every required managed target')
 	}
 	const livePaths = new Set<string>()
@@ -279,15 +303,15 @@ async function readJournalFile(journalPath: string): Promise<PublicationJournal>
 		if (entry.stagedPath !== null && entry.stagedPath !== `staged/entry-${index}`) {
 			throw new Error(`Recovery journal staging does not match entry ${index}`)
 		}
-		if (index < FIXED_MANAGED_PATHS.length && entry.livePath !== FIXED_MANAGED_PATHS[index]) {
+		if (index < fixedManagedPaths.length && entry.livePath !== fixedManagedPaths[index]) {
 			throw new Error(`Recovery journal managed path does not match entry ${index}`)
 		}
-		if (index >= FIXED_MANAGED_PATHS.length && !entry.livePath.startsWith('sources/')) {
+		if (index >= fixedManagedPaths.length && !entry.livePath.startsWith('sources/')) {
 			throw new Error(`Recovery journal transcript path does not match entry ${index}`)
 		}
 		if (
-			index < FIXED_MANAGED_PATHS.length &&
-			entry.livePath !== RETIRED_MANAGED_PATH &&
+			index < fixedManagedPaths.length &&
+			!retiredManagedPaths.has(entry.livePath) &&
 			entry.stagedPath === null
 		) {
 			throw new Error(`Recovery journal cannot remove required target ${entry.livePath}`)
@@ -443,7 +467,7 @@ async function stagePublication(
 	const root = join(projectDirectory, TRANSACTION_DIRECTORY)
 	await mkdir(join(root, 'staged'), { recursive: true })
 	await mkdir(join(root, 'prior'), { recursive: true })
-	const journal: PublicationJournal = { version: 1, state: 'staging', entries: [] }
+	const journal: PublicationJournal = { version: 2, state: 'staging', entries: [] }
 	await writeJournal(projectDirectory, journal)
 
 	// Staging is serialized so the journal's target order is deterministic.

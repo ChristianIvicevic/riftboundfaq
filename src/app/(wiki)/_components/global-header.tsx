@@ -20,14 +20,14 @@ const RULINGS_SECTION = {
 const RULES_DOCUMENTS_SECTION = {
 	title: 'Rules Documents',
 	description: 'Current rules, archives, and changes.',
-	href: '/reference',
+	href: '/rules-documents',
 	icon: BookOpenText,
 } as const
 
 const GLOBAL_SECTIONS = [RULINGS_SECTION, RULES_DOCUMENTS_SECTION] as const
 
 function getCurrentSection(pathname: string) {
-	return pathname === '/reference' || pathname.startsWith('/reference/')
+	return pathname === '/rules-documents' || pathname.startsWith('/rules-documents/')
 		? RULES_DOCUMENTS_SECTION
 		: RULINGS_SECTION
 }

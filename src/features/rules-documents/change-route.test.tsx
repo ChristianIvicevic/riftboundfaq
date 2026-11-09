@@ -7,7 +7,7 @@ import {
 
 describe('rules changes page route', () => {
 	test('resolves contextual Core Rules headings for navigation and rendering', () => {
-		const route = resolveRulesChangeRoute('/reference/core-rules/changes/1.4')
+		const route = resolveRulesChangeRoute('/rules-documents/core-rules/changes/1.4')
 
 		expect(route).toMatchObject({ type: 'core-rules', from: '1.3', to: '1.4' })
 		expect(route?.toc[0]).toEqual({
@@ -19,7 +19,7 @@ describe('rules changes page route', () => {
 	})
 
 	test('resolves Tournament Rules changes through the same seam', () => {
-		const route = resolveRulesChangeRoute('/reference/tournament-rules/changes/2026-03-30')
+		const route = resolveRulesChangeRoute('/rules-documents/tournament-rules/changes/2026-03-30')
 
 		expect(route).toMatchObject({
 			type: 'tournament-rules',
@@ -31,7 +31,7 @@ describe('rules changes page route', () => {
 
 	test('leaves non-change pages outside the seam', () => {
 		expect(resolveRulesChangeRoute('/cards/alpha-strike')).toBeUndefined()
-		expect(resolveRulesChangeRoute('/reference/core-rules/1.4')).toBeUndefined()
+		expect(resolveRulesChangeRoute('/rules-documents/core-rules/1.4')).toBeUndefined()
 	})
 
 	test('rejects rendering without matching route context', () => {
@@ -41,11 +41,11 @@ describe('rules changes page route', () => {
 			}),
 		)
 
-		const route = resolveRulesChangeRoute('/reference/core-rules/changes/1.4')
+		const route = resolveRulesChangeRoute('/rules-documents/core-rules/changes/1.4')
 		expect(() => renderRulesChange(route, { type: 'core-rules', from: '1.2', to: '1.3' })).toThrow(
 			expect.objectContaining<Partial<RulesChangeRouteError>>({
 				reason: 'route-mismatch',
-				url: '/reference/core-rules/changes/1.4',
+				url: '/rules-documents/core-rules/changes/1.4',
 			}),
 		)
 	})

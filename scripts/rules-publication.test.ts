@@ -98,6 +98,7 @@ async function expectPriorPublication(projectDirectory: string) {
 		[...PRIOR_FILES.keys()].map((path) => readFile(join(projectDirectory, path), 'utf8')),
 	)
 	expect(contents).toStrictEqual([...PRIOR_FILES.values()])
+	await expectMissing(join(projectDirectory, 'content/rules-documents/index.mdx'))
 }
 
 async function expectMissing(path: string) {
@@ -117,6 +118,7 @@ describe('publishRules', () => {
 		await Promise.all(
 			[...preservedFiles].map(([path, contents]) => writeProjectFile(projectDirectory, path, contents)),
 		)
+		await writeProjectFile(projectDirectory, 'content/reference/index.mdx', 'legacy Rules Documents page')
 		const publishRules = createRulesPublisher({ prepare: async () => preparedPublication() })
 
 		const summary = await publishRules({ projectDirectory })
@@ -129,9 +131,10 @@ describe('publishRules', () => {
 		expect(
 			await readFile(join(projectDirectory, 'src/generated/tournament-rules/v2026-01-01.ts'), 'utf8'),
 		).toBe('tournament version')
-		expect(await readFile(join(projectDirectory, 'content/reference/index.mdx'), 'utf8')).toBe(
+		expect(await readFile(join(projectDirectory, 'content/rules-documents/index.mdx'), 'utf8')).toBe(
 			'Rules Documents page',
 		)
+		await expectMissing(join(projectDirectory, 'content/reference/index.mdx'))
 		expect(await readFile(join(projectDirectory, 'sources/CR-v1.0.txt'), 'utf8')).toBe('core transcript')
 		expect(await readFile(join(projectDirectory, 'sources/Tournament-Rules-2026-01-01.txt'), 'utf8')).toBe(
 			'tournament transcript',
@@ -144,33 +147,39 @@ describe('publishRules', () => {
 		)
 		expect(preservedContents).toStrictEqual([...preservedFiles.values()])
 		expect(
-			await readFile(join(projectDirectory, 'content/reference/core-rules/(archive)/0.9.mdx'), 'utf8'),
+			await readFile(join(projectDirectory, 'content/rules-documents/core-rules/(archive)/0.9.mdx'), 'utf8'),
 		).toBe('archived Core Rules')
 		expect(
-			await readFile(join(projectDirectory, 'content/reference/core-rules/changes/1.0.mdx'), 'utf8'),
+			await readFile(join(projectDirectory, 'content/rules-documents/core-rules/changes/1.0.mdx'), 'utf8'),
 		).toBe('Core Rules changes page')
 	})
 
-	test('rejects removal of a previously published registered rules version before mutation', async () => {
-		const projectDirectory = await temporaryProject()
-		await writeProjectFile(
-			projectDirectory,
-			'content/reference/core-rules/(archive)/0.8.mdx',
-			'prior version-specific Core Rules page',
-		)
-		await writeProjectFile(projectDirectory, 'src/generated/rules-metadata.ts', 'prior metadata')
-		const publishRules = createRulesPublisher({ prepare: async () => preparedPublication() })
+	test.each(['content/reference', 'content/rules-documents'])(
+		'rejects removal of a previously published registered rules version from %s before mutation',
+		async (rulesDocumentsDirectory) => {
+			const projectDirectory = await temporaryProject()
+			await writeProjectFile(
+				projectDirectory,
+				`${rulesDocumentsDirectory}/core-rules/(archive)/0.8.mdx`,
+				'prior version-specific Core Rules page',
+			)
+			await writeProjectFile(projectDirectory, 'src/generated/rules-metadata.ts', 'prior metadata')
+			const publishRules = createRulesPublisher({ prepare: async () => preparedPublication() })
 
-		await expect(publishRules({ projectDirectory })).rejects.toThrow(/registered Core Rules version 0\.8/u)
-		expect(
-			await readFile(join(projectDirectory, 'content/reference/core-rules/(archive)/0.8.mdx'), 'utf8'),
-		).toBe('prior version-specific Core Rules page')
-		expect(await readFile(join(projectDirectory, 'src/generated/rules-metadata.ts'), 'utf8')).toBe(
-			'prior metadata',
-		)
-	})
+			await expect(publishRules({ projectDirectory })).rejects.toThrow(/registered Core Rules version 0\.8/u)
+			expect(
+				await readFile(
+					join(projectDirectory, rulesDocumentsDirectory, 'core-rules/(archive)/0.8.mdx'),
+					'utf8',
+				),
+			).toBe('prior version-specific Core Rules page')
+			expect(await readFile(join(projectDirectory, 'src/generated/rules-metadata.ts'), 'utf8')).toBe(
+				'prior metadata',
+			)
+		},
+	)
 
-	test.each([0, 1, 2, 3, 4, 5])(
+	test.each([0, 1, 2, 3, 4, 5, 6])(
 		'restores the complete prior publication after replacement transition %i fails',
 		async (failureIndex) => {
 			const projectDirectory = await temporaryProject()
@@ -221,6 +230,9 @@ describe('publishRules', () => {
 
 		await expectMissing(join(projectDirectory, 'src/generated/core-rules/stale.ts'))
 		await expectMissing(join(projectDirectory, 'content/reference/stale.txt'))
+		expect(await readFile(join(projectDirectory, 'content/rules-documents/index.mdx'), 'utf8')).toBe(
+			'Rules Documents page',
+		)
 		await expectMissing(join(projectDirectory, 'sources/CR-v9.9.txt'))
 		await expectMissing(join(projectDirectory, 'sources/Tournament-Rules-1999-01-01.txt'))
 		expect(await readFile(join(projectDirectory, 'sources/notes.txt'), 'utf8')).toBe('unrelated source')
@@ -233,7 +245,7 @@ describe('publishRules', () => {
 		const publishRules = createRulesPublisher({
 			prepare: async () => preparedPublication(),
 			fault: ({ event, index }) => {
-				if (event === 'after-replace' && index === 5) throw new Error('replacement failed')
+				if (event === 'after-replace' && index === 6) throw new Error('replacement failed')
 			},
 		})
 

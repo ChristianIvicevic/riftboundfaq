@@ -92,8 +92,8 @@ function coreRulesVersion(input: string): RulesDocumentVersionConventions<'core-
 			currentDocumentPath: `core-rules/${input}.mdx`,
 			archivedDocumentPath: `core-rules/(archive)/${input}.mdx`,
 			changePath: `core-rules/changes/${input}.mdx`,
-			documentRoute: `/reference/core-rules/${input}`,
-			changeRoute: `/reference/core-rules/changes/${input}`,
+			documentRoute: `/rules-documents/core-rules/${input}`,
+			changeRoute: `/rules-documents/core-rules/changes/${input}`,
 		}),
 	})
 }
@@ -146,8 +146,8 @@ function tournamentRulesVersion(input: string): RulesDocumentVersionConventions<
 			currentDocumentPath: `tournament-rules/${input}.mdx`,
 			archivedDocumentPath: `tournament-rules/(archive)/${input}.mdx`,
 			changePath: `tournament-rules/changes/${input}.mdx`,
-			documentRoute: `/reference/tournament-rules/${input}`,
-			changeRoute: `/reference/tournament-rules/changes/${input}`,
+			documentRoute: `/rules-documents/tournament-rules/${input}`,
+			changeRoute: `/rules-documents/tournament-rules/changes/${input}`,
 		}),
 	})
 }

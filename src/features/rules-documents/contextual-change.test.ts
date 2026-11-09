@@ -147,23 +147,23 @@ describe('contextual rules changes', () => {
 		expect(nodes.some(({ label }) => label === '104.')).toBe(false)
 		expect(changed).toMatchObject({
 			status: 'changed',
-			href: '/reference/core-rules/1.1#R101.1',
+			href: '/rules-documents/core-rules/1.1#R101.1',
 		})
 		expect(changed.content.map(({ kind }) => kind)).toEqual(['paragraph', 'example'])
-		expect(added).toMatchObject({ status: 'new', href: '/reference/core-rules/1.1#R103' })
-		expect(deleted).toMatchObject({ status: 'deleted', href: '/reference/core-rules/1.0#R102' })
+		expect(added).toMatchObject({ status: 'new', href: '/rules-documents/core-rules/1.1#R103' })
+		expect(deleted).toMatchObject({ status: 'deleted', href: '/rules-documents/core-rules/1.0#R102' })
 
 		const changedText = changed.content.flatMap(({ text }) => text)
 		expect(changedText).toContainEqual({
 			type: 'remove',
 			text: 'rule 102',
-			href: '/reference/core-rules/1.0#R102',
+			href: '/rules-documents/core-rules/1.0#R102',
 			sourceLabel: 'Core Rules 1.0',
 		})
 		expect(changedText).toContainEqual({
 			type: 'add',
 			text: 'rule 103',
-			href: '/reference/core-rules/1.1#R103',
+			href: '/rules-documents/core-rules/1.1#R103',
 			sourceLabel: 'Core Rules 1.1',
 		})
 	})
@@ -196,7 +196,7 @@ describe('contextual rules changes', () => {
 		expect(changed.content.flatMap(({ text }) => text)).toContainEqual({
 			type: 'same',
 			text: 'rule 102',
-			href: '/reference/core-rules/1.1#R102',
+			href: '/rules-documents/core-rules/1.1#R102',
 			sourceLabel: 'Core Rules 1.1',
 		})
 	})
@@ -231,13 +231,13 @@ describe('contextual rules changes', () => {
 			{
 				type: 'remove',
 				text: '421.2.a',
-				href: '/reference/core-rules/1.0#R421.2.a',
+				href: '/rules-documents/core-rules/1.0#R421.2.a',
 				sourceLabel: 'Core Rules 1.0',
 			},
 			{
 				type: 'add',
 				text: '425.2.a',
-				href: '/reference/core-rules/1.1#R425.2.a',
+				href: '/rules-documents/core-rules/1.1#R425.2.a',
 				sourceLabel: 'Core Rules 1.1',
 			},
 			{ type: 'same', text: ' for ' },
@@ -250,7 +250,7 @@ describe('contextual rules changes', () => {
 	test('keeps published reference-only changes visible and linked to each source', () => {
 		const catalog = rulesDocuments.family('core-rules')
 		const nodes = flatten(prepareContextualRulesChange(catalog, { from: '1.4', to: '1.5' }).items)
-		const changed = nodes.find(({ href }) => href === '/reference/core-rules/1.5#R142.4')!
+		const changed = nodes.find(({ href }) => href === '/rules-documents/core-rules/1.5#R142.4')!
 
 		expect(changed.status).toBe('changed')
 		expect(changed.content.flatMap(({ text }) => text)).toEqual(
@@ -258,13 +258,13 @@ describe('contextual rules changes', () => {
 				{
 					type: 'remove',
 					text: '428',
-					href: '/reference/core-rules/1.4#R428',
+					href: '/rules-documents/core-rules/1.4#R428',
 					sourceLabel: 'Core Rules 1.4',
 				},
 				{
 					type: 'add',
 					text: '429',
-					href: '/reference/core-rules/1.5#R429',
+					href: '/rules-documents/core-rules/1.5#R429',
 					sourceLabel: 'Core Rules 1.5',
 				},
 			]),
@@ -274,12 +274,12 @@ describe('contextual rules changes', () => {
 	test('uses the current identity for a renumbered modification', () => {
 		const catalog = rulesDocuments.family('core-rules')
 		const nodes = flatten(prepareContextualRulesChange(catalog, { from: '1.4', to: '1.5' }).items)
-		const changed = nodes.find(({ href }) => href === '/reference/core-rules/1.5#R323.4')!
+		const changed = nodes.find(({ href }) => href === '/rules-documents/core-rules/1.5#R323.4')!
 
 		expect(changed).toMatchObject({
 			status: 'changed',
 			label: '323.4.',
-			href: '/reference/core-rules/1.5#R323.4',
+			href: '/rules-documents/core-rules/1.5#R323.4',
 		})
 	})
 
@@ -306,7 +306,7 @@ describe('contextual rules changes', () => {
 		})
 
 		const nodes = flatten(prepareContextualRulesChange(catalog, { from: '1.0', to: '1.1' }).items)
-		const changed = nodes.find(({ href }) => href === '/reference/core-rules/1.1#R101')!
+		const changed = nodes.find(({ href }) => href === '/rules-documents/core-rules/1.1#R101')!
 
 		expect(changed.content).toEqual([
 			{
@@ -431,7 +431,7 @@ describe('contextual rules changes', () => {
 		expect(deleted.status).toBe('deleted')
 		expect(matchedParent).toMatchObject({
 			label: '300.',
-			href: '/reference/core-rules/1.1#R300',
+			href: '/rules-documents/core-rules/1.1#R300',
 		})
 		expect(matchedParent.status).toBeUndefined()
 	})
@@ -476,13 +476,13 @@ describe('contextual rules changes', () => {
 			adapt: (source) => source,
 		})
 		const nodes = flatten(prepareContextualRulesChange(catalog, { from: '1.0', to: '1.1' }).items)
-		const deletedChild = nodes.find(({ href }) => href === '/reference/core-rules/1.0#R101')!
-		const deletedParent = nodes.find(({ href }) => href === '/reference/core-rules/1.0#U2')!
+		const deletedChild = nodes.find(({ href }) => href === '/rules-documents/core-rules/1.0#R101')!
+		const deletedParent = nodes.find(({ href }) => href === '/rules-documents/core-rules/1.0#U2')!
 
 		expect(deletedParent.status).toBe('deleted')
 		expect(deletedParent.children).toContain(deletedChild)
-		expect(nodes.find(({ href }) => href === '/reference/core-rules/1.1#U8')?.status).toBe('new')
-		expect(nodes.find(({ href }) => href === '/reference/core-rules/1.1#U9')?.status).toBe('new')
+		expect(nodes.find(({ href }) => href === '/rules-documents/core-rules/1.1#U8')?.status).toBe('new')
+		expect(nodes.find(({ href }) => href === '/rules-documents/core-rules/1.1#U9')?.status).toBe('new')
 	})
 
 	test('prefers matching identity when duplicate exact text is removed', () => {
@@ -503,7 +503,7 @@ describe('contextual rules changes', () => {
 		expect(affected).toMatchObject([
 			{
 				status: 'deleted',
-				href: '/reference/core-rules/1.0#R101',
+				href: '/rules-documents/core-rules/1.0#R101',
 			},
 		])
 	})
@@ -534,9 +534,9 @@ describe('contextual rules changes', () => {
 			adapt: (source) => source,
 		})
 		const nodes = flatten(prepareContextualRulesChange(catalog, { from: '1.0', to: '1.1' }).items)
-		const deletedHeading = nodes.find(({ href }) => href === '/reference/core-rules/1.0#R100')!
-		const deletedChild = nodes.find(({ href }) => href === '/reference/core-rules/1.0#R101')!
-		const addedRule = nodes.find(({ href }) => href === '/reference/core-rules/1.1#R201')!
+		const deletedHeading = nodes.find(({ href }) => href === '/rules-documents/core-rules/1.0#R100')!
+		const deletedChild = nodes.find(({ href }) => href === '/rules-documents/core-rules/1.0#R101')!
+		const addedRule = nodes.find(({ href }) => href === '/rules-documents/core-rules/1.1#R201')!
 
 		expect(deletedHeading.status).toBe('deleted')
 		expect(deletedHeading.children).toContain(deletedChild)
@@ -581,8 +581,8 @@ describe('contextual rules changes', () => {
 		})
 
 		const nodes = flatten(prepareContextualRulesChange(catalog, { from: '1.0', to: '1.1' }).items)
-		const deletedHeading = nodes.find(({ href }) => href === '/reference/core-rules/1.0#R200')!
-		const addedHeading = nodes.find(({ href }) => href === '/reference/core-rules/1.1#R300')!
+		const deletedHeading = nodes.find(({ href }) => href === '/rules-documents/core-rules/1.0#R200')!
+		const addedHeading = nodes.find(({ href }) => href === '/rules-documents/core-rules/1.1#R300')!
 
 		expect(deletedHeading).toMatchObject({ headingDepth: 2, status: 'deleted' })
 		expect(addedHeading).toMatchObject({ headingDepth: 3, status: 'new' })
@@ -594,16 +594,16 @@ describe('contextual rules changes', () => {
 			type: 'core-rules' as const,
 			from: '1.4',
 			to: '1.5',
-			deletedHref: '/reference/core-rules/1.4#R323.9.a',
-			parentHref: '/reference/core-rules/1.5#R323.8',
+			deletedHref: '/rules-documents/core-rules/1.4#R323.9.a',
+			parentHref: '/rules-documents/core-rules/1.5#R323.8',
 		},
 		{
 			name: 'Tournament Rules',
 			type: 'tournament-rules' as const,
 			from: '2025-07-21',
 			to: '2026-03-30',
-			deletedHref: '/reference/tournament-rules/2025-07-21#R403.5.c',
-			parentHref: '/reference/tournament-rules/2026-03-30#R403.4',
+			deletedHref: '/rules-documents/tournament-rules/2025-07-21#R403.5.c',
+			parentHref: '/rules-documents/tournament-rules/2026-03-30#R403.4',
 		},
 	])('preserves the authoritative $name parent match when an old anchor is reused', (fixture) => {
 		const catalog = rulesDocuments.family(fixture.type)
@@ -623,14 +623,16 @@ describe('contextual rules changes', () => {
 		const nodes = flatten(
 			prepareContextualRulesChange(catalog, { from: '2026-04-29', to: '2026-07-16' }).items,
 		)
-		const moved = nodes.find(({ href }) => href === '/reference/tournament-rules/2026-07-16#R202.1.a')
-		const newParent = nodes.find(({ href }) => href === '/reference/tournament-rules/2026-07-16#R202.1')!
+		const moved = nodes.find(({ href }) => href === '/rules-documents/tournament-rules/2026-07-16#R202.1.a')
+		const newParent = nodes.find(
+			({ href }) => href === '/rules-documents/tournament-rules/2026-07-16#R202.1',
+		)!
 
 		expect(comparison.matches.find(({ oldRule }) => oldRule.id === '202.1')?.newRule.id).toBe('202.1.a')
 		expect(moved).toBeUndefined()
 		expect(newParent.status).toBe('new')
 		expect(newParent.children.map(({ href }) => href)).toEqual([
-			'/reference/tournament-rules/2026-07-16#R202.1.c',
+			'/rules-documents/tournament-rules/2026-07-16#R202.1.c',
 		])
 	})
 
@@ -641,7 +643,8 @@ describe('contextual rules changes', () => {
 				const from = catalog.registeredVersions[index - 1].version
 				const to = catalog.registeredVersions[index].version
 				const comparison = catalog.compare(from, to)
-				const documentHref = (version: string, anchor: string) => `/reference/${type}/${version}#${anchor}`
+				const documentHref = (version: string, anchor: string) =>
+					`/rules-documents/${type}/${version}#${anchor}`
 				const expected = comparison.entries
 					.map((entry) => {
 						if (entry.kind === 'added') return `new:${documentHref(to, entry.rule.anchor)}`
@@ -662,9 +665,9 @@ describe('contextual rules changes', () => {
 		const catalog = rulesDocuments.family('core-rules')
 
 		const nodes = flatten(prepareContextualRulesChange(catalog, { from: '1.2', to: '1.3' }).items)
-		const changed = nodes.find(({ href }) => href === '/reference/core-rules/1.3#R484.4.a')!
-		const sharedParent = nodes.find(({ href }) => href === '/reference/core-rules/1.3#R484.4')!
-		const movedChild = nodes.find(({ href }) => href === '/reference/core-rules/1.3#R484.5.b')
+		const changed = nodes.find(({ href }) => href === '/rules-documents/core-rules/1.3#R484.4.a')!
+		const sharedParent = nodes.find(({ href }) => href === '/rules-documents/core-rules/1.3#R484.4')!
+		const movedChild = nodes.find(({ href }) => href === '/rules-documents/core-rules/1.3#R484.5.b')
 
 		expect(sharedParent.status).toBeUndefined()
 		expect(sharedParent.children).toContain(changed)

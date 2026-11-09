@@ -28,8 +28,8 @@ describe('Rules document family conventions', () => {
 				currentDocumentPath: 'core-rules/1.4.mdx',
 				archivedDocumentPath: 'core-rules/(archive)/1.4.mdx',
 				changePath: 'core-rules/changes/1.4.mdx',
-				documentRoute: '/reference/core-rules/1.4',
-				changeRoute: '/reference/core-rules/changes/1.4',
+				documentRoute: '/rules-documents/core-rules/1.4',
+				changeRoute: '/rules-documents/core-rules/changes/1.4',
 			},
 		})
 	})
@@ -71,8 +71,8 @@ describe('Rules document family conventions', () => {
 				currentDocumentPath: 'tournament-rules/2026-07-16.mdx',
 				archivedDocumentPath: 'tournament-rules/(archive)/2026-07-16.mdx',
 				changePath: 'tournament-rules/changes/2026-07-16.mdx',
-				documentRoute: '/reference/tournament-rules/2026-07-16',
-				changeRoute: '/reference/tournament-rules/changes/2026-07-16',
+				documentRoute: '/rules-documents/tournament-rules/2026-07-16',
+				changeRoute: '/rules-documents/tournament-rules/changes/2026-07-16',
 			},
 		})
 		expect(tournamentRulesConventions.isVersion('2024-02-29')).toBe(true)

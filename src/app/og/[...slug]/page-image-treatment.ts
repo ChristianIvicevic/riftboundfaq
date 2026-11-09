@@ -103,7 +103,7 @@ export function resolvePageImageTreatment(page: PageImagePage): PageImageTreatme
 
 	if (page.url === '/about-riftbound-faq') return { kind: 'landing' }
 	if (page.url === '/the-future-of-riftbound-faq') return { kind: 'editorial' }
-	if (page.url === '/card-errata-list' || page.url === '/reference') return { kind: 'index-cover' }
+	if (page.url === '/card-errata-list' || page.url === '/rules-documents') return { kind: 'index-cover' }
 
 	if (page.url.startsWith('/cards/')) return { kind: 'card' }
 	if (page.url.startsWith('/general-rules/')) return { kind: 'general-rules' }
@@ -116,7 +116,7 @@ export function resolvePageImageTreatment(page: PageImagePage): PageImageTreatme
 		}
 	}
 
-	const coreRulesDiff = /^\/reference\/core-rules\/changes\/([^/]+)$/u.exec(page.url)
+	const coreRulesDiff = /^\/rules-documents\/core-rules\/changes\/([^/]+)$/u.exec(page.url)
 	if (coreRulesDiff?.[1]) {
 		const to = coreRulesDiff[1]
 		if (!CORE_RULES_VERSIONS[to]) throw new Error(`Unregistered Core Rules version ${JSON.stringify(to)}`)
@@ -133,7 +133,7 @@ export function resolvePageImageTreatment(page: PageImagePage): PageImageTreatme
 		}
 	}
 
-	const coreRulesReference = /^\/reference\/core-rules\/([^/]+)$/u.exec(page.url)
+	const coreRulesReference = /^\/rules-documents\/core-rules\/([^/]+)$/u.exec(page.url)
 	if (coreRulesReference?.[1]) {
 		const version = coreRulesReference[1]
 		const registered = CORE_RULES_VERSIONS[version]
@@ -148,7 +148,7 @@ export function resolvePageImageTreatment(page: PageImagePage): PageImageTreatme
 		}
 	}
 
-	const tournamentRulesDiff = /^\/reference\/tournament-rules\/changes\/([^/]+)$/u.exec(page.url)
+	const tournamentRulesDiff = /^\/rules-documents\/tournament-rules\/changes\/([^/]+)$/u.exec(page.url)
 	if (tournamentRulesDiff?.[1]) {
 		const to = tournamentRulesDiff[1]
 		const from = previousVersion(TOURNAMENT_RULES_VERSIONS, to, 'Tournament Rules')
@@ -166,7 +166,7 @@ export function resolvePageImageTreatment(page: PageImagePage): PageImageTreatme
 		}
 	}
 
-	const tournamentRulesReference = /^\/reference\/tournament-rules\/([^/]+)$/u.exec(page.url)
+	const tournamentRulesReference = /^\/rules-documents\/tournament-rules\/([^/]+)$/u.exec(page.url)
 	if (tournamentRulesReference?.[1]) {
 		const labels = tournamentVersionLabels(tournamentRulesReference[1])
 		return {

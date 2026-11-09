@@ -134,7 +134,7 @@ describe('prepareReferencePublication', () => {
 		const { artifacts, summary } = await prepareFixture()
 
 		expect(artifacts.get('core-rules/(archive)/1.0.mdx')).toMatch(
-			/createdAt: "2025-06-02"[\s\S]+version: "1\.0"[\s\S]+noindex: true[\s\S]+Archived reference[\s\S]+\/reference\/core-rules\/1\.2[\s\S]+<RulesDocument \/>/u,
+			/createdAt: "2025-06-02"[\s\S]+version: "1\.0"[\s\S]+noindex: true[\s\S]+Archived reference[\s\S]+\/rules-documents\/core-rules\/1\.2[\s\S]+<RulesDocument \/>/u,
 		)
 		expect(summary.pages).toBe(11)
 	})
@@ -227,7 +227,7 @@ describe('prepareReferencePublication', () => {
 			/<TournamentRulesDiff[\s\S]+from="2026-03-30"[\s\S]+to="2026-04-29"[\s\S]+\/>/u,
 		)
 		expect(artifacts.get('tournament-rules/(archive)/2026-03-30.mdx')).toMatch(
-			/Archived reference[\s\S]+\/reference\/tournament-rules\/2026-04-29[\s\S]+<RulesDocument \/>/u,
+			/Archived reference[\s\S]+\/rules-documents\/tournament-rules\/2026-04-29[\s\S]+<RulesDocument \/>/u,
 		)
 	})
 
@@ -325,9 +325,9 @@ describe('prepareReferencePublication', () => {
 
 		const overview = artifacts.get('index.mdx')
 		expect(overview).toMatch(/## Core Rules \[#core-rules\]/u)
-		expect(overview).toMatch(/href="\/reference\/core-rules\/1\.2"/u)
+		expect(overview).toMatch(/href="\/rules-documents\/core-rules\/1\.2"/u)
 		expect(overview).toMatch(/## Tournament Rules \[#tournament-rules\]/u)
-		expect(overview).toMatch(/href="\/reference\/tournament-rules\/2026-04-29"/u)
+		expect(overview).toMatch(/href="\/rules-documents\/tournament-rules\/2026-04-29"/u)
 		expect(overview).toMatch(/Changes from March 30 to April 29, 2026\./u)
 	})
 
@@ -484,7 +484,7 @@ describe('prepareReferencePublication', () => {
 			'tournament-rules/changes/2026-03-30.mdx',
 			'tournament-rules/changes/2026-04-29.mdx',
 		])
-		await expect(access(join(projectDirectory, 'content', 'reference'))).rejects.toMatchObject({
+		await expect(access(join(projectDirectory, 'content', 'rules-documents'))).rejects.toMatchObject({
 			code: 'ENOENT',
 		})
 	})

@@ -11,7 +11,7 @@ describe('resolvePageImageTreatment', () => {
 		{ url: '/about-riftbound-faq', title: 'About Riftbound FAQ', kind: 'landing' },
 		{ url: '/the-future-of-riftbound-faq', title: 'The Future', kind: 'editorial' },
 		{ url: '/card-errata-list', title: 'Card Errata List', kind: 'index-cover' },
-		{ url: '/reference', title: 'Rules Documents', kind: 'index-cover' },
+		{ url: '/rules-documents', title: 'Rules Documents', kind: 'index-cover' },
 		{ url: '/cards/flash', title: 'Flash', kind: 'card' },
 		{ url: '/general-rules/targeting', title: 'Targeting', kind: 'general-rules' },
 	])('classifies $url as $kind', ({ url, title, kind }) => {
@@ -35,7 +35,7 @@ describe('resolvePageImageTreatment', () => {
 	})
 
 	test('derives Core Rules covers and transitions from the manifest', () => {
-		expect(resolvePageImageTreatment(page('/reference/core-rules/1.5'))).toMatchObject({
+		expect(resolvePageImageTreatment(page('/rules-documents/core-rules/1.5'))).toMatchObject({
 			kind: 'rules-reference',
 			cover: {
 				kind: 'core-rules',
@@ -43,7 +43,7 @@ describe('resolvePageImageTreatment', () => {
 				editionName: 'Radiance',
 			},
 		})
-		expect(resolvePageImageTreatment(page('/reference/core-rules/changes/1.5'))).toMatchObject({
+		expect(resolvePageImageTreatment(page('/rules-documents/core-rules/changes/1.5'))).toMatchObject({
 			kind: 'rules-diff',
 			transition: {
 				kind: 'core-rules',
@@ -56,7 +56,10 @@ describe('resolvePageImageTreatment', () => {
 	})
 
 	test('formats Tournament Rules covers and transitions without day precision', () => {
-		const referencePage = page('/reference/tournament-rules/2026-10-09', 'Tournament Rules (2026-10-09)')
+		const referencePage = page(
+			'/rules-documents/tournament-rules/2026-10-09',
+			'Tournament Rules (2026-10-09)',
+		)
 		const referenceTreatment = resolvePageImageTreatment(referencePage)
 		expect(referenceTreatment).toMatchObject({
 			kind: 'rules-reference',
@@ -66,7 +69,9 @@ describe('resolvePageImageTreatment', () => {
 		expect(getPageImageDisplayTitle(referencePage, referenceTreatment)).toBe(
 			'Tournament Rules (October 2026)',
 		)
-		expect(resolvePageImageTreatment(page('/reference/tournament-rules/changes/2026-10-09'))).toMatchObject({
+		expect(
+			resolvePageImageTreatment(page('/rules-documents/tournament-rules/changes/2026-10-09')),
+		).toMatchObject({
 			kind: 'rules-diff',
 			displayTitle: 'Tournament Rules Changes (October 2026)',
 			transition: { kind: 'generic', fromLabel: 'JUL 2026', toLabel: 'OCT 2026' },
