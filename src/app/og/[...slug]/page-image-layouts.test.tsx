@@ -7,20 +7,34 @@ function render(data: PageImageData) {
 }
 
 describe('PageImage', () => {
-	test('uses the site mark as both the brand and landing visual', () => {
+	test('uses the site mark in both the branded spine and landing visual', () => {
 		const markup = render({
 			title: 'About Riftbound FAQ',
 			description: 'About the project.',
-			railLabel: 'RIFTBOUND FAQ',
+			railLabel: 'LANDING',
 			visual: { kind: 'site-mark' },
 		})
 
 		expect(markup.match(/src="site-logo"/gu)).toHaveLength(2)
-		expect(markup).toContain('border-bottom:18px solid #f4cc52')
 		expect(markup).toContain(
-			'width="390" height="390" style="position:absolute;top:135px;right:-18px;object-fit:contain;opacity:0.22;transform:rotate(6deg)"',
+			'width="430" height="430" style="position:absolute;top:112px;right:-18px;object-fit:contain;opacity:0.2;transform:rotate(7deg)"',
 		)
-		expect(markup).not.toContain('>ABOUT RIFTBOUND FAQ<')
+		expect(markup).toContain('width:104px;height:100%;background-color:#f4cc52')
+		expect(markup).toContain('>RIFTBOUND FAQ<')
+		expect(markup).not.toContain('>LANDING<')
+	})
+
+	test('uses the site mark instead of repeating generic wordmark copy', () => {
+		const markup = render({
+			title: 'Game Mechanics',
+			description: 'Mechanics reference pages.',
+			railLabel: 'MECHANIC',
+			visual: { kind: 'wordmark', primary: 'Game', accent: 'Mechanics' },
+		})
+
+		expect(markup.match(/src="site-logo"/gu)).toHaveLength(2)
+		expect(markup).not.toContain('>GAME<')
+		expect(markup).not.toContain('>MECHANICS<')
 	})
 
 	test('pulls landscape card art out without repeating the card name in the rail', () => {
@@ -32,7 +46,7 @@ describe('PageImage', () => {
 		})
 
 		expect(markup).toContain(
-			'width="600" height="430" style="position:absolute;right:-90px;bottom:-25px;object-fit:contain;opacity:0.58;transform:rotate(3deg);filter:saturate(0.82)"',
+			'width="640" height="458" style="position:absolute;right:-120px;bottom:34px;object-fit:contain;opacity:0.64;transform:rotate(4deg);filter:saturate(0.86)"',
 		)
 		expect(markup).not.toContain('>ABANDONED HALL<')
 	})
@@ -46,7 +60,7 @@ describe('PageImage', () => {
 		})
 
 		expect(markup).toContain(
-			'width="500" height="698" style="position:absolute;right:-36px;bottom:-240px;object-fit:contain;opacity:0.58;transform:rotate(5deg);filter:saturate(0.82)"',
+			'width="535" height="747" style="position:absolute;right:-50px;bottom:-245px;object-fit:contain;opacity:0.64;transform:rotate(6deg);filter:saturate(0.86)"',
 		)
 	})
 
@@ -66,6 +80,7 @@ describe('PageImage', () => {
 
 		expect(markup).toContain('/DEATHKNELL/')
 		expect(markup).toContain('KEYWORD ABILITY')
+		expect(markup).toContain('right:20px;bottom:56px;flex-direction:column')
 	})
 
 	test('renders a set logo for a Core Rules reference', () => {
@@ -81,7 +96,9 @@ describe('PageImage', () => {
 		})
 
 		expect(markup).toContain('src="set-logo-radiance"')
-		expect(markup).toContain('CORE RULES')
+		expect(markup).toContain('width="295" height="180"')
+		expect(markup).toContain('right:36px;bottom:38px;align-items:center')
+		expect(markup).not.toContain('>CORE RULES<')
 	})
 
 	test('falls back to an edition wordmark when no Core Rules set logo exists', () => {
@@ -114,13 +131,57 @@ describe('PageImage', () => {
 		})
 
 		expect(markup).toContain('src="set-logo-vendetta"')
-		expect(markup).toContain('width="250" height="118"')
+		expect(markup).toContain('width="220" height="132"')
 		expect(markup).toContain('src="set-logo-radiance"')
-		expect(markup).toContain('width="335" height="160"')
-		expect(markup).toContain('opacity:0.4;filter:grayscale(1)')
-		expect(markup).toContain('opacity:0.88')
+		expect(markup).toContain('width="295" height="180"')
+		expect(markup).toContain('opacity:0.38')
+		expect(markup).toContain('opacity:0.96')
 		expect(markup).toContain('filter:grayscale(1)')
-		expect(markup).toContain('transform:rotate(-9deg)')
-		expect(markup).toContain('>TO<')
+		expect(markup).toContain('left:250px;width:3px;height:90px;background-color:#f4cc52')
+		expect(markup).not.toContain('>TO<')
+	})
+
+	test.each([
+		['Flow', 'Brief description.', 78, 29],
+		[
+			'About Riftbound FAQ',
+			'Unofficial Riftbound rules answers about abilities, with examples and Core Rules citations.',
+			74,
+			30,
+		],
+		[
+			'Rulings and Rules References',
+			'Unofficial Riftbound rulings for Kennen, Storm of Shuriken, with rules explanations, examples, and Core Rules citations.',
+			71,
+			29,
+		],
+		['Core Rules 1.5 Changes (Radiance)', 'Changes between adjacent Core Rules documents.', 60, 29],
+		[
+			'Tournament Rules Changes (October 2026)',
+			"Unofficial, hyperlinked versions of Riftbound's Core Rules and Tournament Rules, with archived versions and generated comparisons between adjacent versions.",
+			52,
+			27,
+		],
+	])(
+		'scales %s according to title and description density',
+		(title, description, expectedTitleSize, expectedDescriptionSize) => {
+			const markup = render({ title, description, railLabel: 'TEST', visual: { kind: 'site-mark' } })
+
+			expect(markup).toContain(`font-size:${expectedTitleSize}px`)
+			expect(markup).toContain(`font-size:${expectedDescriptionSize}px`)
+			expect(markup).toContain('text-wrap:balance')
+			expect(markup).toContain('text-wrap:pretty')
+		},
+	)
+
+	test('keeps Tournament Rules together when balancing long titles', () => {
+		const markup = render({
+			title: 'Tournament Rules Changes (October 2026)',
+			description: 'Changes between adjacent Tournament Rules documents.',
+			railLabel: 'TOURNAMENT RULES · CHANGES',
+			visual: { kind: 'site-mark' },
+		})
+
+		expect(markup).toContain('Tournament\u00A0Rules Changes')
 	})
 })
