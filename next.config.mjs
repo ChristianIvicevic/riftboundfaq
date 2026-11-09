@@ -9,15 +9,20 @@ const config = {
 	// oxfmt-ignore
 	async redirects() {
 		return [
-			// Reference
-			{ source: '/reference/core-rules', destination: '/reference#core-rules', permanent: false },
-			{ source: '/reference/tournament-rules', destination: '/reference#tournament-rules', permanent: false },
-			{ source: '/reference/vendetta-patch-notes', destination: '/reference/core-rules/changes/1.4', permanent: true },
-			{ source: '/reference/unleashed-patch-notes', destination: '/reference/core-rules/changes/1.3', permanent: true },
-			{ source: '/reference/spiritforged-patch-notes', destination: '/reference/core-rules/changes/1.2', permanent: true },
-			{ source: '/reference/patch-notes/vendetta', destination: '/reference/core-rules/changes/1.4', permanent: true },
-			{ source: '/reference/patch-notes/unleashed', destination: '/reference/core-rules/changes/1.3', permanent: true },
-			{ source: '/reference/patch-notes/spiritforged', destination: '/reference/core-rules/changes/1.2', permanent: true },
+			// Rules Documents
+			{ source: '/rules-documents/core-rules', destination: '/rules-documents#core-rules', permanent: false },
+			{ source: '/rules-documents/tournament-rules', destination: '/rules-documents#tournament-rules', permanent: false },
+			{ source: '/reference/core-rules', destination: '/rules-documents#core-rules', permanent: true },
+			{ source: '/reference/tournament-rules', destination: '/rules-documents#tournament-rules', permanent: true },
+			{ source: '/reference/vendetta-patch-notes', destination: '/rules-documents/core-rules/changes/1.4', permanent: true },
+			{ source: '/reference/unleashed-patch-notes', destination: '/rules-documents/core-rules/changes/1.3', permanent: true },
+			{ source: '/reference/spiritforged-patch-notes', destination: '/rules-documents/core-rules/changes/1.2', permanent: true },
+			{ source: '/reference/patch-notes/vendetta', destination: '/rules-documents/core-rules/changes/1.4', permanent: true },
+			{ source: '/reference/patch-notes/unleashed', destination: '/rules-documents/core-rules/changes/1.3', permanent: true },
+			{ source: '/reference/patch-notes/spiritforged', destination: '/rules-documents/core-rules/changes/1.2', permanent: true },
+			{ source: '/reference', destination: '/rules-documents', permanent: true },
+			{ source: '/reference/:path*', destination: '/rules-documents/:path*', permanent: true },
+			{ source: '/og/reference/:path*', destination: '/og/rules-documents/:path*', permanent: true },
 			// Cards
 			{ source: '/sets/origins/cards/hidden-blade', destination: '/cards/hidden-blade', permanent: true },
 			{ source: '/sets/origins/cards/karthus-eternal', destination: '/cards/karthus-eternal', permanent: true },

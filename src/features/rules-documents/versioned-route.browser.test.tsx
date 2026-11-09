@@ -9,7 +9,7 @@ import {
 describe('version-specific rules page rendering', () => {
 	test('renders an archived Core Rules document', async () => {
 		const route = resolveVersionedRulesRoute({
-			url: '/reference/core-rules/1.0',
+			url: '/rules-documents/core-rules/1.0',
 			rulesDocument: { type: 'core-rules', version: '1.0' },
 		})
 		const screen = await render(renderVersionedRulesDocument(route))
@@ -21,7 +21,7 @@ describe('version-specific rules page rendering', () => {
 
 	test('renders a reference-only change badge in an archived Core Rules document', async () => {
 		const route = resolveVersionedRulesRoute({
-			url: '/reference/core-rules/1.1',
+			url: '/rules-documents/core-rules/1.1',
 			rulesDocument: { type: 'core-rules', version: '1.1' },
 		})
 		const screen = await render(renderVersionedRulesDocument(route))
@@ -37,7 +37,7 @@ describe('version-specific rules page rendering', () => {
 
 	test('renders the current Tournament Rules through its family adapter', async () => {
 		const route = resolveVersionedRulesRoute({
-			url: '/reference/tournament-rules/2026-10-09',
+			url: '/rules-documents/tournament-rules/2026-10-09',
 			rulesDocument: { type: 'tournament-rules', version: '2026-10-09' },
 		})
 		const screen = await render(renderVersionedRulesDocument(route))

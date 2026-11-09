@@ -59,7 +59,7 @@ describe('Core Rules review rendering', () => {
 		await expect.element(screen.getByText(/current version \(1\.5\)/u)).toBeVisible()
 		await expect
 			.element(screen.getByRole('link', { name: '[999.999]' }))
-			.toHaveAttribute('href', '/reference/core-rules/1.3#R999.999')
+			.toHaveAttribute('href', '/rules-documents/core-rules/1.3#R999.999')
 	})
 
 	test('renders a passive citation without review context', async () => {

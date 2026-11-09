@@ -55,6 +55,6 @@ export function getPagePublishingDetails(page: PublishingPage): PagePublishingDe
 		description: page.data.description || fallbackDescription,
 		isEditorial: family !== undefined,
 		isIndexable: page.data.noindex !== true,
-		isSourceAttributionEligible: page.url !== '/reference' && !page.url.startsWith('/reference/'),
+		isSourceAttributionEligible: page.url !== '/rules-documents' && !page.url.startsWith('/rules-documents/'),
 	}
 }

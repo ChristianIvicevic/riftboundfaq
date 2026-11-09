@@ -6,7 +6,7 @@ function isSearchSourceKey(property: PropertyKey): property is keyof typeof sour
 	return Object.hasOwn(source, property)
 }
 
-// Keep `noindex` pages (everything under content/reference/, e.g. rules snapshots and
+// Keep `noindex` pages (everything under content/rules-documents/, e.g. rules snapshots and
 // change diffs) out of the search index, mirroring the sitemap's indexability
 // policy so site search matches what search engines are allowed to see. createFromSource
 // indexes every `loader.getPages()` with no built-in filter, so we wrap the loader and

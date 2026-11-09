@@ -49,11 +49,15 @@ describe('getPagePublishingDetails', () => {
 	})
 
 	test.each([
-		{ case: 'Rules Documents page', url: '/reference', title: 'Rules Documents' },
-		{ case: 'version-specific rules page', url: '/reference/core-rules/1.4', title: 'Core Rules 1.4' },
+		{ case: 'Rules Documents page', url: '/rules-documents', title: 'Rules Documents' },
+		{
+			case: 'version-specific rules page',
+			url: '/rules-documents/core-rules/1.4',
+			title: 'Core Rules 1.4',
+		},
 		{
 			case: 'rules changes page',
-			url: '/reference/tournament-rules/changes/2026-07-16',
+			url: '/rules-documents/tournament-rules/changes/2026-07-16',
 			title: 'Tournament Rules Changes',
 		},
 	])('publishes a non-indexable $case without source attribution', ({ url, title }) => {
@@ -71,15 +75,18 @@ describe('getPagePublishingDetails', () => {
 		})
 	})
 
-	test.each(['/cards-reference', '/reference-card'])('does not classify the near-miss route %s', (url) => {
-		expect(getPagePublishingDetails({ url, data: { title: 'Near miss' } })).toEqual({
-			metadataTitle: 'Near miss',
-			description: SITE_DESCRIPTION,
-			isEditorial: false,
-			isIndexable: true,
-			isSourceAttributionEligible: true,
-		})
-	})
+	test.each(['/cards-rules-documents', '/rules-documents-card'])(
+		'does not classify the near-miss route %s',
+		(url) => {
+			expect(getPagePublishingDetails({ url, data: { title: 'Near miss' } })).toEqual({
+				metadataTitle: 'Near miss',
+				description: SITE_DESCRIPTION,
+				isEditorial: false,
+				isIndexable: true,
+				isSourceAttributionEligible: true,
+			})
+		},
+	)
 
 	test('preserves authored description behavior', () => {
 		expect(

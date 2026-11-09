@@ -7,7 +7,7 @@ import {
 describe('version-specific rules page', () => {
 	test('resolves one archived rules document for navigation and rendering', () => {
 		const route = resolveVersionedRulesRoute({
-			url: '/reference/core-rules/1.0',
+			url: '/rules-documents/core-rules/1.0',
 			rulesDocument: { type: 'core-rules', version: '1.0' },
 		})
 
@@ -21,7 +21,7 @@ describe('version-specific rules page', () => {
 
 	test('renders the current Tournament Rules through its family adapter', () => {
 		const route = resolveVersionedRulesRoute({
-			url: '/reference/tournament-rules/2026-10-09',
+			url: '/rules-documents/tournament-rules/2026-10-09',
 			rulesDocument: { type: 'tournament-rules', version: '2026-10-09' },
 		})
 
@@ -30,19 +30,19 @@ describe('version-specific rules page', () => {
 
 	test('leaves pages without a rules document outside the seam', () => {
 		expect(resolveVersionedRulesRoute({ url: '/cards/alpha-strike' })).toBeUndefined()
-		expect(resolveVersionedRulesRoute({ url: '/reference/core-rules/changes/1.4' })).toBeUndefined()
+		expect(resolveVersionedRulesRoute({ url: '/rules-documents/core-rules/changes/1.4' })).toBeUndefined()
 	})
 
 	test('rejects a rules document at the wrong URL', () => {
 		expect(() =>
 			resolveVersionedRulesRoute({
-				url: '/reference/core-rules/1.1',
+				url: '/rules-documents/core-rules/1.1',
 				rulesDocument: { type: 'core-rules', version: '1.0' },
 			}),
 		).toThrow(
 			expect.objectContaining<Partial<VersionedRulesRouteError>>({
 				reason: 'route-mismatch',
-				url: '/reference/core-rules/1.1',
+				url: '/rules-documents/core-rules/1.1',
 			}),
 		)
 	})
@@ -50,13 +50,13 @@ describe('version-specific rules page', () => {
 	test('rejects an unregistered rules version without falling back', () => {
 		expect(() =>
 			resolveVersionedRulesRoute({
-				url: '/reference/core-rules/1.99',
+				url: '/rules-documents/core-rules/1.99',
 				rulesDocument: { type: 'core-rules', version: '1.99' },
 			}),
 		).toThrow(
 			expect.objectContaining<Partial<VersionedRulesRouteError>>({
 				reason: 'unknown-rules-version',
-				url: '/reference/core-rules/1.99',
+				url: '/rules-documents/core-rules/1.99',
 			}),
 		)
 	})
@@ -64,13 +64,13 @@ describe('version-specific rules page', () => {
 	test('reports an invalid version as unknown instead of leaking convention validation', () => {
 		expect(() =>
 			resolveVersionedRulesRoute({
-				url: '/reference/core-rules/bogus',
+				url: '/rules-documents/core-rules/bogus',
 				rulesDocument: { type: 'core-rules', version: 'bogus' },
 			}),
 		).toThrow(
 			expect.objectContaining<Partial<VersionedRulesRouteError>>({
 				reason: 'unknown-rules-version',
-				url: '/reference/core-rules/bogus',
+				url: '/rules-documents/core-rules/bogus',
 			}),
 		)
 	})

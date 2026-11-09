@@ -5,7 +5,7 @@ function documentRoute(
 	version: string,
 ) {
 	if (family.isVersion(version)) return family.version(version).reference.documentRoute
-	return `/reference/${family.id}/${version}`
+	return `/rules-documents/${family.id}/${version}`
 }
 
 export const coreRulesLinks = {

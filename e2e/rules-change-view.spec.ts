@@ -3,13 +3,13 @@ import { expect, test } from '@playwright/test'
 for (const comparison of [
 	{
 		name: 'Core Rules',
-		path: '/reference/core-rules/changes/1.4',
+		path: '/rules-documents/core-rules/changes/1.4',
 		setLogoNames: ['Unleashed logo', 'Vendetta logo'],
 		changedHeadingId: null,
 	},
 	{
 		name: 'Tournament Rules',
-		path: '/reference/tournament-rules/changes/2026-07-16',
+		path: '/rules-documents/tournament-rules/changes/2026-07-16',
 		setLogoNames: [],
 		changedHeadingId: 'new:R415',
 	},
@@ -65,9 +65,9 @@ test('aligns Core Rules titles independently of set-logo aspect ratio', async ({
 		})
 	}
 
-	const unleashed = await measureHeader('/reference/core-rules/1.3')
-	const radiance = await measureHeader('/reference/core-rules/1.5')
-	const comparison = await measureHeader('/reference/core-rules/changes/1.5')
+	const unleashed = await measureHeader('/rules-documents/core-rules/1.3')
+	const radiance = await measureHeader('/rules-documents/core-rules/1.5')
+	const comparison = await measureHeader('/rules-documents/core-rules/changes/1.5')
 
 	expect(
 		new Set([...unleashed.logoSlotHeights, ...radiance.logoSlotHeights, ...comparison.logoSlotHeights]).size,
@@ -79,7 +79,7 @@ test('aligns Core Rules titles independently of set-logo aspect ratio', async ({
 
 test('uses the full rules-document table of contents', async ({ page }) => {
 	await page.setViewportSize({ width: 1600, height: 900 })
-	await page.goto('/reference/core-rules/changes/1.4')
+	await page.goto('/rules-documents/core-rules/changes/1.4')
 
 	await expect(page.getByRole('heading', { name: 'On this page', exact: true })).toBeVisible()
 	await expect(page.getByRole('link', { name: '050. Silver Rule', exact: true })).toBeVisible()
@@ -96,7 +96,7 @@ test('renders contextual changes without JavaScript', async ({ browser }, testIn
 	})
 	const page = await context.newPage()
 	try {
-		await page.goto('/reference/core-rules/changes/1.4')
+		await page.goto('/rules-documents/core-rules/changes/1.4')
 
 		await expect(page.locator('article del').first()).toBeVisible()
 		await expect(page.locator('article ins').first()).toBeVisible()
