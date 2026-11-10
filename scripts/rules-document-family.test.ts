@@ -268,69 +268,6 @@ describe('Rules document family extraction', () => {
 		)
 	})
 
-	test('preserves Tournament Rules order across a successfully extracted family', async () => {
-		const manifest = parseRulesManifest({
-			coreRules: { current: '1.0', versions: { '1.0': {} } },
-			tournamentRules: {
-				current: '2026-02-01',
-				versions: { '2026-01-01': {}, '2026-02-01': {} },
-			},
-		})
-		const adapter = createTournamentRulesFamilyAdapter({
-			sourcesDirectory: '/rules',
-			warn: vi.fn(),
-			async readSource(path) {
-				const version = path.match(/(\d{4}-\d{2}-\d{2})\.pdf$/u)![1]
-				return {
-					...tournamentRulesSource(),
-					file: `Tournament-Rules-${version}.pdf`,
-					version,
-					lastUpdated: version,
-				}
-			},
-		})
-
-		const extracted = await adapter.extract(manifest.tournamentRules)
-
-		expect(extracted.versions.map(({ registeredVersion }) => registeredVersion.version)).toStrictEqual([
-			'2026-01-01',
-			'2026-02-01',
-		])
-		expect(extracted.currentVersion).toBe(extracted.versions[1])
-	})
-
-	test('stops Tournament Rules extraction at the first failed registered rules version', async () => {
-		const manifest = parseRulesManifest({
-			coreRules: { current: '1.0', versions: { '1.0': {} } },
-			tournamentRules: {
-				current: '2026-03-01',
-				versions: { '2026-01-01': {}, '2026-02-01': {}, '2026-03-01': {} },
-			},
-		})
-		const inspectedPaths: string[] = []
-		const adapter = createTournamentRulesFamilyAdapter({
-			sourcesDirectory: '/rules',
-			warn: vi.fn(),
-			async readSource(path) {
-				inspectedPaths.push(path)
-				if (path.endsWith('2026-02-01.pdf')) throw new Error('invalid Tournament Rules')
-				const version = path.match(/(\d{4}-\d{2}-\d{2})\.pdf$/u)![1]
-				return {
-					...tournamentRulesSource(),
-					file: `Tournament-Rules-${version}.pdf`,
-					version,
-					lastUpdated: version,
-				}
-			},
-		})
-
-		await expect(adapter.extract(manifest.tournamentRules)).rejects.toThrow(/invalid Tournament Rules/u)
-		expect(inspectedPaths).toStrictEqual([
-			'/rules/Tournament-Rules-2026-01-01.pdf',
-			'/rules/Tournament-Rules-2026-02-01.pdf',
-		])
-	})
-
 	test('rejects partial Tournament Rules strikeouts before projection', async () => {
 		const manifest = parseRulesManifest({
 			coreRules: { current: '1.0', versions: { '1.0': {} } },

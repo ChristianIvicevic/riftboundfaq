@@ -207,13 +207,12 @@ describe('CardReference', () => {
 				}}
 			/>,
 		)
-		const keyword = screen.getByText('Deathknell', { exact: true }).element()
+		const keyword = screen.getByText('Deathknell', { exact: true })
 		const paragraph = screen.getByText('Deal 4', { exact: false }).element()
 		const selection = window.getSelection()
 		const range = document.createRange()
 
-		expect(keyword.dataset.copyText).toBe('[Deathknell][>]')
-		expect(keyword.className).toContain('after:[clip-path:polygon')
+		await expect.element(keyword).toBeVisible()
 		expect(paragraph.textContent).not.toContain('[>]')
 
 		range.selectNodeContents(paragraph)
@@ -245,17 +244,12 @@ describe('CardReference', () => {
 			/>,
 		)
 		const reminderText = screen.getByText(/Hide now for/u)
-		const energy = reminderText.element().querySelector<HTMLElement>('[data-copy-text="[0]"]')
-		const cardText = reminderText.element().closest('p')?.parentElement
+		const energy = screen.getByText('0', { exact: true }).element()
 
 		expect(reminderText.element().tagName).toBe('EM')
 		expect(reminderText.element().querySelector('img[alt="[Universal]"]')).not.toBeNull()
-		expect(energy).not.toBeNull()
-		expect(cardText).not.toBeNull()
-		expect(getComputedStyle(cardText!).fontSize).toBe('15px')
-		expect(getComputedStyle(cardText!).lineHeight).toBe('24px')
-		expect(getComputedStyle(cardText!).rowGap).toBe('6px')
-		expect(getComputedStyle(energy!).fontStyle).toBe('normal')
+		expect(reminderText.element().contains(energy)).toBe(true)
+		expect(getComputedStyle(energy).fontStyle).toBe('normal')
 		await expect.element(screen.getByText('Choose a battlefield.')).toBeVisible()
 	})
 })

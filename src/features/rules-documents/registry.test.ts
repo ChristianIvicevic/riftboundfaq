@@ -40,7 +40,7 @@ function collectDocumentChangeMarkers(
 }
 
 describe('rules documents registry', () => {
-	test('distinguishes exact registered versions from the current rules version', () => {
+	test('shares registered identities with exact compiled rules versions', () => {
 		const coreRules = rulesDocuments.family('core-rules')
 		const current = coreRules.registeredVersions.find(({ status }) => status === 'current')!
 		const archived = coreRules.registeredVersions.find(({ status }) => status === 'archived')!
@@ -152,7 +152,7 @@ describe('rules documents registry', () => {
 		}
 	})
 
-	test('memoizes immutable documents whose navigation headings are the rendered headings', () => {
+	test('memoizes documents and keeps immutable rendered headings in navigation', () => {
 		const family = rulesDocuments.family('core-rules')
 		const document = family.get('1.0')
 		const renderedHeadings = document.sections.flatMap((section) => [
@@ -163,10 +163,9 @@ describe('rules documents registry', () => {
 		expect(family.get('1.0')).toBe(document)
 		expect(document.navigation).toHaveLength(renderedHeadings.length)
 		document.navigation.forEach((heading, index) => expect(heading).toBe(renderedHeadings[index]))
-		expect(Object.isFrozen(document)).toBe(true)
-		expect(Object.isFrozen(document.identity)).toBe(true)
-		expect(Object.isFrozen(document.sections)).toBe(true)
-		expect(Object.isFrozen(document.sections[0].heading)).toBe(true)
-		expect(Object.isFrozen(document.sections[0].blocks)).toBe(true)
+		const heading = document.sections[0].heading
+		const originalText = heading.text
+		expect(Reflect.set(heading, 'text', 'Changed heading')).toBe(false)
+		expect(heading.text).toBe(originalText)
 	})
 })

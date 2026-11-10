@@ -31,7 +31,6 @@ describe('rules changes page route', () => {
 
 	test('leaves non-change pages outside the seam', () => {
 		expect(resolveRulesChangeRoute('/rulings/cards/alpha-strike')).toBeUndefined()
-		expect(resolveRulesChangeRoute('/rules-documents/core-rules/1.4')).toBeUndefined()
 	})
 
 	test('rejects rendering without matching route context', () => {

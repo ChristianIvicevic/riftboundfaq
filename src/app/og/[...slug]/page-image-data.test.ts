@@ -1,10 +1,14 @@
-import { describe, expect, test, vi } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import { getPageImageData } from '@/app/og/[...slug]/page-image-data'
 
 const NO_SET_LOGOS: Readonly<Record<string, string>> = {}
 
 function noSetLogo(editionName: string) {
 	return NO_SET_LOGOS[editionName]
+}
+
+function setLogoSrc(editionName: string) {
+	return `set-logo-${editionName.toLowerCase()}`
 }
 
 function page(url: string, title: string, description = `Description for ${title}.`) {
@@ -21,7 +25,6 @@ describe('getPageImageData', () => {
 		expect(getPageImageData(page(url, title), noSetLogo)).toEqual({
 			title,
 			description: `Description for ${title}.`,
-			railLabel: 'RIFTBOUND FAQ',
 			visual: { kind: 'site-mark' },
 		})
 	})
@@ -30,17 +33,16 @@ describe('getPageImageData', () => {
 		expect(getPageImageData(page('/', 'Riftbound FAQ'), noSetLogo)).toEqual({
 			title: 'Rulings and Rules References',
 			description: 'Unofficial rulings, rules references, and card errata for Riftbound players and judges.',
-			railLabel: 'RIFTBOUND FAQ',
 			visual: { kind: 'site-mark' },
 		})
 	})
 
-	test('maps card catalog art without repeating the card name in the rail', () => {
+	test('maps card catalog art', () => {
 		const data = getPageImageData(page('/rulings/cards/abandoned-hall', 'Abandoned Hall'), noSetLogo)
 
-		expect(data).toMatchObject({
+		expect(data).toEqual({
 			title: 'Abandoned Hall',
-			railLabel: 'CARD RULINGS',
+			description: 'Description for Abandoned Hall.',
 			visual: {
 				kind: 'card',
 				src: expect.stringContaining('-1039x744.png'),
@@ -48,20 +50,17 @@ describe('getPageImageData', () => {
 				height: 744,
 			},
 		})
-		expect(data).not.toHaveProperty('railContext')
 	})
 
 	test.each([
 		{
 			url: '/rulings/general-rules/chain-and-priority',
 			title: 'Chain and Priority',
-			railLabel: 'GENERAL RULES',
-			visual: { kind: 'wordmark', primary: 'General', accent: 'Rules' },
+			visual: { kind: 'site-mark' },
 		},
 		{
 			url: '/rulings/mechanics/deathknell',
 			title: 'Deathknell',
-			railLabel: 'MECHANIC · KEYWORD',
 			visual: {
 				kind: 'keyword',
 				label: 'Deathknell',
@@ -72,27 +71,25 @@ describe('getPageImageData', () => {
 		{
 			url: '/rulings/mechanics/equipment',
 			title: 'Equipment',
-			railLabel: 'MECHANIC',
-			visual: { kind: 'wordmark', primary: 'Game', accent: 'Mechanics' },
+			visual: { kind: 'site-mark' },
 		},
-	])('maps $url to its semantic visual', ({ railLabel, title, url, visual }) => {
-		expect(getPageImageData(page(url, title), noSetLogo)).toMatchObject({
-			railLabel,
-			railContext: title,
+	])('maps $url to its rendered visual', ({ title, url, visual }) => {
+		expect(getPageImageData(page(url, title), noSetLogo)).toEqual({
+			title,
+			description: `Description for ${title}.`,
 			visual,
 		})
 	})
 
-	test('maps Tournament Rules references and changes to the exact shared site mark', () => {
+	test('maps Tournament Rules references and changes to the shared site mark', () => {
 		expect(
 			getPageImageData(
 				page('/rules-documents/tournament-rules/2026-10-09', 'Tournament Rules (October 9, 2026)'),
 				noSetLogo,
 			),
-		).toMatchObject({
+		).toEqual({
 			title: 'Tournament Rules (October 2026)',
-			railLabel: 'TOURNAMENT RULES · REFERENCE',
-			railContext: 'OCTOBER · 2026',
+			description: 'Description for Tournament Rules (October 9, 2026).',
 			visual: { kind: 'site-mark' },
 		})
 		expect(
@@ -103,48 +100,40 @@ describe('getPageImageData', () => {
 				),
 				noSetLogo,
 			),
-		).toMatchObject({
+		).toEqual({
 			title: 'Tournament Rules Changes (October 2026)',
-			railLabel: 'TOURNAMENT RULES · CHANGES',
-			railContext: 'JUL · 2026 TO OCT · 2026',
+			description: 'Description for Tournament Rules Changes (October 9, 2026).',
 			visual: { kind: 'site-mark' },
 		})
 	})
 
-	test('maps Core Rules references without a set logo to the wordmark fallback', () => {
-		const setLogoSrc = vi.fn(noSetLogo)
-
+	test('maps Core Rules references without a set logo to the edition fallback', () => {
 		expect(
-			getPageImageData(page('/rules-documents/core-rules/1.0', 'Core Rules 1.0 (Pre-Origins)'), setLogoSrc),
-		).toMatchObject({
-			railLabel: 'CORE RULES · REFERENCE',
-			railContext: 'Pre-Origins · 1.0',
+			getPageImageData(page('/rules-documents/core-rules/1.0', 'Core Rules 1.0 (Pre-Origins)'), noSetLogo),
+		).toEqual({
+			title: 'Core Rules 1.0 (Pre-Origins)',
+			description: 'Description for Core Rules 1.0 (Pre-Origins).',
 			visual: {
 				kind: 'rules-edition',
-				edition: { name: 'Pre-Origins', version: '1.0', logoSrc: undefined },
+				edition: { name: 'Pre-Origins', logoSrc: undefined },
 			},
 		})
-		expect(setLogoSrc).toHaveBeenCalledExactlyOnceWith('Pre-Origins')
 	})
 
 	test('maps both Core Rules transition logos', () => {
-		const setLogoSrc = vi.fn((editionName: string) => `set-logo-${editionName.toLowerCase()}`)
-
 		expect(
 			getPageImageData(
 				page('/rules-documents/core-rules/changes/1.5', 'Core Rules 1.5 Changes (Radiance)'),
 				setLogoSrc,
 			),
-		).toMatchObject({
-			railLabel: 'CORE RULES · CHANGES',
-			railContext: 'Vendetta · 1.4 TO Radiance · 1.5',
+		).toEqual({
+			title: 'Core Rules 1.5 Changes (Radiance)',
+			description: 'Description for Core Rules 1.5 Changes (Radiance).',
 			visual: {
 				kind: 'rules-transition',
-				from: { name: 'Vendetta', version: '1.4', logoSrc: 'set-logo-vendetta' },
-				current: { name: 'Radiance', version: '1.5', logoSrc: 'set-logo-radiance' },
+				from: { name: 'Vendetta', logoSrc: 'set-logo-vendetta' },
+				current: { name: 'Radiance', logoSrc: 'set-logo-radiance' },
 			},
 		})
-		expect(setLogoSrc).toHaveBeenNthCalledWith(1, 'Vendetta')
-		expect(setLogoSrc).toHaveBeenNthCalledWith(2, 'Radiance')
 	})
 })

@@ -7,11 +7,34 @@ function edition(version: string, name: string | null): RegisteredRulesVersionSu
 	return { type: 'core-rules', version, name, status: version === '1.5' ? 'current' : 'archived' }
 }
 
+function imageSource(markup: string, alt: string) {
+	const image = markup
+		.split('<img')
+		.slice(1)
+		.map((fragment) => `<img${fragment.split('>')[0]}>`)
+		.find((element) => element.includes(`alt="${alt}"`))
+	const source = image && /\ssrc="([^"]+)"/u.exec(image)?.[1]
+	if (!source) throw new Error(`Expected image ${JSON.stringify(alt)} to have a source`)
+
+	const url = new URL(source.replaceAll('&amp;', '&'), 'https://example.com')
+	return url.searchParams.get('url') ?? url.pathname
+}
+
 describe('CoreRulesSetLogoHeader', () => {
 	test.each([
-		{ version: '1.5', name: 'Radiance', title: 'Core Rules 1.5 (Radiance)' },
-		{ version: '1.4', name: 'Vendetta', title: 'Core Rules 1.4 (Vendetta)' },
-	])('renders the $name logo for Core Rules $version', ({ name, title, version }) => {
+		{
+			version: '1.5',
+			name: 'Radiance',
+			title: 'Core Rules 1.5 (Radiance)',
+			src: '/images/sets/radiance.webp',
+		},
+		{
+			version: '1.4',
+			name: 'Vendetta',
+			title: 'Core Rules 1.4 (Vendetta)',
+			src: '/images/sets/vendetta.webp',
+		},
+	])('renders the $name logo for Core Rules $version', ({ name, src, title, version }) => {
 		const markup = renderToStaticMarkup(
 			<CoreRulesSetLogoHeader
 				data={{ kind: 'document', edition: edition(version, name) }}
@@ -23,6 +46,7 @@ describe('CoreRulesSetLogoHeader', () => {
 		expect(markup).toContain(`<h1`)
 		expect(markup).toContain(title)
 		expect(markup).toContain(`alt="${name} logo"`)
+		expect(imageSource(markup, `${name} logo`)).toBe(src)
 	})
 
 	test('renders both set logos for a Core Rules comparison', () => {
@@ -39,7 +63,9 @@ describe('CoreRulesSetLogoHeader', () => {
 		)
 
 		expect(markup).toContain('alt="Vendetta logo"')
+		expect(imageSource(markup, 'Vendetta logo')).toBe('/images/sets/vendetta.webp')
 		expect(markup).toContain('alt="Radiance logo"')
+		expect(imageSource(markup, 'Radiance logo')).toBe('/images/sets/radiance.webp')
 	})
 
 	test('falls back to the edition name when no set logo exists', () => {
@@ -47,11 +73,11 @@ describe('CoreRulesSetLogoHeader', () => {
 			<CoreRulesSetLogoHeader
 				data={{ kind: 'document', edition: edition('1.0', 'Pre-Origins') }}
 				description="Archived Core Rules."
-				title="Core Rules 1.0 (Pre-Origins)"
+				title="Archived Core Rules"
 			/>,
 		)
 
-		expect(markup).toContain('Pre-Origins')
+		expect(markup).toContain('>Pre-Origins</span>')
 		expect(markup).not.toContain('<img')
 	})
 })

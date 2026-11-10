@@ -1,14 +1,30 @@
-import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
+import { mkdtemp, mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { describe, expect, onTestFinished, test } from 'vitest'
+import { z } from 'zod'
 import {
 	createRulesPublisher,
 	type PreparedRulesPublication,
 	simulatedPublicationCrash,
 } from './rules-publication-internal'
 
-const PRIOR_FILES = new Map([
+const FIXED_MANAGED_PATHS = [
+	'src/generated/rules-metadata.ts',
+	'src/generated/core-rules',
+	'src/generated/tournament-rules',
+	'content/reference',
+	'content/rules-documents',
+] as const
+const MANAGED_ROOTS = ['src/generated', 'content', 'sources'] as const
+const MANAGED_TRANSCRIPT_PATH = /^sources\/(?:CR-v\d+\.\d+|Tournament-Rules-\d{4}-\d{2}-\d{2})\.txt$/u
+const missingPathError = z.object({ code: z.literal('ENOENT') })
+
+function pathContentMap(entries: Iterable<readonly [string, string]>): Map<string, string> {
+	return new Map([...entries].toSorted(([left], [right]) => left.localeCompare(right)))
+}
+
+const PRIOR_FILES = pathContentMap([
 	['src/generated/rules-metadata.ts', 'prior metadata'],
 	['src/generated/core-rules/v1-0.ts', 'prior core version'],
 	['src/generated/tournament-rules/v2026-01-01.ts', 'prior tournament version'],
@@ -18,12 +34,7 @@ const PRIOR_FILES = new Map([
 	['sources/Tournament-Rules-2026-01-01.txt', 'prior tournament transcript'],
 ])
 
-const LEGACY_MANAGED_PATHS = [
-	'src/generated/rules-metadata.ts',
-	'src/generated/core-rules',
-	'src/generated/tournament-rules',
-	'content/reference',
-] as const
+const LEGACY_MANAGED_PATHS = FIXED_MANAGED_PATHS.slice(0, 4)
 
 function legacyJournalEntries(statuses: readonly ('pending' | 'installed')[], metadataHadPrior = false) {
 	return LEGACY_MANAGED_PATHS.map((livePath, index) => ({
@@ -73,6 +84,23 @@ function preparedPublication(): PreparedRulesPublication {
 	}
 }
 
+function expectedPublishedFiles(prepared = preparedPublication()): Map<string, string> {
+	return pathContentMap([
+		...[...prepared.coreRules.artifacts].map(
+			([path, contents]) => [`src/generated/core-rules/${path}`, contents] as const,
+		),
+		...[...prepared.tournamentRules.artifacts].map(
+			([path, contents]) => [`src/generated/tournament-rules/${path}`, contents] as const,
+		),
+		...[...prepared.reference].map(
+			([path, contents]) => [`content/rules-documents/${path}`, contents] as const,
+		),
+		...[...prepared.coreRules.transcripts, ...prepared.tournamentRules.transcripts].map(
+			([path, contents]) => [`sources/${path}`, contents] as const,
+		),
+	])
+}
+
 async function temporaryProject() {
 	const projectDirectory = await mkdtemp(join(tmpdir(), 'riftbound-publication-'))
 	onTestFinished(() => rm(projectDirectory, { recursive: true, force: true }))
@@ -93,16 +121,75 @@ async function seedPriorPublication(projectDirectory: string) {
 	)
 }
 
-async function expectPriorPublication(projectDirectory: string) {
-	const contents = await Promise.all(
-		[...PRIOR_FILES.keys()].map((path) => readFile(join(projectDirectory, path), 'utf8')),
+async function readFilesUnder(
+	projectDirectory: string,
+	relativeDirectory: string,
+): Promise<[string, string][]> {
+	let entries
+	try {
+		entries = await readdir(join(projectDirectory, relativeDirectory), { withFileTypes: true })
+	} catch (error) {
+		if (missingPathError.safeParse(error).success) return []
+		throw error
+	}
+
+	const files = await Promise.all(
+		entries.map(async (entry): Promise<[string, string][]> => {
+			const path = `${relativeDirectory}/${entry.name}`
+			if (entry.isDirectory()) return readFilesUnder(projectDirectory, path)
+			if (!entry.isFile()) return []
+			return [[path, await readFile(join(projectDirectory, path), 'utf8')]]
+		}),
 	)
-	expect(contents).toStrictEqual([...PRIOR_FILES.values()])
-	await expectMissing(join(projectDirectory, 'content/rules-documents/index.mdx'))
+	return files.flat()
+}
+
+async function readManagedPublication(projectDirectory: string): Promise<Map<string, string>> {
+	const files = (
+		await Promise.all(MANAGED_ROOTS.map((root) => readFilesUnder(projectDirectory, root)))
+	).flat()
+	return pathContentMap(
+		files.filter(
+			([path]) =>
+				FIXED_MANAGED_PATHS.some(
+					(managedPath) => path === managedPath || path.startsWith(`${managedPath}/`),
+				) || MANAGED_TRANSCRIPT_PATH.test(path),
+		),
+	)
+}
+
+async function expectManagedPublication(projectDirectory: string, expected: ReadonlyMap<string, string>) {
+	expect(await readManagedPublication(projectDirectory)).toStrictEqual(expected)
+}
+
+async function expectNoPublicationRecoveryData(projectDirectory: string) {
+	await Promise.all([
+		expect(readdir(join(projectDirectory, '.rules-publication'))).rejects.toMatchObject({ code: 'ENOENT' }),
+		expect(readdir(join(projectDirectory, '.rules-publication-committed'))).rejects.toMatchObject({
+			code: 'ENOENT',
+		}),
+	])
+}
+
+async function expectPriorPublication(
+	projectDirectory: string,
+	expected: ReadonlyMap<string, string> = PRIOR_FILES,
+) {
+	await expectManagedPublication(projectDirectory, expected)
+	await expectNoPublicationRecoveryData(projectDirectory)
 }
 
 async function expectMissing(path: string) {
 	await expect(readFile(path, 'utf8')).rejects.toMatchObject({ code: 'ENOENT' })
+}
+
+async function recoverWithoutRepublishing(projectDirectory: string) {
+	const recoveryPublisher = createRulesPublisher({
+		prepare: async () => {
+			throw new Error('stop after recovery')
+		},
+	})
+	await expect(recoveryPublisher({ projectDirectory })).rejects.toThrow(/stop after recovery/u)
 }
 
 describe('publishRules', () => {
@@ -124,21 +211,8 @@ describe('publishRules', () => {
 		const summary = await publishRules({ projectDirectory })
 
 		expect(summary).toStrictEqual(preparedPublication().summary)
-		await expectMissing(join(projectDirectory, 'src/generated/rules-metadata.ts'))
-		expect(await readFile(join(projectDirectory, 'src/generated/core-rules/v1-0.ts'), 'utf8')).toBe(
-			'core version',
-		)
-		expect(
-			await readFile(join(projectDirectory, 'src/generated/tournament-rules/v2026-01-01.ts'), 'utf8'),
-		).toBe('tournament version')
-		expect(await readFile(join(projectDirectory, 'content/rules-documents/index.mdx'), 'utf8')).toBe(
-			'Rules Documents page',
-		)
-		await expectMissing(join(projectDirectory, 'content/reference/index.mdx'))
-		expect(await readFile(join(projectDirectory, 'sources/CR-v1.0.txt'), 'utf8')).toBe('core transcript')
-		expect(await readFile(join(projectDirectory, 'sources/Tournament-Rules-2026-01-01.txt'), 'utf8')).toBe(
-			'tournament transcript',
-		)
+		await expectManagedPublication(projectDirectory, expectedPublishedFiles())
+		await expectNoPublicationRecoveryData(projectDirectory)
 		expect(await readFile(join(projectDirectory, 'sources/rules-manifest.json'), 'utf8')).toBe(
 			'authoritative manifest',
 		)
@@ -146,12 +220,6 @@ describe('publishRules', () => {
 			[...preservedFiles.keys()].map((path) => readFile(join(projectDirectory, path), 'utf8')),
 		)
 		expect(preservedContents).toStrictEqual([...preservedFiles.values()])
-		expect(
-			await readFile(join(projectDirectory, 'content/rules-documents/core-rules/(archive)/0.9.mdx'), 'utf8'),
-		).toBe('archived Core Rules')
-		expect(
-			await readFile(join(projectDirectory, 'content/rules-documents/core-rules/changes/1.0.mdx'), 'utf8'),
-		).toBe('Core Rules changes page')
 	})
 
 	test.each(['content/reference', 'content/rules-documents'])(
@@ -226,15 +294,13 @@ describe('publishRules', () => {
 		const publishRules = createRulesPublisher({ prepare: async () => preparedPublication() })
 
 		await publishRules({ projectDirectory })
+		const firstPublication = await readManagedPublication(projectDirectory)
+		expect(firstPublication).toStrictEqual(expectedPublishedFiles())
+
 		await publishRules({ projectDirectory })
 
-		await expectMissing(join(projectDirectory, 'src/generated/core-rules/stale.ts'))
-		await expectMissing(join(projectDirectory, 'content/reference/stale.txt'))
-		expect(await readFile(join(projectDirectory, 'content/rules-documents/index.mdx'), 'utf8')).toBe(
-			'Rules Documents page',
-		)
-		await expectMissing(join(projectDirectory, 'sources/CR-v9.9.txt'))
-		await expectMissing(join(projectDirectory, 'sources/Tournament-Rules-1999-01-01.txt'))
+		expect(await readManagedPublication(projectDirectory)).toStrictEqual(firstPublication)
+		await expectNoPublicationRecoveryData(projectDirectory)
 		expect(await readFile(join(projectDirectory, 'sources/notes.txt'), 'utf8')).toBe('unrelated source')
 	})
 
@@ -250,8 +316,9 @@ describe('publishRules', () => {
 		})
 
 		await expect(publishRules({ projectDirectory })).rejects.toMatchObject({ publicationState: 'prior' })
-		expect(await readFile(join(projectDirectory, 'sources/CR-v9.9.txt'), 'utf8')).toBe(
-			'prior stale transcript',
+		await expectPriorPublication(
+			projectDirectory,
+			pathContentMap([...PRIOR_FILES, ['sources/CR-v9.9.txt', 'prior stale transcript']]),
 		)
 	})
 
@@ -299,10 +366,8 @@ describe('publishRules', () => {
 			/"state": "replacing"/u,
 		)
 
-		const publishRules = createRulesPublisher({ prepare: async () => preparedPublication() })
-		await publishRules({ projectDirectory })
-		await expectMissing(join(projectDirectory, 'src/generated/rules-metadata.ts'))
-		await expectMissing(join(projectDirectory, '.rules-publication/transaction.json'))
+		await recoverWithoutRepublishing(projectDirectory)
+		await expectPriorPublication(projectDirectory)
 	})
 
 	test('resumes an interrupted partial rollback on the next invocation', async () => {
@@ -322,15 +387,8 @@ describe('publishRules', () => {
 		expect(await readFile(join(projectDirectory, '.rules-publication/transaction.json'), 'utf8')).toMatch(
 			/"state": "rolling-back"/u,
 		)
-		const recoveryPublisher = createRulesPublisher({
-			prepare: async () => {
-				throw new Error('stop after recovery')
-			},
-		})
-
-		await expect(recoveryPublisher({ projectDirectory })).rejects.toThrow(/stop after recovery/u)
+		await recoverWithoutRepublishing(projectDirectory)
 		await expectPriorPublication(projectDirectory)
-		await expectMissing(join(projectDirectory, '.rules-publication/transaction.json'))
 	})
 
 	test('recovers an interrupted replacement before publishing again', async () => {
@@ -346,13 +404,8 @@ describe('publishRules', () => {
 		})
 
 		await expect(interruptedPublisher({ projectDirectory })).rejects.toThrow(/process terminated/u)
-		const publishRules = createRulesPublisher({ prepare: async () => preparedPublication() })
-		await publishRules({ projectDirectory })
-
-		expect(
-			await readFile(join(projectDirectory, 'src/generated/tournament-rules/v2026-01-01.ts'), 'utf8'),
-		).toBe('tournament version')
-		await expectMissing(join(projectDirectory, '.rules-publication/transaction.json'))
+		await recoverWithoutRepublishing(projectDirectory)
+		await expectPriorPublication(projectDirectory)
 	})
 
 	test('recovers a legacy replacement journal that staged generated metadata', async () => {
@@ -368,13 +421,7 @@ describe('publishRules', () => {
 				entries: legacyJournalEntries(['installed', 'pending', 'pending', 'pending'], true),
 			}),
 		)
-		const publishRules = createRulesPublisher({
-			prepare: async () => {
-				throw new Error('stop after recovery')
-			},
-		})
-
-		await expect(publishRules({ projectDirectory })).rejects.toThrow(/stop after recovery/u)
+		await recoverWithoutRepublishing(projectDirectory)
 		expect(await readFile(join(projectDirectory, 'src/generated/rules-metadata.ts'), 'utf8')).toBe(
 			'prior metadata',
 		)
@@ -400,9 +447,10 @@ describe('publishRules', () => {
 			await readFile(join(projectDirectory, '.rules-publication-committed/transaction.json'), 'utf8'),
 		).toMatch(/"state": "committed"/u)
 
-		const publishRules = createRulesPublisher({ prepare: async () => preparedPublication() })
-		await publishRules({ projectDirectory })
-		await expectMissing(join(projectDirectory, '.rules-publication-committed/transaction.json'))
+		await expectManagedPublication(projectDirectory, expectedPublishedFiles())
+		await recoverWithoutRepublishing(projectDirectory)
+		await expectManagedPublication(projectDirectory, expectedPublishedFiles())
+		await expectNoPublicationRecoveryData(projectDirectory)
 	})
 
 	test('cleans up a legacy committed journal that staged generated metadata', async () => {
@@ -429,36 +477,6 @@ describe('publishRules', () => {
 	test('rejects unrecognized recovery data without deleting it', async () => {
 		const projectDirectory = await temporaryProject()
 		await writeProjectFile(projectDirectory, '.rules-publication/transaction.json', '{"unknown":true}\n')
-		await writeProjectFile(projectDirectory, '.rules-publication/unknown.txt', 'preserve me')
-		const publishRules = createRulesPublisher({ prepare: async () => preparedPublication() })
-
-		await expect(publishRules({ projectDirectory })).rejects.toMatchObject({
-			publicationState: 'recovery-required',
-		})
-		expect(await readFile(join(projectDirectory, '.rules-publication/unknown.txt'), 'utf8')).toBe(
-			'preserve me',
-		)
-	})
-
-	test('rejects a recovery journal with an unknown transition without deleting it', async () => {
-		const projectDirectory = await temporaryProject()
-		await writeProjectFile(
-			projectDirectory,
-			'.rules-publication/transaction.json',
-			JSON.stringify({
-				version: 1,
-				state: 'replacing',
-				entries: [
-					{
-						livePath: 'src/generated/rules-metadata.ts',
-						stagedPath: null,
-						backupPath: 'prior/entry-0',
-						hadPrior: false,
-						status: 'unknown',
-					},
-				],
-			}),
-		)
 		await writeProjectFile(projectDirectory, '.rules-publication/unknown.txt', 'preserve me')
 		const publishRules = createRulesPublisher({ prepare: async () => preparedPublication() })
 

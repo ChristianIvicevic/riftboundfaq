@@ -2,14 +2,12 @@ import { SITE_NAME } from '@/lib/site'
 
 export type PageImageEdition = Readonly<{
 	name: string
-	version?: string
 	logoSrc?: string
 }>
 
 export type PageImageVisual =
 	| Readonly<{ kind: 'card'; src: string; width: number; height: number }>
 	| Readonly<{ kind: 'site-mark' }>
-	| Readonly<{ kind: 'wordmark'; primary?: string; accent: string }>
 	| Readonly<{
 			kind: 'keyword'
 			label: string
@@ -22,8 +20,6 @@ export type PageImageVisual =
 export type PageImageData = Readonly<{
 	title: string
 	description: string
-	railLabel: string
-	railContext?: string
 	visual: PageImageVisual
 }>
 
@@ -286,7 +282,6 @@ function Visual({ logoSrc, visual }: { logoSrc: string; visual: PageImageVisual 
 		case 'card':
 			return <CardVisual {...visual} />
 		case 'site-mark':
-		case 'wordmark':
 			return <SiteMarkVisual logoSrc={logoSrc} />
 		case 'keyword':
 			return <KeywordVisual {...visual} />

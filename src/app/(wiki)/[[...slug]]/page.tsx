@@ -18,9 +18,10 @@ import { resolveCoreRulesReview } from '@/features/rules-documents/core-rules-re
 import { rulesDocuments } from '@/features/rules-documents/registry'
 import { resolveVersionedRulesRoute } from '@/features/rules-documents/versioned-route'
 import { getCardReference } from '@/lib/cards/catalog'
+import { getPageImage, PAGE_IMAGE_SIZE } from '@/lib/content/page-image'
 import { getPagePublishingDetails } from '@/lib/content/page-publishing-details'
 import { CARD_TEXT_UPDATES_PATH, RULING_PATH_PREFIXES } from '@/lib/content/ruling-routes'
-import { getPageImage, PAGE_IMAGE_SIZE, source } from '@/lib/content/source'
+import { source } from '@/lib/content/source'
 import { SITE_NAME, SITE_URL, X_HANDLE } from '@/lib/site'
 import { getMDXComponents } from '@/mdx-components'
 

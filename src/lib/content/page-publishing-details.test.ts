@@ -48,31 +48,29 @@ describe('getPagePublishingDetails', () => {
 		})
 	})
 
-	test.each([
-		{ case: 'Rules Documents page', url: '/rules-documents', title: 'Rules Documents' },
-		{
-			case: 'version-specific rules page',
-			url: '/rules-documents/core-rules/1.4',
-			title: 'Core Rules 1.4',
-		},
-		{
-			case: 'rules changes page',
-			url: '/rules-documents/tournament-rules/changes/2026-07-16',
-			title: 'Tournament Rules Changes',
-		},
-	])('publishes a non-indexable $case without source attribution', ({ url, title }) => {
+	test('honors authored noindex metadata', () => {
 		expect(
 			getPagePublishingDetails({
-				url,
-				data: { title, description: 'Authored reference description.', noindex: true },
+				url: '/rulings/cards/flash',
+				data: { title: 'Flash', noindex: true },
 			}),
-		).toEqual({
-			metadataTitle: title,
-			description: 'Authored reference description.',
-			isEditorial: false,
-			isIndexable: false,
-			isSourceAttributionEligible: false,
-		})
+		).toMatchObject({ isEditorial: true, isIndexable: false, isSourceAttributionEligible: true })
+	})
+
+	test('withholds source attribution from the Rules Documents root', () => {
+		expect(
+			getPagePublishingDetails({ url: '/rules-documents', data: { title: 'Rules Documents' } })
+				.isSourceAttributionEligible,
+		).toBe(false)
+	})
+
+	test('withholds source attribution from nested Rules Documents pages', () => {
+		expect(
+			getPagePublishingDetails({
+				url: '/rules-documents/core-rules/1.4',
+				data: { title: 'Core Rules 1.4' },
+			}).isSourceAttributionEligible,
+		).toBe(false)
 	})
 
 	test.each(['/cards-rules-documents', '/rules-documents-card'])(

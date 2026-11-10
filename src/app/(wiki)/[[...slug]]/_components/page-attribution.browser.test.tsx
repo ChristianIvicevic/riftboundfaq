@@ -16,7 +16,8 @@ describe('Page attribution', () => {
 		const linkedAuthor = screen.getByRole('link', { name: 'Christian “Near” Ivicevic' })
 		await expect.element(linkedAuthor).toHaveAttribute('href', 'https://x.com/civicevic')
 		await expect.element(linkedAuthor).toHaveAttribute('target', '_blank')
-		expect(screen.getByText('Rules Reviewer').element().tagName).toBe('SPAN')
+		await expect.element(screen.getByText('Rules Reviewer', { exact: true })).toBeVisible()
+		expect(screen.getByRole('link', { name: 'Rules Reviewer' }).elements()).toHaveLength(0)
 		await expect
 			.element(screen.getByText('Written by Christian “Near” Ivicevic and Rules Reviewer.'))
 			.toBeVisible()

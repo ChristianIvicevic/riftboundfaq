@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import {
+	renderVersionedRulesDocument,
 	resolveVersionedRulesRoute,
 	VersionedRulesRouteError,
 } from '@/features/rules-documents/versioned-route'
@@ -19,18 +20,15 @@ describe('version-specific rules page', () => {
 		expect(route?.toc[0]).toEqual({ title: '000. Golden and Silver Rules', url: '#R000', depth: 2 })
 	})
 
-	test('renders the current Tournament Rules through its family adapter', () => {
-		const route = resolveVersionedRulesRoute({
-			url: '/rules-documents/tournament-rules/2026-10-09',
-			rulesDocument: { type: 'tournament-rules', version: '2026-10-09' },
-		})
+	test('leaves unrelated pages unresolved and rejects rendering without page context', () => {
+		const route = resolveVersionedRulesRoute({ url: '/rulings/cards/alpha-strike' })
 
-		expect(route?.document.identity.status).toBe('current')
-	})
-
-	test('leaves pages without a rules document outside the seam', () => {
-		expect(resolveVersionedRulesRoute({ url: '/rulings/cards/alpha-strike' })).toBeUndefined()
-		expect(resolveVersionedRulesRoute({ url: '/rules-documents/core-rules/changes/1.4' })).toBeUndefined()
+		expect(route).toBeUndefined()
+		expect(() => renderVersionedRulesDocument(route)).toThrow(
+			expect.objectContaining<Partial<VersionedRulesRouteError>>({
+				reason: 'missing-route-context',
+			}),
+		)
 	})
 
 	test('rejects a rules document at the wrong URL', () => {

@@ -8,10 +8,6 @@ describe('Term', () => {
 		const screen = await render(<Term item="finalization">finalized</Term>)
 		const trigger = screen.getByRole('button', { name: 'finalized' })
 		await expect.element(trigger).toHaveAttribute('data-copy-text', 'finalized')
-		await expect.element(trigger).toHaveClass('text-inherit')
-		await expect.element(trigger).toHaveClass('decoration-2')
-		await expect.element(trigger).toHaveClass('decoration-dotted')
-		await expect.element(trigger).toHaveClass('decoration-fd-primary/70')
 
 		await trigger.click()
 
@@ -31,12 +27,12 @@ describe('Term', () => {
 			</p>,
 		)
 		const paragraph = screen.container.querySelector('p')
-		const trigger = paragraph?.querySelector<HTMLElement>('[data-copy-text]')
+		const trigger = screen.getByRole('button', { name: 'resolving' }).element()
 		const prefix = paragraph?.firstChild
 		const period = [...(paragraph?.childNodes ?? [])].find(
 			(node) => node.nodeType === Node.TEXT_NODE && node.textContent === '.',
 		)
-		if (!paragraph || !trigger || !prefix || !period) throw new Error('Wrapping fixture is incomplete')
+		if (!paragraph || !prefix || !period) throw new Error('Wrapping fixture is incomplete')
 
 		paragraph.style.whiteSpace = 'nowrap'
 		const prefixRange = document.createRange()

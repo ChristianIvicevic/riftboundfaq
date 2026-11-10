@@ -8,8 +8,6 @@ import { RULING_PATH_PREFIXES } from '@/lib/content/ruling-routes'
 const NEW_PAGE_WINDOW_MS = 21 * 24 * 60 * 60 * 1000
 const BUILD_TIMESTAMP = Date.now()
 
-export const PAGE_IMAGE_SIZE = { width: 1200, height: 630 } as const
-
 function isNewPage(createdAt?: string) {
 	if (!createdAt) return false
 	const age = BUILD_TIMESTAMP - Date.parse(createdAt)
@@ -47,10 +45,3 @@ export const source = loader({
 		}),
 	],
 })
-
-type ContentPage = ReturnType<typeof source.getPages>[number]
-
-export function getPageImage(page: Pick<ContentPage, 'slugs'>) {
-	const segments = [...page.slugs, 'image.png']
-	return { segments, url: `/og/${segments.join('/')}?v=2026-11-09` }
-}
