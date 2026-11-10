@@ -1,8 +1,9 @@
 'use client'
 
 import { Popover } from '@base-ui/react/popover'
-import { CircleCheck } from 'lucide-react'
 import { useState } from 'react'
+import { statusBadgeVariants } from '@/components/ui/status-badge'
+import { cn } from '@/lib/cn'
 
 export function CurrentCoreRulesReviewStatus({ currentVersion }: { currentVersion: string }) {
 	const [open, setOpen] = useState(false)
@@ -11,15 +12,15 @@ export function CurrentCoreRulesReviewStatus({ currentVersion }: { currentVersio
 		<Popover.Root onOpenChange={setOpen} open={open}>
 			<Popover.Trigger
 				aria-label={`Reviewed against current Core Rules ${currentVersion}`}
-				className="inline-flex h-7 shrink-0 cursor-help items-center gap-1.5 rounded-full border border-green-200 bg-green-50 px-2.5 text-xs font-medium text-green-800 transition-colors hover:bg-green-100 focus-visible:ring-2 focus-visible:ring-fd-ring focus-visible:outline-none dark:border-green-900 dark:bg-green-950 dark:text-green-200 dark:hover:bg-green-900"
+				className={cn(statusBadgeVariants({ interactive: true, tone: 'positive' }), 'cursor-help')}
+				data-slot="status-badge"
 				onFocus={(event) => {
 					if (event.currentTarget.matches(':focus-visible')) setOpen(true)
 				}}
 				openOnHover
 				type="button"
 			>
-				<CircleCheck aria-hidden="true" className="size-4" />
-				<span>Reviewed</span>
+				Reviewed
 			</Popover.Trigger>
 			<Popover.Portal>
 				<Popover.Positioner className="z-50 max-w-[calc(100vw-2rem)]" side="bottom" sideOffset={8}>
