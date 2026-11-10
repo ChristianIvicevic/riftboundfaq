@@ -23,7 +23,7 @@ export type PageImageData = Readonly<{
 	visual: PageImageVisual
 }>
 
-const GOLD = '#f4cc52'
+const PRIMARY = '#ef7d00'
 const INK = '#090a0d'
 const WHITE = '#f5f3ed'
 const MUTED = 'rgba(245, 243, 237, 0.68)'
@@ -223,7 +223,7 @@ function RulesEditionVisual({ edition }: Extract<PageImageVisual, { kind: 'rules
 				height: '180px',
 			}}
 		>
-			<EditionMark edition={edition} width={295} height={180} color={GOLD} />
+			<EditionMark edition={edition} width={295} height={180} color={PRIMARY} />
 		</div>
 	)
 }
@@ -259,7 +259,7 @@ function RulesTransitionVisual({ current, from }: Extract<PageImageVisual, { kin
 					left: '250px',
 					width: '3px',
 					height: '90px',
-					backgroundColor: GOLD,
+					backgroundColor: PRIMARY,
 					opacity: 0.55,
 				}}
 			/>
@@ -271,7 +271,7 @@ function RulesTransitionVisual({ current, from }: Extract<PageImageVisual, { kin
 					right: 0,
 				}}
 			>
-				<EditionMark edition={current} width={295} height={180} color={GOLD} opacity={0.96} />
+				<EditionMark edition={current} width={295} height={180} color={PRIMARY} opacity={0.96} />
 			</div>
 		</div>
 	)
@@ -304,7 +304,7 @@ function BrandSpine({ logoSrc }: { logoSrc: string }) {
 					left: 0,
 					width: '104px',
 					height: '100%',
-					backgroundColor: GOLD,
+					backgroundColor: PRIMARY,
 				}}
 			>
 				<div

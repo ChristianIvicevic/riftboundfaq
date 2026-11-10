@@ -25,6 +25,7 @@ describe('PageImage', () => {
 		expect(markup).toContain('>About Riftbound FAQ<')
 		expect(markup).toContain('>About the project.<')
 		expect(markup).toContain('font-family:Noto Serif')
+		expect(markup).toContain('background-color:#ef7d00')
 	})
 
 	test('positions landscape card art to the right', () => {
