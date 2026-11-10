@@ -2,9 +2,9 @@ import './global.css'
 import { Analytics } from '@vercel/analytics/next'
 import { House, MapPinned } from 'lucide-react'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import Image from 'next/image'
 import { connection } from 'next/server'
+import { INTER, NOTO_SERIF } from '@/app/fonts'
 import pageIcon from '@/app/icon.png'
 import { SITE_NAME } from '@/lib/site'
 
@@ -45,8 +45,6 @@ const NOT_FOUND_COPY_VARIANTS = [
 		location: 'Far from familiar ground',
 	},
 ] as const
-const inter = Inter({ subsets: ['latin'], display: 'swap' })
-
 export const metadata: Metadata = {
 	title: `Page not found | ${SITE_NAME}`,
 	description: `The requested page could not be found on ${SITE_NAME}.`,
@@ -57,7 +55,7 @@ export default async function GlobalNotFound() {
 	const copy = NOT_FOUND_COPY_VARIANTS[Math.floor(Math.random() * NOT_FOUND_COPY_VARIANTS.length)]
 
 	return (
-		<html lang="en" className={inter.className}>
+		<html lang="en" className={INTER.className}>
 			<body>
 				<main className="relative isolate flex min-h-screen overflow-hidden bg-slate-950 text-white">
 					<Image
@@ -82,7 +80,9 @@ export default async function GlobalNotFound() {
 								<span className="h-px w-8 bg-sky-100/70" />
 								Error 404
 							</div>
-							<h1 className="max-w-lg text-5xl leading-[0.98] font-semibold tracking-[-0.055em] text-balance sm:text-7xl">
+							<h1
+								className={`${NOTO_SERIF.className} max-w-lg text-5xl leading-[0.98] font-semibold tracking-[-0.055em] text-balance sm:text-7xl`}
+							>
 								{copy.heading}
 							</h1>
 							<p className="mt-6 max-w-md text-base leading-7 text-slate-200 sm:text-lg">

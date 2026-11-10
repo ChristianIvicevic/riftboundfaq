@@ -54,15 +54,17 @@ export function CoreRulesSetLogoHeader({
 	data,
 	description,
 	title,
+	titleClassName,
 }: {
 	data: CoreRulesSetLogoHeaderData
 	description: string
 	title: string
+	titleClassName?: string
 }) {
 	return (
 		<header className="mb-8 grid gap-6 border-b border-fd-border pb-7 sm:grid-cols-[minmax(0,1fr)_15rem] sm:items-start">
 			<div className="min-w-0">
-				<DocsTitle>{title}</DocsTitle>
+				<DocsTitle className={titleClassName}>{title}</DocsTitle>
 				<DocsDescription className="mb-0">{description}</DocsDescription>
 			</div>
 			<div className="rounded-xl border border-fd-border bg-fd-muted/30 px-5 py-5 text-fd-foreground">
