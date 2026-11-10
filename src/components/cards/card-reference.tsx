@@ -84,7 +84,7 @@ function renderInlineText(text: string, lineIndex: number) {
 	})
 }
 
-function CardText({ children }: { children: string }) {
+function CardReferenceText({ children }: { children: string }) {
 	const lines = children.split('\n')
 	const blocks: ReactNode[] = []
 
@@ -133,12 +133,52 @@ export function CardReference({
 	return (
 		<section
 			aria-label={`${name} card reference`}
-			className="not-prose mt-5 mb-8 overflow-hidden rounded-xl border border-fd-border bg-fd-muted/30"
+			className="not-prose mt-5 mb-8 overflow-hidden rounded-xl border border-fd-border bg-fd-card"
 		>
-			<div className="grid sm:grid-cols-[13.5rem_minmax(0,1fr)]">
-				<div className="flex flex-col items-center gap-3 p-4 sm:border-r sm:border-fd-border">
+			<div className="grid md:grid-cols-[minmax(0,1fr)_12.5rem]">
+				<CopyableContent className="min-w-0 p-5 sm:p-6">
+					<div className="flex flex-wrap items-center justify-between gap-2">
+						<h2 className="m-0 text-xs font-bold tracking-[0.12em] text-fd-foreground uppercase">
+							Current card text
+						</h2>
+						{reference.hasErrata && (
+							<a
+								className={statusBadgeVariants({ interactive: true, tone: 'caution' })}
+								data-slot="status-badge"
+								href={errataHref}
+							>
+								Errata applied
+							</a>
+						)}
+					</div>
+					{reference.currentText && (
+						<div className="mt-4 border-l-2 border-fd-primary pl-4">
+							<CardReferenceText>{reference.currentText}</CardReferenceText>
+						</div>
+					)}
+					{hasNoRulesText && (
+						<div className="mt-4 border-l-2 border-fd-primary pl-4">
+							<p className="m-0 text-base leading-7 text-fd-muted-foreground">This card has no rules text.</p>
+						</div>
+					)}
+					{reference.effectText && (
+						<div className="mt-5 rounded-lg bg-fd-muted/40 p-4">
+							<h3 className="mt-0 mb-2 text-[0.6875rem] font-bold tracking-[0.12em] text-fd-muted-foreground uppercase">
+								Effect
+							</h3>
+							<CardReferenceText>{reference.effectText}</CardReferenceText>
+						</div>
+					)}
+					{reference.hasErrata && (
+						<p className="mt-4 mb-0 text-xs leading-5 text-fd-muted-foreground">
+							Use this wording. The printed card image may be out of date.
+						</p>
+					)}
+				</CopyableContent>
+				<div className="flex flex-col items-center justify-center gap-3 border-t border-fd-border bg-fd-muted/25 p-4 md:border-t-0 md:border-l">
 					<CardReferenceImage
 						key={reference.imageUrl}
+						className="md:max-w-40"
 						height={reference.imageHeight}
 						name={name}
 						src={reference.imageUrl}
@@ -151,42 +191,9 @@ export function CardReference({
 						target="_blank"
 					>
 						<RiftboundLogo className="size-3.5 text-[#EF7D00]!" />
-						View on Riftbound Wiki
+						Riftbound Wiki
 					</a>
 				</div>
-				<CopyableContent className="min-w-0 border-t border-fd-border p-5 sm:border-t-0">
-					<div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-						<h2 className="m-0 text-xs font-semibold tracking-wide text-fd-foreground uppercase">
-							Current text
-						</h2>
-						{reference.hasErrata && (
-							<a
-								className={statusBadgeVariants({ interactive: true, tone: 'caution' })}
-								data-slot="status-badge"
-								href={errataHref}
-							>
-								Errata applied
-							</a>
-						)}
-					</div>
-					{reference.hasErrata && (
-						<p className="mt-0 mb-3 text-sm leading-6 text-fd-muted-foreground">
-							The card image may show outdated wording.
-						</p>
-					)}
-					{reference.currentText && <CardText>{reference.currentText}</CardText>}
-					{hasNoRulesText && (
-						<p className="m-0 text-base leading-7 text-fd-muted-foreground">This card has no rules text.</p>
-					)}
-					{reference.effectText && (
-						<div className="mt-5 border-t border-fd-border pt-4">
-							<h3 className="mt-0 mb-3 text-xs font-semibold tracking-wide text-fd-foreground uppercase">
-								Effect
-							</h3>
-							<CardText>{reference.effectText}</CardText>
-						</div>
-					)}
-				</CopyableContent>
 			</div>
 		</section>
 	)

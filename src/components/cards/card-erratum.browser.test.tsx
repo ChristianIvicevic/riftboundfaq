@@ -21,18 +21,32 @@ describe('CardErratum', () => {
 		await expect.element(screen.getByRole('region', { name: 'Arise! erratum comparison' })).toBeVisible()
 		await expect.element(screen.getByRole('img', { name: 'Arise! card' })).toHaveAttribute('loading', 'lazy')
 		await expect
-			.element(screen.getByRole('link', { name: 'View on Riftbound Wiki' }))
+			.element(screen.getByRole('link', { name: 'Riftbound Wiki' }))
 			.toHaveAttribute('href', 'https://wiki.leagueoflegends.com/en-us/Riftbound:Arise!')
 		const currentHeading = screen.getByRole('heading', { level: 3, name: 'Current text' })
-		const originalHeading = screen.getByRole('heading', { level: 3, name: 'Original text' })
 		await expect.element(currentHeading).toBeVisible()
-		await expect.element(originalHeading).toBeVisible()
 		const currentText = currentHeading.element().closest('section')
-		const originalText = originalHeading.element().closest('section')
-		if (!currentText || !originalText) throw new Error('Expected erratum text sections')
+		if (!currentText) throw new Error('Expected current erratum text section')
 		await expect.element(currentText).toMatchTextContent('Current wording.')
-		await expect.element(originalText).toMatchTextContent('Printed wording.')
-		expect(currentText.compareDocumentPosition(originalText) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+
+		const printedWording = screen.getByText('Printed wording.')
+		const disclosure = screen.getByText('Show printed wording')
+		const details = disclosure.element().closest('details')
+		if (!(details instanceof HTMLDetailsElement)) throw new Error('Expected printed wording disclosure')
+		const region = screen.getByRole('region', { name: 'Arise! erratum comparison' }).element()
+		const image = screen.getByRole('img', { name: 'Arise! card' }).element()
+		const collapsedImageOffset = image.getBoundingClientRect().top - region.getBoundingClientRect().top
+
+		expect(details.open).toBe(false)
+		await expect.element(printedWording).not.toBeVisible()
+		await disclosure.click()
+
+		expect(details.open).toBe(true)
+		await expect.element(printedWording).toBeVisible()
 		await expect.element(screen.getByText('(Printed reminder.)')).toBeVisible()
+		expect(
+			currentText.compareDocumentPosition(printedWording.element()) & Node.DOCUMENT_POSITION_FOLLOWING,
+		).toBeTruthy()
+		expect(image.getBoundingClientRect().top - region.getBoundingClientRect().top).toBe(collapsedImageOffset)
 	})
 })
