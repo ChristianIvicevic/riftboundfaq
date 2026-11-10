@@ -1,6 +1,6 @@
 {
 	"$schema": "./node_modules/oxfmt/configuration_schema.json",
-	"ignorePatterns": ["*.md", "*.mdx", "next-env.d.ts"],
+	"ignorePatterns": ["*.md", "*.mdx", "next-env.d.ts", "tools/oxlint/anti-slop/**"],
 	"printWidth": 110,
 	"tabWidth": 2,
 	"useTabs": true,
