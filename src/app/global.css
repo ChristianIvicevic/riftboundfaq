@@ -8,6 +8,10 @@
 	background-color: var(--color-fd-card);
 }
 
+.content-headings :is(h2, h3)[id] {
+	font-family: var(--font-noto-serif);
+}
+
 @keyframes core-rule-target {
 	0% {
 		border-left-color: transparent;

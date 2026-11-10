@@ -8,6 +8,7 @@ import {
 	type CoreRulesSetLogoHeaderData,
 } from '@/app/(wiki)/[[...slug]]/_components/core-rules-set-logo-header'
 import { PageAttribution } from '@/app/(wiki)/[[...slug]]/_components/page-attribution'
+import { NOTO_SERIF } from '@/app/fonts'
 import { CardReference } from '@/components/cards/card-reference'
 import { OutdatedCoreRulesReviewCallout } from '@/components/core-rules/review-callout'
 import { CurrentCoreRulesReviewStatus } from '@/components/core-rules/review-status'
@@ -121,16 +122,17 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 					data={coreRulesSetLogoHeaderData}
 					description={publishingDetails.description}
 					title={page.data.title}
+					titleClassName={NOTO_SERIF.className}
 				/>
 			) : (
 				<>
 					{coreRulesReview?.reviewStatus === 'up-to-date' ? (
 						<div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
-							<DocsTitle className="min-w-0">{page.data.title}</DocsTitle>
+							<DocsTitle className={`${NOTO_SERIF.className} min-w-0`}>{page.data.title}</DocsTitle>
 							<CurrentCoreRulesReviewStatus currentVersion={coreRulesReview.currentVersion} />
 						</div>
 					) : (
-						<DocsTitle>{page.data.title}</DocsTitle>
+						<DocsTitle className={NOTO_SERIF.className}>{page.data.title}</DocsTitle>
 					)}
 					<DocsDescription className="mb-0">{publishingDetails.description}</DocsDescription>
 				</>
@@ -151,7 +153,13 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 				/>
 			)}
 			<FeedbackText onSendAction={submitBlockFeedback}>
-				<CopyableDocsBody>
+				<CopyableDocsBody
+					className={
+						resolvedRulesDocumentPage || resolvedRulesChangePage
+							? undefined
+							: `${NOTO_SERIF.variable} content-headings`
+					}
+				>
 					<MDX
 						components={getMDXComponents(
 							createRelativeLink(source, page),

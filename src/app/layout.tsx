@@ -1,7 +1,7 @@
 import './global.css'
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { INTER } from '@/app/fonts'
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site'
 
 export const metadata: Metadata = {
@@ -14,11 +14,9 @@ export const metadata: Metadata = {
 	description: SITE_DESCRIPTION,
 }
 
-const inter = Inter({ subsets: ['latin'], display: 'swap' })
-
 export default function Layout({ children }: LayoutProps<'/'>) {
 	return (
-		<html lang="en" className={inter.className} suppressHydrationWarning>
+		<html lang="en" className={INTER.className} suppressHydrationWarning>
 			<body className="flex min-h-screen flex-col">
 				{children}
 				<Analytics />
