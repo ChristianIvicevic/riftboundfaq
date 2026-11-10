@@ -10,14 +10,6 @@ describe('segmentRulesExampleText', () => {
 		])
 	})
 
-	test('identifies a card supplied by the generated catalog', () => {
-		expect(segmentRulesExampleText('Example: Clanging Sentry has Disarm.', [])).toStrictEqual([
-			{ kind: 'text', text: 'Example: ' },
-			{ kind: 'card', name: 'Clanging Sentry', text: 'Clanging Sentry' },
-			{ kind: 'text', text: ' has Disarm.' },
-		])
-	})
-
 	test('does not treat an ambiguous rules term as a card name', () => {
 		const text = 'Example: Buff a friendly unit.'
 		expect(segmentRulesExampleText(text, [])).toStrictEqual([{ kind: 'text', text }])

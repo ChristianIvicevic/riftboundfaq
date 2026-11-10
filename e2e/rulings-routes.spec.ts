@@ -1,26 +1,12 @@
 import { expect, test } from '@playwright/test'
 
-const STANDALONE_PAGES = ['/', '/about-riftbound-faq', '/the-future-of-riftbound-faq'] as const
-
 test.describe('Rulings section routes', () => {
-	for (const path of STANDALONE_PAGES) {
-		test(`keeps ${path} in the Rulings section`, async ({ page }) => {
-			await page.goto(path)
-
-			expect(new URL(page.url()).pathname).toBe(path)
-			await expect(
-				page.getByRole('navigation', { name: 'Site sections' }).getByRole('link', {
-					name: 'Rulings',
-					exact: true,
-				}),
-			).toHaveAttribute('aria-current', 'page')
-		})
-	}
-
-	test('combines standalone pages and nested rulings in one sidebar', async ({ page }) => {
-		await page.goto('/rulings/cards/flash')
-
+	test('navigates standalone and nested rulings through one section sidebar', async ({ page }) => {
+		await page.goto('/')
 		const sidebar = page.getByRole('complementary').first()
+		const rulingsSection = page
+			.getByRole('navigation', { name: 'Site sections' })
+			.getByRole('link', { name: 'Rulings', exact: true })
 		await expect(sidebar.getByText('Introduction', { exact: true })).toBeVisible()
 		await expect(sidebar.getByRole('link', { name: 'About Riftbound FAQ', exact: true })).toHaveAttribute(
 			'href',
@@ -31,12 +17,19 @@ test.describe('Rulings section routes', () => {
 			'href',
 			'/rulings/card-text-updates',
 		)
-		await expect(
-			page.getByRole('navigation', { name: 'Site sections' }).getByRole('link', {
-				name: 'Rulings',
-				exact: true,
-			}),
-		).toHaveAttribute('aria-current', 'page')
+		await expect(rulingsSection).toHaveAttribute('aria-current', 'page')
+
+		await sidebar.getByRole('link', { name: 'About Riftbound FAQ', exact: true }).click()
+		await expect(page).toHaveURL('/about-riftbound-faq')
+		await expect(rulingsSection).toHaveAttribute('aria-current', 'page')
+
+		await sidebar.getByRole('link', { name: /The Future of Riftbound FAQ/u }).click()
+		await expect(page).toHaveURL('/the-future-of-riftbound-faq')
+		await expect(rulingsSection).toHaveAttribute('aria-current', 'page')
+
+		await sidebar.getByRole('link', { name: 'Flash', exact: true }).click()
+		await expect(page).toHaveURL('/rulings/cards/flash')
+		await expect(rulingsSection).toHaveAttribute('aria-current', 'page')
 	})
 
 	const redirects = [
@@ -45,11 +38,17 @@ test.describe('Rulings section routes', () => {
 		['/general-rules/targeting', '/rulings/general-rules/targeting'],
 		['/mechanics/ambush', '/rulings/mechanics/ambush'],
 	] as const
-	for (const [from, to] of redirects) {
-		test(`redirects ${from} to ${to}`, async ({ page }) => {
-			await page.goto(from)
-
-			expect(new URL(page.url()).pathname).toBe(to)
-		})
-	}
+	test('keeps legacy redirects permanent and their destination healthy', async ({ request }) => {
+		await Promise.all(
+			redirects.map(async ([from, to]) => {
+				const [redirect, destination] = await Promise.all([
+					request.get(from, { maxRedirects: 0 }),
+					request.get(to),
+				])
+				expect(redirect.status(), from).toBe(308)
+				expect(redirect.headers().location, from).toBe(to)
+				expect(destination.ok(), to).toBe(true)
+			}),
+		)
+	})
 })

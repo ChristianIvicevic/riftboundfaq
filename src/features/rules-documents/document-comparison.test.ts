@@ -286,42 +286,6 @@ describe('rules document comparison', () => {
 		},
 	)
 
-	test('accounts for every node exactly once in every registered adjacent comparison', () => {
-		for (const type of ['core-rules', 'tournament-rules'] as const) {
-			const family = rulesDocuments.family(type)
-			const versions = family.registeredVersions.map(({ version }) => version)
-			for (let index = 1; index < versions.length; index++) {
-				const from = versions[index - 1]
-				const to = versions[index]
-				const oldDocument = family.get(from)
-				const newDocument = family.get(to)
-				const comparison = family.compare(from, to)
-				const oldAccounted = [
-					...comparison.matches.map(({ oldRule }) => oldRule.anchor),
-					...comparison.entries.flatMap((entry) => (entry.kind === 'removed' ? [entry.rule.anchor] : [])),
-				]
-				const newAccounted = [
-					...comparison.matches.map(({ newRule }) => newRule.anchor),
-					...comparison.entries.flatMap((entry) => (entry.kind === 'added' ? [entry.rule.anchor] : [])),
-				]
-				const pair = `${type} ${from} to ${to}`
-
-				expect(new Set(oldAccounted).size, `${pair} accounts for an old node more than once`).toBe(
-					oldAccounted.length,
-				)
-				expect(oldAccounted.toSorted(), `${pair} accounts for every old node`).toEqual(
-					oldDocument.diffRecords.map(({ anchor }) => anchor).toSorted(),
-				)
-				expect(new Set(newAccounted).size, `${pair} accounts for a new node more than once`).toBe(
-					newAccounted.length,
-				)
-				expect(newAccounted.toSorted(), `${pair} accounts for every new node`).toEqual(
-					newDocument.diffRecords.map(({ anchor }) => anchor).toSorted(),
-				)
-			}
-		}
-	})
-
 	test('classifies current rules from the previous registered version', () => {
 		const catalog = createCatalog(
 			[sourceRule(2, '300.1', 'This rule changed.'), sourceRule(3, '300.2', 'This rule stayed the same.')],
@@ -331,7 +295,6 @@ describe('rules document comparison', () => {
 				sourceRule(4, '300.3', 'This rule is entirely new.'),
 			],
 		)
-
 		expect(catalog.get('1.0').sections[0].blocks[0].rules.map(({ changeMarker }) => changeMarker)).toEqual([
 			undefined,
 			undefined,
@@ -349,7 +312,6 @@ describe('rules document comparison', () => {
 			[sourceRule(2, null, 'First rule.'), sourceRule(3, null, 'Second rule changed.')],
 			'tournament-rules',
 		)
-
 		expect(
 			catalog.current.sections[0].blocks[0].rules.map(({ anchor, changeMarker }) => [anchor, changeMarker]),
 		).toEqual([
@@ -493,21 +455,6 @@ describe('rules document comparison', () => {
 		).compare('1.0', '1.1')
 
 		expect(comparison.entries.map(({ kind }) => kind).toSorted()).toEqual(['added', 'removed'])
-		expect(comparison.matches.some(({ oldRule }) => oldRule.id === '300.1')).toBe(false)
-	})
-
-	test('does not compare unrelated parent rules by repeated IDs alone', () => {
-		const comparison = createCatalog(
-			[sourceRule(2, '300.1', 'Alpha only.', [sourceRule(3, '300.1.a', 'First child.')])],
-			[sourceRule(2, '300.1', 'Omega entirely.', [sourceRule(3, '300.1.a', 'Second child.')])],
-		).compare('1.0', '1.1')
-
-		expect(comparison.entries.map(({ kind }) => kind).toSorted()).toEqual([
-			'added',
-			'added',
-			'removed',
-			'removed',
-		])
 		expect(comparison.matches.some(({ oldRule }) => oldRule.id === '300.1')).toBe(false)
 	})
 

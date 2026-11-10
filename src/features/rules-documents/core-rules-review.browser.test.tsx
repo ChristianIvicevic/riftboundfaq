@@ -1,3 +1,4 @@
+import 'tailwindcss/index.css'
 import { describe, expect, test } from 'vitest'
 import { render } from 'vitest-browser-react'
 import { userEvent } from 'vitest/browser'
@@ -15,7 +16,9 @@ describe('Core Rules review rendering', () => {
 		const screen = await render(
 			<>
 				<CurrentCoreRulesReviewStatus currentVersion={review.currentVersion} />
-				<Rule document={review.document} number="355.14.a" />
+				<p>
+					See <Rule document={review.document} number="355.14.a" /> for the rule.
+				</p>
 			</>,
 		)
 		const status = screen.getByRole('button', { name: 'Reviewed against current Core Rules 1.5' })
@@ -26,7 +29,20 @@ describe('Core Rules review rendering', () => {
 		await expect
 			.element(screen.getByText('This page has been reviewed against the current Core Rules, version 1.5.'))
 			.toBeVisible()
-		await expect.element(screen.getByRole('button', { name: 'Preview rule 355.14.a' })).toBeVisible()
+		await userEvent.keyboard('{Escape}')
+
+		const citation = screen.getByRole('button', { name: 'Preview rule 355.14.a' })
+		citation.element().focus()
+		await expect.element(citation).toHaveFocus()
+		await userEvent.keyboard('{Enter}')
+		const ruleText = review.document.lookupText('355.14.a')
+		if (!ruleText) throw new Error('Expected Core Rules 1.5 to contain rule 355.14.a')
+		const ruleDialog = screen.getByRole('dialog', { name: 'Rule 355.14.a' })
+		await expect.element(ruleDialog).toBeVisible()
+		await expect.element(ruleDialog).toMatchTextContent(ruleText)
+		await expect
+			.element(screen.getByRole('link', { name: 'Open rule' }))
+			.toHaveAttribute('href', '/rules-documents/core-rules/1.5#R355.14.a')
 	})
 
 	test('opens current review details on keyboard focus', async () => {
@@ -62,12 +78,13 @@ describe('Core Rules review rendering', () => {
 			.toHaveAttribute('href', '/rules-documents/core-rules/1.3#R999.999')
 	})
 
-	test('renders a passive citation without review context', async () => {
+	test('renders a passive non-wrapping citation without review context', async () => {
 		const screen = await render(<Rule number="355.14.a" />)
 		const citation = screen.getByText('[355.14.a]')
 
 		await expect.element(citation).toBeVisible()
 		expect(citation.element().tagName).toBe('SUP')
-		await expect.element(citation).toHaveClass('text-nowrap', 'text-fd-muted-foreground')
+		expect(citation.element().querySelector('a, button')).toBeNull()
+		expect(getComputedStyle(citation.element()).whiteSpace).toBe('nowrap')
 	})
 })

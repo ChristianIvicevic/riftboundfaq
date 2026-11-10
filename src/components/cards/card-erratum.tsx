@@ -12,7 +12,7 @@ const CARD_ERRATUM_TEXT_METADATA = {
 	current: { label: 'Current text' },
 } satisfies Record<CardErratumTextVariant, { label: string }>
 
-const cardErratumTextLabelVariants = cva('text-xs font-semibold tracking-wide uppercase', {
+const cardErratumTextLabelVariants = cva('m-0 text-xs font-semibold tracking-wide uppercase', {
 	variants: {
 		variant: {
 			original: 'text-fd-muted-foreground',
@@ -96,7 +96,7 @@ export function CardErratumText({
 	const { label } = CARD_ERRATUM_TEXT_METADATA[variant]
 	return (
 		<section className="py-4 first:pt-0 last:pb-0">
-			<div className={cardErratumTextLabelVariants({ variant })}>{label}</div>
+			<h3 className={cardErratumTextLabelVariants({ variant })}>{label}</h3>
 			<div className={cardErratumTextBodyVariants({ variant })}>{children}</div>
 		</section>
 	)

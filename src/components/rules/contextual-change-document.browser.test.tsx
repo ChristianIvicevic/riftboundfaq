@@ -92,6 +92,13 @@ const CHANGE: ContextualRulesChange = {
 	],
 }
 
+function visibleBadges(container: Element, label: string) {
+	return [...container.querySelectorAll<HTMLElement>('[data-slot="status-badge"]')].filter((element) => {
+		const bounds = element.getBoundingClientRect()
+		return element.textContent === label && bounds.width > 0 && bounds.height > 0
+	})
+}
+
 describe('contextual rules change document', () => {
 	test('renders current labels with semantic marks and historical inline links', async () => {
 		const screen = await render(<ContextualRulesChangeDocument data={CHANGE} family="core-rules" />)
@@ -145,22 +152,18 @@ describe('contextual rules change document', () => {
 				.element()
 			const changedRule = label.closest('li')
 			const content = changedRule?.querySelector('p')
-			const mobileBadge = [
-				...(label.parentElement?.querySelectorAll('[data-slot="status-badge"]') ?? []),
-			].find((element) => element.textContent === 'Changed' && element.getBoundingClientRect().width > 0)
+			const mobileBadges = changedRule ? visibleBadges(changedRule, 'Changed') : []
 			const unnumberedLink = screen
 				.getByRole('link', { name: 'Open unnumbered entry in Core Rules 1.1 (opens in a new tab)' })
 				.element()
-			const unnumberedBadge = [
-				...(unnumberedLink.closest('li')?.querySelectorAll('[data-slot="status-badge"]') ?? []),
-			].find((element) => element.textContent === 'Added' && element.getBoundingClientRect().width > 0)
-			if (!content || !mobileBadge)
-				throw new Error('Expected changed rule content and a visible status badge')
-			if (!unnumberedBadge) throw new Error('Expected a visible status badge for the unnumbered rule')
+			const unnumberedRule = unnumberedLink.closest('li')
+			if (!content || !unnumberedRule) throw new Error('Expected changed and unnumbered rule content')
+			expect(mobileBadges).toHaveLength(1)
+			expect(visibleBadges(unnumberedRule, 'Added')).toHaveLength(1)
 
 			const mobileLabelBox = label.getBoundingClientRect()
 			const mobileContentBox = content.getBoundingClientRect()
-			const mobileBadgeBox = mobileBadge.getBoundingClientRect()
+			const mobileBadgeBox = mobileBadges[0]!.getBoundingClientRect()
 			const labelCenter = mobileLabelBox.top + mobileLabelBox.height / 2
 			const badgeCenter = mobileBadgeBox.top + mobileBadgeBox.height / 2
 			expect(mobileContentBox.top).toBeGreaterThanOrEqual(mobileLabelBox.bottom)
@@ -171,12 +174,11 @@ describe('contextual rules change document', () => {
 			const desktopContentBox = content.getBoundingClientRect()
 			const desktopRow = changedRule?.firstElementChild
 			const desktopRowBox = desktopRow?.getBoundingClientRect()
-			const desktopBadge = [...(changedRule?.querySelectorAll('[data-slot="status-badge"]') ?? [])].find(
-				(element) => element.textContent === 'Changed' && element.getBoundingClientRect().width > 0,
-			)
-			if (!desktopRow || !desktopRowBox || !desktopBadge)
-				throw new Error('Expected a visible desktop status badge')
-			const desktopBadgeBox = desktopBadge.getBoundingClientRect()
+			const desktopBadges = changedRule ? visibleBadges(changedRule, 'Changed') : []
+			if (!desktopRow || !desktopRowBox) throw new Error('Expected a desktop changed-rule row')
+			expect(desktopBadges).toHaveLength(1)
+			expect(visibleBadges(unnumberedRule, 'Added')).toHaveLength(1)
+			const desktopBadgeBox = desktopBadges[0]!.getBoundingClientRect()
 			const desktopLabelCenter = desktopLabelBox.top + desktopLabelBox.height / 2
 			const desktopBadgeCenter = desktopBadgeBox.top + desktopBadgeBox.height / 2
 			const desktopRightPadding = Number(getComputedStyle(desktopRow).paddingRight.replace('px', ''))

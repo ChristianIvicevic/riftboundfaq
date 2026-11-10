@@ -3,7 +3,7 @@ import { join } from 'node:path'
 import { ImageResponse } from 'takumi-js/response'
 import { getPageImageData, type PageImagePage } from '@/app/og/[...slug]/page-image-data'
 import { PageImage } from '@/app/og/[...slug]/page-image-layouts'
-import { PAGE_IMAGE_SIZE } from '@/lib/content/source'
+import { PAGE_IMAGE_SIZE } from '@/lib/content/page-image'
 import { getCoreRulesSetLogo } from '@/lib/rules/core-rules-set-logos'
 
 const SITE_LOGO_DATA = Uint8Array.from(await readFile(join(process.cwd(), 'src', 'app', 'icon.png'))).buffer

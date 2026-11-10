@@ -182,8 +182,8 @@ describe('Rules document family catalog', () => {
 		expect(adapt).toHaveBeenCalledTimes(2)
 		expect(catalog.find('1.2')).toBeUndefined()
 		expect(() => catalog.get('1.2')).toThrow(UnknownRulesVersionError)
-		expect(Object.isFrozen(catalog)).toBe(true)
-		expect(Object.isFrozen(catalog.registeredVersions)).toBe(true)
+		expect(Reflect.set(catalog.registeredVersions, 0, catalog.currentVersion)).toBe(false)
+		expect(catalog.registeredVersions[0]?.version).toBe('1.0')
 	})
 
 	test('reports source invariants lazily through the catalog interface', () => {

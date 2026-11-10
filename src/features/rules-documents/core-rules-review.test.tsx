@@ -3,7 +3,7 @@ import { CoreRulesReviewError, resolveCoreRulesReview } from '@/features/rules-d
 import { UnknownRulesVersionError } from '@/features/rules-documents/registry'
 
 describe('Core Rules review', () => {
-	test('resolves an up-to-date Core Rules review for its callout and citations', () => {
+	test('resolves the current registered review version', () => {
 		const review = resolveCoreRulesReview({
 			url: '/rulings/cards/alpha-strike',
 			reviewedVersion: '1.5',
@@ -13,10 +13,11 @@ describe('Core Rules review', () => {
 			reviewedVersion: '1.5',
 			currentVersion: '1.5',
 			reviewStatus: 'up-to-date',
+			document: { identity: { version: '1.5' } },
 		})
 	})
 
-	test('keeps an outdated Core Rules review and its citations on the reviewed version', () => {
+	test('keeps an archived review on its registered document version', () => {
 		const review = resolveCoreRulesReview({
 			url: '/rulings/cards/alpha-strike',
 			reviewedVersion: '1.3',
@@ -26,6 +27,7 @@ describe('Core Rules review', () => {
 			reviewedVersion: '1.3',
 			currentVersion: '1.5',
 			reviewStatus: 'outdated',
+			document: { identity: { version: '1.3' } },
 		})
 	})
 

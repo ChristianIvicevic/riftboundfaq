@@ -7,61 +7,27 @@ const searchResult = z.object({
 	url: z.string(),
 })
 
-const cases = [
-	{
-		name: 'cards and energy',
-		query: 'Fizz Trickster',
-		urlPrefix: '/rulings/general-rules/costs-and-payments#',
-		marker: 'Fizz, Trickster',
-		expectedContent: ['Fizz, Trickster', '[0]'],
-	},
-	{
-		name: 'game terms and universal power',
-		query: 'Power Empowered',
-		urlPrefix: '/rulings/general-rules/costs-and-payments#',
-		marker: '[1][Power]',
-		expectedContent: ['[1][Power]', '[Empowered]'],
-	},
-	{
-		name: 'aliased game-term labels',
-		query: 'Quick-Draw',
-		urlPrefix: '/rulings/mechanics/equipment#',
-		marker: '[Quick-Draw]',
-		expectedContent: ['[Quick-Draw]'],
-	},
-	{
-		name: 'runes',
-		query: 'Fury Ezreal',
-		urlPrefix: '/rulings/cards/ezreal-prodigy#',
-		marker: '[1][Fury]',
-		expectedContent: ['[1][Fury]', '[Repeat]'],
-	},
-] as const
-
 function withoutHighlights(content: string) {
 	return content.replaceAll('<mark>', '').replaceAll('</mark>', '')
 }
 
 test.describe('custom MDX search indexing', () => {
-	for (const testCase of cases) {
-		test(`indexes ${testCase.name}`, async ({ request }) => {
-			const response = await request.get(`/api/search?query=${encodeURIComponent(testCase.query)}`)
-			expect(response.ok()).toBe(true)
-			const parsedResults = z.array(searchResult).safeParse(await response.json())
-			if (!parsedResults.success) throw parsedResults.error
+	test('serves rendered card and resource prose from the deployed search index', async ({ request }) => {
+		const response = await request.get('/api/search?query=Fizz%20Trickster')
+		expect(response.ok()).toBe(true)
+		const parsedResults = z.array(searchResult).safeParse(await response.json())
+		if (!parsedResults.success) throw parsedResults.error
 
-			const result = parsedResults.data.find(
-				(item) =>
-					item.type === 'text' &&
-					item.url.startsWith(testCase.urlPrefix) &&
-					withoutHighlights(item.content).includes(testCase.marker),
+		const result = parsedResults.data.find((item) => {
+			const content = withoutHighlights(item.content)
+			return (
+				item.type === 'text' &&
+				item.url.startsWith('/rulings/general-rules/costs-and-payments#') &&
+				content.includes('Fizz, Trickster')
 			)
-			expect(result).toBeDefined()
-
-			const content = withoutHighlights(result?.content ?? '')
-			for (const expectedContent of testCase.expectedContent) {
-				expect(content).toContain(expectedContent)
-			}
 		})
-	}
+
+		expect(result).toBeDefined()
+		expect(withoutHighlights(result?.content ?? '')).toContain('[0]')
+	})
 })

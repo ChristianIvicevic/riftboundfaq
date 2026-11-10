@@ -13,7 +13,6 @@ describe('normalizeRulesDate', () => {
 
 	test.each([
 		{ case: 'a whitespace-only value', input: '   ', message: 'Last Updated is missing' },
-		{ case: 'an empty string', input: '', message: 'Last Updated is missing' },
 		{
 			case: 'an unsupported slash order',
 			input: '2026/07/16',

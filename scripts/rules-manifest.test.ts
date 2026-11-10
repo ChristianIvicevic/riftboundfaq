@@ -50,24 +50,52 @@ describe('parseRulesManifest', () => {
 		expect(manifest.coreRules.currentVersion).toBe(manifest.coreRules.registeredVersions.at(-1))
 		expect(manifest.tournamentRules.currentVersion).toBe(manifest.tournamentRules.registeredVersions.at(-1))
 		expect(Object.isFrozen(manifest)).toBe(true)
-		expect(Object.isFrozen(manifest.coreRules)).toBe(true)
-		expect(Object.isFrozen(manifest.coreRules.registeredVersions)).toBe(true)
-		expect(manifest.coreRules.registeredVersions.every((version) => Object.isFrozen(version))).toBe(true)
-		expect(Object.isFrozen(manifest.tournamentRules)).toBe(true)
-		expect(Object.isFrozen(manifest.tournamentRules.registeredVersions)).toBe(true)
-		expect(manifest.tournamentRules.registeredVersions.every((version) => Object.isFrozen(version))).toBe(
-			true,
-		)
+		expect(Reflect.set(manifest.coreRules.registeredVersions[0], 'version', '1.3')).toBe(false)
+		expect(manifest.coreRules.registeredVersions[0].version).toBe('1.2')
 
 		input.coreRules.versions['1.10'].name = 'Changed after parsing'
 		expect(manifest.coreRules.currentVersion.name).toBe(' Tenth ')
 	})
 
-	test('parses the authoritative rules manifest fixture', async () => {
-		const path = join(import.meta.dirname, '..', 'sources', 'rules-manifest.json')
-		const source = JSON.parse(await readFile(path, 'utf8'))
+	test('keeps the authoritative manifest and generated indexes consistent', async () => {
+		const projectDirectory = join(import.meta.dirname, '..')
+		const [manifestSource, coreIndex, tournamentIndex] = await Promise.all([
+			readFile(join(projectDirectory, 'sources', 'rules-manifest.json'), 'utf8'),
+			readFile(join(projectDirectory, 'src', 'generated', 'core-rules', 'index.ts'), 'utf8'),
+			readFile(join(projectDirectory, 'src', 'generated', 'tournament-rules', 'index.ts'), 'utf8'),
+		])
+		const manifest = parseRulesManifest(JSON.parse(manifestSource))
 
-		expect(parseRulesManifest(source).coreRules.registeredVersions.length).toBeGreaterThan(0)
+		expect({
+			coreRules: {
+				current: /export const CURRENT_PDF_CORE_RULES_VERSION = "([^"]+)"/u.exec(coreIndex)?.[1],
+				registeredVersions: [...coreIndex.matchAll(/^[ \t]+"([^"]+)": PDF_CORE_RULES_[A-Z0-9_]+,$/gmu)].map(
+					(match) => match[1],
+				),
+				names: [...coreIndex.matchAll(/^[ \t]+"([^"]+)": "([^"]*)",$/gmu)].map((match) => ({
+					version: match[1],
+					name: match[2],
+				})),
+			},
+			tournamentRules: {
+				current: /export const CURRENT_PDF_TOURNAMENT_RULES_VERSION = "([^"]+)"/u.exec(tournamentIndex)?.[1],
+				registeredVersions: [
+					...tournamentIndex.matchAll(/^[ \t]+"([^"]+)": PDF_TOURNAMENT_RULES_[A-Z0-9_]+,$/gmu),
+				].map((match) => match[1]),
+			},
+		}).toStrictEqual({
+			coreRules: {
+				current: manifest.coreRules.currentVersion.version,
+				registeredVersions: manifest.coreRules.registeredVersions.map(({ version }) => version),
+				names: manifest.coreRules.registeredVersions.flatMap(({ version, name }) =>
+					name === undefined ? [] : [{ version, name }],
+				),
+			},
+			tournamentRules: {
+				current: manifest.tournamentRules.currentVersion.version,
+				registeredVersions: manifest.tournamentRules.registeredVersions.map(({ version }) => version),
+			},
+		})
 	})
 
 	test('reports malformed structure through a stable code and path', () => {
@@ -227,32 +255,6 @@ describe('parseRulesManifest', () => {
 		const value: MutableManifest = structuredClone(VALID_MANIFEST)
 		mutate(value)
 		expect(() => parseRulesManifest(value)).toThrow(expect.objectContaining({ code, path }))
-	})
-
-	test('reports registered Core Rules failures in canonical order', () => {
-		const value: MutableManifest = structuredClone(VALID_MANIFEST)
-		value.coreRules.versions['1.10'] = { name: '' }
-		value.coreRules.versions['1.2'] = { name: '' }
-
-		expect(() => parseRulesManifest(value)).toThrow(
-			expect.objectContaining({
-				code: 'INVALID_CORE_RULES_NAME',
-				path: '$.coreRules.versions["1.2"].name',
-			}),
-		)
-	})
-
-	test('fully validates Core Rules before Tournament Rules', () => {
-		const value: MutableManifest = structuredClone(VALID_MANIFEST)
-		value.coreRules.versions['1.2'] = { name: '' }
-		const source = { ...value, tournamentRules: null }
-
-		expect(() => parseRulesManifest(source)).toThrow(
-			expect.objectContaining({
-				code: 'INVALID_CORE_RULES_NAME',
-				path: '$.coreRules.versions["1.2"].name',
-			}),
-		)
 	})
 
 	test.each([

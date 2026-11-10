@@ -126,7 +126,7 @@ describe('Rules document family conventions', () => {
 		expect(() => rulesDocumentFamily('constructor')).toThrowError(UnknownRulesDocumentFamilyError)
 	})
 
-	test('freezes family and version conventions', () => {
+	test('exposes generation conventions as immutable values', () => {
 		expect(coreRulesConventions.generated).toStrictEqual({
 			directory: 'core-rules',
 			indexModuleSpecifier: '@/generated/core-rules',
@@ -137,11 +137,7 @@ describe('Rules document family conventions', () => {
 		expect(tournamentRulesConventions.generated.versionNamesExport).toBeNull()
 
 		const version = coreRulesConventions.version('1.4')
-		expect(Object.isFrozen(coreRulesConventions)).toBe(true)
-		expect(Object.isFrozen(coreRulesConventions.generated)).toBe(true)
-		expect(Object.isFrozen(version)).toBe(true)
-		expect(Object.isFrozen(version.source)).toBe(true)
-		expect(Object.isFrozen(version.generated)).toBe(true)
-		expect(Object.isFrozen(version.reference)).toBe(true)
+		expect(Reflect.set(version.reference, 'documentRoute', '/changed')).toBe(false)
+		expect(version.reference.documentRoute).toBe('/rules-documents/core-rules/1.4')
 	})
 })

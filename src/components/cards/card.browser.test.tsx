@@ -4,9 +4,9 @@ import { Card } from '@/components/cards/card'
 
 describe('Card', () => {
 	test('uses catalog metadata for a hover preview', async () => {
-		const screen = await render(<Card name="Last Caress" />)
+		const screen = await render(<Card name="Abandoned Hall" />)
 
-		await expect.element(screen.getByRole('button', { name: 'Preview Last Caress' })).toBeVisible()
+		await expect.element(screen.getByRole('button', { name: 'Preview Abandoned Hall' })).toBeVisible()
 	})
 
 	test('links an uncatalogued card directly to the Wiki', async () => {

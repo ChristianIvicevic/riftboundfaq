@@ -130,13 +130,104 @@ function prepareFixture() {
 }
 
 describe('prepareReferencePublication', () => {
-	test('preserves archived Core Rules frontmatter and document marker from tracked templates', async () => {
-		const { artifacts, summary } = await prepareFixture()
+	test('renders representative tracked templates exactly', async () => {
+		const { artifacts } = await prepareFixture()
+		const expected = new Map([
+			[
+				'core-rules/(archive)/1.0.mdx',
+				`---
+title: "Core Rules 1.0"
+sidebarTitle: "Core Rules 1.0"
+createdAt: "2025-06-02"
+description: "Archived version of the Riftbound Core Rules Document: 1.0."
+rulesDocument:
+  type: "core-rules"
+  version: "1.0"
+noindex: true
+---
 
-		expect(artifacts.get('core-rules/(archive)/1.0.mdx')).toMatch(
-			/createdAt: "2025-06-02"[\s\S]+version: "1\.0"[\s\S]+noindex: true[\s\S]+Archived reference[\s\S]+\/rules-documents\/core-rules\/1\.2[\s\S]+<RulesDocument \/>/u,
-		)
-		expect(summary.pages).toBe(11)
+<Callout type="warn" title="Archived reference">
+	This rules document is archived and may not reflect the current rules.
+	See the [current Core Rules](/rules-documents/core-rules/1.2).
+</Callout>
+
+<RulesDocument />
+`,
+			],
+			[
+				'core-rules/changes/1.1.mdx',
+				`---
+title: "Core Rules 1.1 Changes (Origins)"
+sidebarTitle: "Origins Changes"
+createdAt: "2025-10-01"
+description: "Changes between Riftbound Core Rules 1.0 and 1.1 (Origins)."
+noindex: true
+---
+
+Badges identify **Added**, **Changed**, and **Removed** rules.
+Removed wording is struck through, while added wording is highlighted.
+Each change appears with the unchanged rules needed to preserve its context; other unchanged rules are omitted.
+Rule numbers open the corresponding source document in a new tab.
+
+<CoreRulesDiff from="1.0" to="1.1" />
+`,
+			],
+			[
+				'tournament-rules/(archive)/2026-03-30.mdx',
+				`---
+title: "Tournament Rules (March 30, 2026)"
+sidebarTitle: "March 2026 Tournament Rules"
+createdAt: "2026-03-30"
+description: "Archived version of the Riftbound Tournament Rules last updated March 30, 2026."
+rulesDocument:
+  type: "tournament-rules"
+  version: "2026-03-30"
+noindex: true
+---
+
+<Callout type="warn" title="Archived reference">
+	This rules document is archived and may not reflect current tournament policy.
+	See the [current Tournament Rules](/rules-documents/tournament-rules/2026-04-29).
+</Callout>
+
+<RulesDocument />
+`,
+			],
+			[
+				'tournament-rules/changes/2026-04-29.mdx',
+				`---
+title: "Tournament Rules Changes (April 29, 2026)"
+sidebarTitle: "April 2026 Changes"
+createdAt: "2026-04-29"
+description: "Changes between the March 2026 and April 2026 Riftbound Tournament Rules."
+noindex: true
+---
+
+Badges identify **Added**, **Changed**, and **Removed** rules.
+Removed wording is struck through, while added wording is highlighted.
+Each change appears with the unchanged rules needed to preserve its context; other unchanged rules are omitted.
+Rule numbers open the corresponding source document in a new tab.
+
+<TournamentRulesDiff
+	from="2026-03-30"
+	to="2026-04-29"
+/>
+`,
+			],
+		])
+
+		expect(new Map([...expected.keys()].map((path) => [path, artifacts.get(path)]))).toStrictEqual(expected)
+	})
+
+	test('marks every generated MDX artifact from tracked templates as noindex', async () => {
+		const { artifacts } = await prepareFixture()
+		const mdxArtifacts = [...artifacts].filter(([path]) => path.endsWith('.mdx'))
+
+		expect(mdxArtifacts).toHaveLength(11)
+		for (const [path, source] of mdxArtifacts) {
+			const frontmatter = /^---\n([\s\S]*?)\n---/u.exec(source)?.[1]
+			expect(frontmatter?.match(/^noindex: true$/gmu), path).toHaveLength(1)
+		}
 	})
 
 	test('selects current documents by explicit version', async () => {
@@ -213,24 +304,6 @@ describe('prepareReferencePublication', () => {
 		expect(artifacts.get(path)).toContain(`sidebarTitle: "${sidebarTitle}"`)
 	})
 
-	test('preserves Core Rules diff components from tracked templates', async () => {
-		const { artifacts } = await prepareFixture()
-
-		expect(artifacts.get('core-rules/changes/1.1.mdx')).toMatch(
-			/noindex: true[\s\S]+<CoreRulesDiff from="1\.0" to="1\.1" \/>/u,
-		)
-	})
-
-	test('preserves Tournament Rules diff and document markers from tracked templates', async () => {
-		const { artifacts } = await prepareFixture()
-		expect(artifacts.get('tournament-rules/changes/2026-04-29.mdx')).toMatch(
-			/<TournamentRulesDiff[\s\S]+from="2026-03-30"[\s\S]+to="2026-04-29"[\s\S]+\/>/u,
-		)
-		expect(artifacts.get('tournament-rules/(archive)/2026-03-30.mdx')).toMatch(
-			/Archived reference[\s\S]+\/rules-documents\/tournament-rules\/2026-04-29[\s\S]+<RulesDocument \/>/u,
-		)
-	})
-
 	test('rejects a version-specific rules page artifact without its document marker', async () => {
 		const { projectDirectory } = await createReferenceWorkspace()
 		await writeFile(
@@ -252,22 +325,6 @@ describe('prepareReferencePublication', () => {
 		await writeFile(
 			join(projectDirectory, 'templates', 'reference', 'core-rules-current.mdx'),
 			'---\n{{RULES_DOCUMENT_FRONTMATTER}}\nrulesDocument:\n  type: "core-rules"\n  version: "1.1"\n---\n{{TITLE}}|{{CREATED_AT}}\n<RulesDocument />',
-		)
-
-		await expect(
-			prepareReferencePublication({
-				projectDirectory,
-				coreRules: EXTRACTED_CORE_RULES,
-				tournamentRules: EXTRACTED_TOURNAMENT_RULES,
-			}),
-		).rejects.toMatchObject({ stage: 'artifacts' })
-	})
-
-	test('rejects an inline second identity in a version-specific rules page artifact', async () => {
-		const { projectDirectory } = await createReferenceWorkspace()
-		await writeFile(
-			join(projectDirectory, 'templates', 'reference', 'core-rules-current.mdx'),
-			'---\n{{RULES_DOCUMENT_FRONTMATTER}}\nrulesDocument: { type: "core-rules", version: "1.1" }\n---\n{{TITLE}}|{{CREATED_AT}}\n<RulesDocument />',
 		)
 
 		await expect(
@@ -460,7 +517,7 @@ describe('prepareReferencePublication', () => {
 
 	test('returns the complete artifact set without writing generated output', async () => {
 		const { projectDirectory } = await createReferenceWorkspace()
-		const { artifacts } = await prepareReferencePublication({
+		const { artifacts, summary } = await prepareReferencePublication({
 			projectDirectory,
 			coreRules: EXTRACTED_CORE_RULES,
 			tournamentRules: EXTRACTED_TOURNAMENT_RULES,
@@ -484,6 +541,7 @@ describe('prepareReferencePublication', () => {
 			'tournament-rules/changes/2026-03-30.mdx',
 			'tournament-rules/changes/2026-04-29.mdx',
 		])
+		expect(summary).toStrictEqual({ pages: 11 })
 		await expect(access(join(projectDirectory, 'content', 'rules-documents'))).rejects.toMatchObject({
 			code: 'ENOENT',
 		})
