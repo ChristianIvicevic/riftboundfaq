@@ -2,8 +2,8 @@ import type { CSSProperties } from 'react'
 import { RUNE_NAMES } from '@/lib/mdx-vocabulary'
 
 const CARD_TEXT_SYMBOL_PATHS = {
-	Exhaust: '/images/exhaust.svg',
-	Might: '/images/might.svg',
+	Exhaust: '/images/symbols/exhaust.svg',
+	Might: '/images/symbols/might.svg',
 } as const
 
 type CardTextSymbolName = keyof typeof CARD_TEXT_SYMBOL_PATHS
@@ -49,7 +49,7 @@ function createRuneComponent(name: RuneName) {
 		return (
 			<img
 				alt={`[${name}]`}
-				src={`/images/rune_${name.toLowerCase()}.svg`}
+				src={`/images/symbols/runes/${name.toLowerCase()}.svg`}
 				className="mx-0.5 my-0! inline size-5"
 				data-copy-text={`[${name}]`}
 			/>
@@ -67,7 +67,7 @@ export function Universal({ label = 'Power' }: { label?: 'Power' | 'Universal' }
 	return (
 		<img
 			alt={`[${label}]`}
-			src="/images/rune_rainbow.svg"
+			src="/images/symbols/runes/rainbow.svg"
 			className="-m-0.5! inline h-lh"
 			data-copy-text={`[${label}]`}
 		/>

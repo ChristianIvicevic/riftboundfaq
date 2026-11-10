@@ -8,7 +8,7 @@ import { connection } from 'next/server'
 import pageIcon from '@/app/icon.png'
 import { SITE_NAME } from '@/lib/site'
 
-const LONELY_PORO_IMAGE = '/images/lonely_poro.jpg'
+const LONELY_PORO_IMAGE = '/images/site/not-found/lonely-poro.jpg'
 const NOT_FOUND_COPY_VARIANTS = [
 	{
 		heading: "Looks like we're both lost.",
