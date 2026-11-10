@@ -69,14 +69,14 @@ export function GlobalHeader({ siteName }: { siteName: string }) {
 								key={section.title}
 								aria-current={active ? 'page' : undefined}
 								className={cn(
-									'flex h-full items-center gap-2 border-b-2 px-5 text-sm font-medium transition-colors',
+									'flex h-full items-center gap-2 border-b-2 px-5 text-sm font-medium whitespace-nowrap transition-colors',
 									active
-										? 'border-fd-primary text-fd-foreground'
-										: 'border-transparent text-fd-muted-foreground hover:text-fd-foreground',
+										? 'border-fd-primary bg-fd-accent/50 text-fd-foreground'
+										: 'border-transparent text-fd-foreground/75 hover:bg-fd-accent/30 hover:text-fd-foreground',
 								)}
 								href={section.href}
 							>
-								<Icon aria-hidden="true" className="size-4" />
+								<Icon aria-hidden="true" className={cn('size-4', active && 'text-fd-primary')} />
 								{section.title}
 							</Link>
 						)
