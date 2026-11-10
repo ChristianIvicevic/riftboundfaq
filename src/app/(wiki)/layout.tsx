@@ -1,4 +1,6 @@
+import { Tooltip } from '@base-ui/react/tooltip'
 import { DocsLayout } from 'fumadocs-ui/layouts/spacious'
+import { RootProvider } from 'fumadocs-ui/provider/next'
 import { CurrentSectionTitle, GlobalHeader } from '@/app/(wiki)/_components/global-header'
 import {
 	NavigationSidebar,
@@ -18,34 +20,38 @@ function XIcon() {
 
 export default function Layout({ children }: LayoutProps<'/'>) {
 	return (
-		<div className="min-h-screen bg-fd-card [--fd-banner-height:var(--global-header-height)] [--global-header-height:3.5rem] print:[--fd-banner-height:0px]">
-			<GlobalHeader siteName={SITE_NAME} />
-			<DocsLayout
-				githubUrl={GITHUB_REPO_URL}
-				links={[
-					{
-						type: 'icon',
-						label: 'View @civicevic on X',
-						text: '@civicevic on X',
-						url: X_URL,
-						external: true,
-						icon: <XIcon />,
-					},
-				]}
-				nav={{ title: CurrentSectionTitle }}
-				searchToggle={{ full: { className: 'md:hidden' } }}
-				slots={{
-					sidebar: {
-						provider: NavigationSidebarProvider,
-						main: NavigationSidebar,
-						drawer: NavigationSidebarDrawer,
-					},
-				}}
-				tabs={false}
-				tree={source.getPageTree()}
-			>
-				{children}
-			</DocsLayout>
-		</div>
+		<RootProvider>
+			<Tooltip.Provider>
+				<div className="min-h-screen bg-fd-card [--fd-banner-height:var(--global-header-height)] [--global-header-height:3.5rem] print:[--fd-banner-height:0px]">
+					<GlobalHeader siteName={SITE_NAME} />
+					<DocsLayout
+						githubUrl={GITHUB_REPO_URL}
+						links={[
+							{
+								type: 'icon',
+								label: 'View @civicevic on X',
+								text: '@civicevic on X',
+								url: X_URL,
+								external: true,
+								icon: <XIcon />,
+							},
+						]}
+						nav={{ title: CurrentSectionTitle }}
+						searchToggle={{ full: { className: 'md:hidden' } }}
+						slots={{
+							sidebar: {
+								provider: NavigationSidebarProvider,
+								main: NavigationSidebar,
+								drawer: NavigationSidebarDrawer,
+							},
+						}}
+						tabs={false}
+						tree={source.getPageTree()}
+					>
+						{children}
+					</DocsLayout>
+				</div>
+			</Tooltip.Provider>
+		</RootProvider>
 	)
 }

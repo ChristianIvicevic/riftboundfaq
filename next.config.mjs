@@ -4,6 +4,9 @@ const withMDX = createMDX()
 
 /** @type {import('next').NextConfig} */
 const config = {
+	experimental: {
+		globalNotFound: true,
+	},
 	reactStrictMode: true,
 	serverExternalPackages: ['@takumi-rs/core'],
 	// oxfmt-ignore
