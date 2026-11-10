@@ -24,6 +24,8 @@ import { getPageImage, PAGE_IMAGE_SIZE, source } from '@/lib/content/source'
 import { SITE_NAME, SITE_URL, X_HANDLE } from '@/lib/site'
 import { getMDXComponents } from '@/mdx-components'
 
+export const dynamicParams = false
+
 export default async function Page(props: PageProps<'/[[...slug]]'>) {
 	const params = await props.params
 	const page = source.getPage(params.slug)
