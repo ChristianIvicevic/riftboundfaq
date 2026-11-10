@@ -14,7 +14,7 @@ describe('CardReference', () => {
 					effectText: null,
 					hasErrata: false,
 					imageHeight: 1039,
-					imageUrl: '/images/rune_order.svg',
+					imageUrl: '/images/symbols/runes/order.svg',
 					imageWidth: 744,
 				}}
 			/>,
@@ -29,8 +29,8 @@ describe('CardReference', () => {
 		const might = screen.getByRole('img', { name: '[Might]' })
 		await expect.element(exhaust).toBeVisible()
 		await expect.element(might).toBeVisible()
-		expect(getComputedStyle(exhaust.element()).maskImage).toContain('/images/exhaust.svg')
-		expect(getComputedStyle(might.element()).maskImage).toContain('/images/might.svg')
+		expect(getComputedStyle(exhaust.element()).maskImage).toContain('/images/symbols/exhaust.svg')
+		expect(getComputedStyle(might.element()).maskImage).toContain('/images/symbols/might.svg')
 		expect(getComputedStyle(might.element()).backgroundColor).toBe(getComputedStyle(might.element()).color)
 		await expect
 			.element(screen.getByRole('link', { name: 'View on Riftbound Wiki' }))
@@ -47,7 +47,7 @@ describe('CardReference', () => {
 					effectText: '(I am a copy of the chosen unit.)',
 					hasErrata: true,
 					imageHeight: 1039,
-					imageUrl: '/images/rune_order.svg',
+					imageUrl: '/images/symbols/runes/order.svg',
 					imageWidth: 744,
 				}}
 			/>,
@@ -96,7 +96,7 @@ describe('CardReference', () => {
 					effectText: null,
 					hasErrata: false,
 					imageHeight: 1039,
-					imageUrl: '/images/rune_order.svg',
+					imageUrl: '/images/symbols/runes/order.svg',
 					imageWidth: 744,
 				}}
 			/>,
@@ -118,7 +118,7 @@ describe('CardReference', () => {
 					effectText: null,
 					hasErrata: false,
 					imageHeight: 1039,
-					imageUrl: '/images/rune_order.svg',
+					imageUrl: '/images/symbols/runes/order.svg',
 					imageWidth: 744,
 				}}
 			/>,
@@ -137,7 +137,7 @@ describe('CardReference', () => {
 					effectText: null,
 					hasErrata: false,
 					imageHeight: 1039,
-					imageUrl: '/images/rune_order.svg',
+					imageUrl: '/images/symbols/runes/order.svg',
 					imageWidth: 744,
 				}}
 			/>,
@@ -167,7 +167,7 @@ describe('CardReference', () => {
 					effectText: null,
 					hasErrata: false,
 					imageHeight: 1039,
-					imageUrl: '/images/rune_order.svg',
+					imageUrl: '/images/symbols/runes/order.svg',
 					imageWidth: 744,
 				}}
 			/>,
@@ -202,7 +202,7 @@ describe('CardReference', () => {
 					effectText: null,
 					hasErrata: false,
 					imageHeight: 1039,
-					imageUrl: '/images/rune_order.svg',
+					imageUrl: '/images/symbols/runes/order.svg',
 					imageWidth: 744,
 				}}
 			/>,
@@ -239,7 +239,7 @@ describe('CardReference', () => {
 					effectText: null,
 					hasErrata: true,
 					imageHeight: 1039,
-					imageUrl: '/images/rune_order.svg',
+					imageUrl: '/images/symbols/runes/order.svg',
 					imageWidth: 744,
 				}}
 			/>,
