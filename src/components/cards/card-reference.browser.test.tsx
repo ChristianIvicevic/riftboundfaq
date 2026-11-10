@@ -22,7 +22,7 @@ describe('CardReference', () => {
 
 		await expect.element(screen.getByRole('region', { name: 'Arcane Shift card reference' })).toBeVisible()
 		await expect.element(screen.getByRole('img', { name: 'Arcane Shift card' })).toBeVisible()
-		await expect.element(screen.getByRole('heading', { name: 'Current text' })).toBeVisible()
+		await expect.element(screen.getByRole('heading', { name: 'Current card text' })).toBeVisible()
 		await expect.element(screen.getByText('Action', { exact: true })).toBeVisible()
 		await expect.element(screen.getByRole('img', { name: '[Order]' })).toBeVisible()
 		const exhaust = screen.getByRole('img', { name: '[Exhaust]' })
@@ -33,7 +33,7 @@ describe('CardReference', () => {
 		expect(getComputedStyle(might.element()).maskImage).toContain('/images/symbols/might.svg')
 		expect(getComputedStyle(might.element()).backgroundColor).toBe(getComputedStyle(might.element()).color)
 		await expect
-			.element(screen.getByRole('link', { name: 'View on Riftbound Wiki' }))
+			.element(screen.getByRole('link', { name: 'Riftbound Wiki' }))
 			.toHaveAttribute('href', 'https://wiki.leagueoflegends.com/en-us/Riftbound:Arcane_Shift')
 	})
 
@@ -56,7 +56,9 @@ describe('CardReference', () => {
 		await expect
 			.element(screen.getByRole('link', { name: 'Errata applied' }))
 			.toHaveAttribute('href', '/rulings/card-text-updates#shady-spectacles')
-		await expect.element(screen.getByText('The card image may show outdated wording.')).toBeVisible()
+		await expect
+			.element(screen.getByText('Use this wording. The printed card image may be out of date.'))
+			.toBeVisible()
 		await expect.element(screen.getByRole('heading', { name: 'Effect' })).toBeVisible()
 		await expect.element(screen.getByText('(I am a copy of the chosen unit.)')).toBeVisible()
 	})
