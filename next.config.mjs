@@ -10,11 +10,11 @@ const config = {
 	async redirects() {
 		return [
 			// Rulings
-			{ source: '/card-errata-list', destination: '/rulings/card-errata-list', permanent: true },
+			{ source: '/card-errata-list', destination: '/rulings/card-text-updates', permanent: true },
 			{ source: '/cards/:path+', destination: '/rulings/cards/:path+', permanent: true },
 			{ source: '/general-rules/:path+', destination: '/rulings/general-rules/:path+', permanent: true },
 			{ source: '/mechanics/:path+', destination: '/rulings/mechanics/:path+', permanent: true },
-			{ source: '/og/card-errata-list/:path+', destination: '/og/rulings/card-errata-list/:path+', permanent: true },
+			{ source: '/og/card-errata-list/:path+', destination: '/og/rulings/card-text-updates/:path+', permanent: true },
 			{ source: '/og/cards/:path+', destination: '/og/rulings/cards/:path+', permanent: true },
 			{ source: '/og/general-rules/:path+', destination: '/og/rulings/general-rules/:path+', permanent: true },
 			{ source: '/og/mechanics/:path+', destination: '/og/rulings/mechanics/:path+', permanent: true },

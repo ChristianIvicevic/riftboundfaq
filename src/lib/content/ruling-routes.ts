@@ -1,4 +1,4 @@
-export const CARD_ERRATA_PATH = '/rulings/card-errata-list'
+export const CARD_TEXT_UPDATES_PATH = '/rulings/card-text-updates'
 
 export const RULING_PATH_PREFIXES = {
 	cards: '/rulings/cards/',

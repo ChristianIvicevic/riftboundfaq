@@ -15,7 +15,7 @@ describe('getPageImageData', () => {
 	test.each([
 		['/about-riftbound-faq', 'About Riftbound FAQ'],
 		['/the-future-of-riftbound-faq', 'The Future of Riftbound FAQ'],
-		['/rulings/card-errata-list', 'Card Errata List'],
+		['/rulings/card-text-updates', 'Card Text Updates (Errata)'],
 		['/rules-documents', 'Rules Documents'],
 	])('uses the shared site-mark composition for %s', (url, title) => {
 		expect(getPageImageData(page(url, title), noSetLogo)).toEqual({

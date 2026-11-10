@@ -19,7 +19,7 @@ import { rulesDocuments } from '@/features/rules-documents/registry'
 import { resolveVersionedRulesRoute } from '@/features/rules-documents/versioned-route'
 import { getCardReference } from '@/lib/cards/catalog'
 import { getPagePublishingDetails } from '@/lib/content/page-publishing-details'
-import { CARD_ERRATA_PATH, RULING_PATH_PREFIXES } from '@/lib/content/ruling-routes'
+import { CARD_TEXT_UPDATES_PATH, RULING_PATH_PREFIXES } from '@/lib/content/ruling-routes'
 import { getPageImage, PAGE_IMAGE_SIZE, source } from '@/lib/content/source'
 import { SITE_NAME, SITE_URL, X_HANDLE } from '@/lib/site'
 import { getMDXComponents } from '@/mdx-components'
@@ -134,7 +134,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 			)}
 			{cardName && cardReference ? (
 				<CardReference
-					errataHref={`${CARD_ERRATA_PATH}#${page.url.slice(RULING_PATH_PREFIXES.cards.length)}`}
+					errataHref={`${CARD_TEXT_UPDATES_PATH}#${page.url.slice(RULING_PATH_PREFIXES.cards.length)}`}
 					name={cardName}
 					reference={cardReference}
 				/>
