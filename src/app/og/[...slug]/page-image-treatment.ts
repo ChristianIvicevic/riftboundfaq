@@ -1,4 +1,4 @@
-import { CARD_ERRATA_PATH, RULING_PATH_PREFIXES } from '@/lib/content/ruling-routes'
+import { CARD_TEXT_UPDATES_PATH, RULING_PATH_PREFIXES } from '@/lib/content/ruling-routes'
 import { TERM_DEFINITIONS, type TermVariant } from '@/lib/mdx-vocabulary'
 import { coreRulesConventions, tournamentRulesConventions } from '@/lib/rules/document-family-conventions'
 import rulesManifest from '../../../../sources/rules-manifest.json'
@@ -104,7 +104,7 @@ export function resolvePageImageTreatment(page: PageImagePage): PageImageTreatme
 
 	if (page.url === '/about-riftbound-faq') return { kind: 'landing' }
 	if (page.url === '/the-future-of-riftbound-faq') return { kind: 'editorial' }
-	if (page.url === CARD_ERRATA_PATH || page.url === '/rules-documents') {
+	if (page.url === CARD_TEXT_UPDATES_PATH || page.url === '/rules-documents') {
 		return { kind: 'index-cover' }
 	}
 

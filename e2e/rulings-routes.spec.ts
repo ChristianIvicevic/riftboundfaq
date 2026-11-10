@@ -27,9 +27,9 @@ test.describe('Rulings section routes', () => {
 			'/about-riftbound-faq',
 		)
 		await expect(sidebar.getByText('Browse Rulings', { exact: true })).toBeVisible()
-		await expect(sidebar.getByRole('link', { name: /Card Errata List/u })).toHaveAttribute(
+		await expect(sidebar.getByRole('link', { name: /Card Text Updates/u })).toHaveAttribute(
 			'href',
-			'/rulings/card-errata-list',
+			'/rulings/card-text-updates',
 		)
 		await expect(
 			page.getByRole('navigation', { name: 'Site sections' }).getByRole('link', {
@@ -40,7 +40,7 @@ test.describe('Rulings section routes', () => {
 	})
 
 	const redirects = [
-		['/card-errata-list', '/rulings/card-errata-list'],
+		['/card-errata-list', '/rulings/card-text-updates'],
 		['/cards/flash', '/rulings/cards/flash'],
 		['/general-rules/targeting', '/rulings/general-rules/targeting'],
 		['/mechanics/ambush', '/rulings/mechanics/ambush'],

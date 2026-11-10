@@ -10,7 +10,7 @@ describe('resolvePageImageTreatment', () => {
 		{ url: '/', title: 'About', kind: 'landing' },
 		{ url: '/about-riftbound-faq', title: 'About Riftbound FAQ', kind: 'landing' },
 		{ url: '/the-future-of-riftbound-faq', title: 'The Future', kind: 'editorial' },
-		{ url: '/rulings/card-errata-list', title: 'Card Errata List', kind: 'index-cover' },
+		{ url: '/rulings/card-text-updates', title: 'Card Text Updates (Errata)', kind: 'index-cover' },
 		{ url: '/rules-documents', title: 'Rules Documents', kind: 'index-cover' },
 		{ url: '/rulings/cards/flash', title: 'Flash', kind: 'card' },
 		{ url: '/rulings/general-rules/targeting', title: 'Targeting', kind: 'general-rules' },
