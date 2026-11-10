@@ -5,7 +5,7 @@ import { UnknownRulesVersionError } from '@/features/rules-documents/registry'
 describe('Core Rules review', () => {
 	test('resolves an up-to-date Core Rules review for its callout and citations', () => {
 		const review = resolveCoreRulesReview({
-			url: '/cards/alpha-strike',
+			url: '/rulings/cards/alpha-strike',
 			reviewedVersion: '1.5',
 		})!
 
@@ -18,7 +18,7 @@ describe('Core Rules review', () => {
 
 	test('keeps an outdated Core Rules review and its citations on the reviewed version', () => {
 		const review = resolveCoreRulesReview({
-			url: '/cards/alpha-strike',
+			url: '/rulings/cards/alpha-strike',
 			reviewedVersion: '1.3',
 		})!
 
@@ -32,26 +32,26 @@ describe('Core Rules review', () => {
 	test('rejects an unknown reviewed version with page context', () => {
 		let error: unknown
 		try {
-			resolveCoreRulesReview({ url: '/cards/alpha-strike', reviewedVersion: '1.99' })
+			resolveCoreRulesReview({ url: '/rulings/cards/alpha-strike', reviewedVersion: '1.99' })
 		} catch (cause) {
 			error = cause
 		}
 
 		expect(error).toEqual(
 			expect.objectContaining<Partial<CoreRulesReviewError>>({
-				url: '/cards/alpha-strike',
+				url: '/rulings/cards/alpha-strike',
 				reviewedVersion: '1.99',
 			}),
 		)
 		expect(error).toHaveProperty('cause', expect.any(UnknownRulesVersionError))
 		expect(error).toHaveProperty(
 			'message',
-			'Core Rules review for page "/cards/alpha-strike" identifies unknown version "1.99"',
+			'Core Rules review for page "/rulings/cards/alpha-strike" identifies unknown version "1.99"',
 		)
 	})
 
 	test('leaves a page without a Core Rules review unchanged', () => {
-		const review = resolveCoreRulesReview({ url: '/cards/alpha-strike' })
+		const review = resolveCoreRulesReview({ url: '/rulings/cards/alpha-strike' })
 
 		expect(review).toBeUndefined()
 	})

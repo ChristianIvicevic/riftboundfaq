@@ -16,7 +16,7 @@ describe('getPagePublishingDetails', () => {
 	test.each([
 		{
 			case: 'card ruling',
-			url: '/cards/akshan-mischievous',
+			url: '/rulings/cards/akshan-mischievous',
 			title: 'Akshan, Mischievous',
 			metadataTitle: 'Akshan, Mischievous Rulings',
 			description:
@@ -24,7 +24,7 @@ describe('getPagePublishingDetails', () => {
 		},
 		{
 			case: 'mechanic ruling',
-			url: '/mechanics/ambush',
+			url: '/rulings/mechanics/ambush',
 			title: 'Ambush',
 			metadataTitle: 'Ambush Rules',
 			description:
@@ -32,7 +32,7 @@ describe('getPagePublishingDetails', () => {
 		},
 		{
 			case: 'general-rules ruling',
-			url: '/general-rules/chain-and-priority',
+			url: '/rulings/general-rules/chain-and-priority',
 			title: 'Chain and Priority',
 			metadataTitle: 'Chain and Priority',
 			description:
@@ -91,14 +91,16 @@ describe('getPagePublishingDetails', () => {
 	test('preserves authored description behavior', () => {
 		expect(
 			getPagePublishingDetails({
-				url: '/cards/flash',
+				url: '/rulings/cards/flash',
 				data: { title: 'Flash', description: 'An authored description.' },
 			}).description,
 		).toBe('An authored description.')
 
 		expect(
-			getPagePublishingDetails({ url: '/cards/flash', data: { title: 'Flash', description: '' } })
-				.description,
+			getPagePublishingDetails({
+				url: '/rulings/cards/flash',
+				data: { title: 'Flash', description: '' },
+			}).description,
 		).toBe(
 			'Unofficial Riftbound rulings for Flash, with rules explanations, examples, and Core Rules citations.',
 		)

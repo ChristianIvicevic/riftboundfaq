@@ -8,9 +8,9 @@
 		"about-riftbound-faq",
 		"the-future-of-riftbound-faq",
 		"---Browse Rulings---",
-		"card-errata-list",
-		"general-rules",
-		"mechanics",
-		"cards"
+		"rulings/card-errata-list",
+		"rulings/general-rules",
+		"rulings/mechanics",
+		"rulings/cards"
 	]
 }

@@ -8,7 +8,7 @@ describe('CardReference', () => {
 		const screen = await render(
 			<CardReference
 				name="Arcane Shift"
-				errataHref="/card-errata-list#arcane-shift"
+				errataHref="/rulings/card-errata-list#arcane-shift"
 				reference={{
 					currentText: '[Action] Pay [1][Order], [Exhaust]: Give a unit +1 [Might].',
 					effectText: null,
@@ -41,7 +41,7 @@ describe('CardReference', () => {
 		const screen = await render(
 			<CardReference
 				name="Shady Spectacles"
-				errataHref="/card-errata-list#shady-spectacles"
+				errataHref="/rulings/card-errata-list#shady-spectacles"
 				reference={{
 					currentText: 'Choose another friendly unit.',
 					effectText: '(I am a copy of the chosen unit.)',
@@ -55,7 +55,7 @@ describe('CardReference', () => {
 
 		await expect
 			.element(screen.getByRole('link', { name: 'Errata applied' }))
-			.toHaveAttribute('href', '/card-errata-list#shady-spectacles')
+			.toHaveAttribute('href', '/rulings/card-errata-list#shady-spectacles')
 		await expect.element(screen.getByText('The card image may show outdated wording.')).toBeVisible()
 		await expect.element(screen.getByRole('heading', { name: 'Effect' })).toBeVisible()
 		await expect.element(screen.getByText('(I am a copy of the chosen unit.)')).toBeVisible()
@@ -65,7 +65,7 @@ describe('CardReference', () => {
 		const screen = await render(
 			<CardReference
 				name="Arcane Shift"
-				errataHref="/card-errata-list#arcane-shift"
+				errataHref="/rulings/card-errata-list#arcane-shift"
 				reference={{
 					currentText: 'Deal 2.',
 					effectText: null,
@@ -90,7 +90,7 @@ describe('CardReference', () => {
 		const screen = await render(
 			<CardReference
 				name="Riven, Broken Blade"
-				errataHref="/card-errata-list#riven-broken-blade"
+				errataHref="/rulings/card-errata-list#riven-broken-blade"
 				reference={{
 					currentText: 'Choose one:\n- Pay [Universal].\n- Give a unit [Burn 7].\n- Use [Predict 2].',
 					effectText: null,
@@ -112,7 +112,7 @@ describe('CardReference', () => {
 		const screen = await render(
 			<CardReference
 				name="Mega-Mech"
-				errataHref="/card-errata-list#mega-mech"
+				errataHref="/rulings/card-errata-list#mega-mech"
 				reference={{
 					currentText: null,
 					effectText: null,
@@ -131,7 +131,7 @@ describe('CardReference', () => {
 		const screen = await render(
 			<CardReference
 				name="Arcane Shift"
-				errataHref="/card-errata-list#arcane-shift"
+				errataHref="/rulings/card-errata-list#arcane-shift"
 				reference={{
 					currentText: '[Action] Pay [1][Order].',
 					effectText: null,
@@ -161,7 +161,7 @@ describe('CardReference', () => {
 		const screen = await render(
 			<CardReference
 				name="Riven, Broken Blade"
-				errataHref="/card-errata-list#riven-broken-blade"
+				errataHref="/rulings/card-errata-list#riven-broken-blade"
 				reference={{
 					currentText: '[Action] Choose one:\n- Pay [1][Order].\n- Gain +2[Might].\nThen draw 1.',
 					effectText: null,
@@ -196,7 +196,7 @@ describe('CardReference', () => {
 		const screen = await render(
 			<CardReference
 				name="Ruined Rex"
-				errataHref="/card-errata-list#ruined-rex"
+				errataHref="/rulings/card-errata-list#ruined-rex"
 				reference={{
 					currentText: '[Deathknell][>] Deal 4 to an enemy unit.',
 					effectText: null,
@@ -232,7 +232,7 @@ describe('CardReference', () => {
 		const screen = await render(
 			<CardReference
 				name="Bone Skewer"
-				errataHref="/card-errata-list#bone-skewer"
+				errataHref="/rulings/card-errata-list#bone-skewer"
 				reference={{
 					currentText:
 						'[Hidden] (Hide now for [Universal] to react with later for [0].)\nChoose a battlefield.',

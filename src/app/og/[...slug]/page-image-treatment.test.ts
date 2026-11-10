@@ -10,16 +10,16 @@ describe('resolvePageImageTreatment', () => {
 		{ url: '/', title: 'About', kind: 'landing' },
 		{ url: '/about-riftbound-faq', title: 'About Riftbound FAQ', kind: 'landing' },
 		{ url: '/the-future-of-riftbound-faq', title: 'The Future', kind: 'editorial' },
-		{ url: '/card-errata-list', title: 'Card Errata List', kind: 'index-cover' },
+		{ url: '/rulings/card-errata-list', title: 'Card Errata List', kind: 'index-cover' },
 		{ url: '/rules-documents', title: 'Rules Documents', kind: 'index-cover' },
-		{ url: '/cards/flash', title: 'Flash', kind: 'card' },
-		{ url: '/general-rules/targeting', title: 'Targeting', kind: 'general-rules' },
+		{ url: '/rulings/cards/flash', title: 'Flash', kind: 'card' },
+		{ url: '/rulings/general-rules/targeting', title: 'Targeting', kind: 'general-rules' },
 	])('classifies $url as $kind', ({ url, title, kind }) => {
 		expect(resolvePageImageTreatment(page(url, title))).toMatchObject({ kind })
 	})
 
 	test('uses term vocabulary styling for keyword mechanics', () => {
-		expect(resolvePageImageTreatment(page('/mechanics/deathknell', 'Deathknell'))).toEqual({
+		expect(resolvePageImageTreatment(page('/rulings/mechanics/deathknell', 'Deathknell'))).toEqual({
 			kind: 'mechanic-keyword',
 			keyword: {
 				backgroundColor: '#95b229',
@@ -29,7 +29,7 @@ describe('resolvePageImageTreatment', () => {
 	})
 
 	test('uses the generic mechanics cover for non-keyword topics', () => {
-		expect(resolvePageImageTreatment(page('/mechanics/equipment', 'Equipment'))).toEqual({
+		expect(resolvePageImageTreatment(page('/rulings/mechanics/equipment', 'Equipment'))).toEqual({
 			kind: 'mechanic-topic',
 		})
 	})

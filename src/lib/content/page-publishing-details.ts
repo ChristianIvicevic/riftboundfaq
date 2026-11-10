@@ -1,3 +1,4 @@
+import { RULING_PATH_PREFIXES } from '@/lib/content/ruling-routes'
 import { SITE_DESCRIPTION, SITE_TITLE } from '@/lib/site'
 
 type PublishingPage = {
@@ -25,19 +26,19 @@ type EditorialFamilyPolicy = {
 
 const EDITORIAL_FAMILY_POLICIES: readonly EditorialFamilyPolicy[] = [
 	{
-		prefix: '/cards/',
+		prefix: RULING_PATH_PREFIXES.cards,
 		metadataTitle: (title) => `${title} Rulings`,
 		fallbackDescription: (title) =>
 			`Unofficial Riftbound rulings for ${title}, with rules explanations, examples, and Core Rules citations.`,
 	},
 	{
-		prefix: '/mechanics/',
+		prefix: RULING_PATH_PREFIXES.mechanics,
 		metadataTitle: (title) => `${title} Rules`,
 		fallbackDescription: (title) =>
 			`Unofficial answers about the ${title} mechanic in Riftbound, with examples and Core Rules citations.`,
 	},
 	{
-		prefix: '/general-rules/',
+		prefix: RULING_PATH_PREFIXES.generalRules,
 		metadataTitle: (title) => title,
 		fallbackDescription: (title) =>
 			`Unofficial Riftbound rules answers about ${title.toLowerCase()}, with examples and Core Rules citations.`,

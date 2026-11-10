@@ -29,7 +29,7 @@ describe('version-specific rules page', () => {
 	})
 
 	test('leaves pages without a rules document outside the seam', () => {
-		expect(resolveVersionedRulesRoute({ url: '/cards/alpha-strike' })).toBeUndefined()
+		expect(resolveVersionedRulesRoute({ url: '/rulings/cards/alpha-strike' })).toBeUndefined()
 		expect(resolveVersionedRulesRoute({ url: '/rules-documents/core-rules/changes/1.4' })).toBeUndefined()
 	})
 

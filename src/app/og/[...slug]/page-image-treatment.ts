@@ -1,3 +1,4 @@
+import { CARD_ERRATA_PATH, RULING_PATH_PREFIXES } from '@/lib/content/ruling-routes'
 import { TERM_DEFINITIONS, type TermVariant } from '@/lib/mdx-vocabulary'
 import { coreRulesConventions, tournamentRulesConventions } from '@/lib/rules/document-family-conventions'
 import rulesManifest from '../../../../sources/rules-manifest.json'
@@ -103,11 +104,13 @@ export function resolvePageImageTreatment(page: PageImagePage): PageImageTreatme
 
 	if (page.url === '/about-riftbound-faq') return { kind: 'landing' }
 	if (page.url === '/the-future-of-riftbound-faq') return { kind: 'editorial' }
-	if (page.url === '/card-errata-list' || page.url === '/rules-documents') return { kind: 'index-cover' }
+	if (page.url === CARD_ERRATA_PATH || page.url === '/rules-documents') {
+		return { kind: 'index-cover' }
+	}
 
-	if (page.url.startsWith('/cards/')) return { kind: 'card' }
-	if (page.url.startsWith('/general-rules/')) return { kind: 'general-rules' }
-	if (page.url.startsWith('/mechanics/')) {
+	if (page.url.startsWith(RULING_PATH_PREFIXES.cards)) return { kind: 'card' }
+	if (page.url.startsWith(RULING_PATH_PREFIXES.generalRules)) return { kind: 'general-rules' }
+	if (page.url.startsWith(RULING_PATH_PREFIXES.mechanics)) {
 		const definition = TERM_DEFINITION_VALUES.find(({ label }) => label === page.data.title)
 		if (!definition) return { kind: 'mechanic-topic' }
 		return {

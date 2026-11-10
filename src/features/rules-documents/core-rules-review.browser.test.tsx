@@ -9,7 +9,7 @@ import { resolveCoreRulesReview } from '@/features/rules-documents/core-rules-re
 describe('Core Rules review rendering', () => {
 	test('renders a compact current review status and interactive citation', async () => {
 		const review = resolveCoreRulesReview({
-			url: '/cards/alpha-strike',
+			url: '/rulings/cards/alpha-strike',
 			reviewedVersion: '1.5',
 		})!
 		const screen = await render(
@@ -41,7 +41,7 @@ describe('Core Rules review rendering', () => {
 
 	test('renders an outdated review callout and version-specific citation', async () => {
 		const review = resolveCoreRulesReview({
-			url: '/cards/alpha-strike',
+			url: '/rulings/cards/alpha-strike',
 			reviewedVersion: '1.3',
 		})!
 		const screen = await render(
