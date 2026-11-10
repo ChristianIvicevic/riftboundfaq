@@ -371,6 +371,7 @@ function Intro({ data }: { data: PageImageData }) {
 				style={{
 					width: '625px',
 					margin: '58px 0 0',
+					fontFamily: 'Noto Serif',
 					fontSize: titleFontSize(data.title),
 					fontWeight: 900,
 					lineHeight: 0.94,
