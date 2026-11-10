@@ -9,7 +9,7 @@ const searchResult = z.object({
 
 test('renders game glossary entries in MDX and copies only the visible prose', async ({ context, page }) => {
 	await context.grantPermissions(['clipboard-read', 'clipboard-write'])
-	await page.goto('/general-rules/chain-and-priority#unit-play-reactions')
+	await page.goto('/rulings/general-rules/chain-and-priority#unit-play-reactions')
 
 	const trigger = page.getByRole('button', { name: 'Finalizing', exact: true })
 	await trigger.click()
@@ -38,7 +38,7 @@ test.describe('touch interaction', () => {
 	test.use({ hasTouch: true, viewport: { width: 320, height: 844 } })
 
 	test('opens a game glossary entry by touch', async ({ page }) => {
-		await page.goto('/general-rules/showdowns#showdown-close')
+		await page.goto('/rulings/general-rules/showdowns#showdown-close')
 
 		await page.getByRole('button', { name: 'focus', exact: true }).tap()
 
@@ -60,7 +60,7 @@ test('keeps popup explanations out of search results', async ({ request }) => {
 	const result = results.find(
 		(item) =>
 			item.type === 'text' &&
-			item.url === '/general-rules/chain-and-priority#unit-play-reactions' &&
+			item.url === '/rulings/general-rules/chain-and-priority#unit-play-reactions' &&
 			item.content.includes('Finalizing'),
 	)
 

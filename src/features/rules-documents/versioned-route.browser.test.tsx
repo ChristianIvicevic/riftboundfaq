@@ -48,7 +48,7 @@ describe('version-specific rules page rendering', () => {
 	})
 
 	test('rejects rendering without version-specific page context', () => {
-		const route = resolveVersionedRulesRoute({ url: '/cards/alpha-strike' })
+		const route = resolveVersionedRulesRoute({ url: '/rulings/cards/alpha-strike' })
 
 		expect(() => renderVersionedRulesDocument(route)).toThrow(
 			expect.objectContaining<Partial<VersionedRulesRouteError>>({

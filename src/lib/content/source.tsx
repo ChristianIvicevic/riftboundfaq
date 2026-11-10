@@ -3,6 +3,7 @@ import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons'
 import { docs } from 'fumadocs-mdx:collections/server'
 import { getGameTermComponentByLabel } from '@/components/game-terms'
 import { StatusBadge } from '@/components/ui/status-badge'
+import { RULING_PATH_PREFIXES } from '@/lib/content/ruling-routes'
 
 const NEW_PAGE_WINDOW_MS = 21 * 24 * 60 * 60 * 1000
 const BUILD_TIMESTAMP = Date.now()
@@ -29,7 +30,7 @@ export const source = loader({
 					const content = this.storage.read(file)
 					if (!content || content.format !== 'page') return node
 					const sidebarTitle = content.data.sidebarTitle
-					const GameTerm = node.url.startsWith('/mechanics/')
+					const GameTerm = node.url.startsWith(RULING_PATH_PREFIXES.mechanics)
 						? getGameTermComponentByLabel(sidebarTitle ?? content.data.title)
 						: undefined
 					node.name = GameTerm ? <GameTerm /> : (sidebarTitle ?? node.name)

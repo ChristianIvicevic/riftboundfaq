@@ -15,7 +15,7 @@ describe('getPageImageData', () => {
 	test.each([
 		['/about-riftbound-faq', 'About Riftbound FAQ'],
 		['/the-future-of-riftbound-faq', 'The Future of Riftbound FAQ'],
-		['/card-errata-list', 'Card Errata List'],
+		['/rulings/card-errata-list', 'Card Errata List'],
 		['/rules-documents', 'Rules Documents'],
 	])('uses the shared site-mark composition for %s', (url, title) => {
 		expect(getPageImageData(page(url, title), noSetLogo)).toEqual({
@@ -36,7 +36,7 @@ describe('getPageImageData', () => {
 	})
 
 	test('maps card catalog art without repeating the card name in the rail', () => {
-		const data = getPageImageData(page('/cards/abandoned-hall', 'Abandoned Hall'), noSetLogo)
+		const data = getPageImageData(page('/rulings/cards/abandoned-hall', 'Abandoned Hall'), noSetLogo)
 
 		expect(data).toMatchObject({
 			title: 'Abandoned Hall',
@@ -53,13 +53,13 @@ describe('getPageImageData', () => {
 
 	test.each([
 		{
-			url: '/general-rules/chain-and-priority',
+			url: '/rulings/general-rules/chain-and-priority',
 			title: 'Chain and Priority',
 			railLabel: 'GENERAL RULES',
 			visual: { kind: 'wordmark', primary: 'General', accent: 'Rules' },
 		},
 		{
-			url: '/mechanics/deathknell',
+			url: '/rulings/mechanics/deathknell',
 			title: 'Deathknell',
 			railLabel: 'MECHANIC · KEYWORD',
 			visual: {
@@ -70,7 +70,7 @@ describe('getPageImageData', () => {
 			},
 		},
 		{
-			url: '/mechanics/equipment',
+			url: '/rulings/mechanics/equipment',
 			title: 'Equipment',
 			railLabel: 'MECHANIC',
 			visual: { kind: 'wordmark', primary: 'Game', accent: 'Mechanics' },

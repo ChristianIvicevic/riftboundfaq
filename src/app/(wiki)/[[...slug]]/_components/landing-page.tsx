@@ -3,12 +3,13 @@ import Link from 'next/link'
 import { LandingSearchTrigger } from '@/app/(wiki)/[[...slug]]/_components/landing-search-trigger'
 import { getCardReference } from '@/lib/cards/catalog'
 import { cn } from '@/lib/cn'
+import { RULING_PATH_PREFIXES } from '@/lib/content/ruling-routes'
 import { source } from '@/lib/content/source'
 
 const RULING_FAMILIES = [
-	{ prefix: '/cards/', label: 'Card' },
-	{ prefix: '/mechanics/', label: 'Mechanic' },
-	{ prefix: '/general-rules/', label: 'General Rules' },
+	{ prefix: RULING_PATH_PREFIXES.cards, label: 'Card' },
+	{ prefix: RULING_PATH_PREFIXES.mechanics, label: 'Mechanic' },
+	{ prefix: RULING_PATH_PREFIXES.generalRules, label: 'General Rules' },
 ] as const
 
 const PUBLICATION_DATE_FORMATTER = new Intl.DateTimeFormat('en-GB', {
@@ -36,7 +37,8 @@ function getLatestRulings(): LatestRuling[] {
 		.flatMap((page) => {
 			const family = RULING_FAMILIES.find(({ prefix }) => page.url.startsWith(prefix))
 			if (!family || !page.data.createdAt) return []
-			const card = family.prefix === '/cards/' ? getCardReference(page.data.title) : undefined
+			const card =
+				family.prefix === RULING_PATH_PREFIXES.cards ? getCardReference(page.data.title) : undefined
 
 			return [
 				{
