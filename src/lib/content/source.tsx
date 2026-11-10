@@ -2,6 +2,7 @@ import { loader } from 'fumadocs-core/source'
 import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons'
 import { docs } from 'fumadocs-mdx:collections/server'
 import { getGameTermComponentByLabel } from '@/components/game-terms'
+import { StatusBadge } from '@/components/ui/status-badge'
 
 const NEW_PAGE_WINDOW_MS = 21 * 24 * 60 * 60 * 1000
 const BUILD_TIMESTAMP = Date.now()
@@ -36,9 +37,7 @@ export const source = loader({
 						node.name = (
 							<div key={content.path} className="flex w-full items-center gap-3">
 								<span className="flex-1">{node.name}</span>
-								<div className="rounded-md border-2 border-fd-primary px-2 text-xs font-bold text-fd-primary">
-									New
-								</div>
+								<StatusBadge tone="info">New</StatusBadge>
 							</div>
 						)
 					return node

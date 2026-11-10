@@ -4,6 +4,7 @@ import { CopyableContent } from '@/components/copyable-content'
 import { resolveGameTermToken } from '@/components/game-terms'
 import { RiftboundLogo } from '@/components/icons/riftbound-logo'
 import { CardTextSymbol, Energy, RUNES, Universal } from '@/components/resources'
+import { statusBadgeVariants } from '@/components/ui/status-badge'
 import type { CardReference as CardReferenceData } from '@/lib/cards/card-reference'
 import { getRiftboundWikiUrl } from '@/lib/cards/links'
 
@@ -160,7 +161,8 @@ export function CardReference({
 						</h2>
 						{reference.hasErrata && (
 							<a
-								className="inline-flex h-5 items-center rounded-full border border-amber-300 bg-amber-100 px-2 text-xs font-medium text-amber-900 transition-colors hover:bg-amber-200 focus-visible:ring-2 focus-visible:ring-fd-ring focus-visible:outline-none dark:border-amber-700 dark:bg-amber-950/60 dark:text-amber-200 dark:hover:bg-amber-900/70"
+								className={statusBadgeVariants({ interactive: true, tone: 'caution' })}
+								data-slot="status-badge"
 								href={errataHref}
 							>
 								Errata applied

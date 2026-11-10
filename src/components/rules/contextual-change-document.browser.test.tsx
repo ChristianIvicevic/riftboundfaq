@@ -145,14 +145,14 @@ describe('contextual rules change document', () => {
 				.element()
 			const changedRule = label.closest('li')
 			const content = changedRule?.querySelector('p')
-			const mobileBadge = [...(label.parentElement?.querySelectorAll('.rounded-full') ?? [])].find(
-				(element) => element.textContent === 'Changed' && element.getBoundingClientRect().width > 0,
-			)
+			const mobileBadge = [
+				...(label.parentElement?.querySelectorAll('[data-slot="status-badge"]') ?? []),
+			].find((element) => element.textContent === 'Changed' && element.getBoundingClientRect().width > 0)
 			const unnumberedLink = screen
 				.getByRole('link', { name: 'Open unnumbered entry in Core Rules 1.1 (opens in a new tab)' })
 				.element()
 			const unnumberedBadge = [
-				...(unnumberedLink.closest('li')?.querySelectorAll('.rounded-full') ?? []),
+				...(unnumberedLink.closest('li')?.querySelectorAll('[data-slot="status-badge"]') ?? []),
 			].find((element) => element.textContent === 'Added' && element.getBoundingClientRect().width > 0)
 			if (!content || !mobileBadge)
 				throw new Error('Expected changed rule content and a visible status badge')
@@ -171,7 +171,7 @@ describe('contextual rules change document', () => {
 			const desktopContentBox = content.getBoundingClientRect()
 			const desktopRow = changedRule?.firstElementChild
 			const desktopRowBox = desktopRow?.getBoundingClientRect()
-			const desktopBadge = [...(changedRule?.querySelectorAll('.rounded-full') ?? [])].find(
+			const desktopBadge = [...(changedRule?.querySelectorAll('[data-slot="status-badge"]') ?? [])].find(
 				(element) => element.textContent === 'Changed' && element.getBoundingClientRect().width > 0,
 			)
 			if (!desktopRow || !desktopRowBox || !desktopBadge)
