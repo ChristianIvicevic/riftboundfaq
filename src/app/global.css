@@ -3,6 +3,14 @@
 @import 'fumadocs-ui/css/vitepress.css';
 @import 'fumadocs-ui/css/preset.css';
 
+@theme {
+	--color-fd-primary: #a15300;
+}
+
+.dark {
+	--color-fd-primary: #ef7d00;
+}
+
 /* Prevent a compositor seam between the adjacent mobile sticky bars. */
 #fd-spacious-layout > [class~='[grid-area:toc-popover]'] {
 	background-color: var(--color-fd-card);
