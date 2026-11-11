@@ -1,6 +1,7 @@
 'use client'
 
 import { Popover } from '@base-ui/react/popover'
+import { Match } from 'effect'
 import { Check, Copy, ExternalLink } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { buttonVariants } from '@/components/ui/button'
@@ -60,7 +61,11 @@ export function RulePreviewLink({
 							>
 								{copyStatus === 'copied' ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
 								<span aria-live="polite">
-									{copyStatus === 'copied' ? 'Copied' : copyStatus === 'error' ? 'Copy failed' : 'Copy'}
+									{Match.value(copyStatus).pipe(
+										Match.when('copied', () => 'Copied'),
+										Match.when('error', () => 'Copy failed'),
+										Match.orElse(() => 'Copy'),
+									)}
 								</span>
 							</button>
 							<a

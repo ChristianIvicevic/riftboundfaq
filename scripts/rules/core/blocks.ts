@@ -1,5 +1,5 @@
 import type { RuleContent } from '@/lib/rules/core-rules-document'
-import { reconstructText, type PdfTextItem, type PhysicalLine } from './lines'
+import { reconstructText, type PdfTextItem, type PhysicalLine } from '../lines'
 
 const RULE_LABEL_CANDIDATE = /^(\d{3}(?:\.[0-9A-Za-z]+)*)(?:\.)?$/u
 const RULE_LIKE_TEXT = /^\d{3}(?:\.[0-9A-Za-z]+)*(?:\.|\b)/u

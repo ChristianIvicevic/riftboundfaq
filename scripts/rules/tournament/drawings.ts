@@ -1,29 +1,63 @@
+import { Option, Schema, SchemaTransformation } from 'effect'
 import { OPS } from 'pdfjs-dist/legacy/build/pdf.mjs'
-import { z } from 'zod'
+import type { PdfOperatorList } from '../pdf'
 
 const BLACK_THRESHOLD = 0.08
 const YELLOW_RED_MINIMUM = 0.9
 const YELLOW_GREEN_MINIMUM = 0.75
 const YELLOW_BLUE_MAXIMUM = 0.25
 
-const finiteNumber = z.number()
-const matrixValue = z
-	.array(z.unknown())
-	.transform((value) => value.slice(0, 6))
-	.pipe(z.tuple([finiteNumber, finiteNumber, finiteNumber, finiteNumber, finiteNumber, finiteNumber]))
-const boundsValue = z
-	.union([z.array(z.unknown()), z.instanceof(Float32Array)])
-	.transform((value) => Array.from(value).slice(0, 4))
-	.pipe(z.tuple([finiteNumber, finiteNumber, finiteNumber, finiteNumber]))
-const numericColorValue = z
-	.array(z.unknown())
-	.transform((value) => value.slice(0, 3))
-	.pipe(z.tuple([finiteNumber, finiteNumber, finiteNumber]))
-const hexColorValue = z.tuple([z.string().regex(/^#[\dA-Fa-f]{6}$/u)])
+const finiteNumber = Schema.Finite
+const matrixTuple = Schema.mutable(
+	Schema.Tuple([finiteNumber, finiteNumber, finiteNumber, finiteNumber, finiteNumber, finiteNumber]),
+)
+const boundsTuple = Schema.mutable(Schema.Tuple([finiteNumber, finiteNumber, finiteNumber, finiteNumber]))
+const numericColorTuple = Schema.mutable(Schema.Tuple([finiteNumber, finiteNumber, finiteNumber]))
 
-type Matrix = z.infer<typeof matrixValue>
-type Bounds = z.infer<typeof boundsValue>
-type Color = z.infer<typeof numericColorValue>
+type Matrix = typeof matrixTuple.Type
+type Bounds = typeof boundsTuple.Type
+type Color = typeof numericColorTuple.Type
+
+function slicePrefix<Tuple extends unknown[]>(value: ArrayLike<unknown>, length: number): Tuple {
+	// SAFETY: Schema.decodeTo immediately validates the returned prefix with its fixed tuple schema.
+	return Array.from(value).slice(0, length) as Tuple
+}
+
+const matrixValue = Schema.Array(Schema.Unknown).pipe(
+	Schema.decodeTo(
+		matrixTuple,
+		SchemaTransformation.transform({
+			decode: (value) => slicePrefix<Matrix>(value, 6),
+			encode: (value) => value,
+		}),
+	),
+)
+const boundsValue = Schema.Union([Schema.Array(Schema.Unknown), Schema.instanceOf(Float32Array)]).pipe(
+	Schema.decodeTo(
+		boundsTuple,
+		SchemaTransformation.transform({
+			decode: (value) => slicePrefix<Bounds>(value, 4),
+			encode: (value) => value,
+		}),
+	),
+)
+const numericColorValue = Schema.Array(Schema.Unknown).pipe(
+	Schema.decodeTo(
+		numericColorTuple,
+		SchemaTransformation.transform({
+			decode: (value) => slicePrefix<Color>(value, 3),
+			encode: (value) => value,
+		}),
+	),
+)
+const hexColorValue = Schema.mutable(
+	Schema.Tuple([Schema.String.check(Schema.isPattern(/^#[\dA-Fa-f]{6}$/u))]),
+)
+const decodeFiniteNumber = Schema.decodeUnknownOption(finiteNumber)
+const decodeMatrix = Schema.decodeUnknownOption(matrixValue)
+const decodeBounds = Schema.decodeUnknownOption(boundsValue)
+const decodeNumericColor = Schema.decodeUnknownOption(numericColorValue)
+const decodeHexColor = Schema.decodeUnknownOption(hexColorValue)
 
 export type DrawingBounds = {
 	x: number
@@ -45,11 +79,6 @@ type GraphicsState = {
 	strokeColor: Color
 	fillColor: Color
 	lineWidth: number
-}
-
-type PDFOperatorList = {
-	fnArray: number[]
-	argsArray: unknown[][]
 }
 
 function multiply(left: Matrix, right: Matrix): Matrix {
@@ -86,17 +115,17 @@ function transformedBounds(bounds: Bounds, matrix: Matrix): DrawingBounds {
 }
 
 function rgb(arguments_: unknown[]): Color | null {
-	const hexColor = hexColorValue.safeParse(arguments_)
-	if (hexColor.success) {
-		const hex = hexColor.data[0].slice(1)
+	const hexColor = decodeHexColor(arguments_)
+	if (Option.isSome(hexColor)) {
+		const hex = hexColor.value[0].slice(1)
 		return [
 			Number.parseInt(hex.slice(0, 2), 16) / 255,
 			Number.parseInt(hex.slice(2, 4), 16) / 255,
 			Number.parseInt(hex.slice(4, 6), 16) / 255,
 		]
 	}
-	const numericColor = numericColorValue.safeParse(arguments_)
-	return numericColor.success ? numericColor.data : null
+	const numericColor = decodeNumericColor(arguments_)
+	return Option.isSome(numericColor) ? numericColor.value : null
 }
 
 function isBlack(color: Color): boolean {
@@ -111,7 +140,7 @@ function isTableGray(color: Color): boolean {
 	return Math.max(...color) - Math.min(...color) < 0.03 && color[0] >= 0.75 && color[0] <= 0.95
 }
 
-export function inspectDrawings(operatorList: PDFOperatorList): DrawingInspection {
+export function inspectDrawings(operatorList: PdfOperatorList): DrawingInspection {
 	let transform: Matrix = [1, 0, 0, 1, 0, 0]
 	let strokeColor: Color = [0, 0, 0]
 	let fillColor: Color = [0, 0, 0]
@@ -130,23 +159,23 @@ export function inspectDrawings(operatorList: PDFOperatorList): DrawingInspectio
 			const savedState = stack.pop()
 			if (savedState) ({ transform, strokeColor, fillColor, lineWidth } = savedState)
 		} else if (operation === OPS.transform) {
-			const matrix = matrixValue.safeParse(operands)
-			if (matrix.success) transform = multiply(transform, matrix.data)
+			const matrix = decodeMatrix(operands)
+			if (Option.isSome(matrix)) transform = multiply(transform, matrix.value)
 		} else if (operation === OPS.setLineWidth) {
-			const parsedLineWidth = finiteNumber.safeParse(operands[0])
-			if (parsedLineWidth.success) lineWidth = parsedLineWidth.data
+			const parsedLineWidth = decodeFiniteNumber(operands[0])
+			if (Option.isSome(parsedLineWidth)) lineWidth = parsedLineWidth.value
 		} else if (operation === OPS.setStrokeRGBColor) {
 			strokeColor = rgb(operands) ?? strokeColor
 		} else if (operation === OPS.setFillRGBColor) {
 			fillColor = rgb(operands) ?? fillColor
 		} else if (operation === OPS.constructPath) {
-			const rawBounds = boundsValue.safeParse(operands[2])
-			if (!rawBounds.success) continue
-			const paintOperation = finiteNumber.safeParse(operands[0])
-			const bounds = transformedBounds(rawBounds.data, transform)
+			const rawBounds = decodeBounds(operands[2])
+			if (Option.isNone(rawBounds)) continue
+			const paintOperation = decodeFiniteNumber(operands[0])
+			const bounds = transformedBounds(rawBounds.value, transform)
 			const strokes =
-				paintOperation.success &&
-				[OPS.stroke, OPS.closeStroke, OPS.fillStroke, OPS.eoFillStroke].includes(paintOperation.data)
+				Option.isSome(paintOperation) &&
+				[OPS.stroke, OPS.closeStroke, OPS.fillStroke, OPS.eoFillStroke].includes(paintOperation.value)
 			const fills = [
 				OPS.fill,
 				OPS.eoFill,
@@ -154,7 +183,7 @@ export function inspectDrawings(operatorList: PDFOperatorList): DrawingInspectio
 				OPS.eoFillStroke,
 				OPS.closeFillStroke,
 				OPS.closeEOFillStroke,
-			].includes(paintOperation.success ? paintOperation.data : -1)
+			].includes(Option.isSome(paintOperation) ? paintOperation.value : -1)
 
 			if (strokes && isBlack(strokeColor) && bounds.width > 12 && bounds.height < 2.5) {
 				horizontalStrokes.push({ ...bounds, lineWidth })
