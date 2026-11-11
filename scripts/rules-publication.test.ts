@@ -198,7 +198,7 @@ describe('publishRules', () => {
 		const preservedFiles = new Map([
 			['sources/CR-v1.0.pdf', 'authoritative Core Rules PDF'],
 			['sources/card-text.md', 'card text'],
-			['templates/reference/index.mdx', 'tracked reference template'],
+			['templates/rules-documents/index.mdx', 'tracked rules document template'],
 			['src/generated/unrelated.ts', 'unrelated generated output'],
 			['sources/notes.txt', 'unrelated source'],
 		])

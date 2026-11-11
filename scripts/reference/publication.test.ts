@@ -114,7 +114,7 @@ async function createTemplates(directory: string): Promise<void> {
 async function createReferenceWorkspace() {
 	const temporaryDirectory = await mkdtemp(join(tmpdir(), 'riftbound-reference-'))
 	onTestFinished(() => rm(temporaryDirectory, { recursive: true }))
-	const templatesDirectory = join(temporaryDirectory, 'templates', 'reference')
+	const templatesDirectory = join(temporaryDirectory, 'templates', 'rules-documents')
 	await createTemplates(templatesDirectory)
 	return {
 		projectDirectory: temporaryDirectory,
@@ -307,7 +307,7 @@ Rule numbers open the corresponding source document in a new tab.
 	test('rejects a version-specific rules page artifact without its document marker', async () => {
 		const { projectDirectory } = await createReferenceWorkspace()
 		await writeFile(
-			join(projectDirectory, 'templates', 'reference', 'core-rules-current.mdx'),
+			join(projectDirectory, 'templates', 'rules-documents', 'core-rules-current.mdx'),
 			'---\n{{RULES_DOCUMENT_FRONTMATTER}}\n---\ncurrent core {{TITLE}}|{{CREATED_AT}}',
 		)
 
@@ -323,7 +323,7 @@ Rule numbers open the corresponding source document in a new tab.
 	test('rejects a version-specific rules page artifact with a second identity', async () => {
 		const { projectDirectory } = await createReferenceWorkspace()
 		await writeFile(
-			join(projectDirectory, 'templates', 'reference', 'core-rules-current.mdx'),
+			join(projectDirectory, 'templates', 'rules-documents', 'core-rules-current.mdx'),
 			'---\n{{RULES_DOCUMENT_FRONTMATTER}}\nrulesDocument:\n  type: "core-rules"\n  version: "1.1"\n---\n{{TITLE}}|{{CREATED_AT}}\n<RulesDocument />',
 		)
 
@@ -339,7 +339,7 @@ Rule numbers open the corresponding source document in a new tab.
 	test('rejects a canonical identity outside frontmatter', async () => {
 		const { projectDirectory } = await createReferenceWorkspace()
 		await writeFile(
-			join(projectDirectory, 'templates', 'reference', 'core-rules-current.mdx'),
+			join(projectDirectory, 'templates', 'rules-documents', 'core-rules-current.mdx'),
 			'---\ntitle: "{{TITLE}}"\ncreatedAt: "{{CREATED_AT}}"\n---\n{{RULES_DOCUMENT_FRONTMATTER}}\n<RulesDocument />',
 		)
 
@@ -364,7 +364,7 @@ Rule numbers open the corresponding source document in a new tab.
 	])('rejects a version-specific rules page artifact with a $problem', async ({ suffix }) => {
 		const { projectDirectory } = await createReferenceWorkspace()
 		await writeFile(
-			join(projectDirectory, 'templates', 'reference', 'core-rules-current.mdx'),
+			join(projectDirectory, 'templates', 'rules-documents', 'core-rules-current.mdx'),
 			`---\n{{RULES_DOCUMENT_FRONTMATTER}}\n---\n{{TITLE}}|{{CREATED_AT}}\n${suffix}`,
 		)
 
@@ -549,7 +549,7 @@ Rule numbers open the corresponding source document in a new tab.
 
 	test('identifies a missing tracked template as a template-stage failure', async () => {
 		const { projectDirectory } = await createReferenceWorkspace()
-		await rm(join(projectDirectory, 'templates', 'reference', 'index.mdx'))
+		await rm(join(projectDirectory, 'templates', 'rules-documents', 'index.mdx'))
 
 		await expect(
 			prepareReferencePublication({
@@ -563,7 +563,7 @@ Rule numbers open the corresponding source document in a new tab.
 	test('identifies an unresolved placeholder as a render-stage failure', async () => {
 		const { projectDirectory } = await createReferenceWorkspace()
 		await writeFile(
-			join(projectDirectory, 'templates', 'reference', 'group-meta.json.template'),
+			join(projectDirectory, 'templates', 'rules-documents', 'group-meta.json.template'),
 			'{{TITLE}}|{{PAGES}}|{{UNKNOWN}}',
 		)
 

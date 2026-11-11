@@ -597,7 +597,7 @@ export async function prepareReferencePublication({
 
 	let templates: ReferenceTemplates
 	try {
-		templates = await loadReferenceTemplates(join(projectDirectory, 'templates', 'reference'))
+		templates = await loadReferenceTemplates(join(projectDirectory, 'templates', 'rules-documents'))
 	} catch (cause) {
 		throw publicationError('templates', 'Reference publication templates could not be loaded', cause)
 	}
