@@ -5,6 +5,10 @@
 		{
 			"name": "anti-slop",
 			"specifier": "./tools/oxlint/anti-slop/index.ts"
+		},
+		{
+			"name": "anti-slop-effect",
+			"specifier": "./tools/oxlint/anti-slop/effect/index.ts"
 		}
 	],
 	"categories": {
@@ -33,6 +37,11 @@
 		"anti-slop/no-widen-then-assert": "error",
 		"anti-slop/require-readable-spacing": "off",
 		"anti-slop/require-safety-comment-for-type-assertion": "error",
+		"anti-slop-effect/no-manual-effect-error-tag": "error",
+		"anti-slop-effect/no-manual-tag-comparison": "error",
+		"anti-slop-effect/no-manual-tagged-construction": "error",
+		"anti-slop-effect/no-service-constructor-imports": "error",
+		"anti-slop-effect/prefer-effect-match": "error",
 		"ban-ts-comment": "off",
 		"max-lines": "off",
 		"max-lines-per-function": "off",
@@ -84,6 +93,7 @@
 		".roo/**",
 		".scratch/**",
 		".windsurf/**",
+		"repos/**",
 		"tools/oxlint/anti-slop/**"
 	]
 }

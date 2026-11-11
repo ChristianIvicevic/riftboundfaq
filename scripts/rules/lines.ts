@@ -1,16 +1,17 @@
-import { z } from 'zod'
+import { Option, Schema } from 'effect'
 
 const BASELINE_TOLERANCE = 1
 const TOP_EDGE_TOLERANCE = 1
 
-const pdfTextItem = z.object({
-	str: z.string(),
-	transform: z.array(z.number()).min(6),
-	width: z.number(),
-	height: z.number(),
+const pdfTextItem = Schema.Struct({
+	str: Schema.mutableKey(Schema.String),
+	transform: Schema.mutableKey(Schema.mutable(Schema.Array(Schema.Finite).check(Schema.isMinLength(6)))),
+	width: Schema.mutableKey(Schema.Finite),
+	height: Schema.mutableKey(Schema.Finite),
 })
+const decodePdfTextItem = Schema.decodeUnknownOption(pdfTextItem)
 
-export type PdfTextItem = z.infer<typeof pdfTextItem>
+export type PdfTextItem = typeof pdfTextItem.Type
 
 export type PhysicalLine = {
 	page: number
@@ -84,8 +85,8 @@ export function reconstructText(items: readonly PdfTextItem[]) {
 export function reconstructPhysicalLines(items: readonly unknown[], pageNumber: number): PhysicalLine[] {
 	const textItems = items
 		.flatMap((item) => {
-			const result = pdfTextItem.safeParse(item)
-			return result.success ? [result.data] : []
+			const result = decodePdfTextItem(item)
+			return Option.isSome(result) ? [result.value] : []
 		})
 		.filter((item) => item.str.length > 0)
 		.toSorted(

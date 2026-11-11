@@ -1,5 +1,6 @@
-import type { PdfTextItem } from '../core-rules/lines'
-import { reconstructPhysicalLines, reconstructText } from '../core-rules/lines'
+import { Data, Result } from 'effect'
+import type { PdfTextItem } from '../lines'
+import { reconstructPhysicalLines, reconstructText } from '../lines'
 import type { DrawingBounds, DrawingInspection, DrawingStroke } from './drawings'
 
 const LABEL_CELL_LEFT_MAXIMUM = 50
@@ -72,22 +73,36 @@ export type TournamentRulesForensicRow = {
 
 type ParsedLabel = Pick<TournamentRulesForensicRow, 'id' | 'label' | 'diagnostics'>
 type RowClassification = Pick<TournamentRulesForensicRow, 'kind' | 'fontSize'>
+export type TournamentRulesSourceRowsAccumulator = Readonly<{
+	rows: readonly TournamentRulesForensicRow[]
+	previousPage: number | null
+}>
 
 type TournamentRulesSourceRowReconstructionErrorCode = 'invalid-page-number' | 'noncontiguous-page-order'
 
-class TournamentRulesSourceRowReconstructionError extends Error {
-	constructor(
-		readonly code: TournamentRulesSourceRowReconstructionErrorCode,
-		readonly page: number,
-		readonly previousPage: number | null,
-	) {
-		super(
+export class TournamentRulesSourceRowReconstructionError extends Data.TaggedError(
+	'TournamentRulesSourceRowReconstructionError',
+)<{
+	readonly code: TournamentRulesSourceRowReconstructionErrorCode
+	readonly page: number
+	readonly previousPage: number | null
+	readonly message: string
+}> {}
+
+function reconstructionError(
+	code: TournamentRulesSourceRowReconstructionErrorCode,
+	page: number,
+	previousPage: number | null,
+) {
+	return new TournamentRulesSourceRowReconstructionError({
+		code,
+		page,
+		previousPage,
+		message:
 			code === 'invalid-page-number'
 				? `Tournament Rules source page must be a positive integer: ${page}`
 				: `Tournament Rules source pages must be contiguous: received ${page} after ${previousPage}`,
-		)
-		this.name = 'TournamentRulesSourceRowReconstructionError'
-	}
+	})
 }
 
 function round(value: number): number {
@@ -328,23 +343,27 @@ function pageRows(pageNumber: number, items: readonly PdfTextItem[], drawings: D
 	return rows
 }
 
-function joinCrossPageRows(rows: TournamentRulesForensicRow[]): TournamentRulesForensicRow[] {
+function joinCrossPageRows(rows: readonly TournamentRulesForensicRow[]): TournamentRulesForensicRow[] {
 	const joined: TournamentRulesForensicRow[] = []
 	for (const row of rows) {
 		const previous = joined.at(-1)
 		const isFirstPageRow = row.pagePosition === 1
 		const previousIsLastPageRow = previous && previous.pagePosition === previous.pageRowCount
 		if (!row.rawLabel && isFirstPageRow && previousIsLastPageRow && row.page === previous.page + 1) {
-			previous.text = `${previous.text} ${row.text}`.replaceAll(/\s+/gu, ' ').trim()
-			previous.source.endPage = row.page
-			previous.continuation = true
-			previous.geometry.continuationRows ??= []
-			previous.geometry.continuationRows.push(row.geometry)
+			joined[joined.length - 1] = {
+				...previous,
+				text: `${previous.text} ${row.text}`.replaceAll(/\s+/gu, ' ').trim(),
+				source: { ...previous.source, endPage: row.page },
+				continuation: true,
+				geometry: {
+					...previous.geometry,
+					continuationRows: [...(previous.geometry.continuationRows ?? []), row.geometry],
+				},
+			}
 			continue
 		}
-		joined.push(row)
+		joined.push({ ...row, sequence: joined.length + 1 })
 	}
-	joined.forEach((row, index) => (row.sequence = index + 1))
 	return joined
 }
 
@@ -383,30 +402,27 @@ function sourceEntry(row: TournamentRulesForensicRow): TournamentRulesSourceEntr
 	}
 }
 
-export async function reconstructTournamentRulesSourceRows(
-	pages: AsyncIterable<TournamentRulesSourcePage>,
-): Promise<
-	Readonly<{
-		sourceEntries: readonly TournamentRulesSourceEntry[]
-		forensicRows: readonly TournamentRulesForensicRow[]
-	}>
-> {
-	const rows: TournamentRulesForensicRow[] = []
-	let previousPage: number | null = null
-	for await (const page of pages) {
-		if (!Number.isInteger(page.page) || page.page <= 0) {
-			throw new TournamentRulesSourceRowReconstructionError('invalid-page-number', page.page, previousPage)
-		}
-		if (page.page !== (previousPage ?? 0) + 1) {
-			throw new TournamentRulesSourceRowReconstructionError(
-				'noncontiguous-page-order',
-				page.page,
-				previousPage,
-			)
-		}
-		rows.push(...pageRows(page.page, page.items, page.drawings))
-		previousPage = page.page
+export function createTournamentRulesSourceRowsAccumulator(): TournamentRulesSourceRowsAccumulator {
+	return { rows: [], previousPage: null }
+}
+
+export function appendTournamentRulesSourcePage(
+	state: TournamentRulesSourceRowsAccumulator,
+	page: TournamentRulesSourcePage,
+): Result.Result<TournamentRulesSourceRowsAccumulator, TournamentRulesSourceRowReconstructionError> {
+	if (!Number.isInteger(page.page) || page.page <= 0) {
+		return Result.fail(reconstructionError('invalid-page-number', page.page, state.previousPage))
 	}
-	const forensicRows = joinCrossPageRows(rows)
+	if (page.page !== (state.previousPage ?? 0) + 1) {
+		return Result.fail(reconstructionError('noncontiguous-page-order', page.page, state.previousPage))
+	}
+	return Result.succeed({
+		rows: [...state.rows, ...pageRows(page.page, page.items, page.drawings)],
+		previousPage: page.page,
+	})
+}
+
+export function finishTournamentRulesSourceRows(state: TournamentRulesSourceRowsAccumulator) {
+	const forensicRows = joinCrossPageRows(state.rows)
 	return { sourceEntries: forensicRows.map((row) => sourceEntry(row)), forensicRows }
 }

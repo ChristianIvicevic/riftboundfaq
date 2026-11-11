@@ -1,3 +1,5 @@
+import { Data, Result } from 'effect'
+
 const ISO_DATE = /^(\d{4})-(\d{2})-(\d{2})$/u
 const SLASH_DATE = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/u
 const NAMED_DATE = /^([A-Za-z]+) (\d{1,2}), (\d{4})$/u
@@ -16,8 +18,22 @@ const MONTH_NUMBERS = new Map([
 	['December', 12],
 ])
 
-export function normalizeRulesDate(value: string, label = 'Last Updated'): string {
-	if (!value.trim()) throw new Error(`${label} is missing`)
+export class RulesDateError extends Data.TaggedError('RulesDateError')<{
+	readonly value: string
+	readonly label: string
+	readonly reason: 'missing' | 'unrecognized' | 'invalid'
+	readonly message: string
+}> {}
+
+export function normalizeRulesDate(
+	value: string,
+	label = 'Last Updated',
+): Result.Result<string, RulesDateError> {
+	if (!value.trim()) {
+		return Result.fail(
+			new RulesDateError({ value, label, reason: 'missing', message: `${label} is missing` }),
+		)
+	}
 	const input = value.trim()
 	const isoMatch = ISO_DATE.exec(input)
 	const slashMatch = SLASH_DATE.exec(input)
@@ -30,7 +46,16 @@ export function normalizeRulesDate(value: string, label = 'Last Updated'): strin
 			: namedMatch && namedMonth
 				? { year: Number(namedMatch[3]), month: namedMonth, day: Number(namedMatch[2]) }
 				: undefined
-	if (!parts) throw new Error(`${label} ${JSON.stringify(value)} is not a recognized date`)
+	if (!parts) {
+		return Result.fail(
+			new RulesDateError({
+				value,
+				label,
+				reason: 'unrecognized',
+				message: `${label} ${JSON.stringify(value)} is not a recognized date`,
+			}),
+		)
+	}
 
 	const date = new Date(Date.UTC(parts.year, parts.month - 1, parts.day))
 	if (
@@ -38,7 +63,14 @@ export function normalizeRulesDate(value: string, label = 'Last Updated'): strin
 		date.getUTCMonth() !== parts.month - 1 ||
 		date.getUTCDate() !== parts.day
 	) {
-		throw new Error(`${label} ${JSON.stringify(value)} is not a valid date`)
+		return Result.fail(
+			new RulesDateError({
+				value,
+				label,
+				reason: 'invalid',
+				message: `${label} ${JSON.stringify(value)} is not a valid date`,
+			}),
+		)
 	}
-	return date.toISOString().slice(0, 10)
+	return Result.succeed(date.toISOString().slice(0, 10))
 }

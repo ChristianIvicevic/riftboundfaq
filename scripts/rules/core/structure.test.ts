@@ -1,3 +1,4 @@
+import { Match } from 'effect'
 import { describe, expect, test } from 'vitest'
 import type { RuleBlock } from './blocks'
 import { structureRuleBlocks } from './structure'
@@ -27,7 +28,11 @@ function block({
 		x: 20,
 		y: 700 - sequence * 40,
 		bodyX: 80,
-		fontSize: heading === 'primary' ? 20 : heading === 'secondary' ? 12 : 8,
+		fontSize: Match.value(heading).pipe(
+			Match.when('primary', () => 20),
+			Match.when('secondary', () => 12),
+			Match.orElse(() => 8),
+		),
 		heading,
 		headingStyleMismatch,
 		physicalLineCount: 1,

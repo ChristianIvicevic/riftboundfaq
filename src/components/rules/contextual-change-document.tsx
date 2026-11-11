@@ -1,4 +1,5 @@
 import { cva, type VariantProps } from 'class-variance-authority'
+import { Function, Match } from 'effect'
 import type { ReactNode } from 'react'
 import { Del, Ins } from '@/components/diff-marks'
 import { RulesChangeBadge } from '@/components/rules/change-badge'
@@ -31,6 +32,12 @@ const nodeStatusVariants = cva('flex flex-wrap items-center gap-2', {
 		},
 	},
 })
+
+const semanticChangeForStatus = Match.type<ContextualChangeStatus | undefined>().pipe(
+	Match.when('new', () => 'added' as const),
+	Match.when('deleted', () => 'removed' as const),
+	Match.orElse(Function.constUndefined),
+)
 
 function LinkedText({ segment }: { segment: ContextualChangeText }) {
 	const content = segment.href ? (
@@ -74,7 +81,7 @@ function ContentBlock({
 	block: ContextualChangeBlock
 	nodeStatus?: ContextualChangeStatus
 }) {
-	const semanticChange = nodeStatus === 'new' ? 'added' : nodeStatus === 'deleted' ? 'removed' : undefined
+	const semanticChange = semanticChangeForStatus(nodeStatus)
 	const content = (
 		<RulesContentBlock kind={block.kind}>
 			<TextSequence text={block.text} />
@@ -170,11 +177,7 @@ function HeadingNode({ node }: { node: ContextualChangeNode }) {
 							node.status === 'deleted' && 'text-fd-muted-foreground',
 						)}
 					>
-						<SemanticChange
-							change={node.status === 'new' ? 'added' : node.status === 'deleted' ? 'removed' : undefined}
-						>
-							{title}
-						</SemanticChange>
+						<SemanticChange change={semanticChangeForStatus(node.status)}>{title}</SemanticChange>
 					</span>
 				</span>
 				<NodeStatus status={node.status} placement="mobile" />

@@ -49,11 +49,51 @@ describe('reconstructPhysicalLines', () => {
 		const lines = reconstructPhysicalLines(
 			[
 				{ str: 'missing geometry' },
+				{ str: 'short transform', transform: [10, 0, 0, 10, 20], width: 20, height: 10 },
+				{
+					str: 'typed transform',
+					transform: new Float32Array([10, 0, 0, 10, 20, 100]),
+					width: 20,
+					height: 10,
+				},
+				{ str: 'non-finite transform', transform: [10, 0, 0, 10, 20, Infinity], width: 20, height: 10 },
+				{ str: 'non-finite trailing value', transform: [10, 0, 0, 10, 20, 100, NaN], width: 20, height: 10 },
+				{ str: 'non-finite width', transform: [10, 0, 0, 10, 20, 100], width: Infinity, height: 10 },
+				{ str: 'non-finite height', transform: [10, 0, 0, 10, 20, 100], width: 20, height: -Infinity },
+				{ type: 'marked-content', id: 'page1_p2' },
 				{ str: 'valid', transform: [10, 0, 0, 10, 20, 100], width: 20, height: 10 },
 			],
 			3,
 		)
 
 		expect(lines).toMatchObject([{ page: 3, line: 1, text: 'valid' }])
+	})
+
+	test('preserves accepted transform values and strips unsupported text-item fields', () => {
+		const lines = reconstructPhysicalLines(
+			[
+				{
+					str: 'valid',
+					transform: [10, 0, 0, 10, 20, 100, 7],
+					width: 20,
+					height: 10,
+					fontName: 'g_d0_f1',
+					hasEOL: false,
+				},
+			],
+			4,
+		)
+
+		expect(lines[0]?.items).toStrictEqual([
+			{ str: 'valid', transform: [10, 0, 0, 10, 20, 100, 7], width: 20, height: 10 },
+		])
+	})
+
+	test('accepts text-item fields inherited through the prototype', () => {
+		const inheritedTextItem = Object.create(textItem('inherited', 20, 100))
+
+		expect(reconstructPhysicalLines([inheritedTextItem], 5)).toMatchObject([
+			{ page: 5, line: 1, text: 'inherited' },
+		])
 	})
 })
