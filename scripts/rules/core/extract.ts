@@ -297,7 +297,11 @@ function validateReport(
 		const structuralErrors = report.structured.diagnostics.filter(({ severity }) => severity === 'error')
 		if (structuralErrors.length > 0) {
 			return yield* Result.fail(
-				validationError(source, `${report.file}: ${structuralErrors.length} structural errors`),
+				validationError(
+					source,
+					`${report.file}: ${structuralErrors.length} structural errors`,
+					structuralErrors,
+				),
 			)
 		}
 		return lastUpdated
@@ -351,6 +355,6 @@ export const extractCoreRulesVersion = Effect.fn('extractCoreRulesVersion')(func
 		transcript: serializeCoreRulesTranscript({ ...report, lastUpdated }),
 		diagnostics: report.structured.diagnostics
 			.filter(({ severity }) => severity === 'warning')
-			.map(({ message }) => ({ severity: 'warning', message })),
+			.map(({ message }) => ({ severity: 'warning', message: `${report.file}: ${message}` })),
 	} satisfies ExtractedCoreRulesVersion
 })

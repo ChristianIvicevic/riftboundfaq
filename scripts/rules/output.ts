@@ -41,14 +41,8 @@ type DesiredOutputFile = Readonly<{
 	contents: string
 }>
 
-type ExtractedRulesDiagnostic = Readonly<{
-	severity: 'warning'
-	message: string
-}>
-
 type DesiredRulesOutput = Readonly<{
 	files: readonly DesiredOutputFile[]
-	diagnostics: readonly ExtractedRulesDiagnostic[]
 	summary: RulesGenerationSummary
 }>
 
@@ -781,12 +775,8 @@ function buildDesiredRulesOutput(
 	appendTournamentRulesFiles(files, tournamentRules)
 	appendRulesDocumentFiles(files, coreRules, tournamentRules, templates)
 	validateOutputCompleteness(files, expectedOutputPaths(coreRules, tournamentRules))
-	const diagnostics = tournamentRules.versions.flatMap(
-		({ diagnostics: versionDiagnostics }) => versionDiagnostics,
-	)
 	return {
 		files,
-		diagnostics,
 		summary: {
 			coreRules: {
 				current: coreRules.currentVersion.registeredVersion.version,
@@ -831,20 +821,27 @@ const RULES_DOCUMENT_PREPARATION_OPERATIONS = {
 } as const
 const RULES_DOCUMENT_PREPARATION_ERROR_TAG = 'RulesDocumentPreparationError'
 
+const RulesDocumentPreparationError = Data.TaggedError(RULES_DOCUMENT_PREPARATION_ERROR_TAG)<{
+	readonly phase: keyof typeof RULES_DOCUMENT_PREPARATION_OPERATIONS
+	readonly message: string
+	readonly cause: unknown
+}>
+
 function rulesDocumentPreparationError(
 	phase: keyof typeof RULES_DOCUMENT_PREPARATION_OPERATIONS,
 	cause: unknown,
 ) {
-	const error = new Error(`${RULES_DOCUMENT_PREPARATION_OPERATIONS[phase]}: ${causeMessage(cause)}`, {
+	return new RulesDocumentPreparationError({
+		phase,
+		message: `${RULES_DOCUMENT_PREPARATION_OPERATIONS[phase]}: ${causeMessage(cause)}`,
 		cause,
 	})
-	return Object.assign(error, { kind: RULES_DOCUMENT_PREPARATION_ERROR_TAG, phase })
 }
 
-type RulesDocumentPreparationError = ReturnType<typeof rulesDocumentPreparationError>
-
-function isRulesDocumentPreparationError(cause: unknown): cause is RulesDocumentPreparationError {
-	return cause instanceof Error && 'kind' in cause && cause.kind === RULES_DOCUMENT_PREPARATION_ERROR_TAG
+function isRulesDocumentPreparationError(
+	cause: unknown,
+): cause is InstanceType<typeof RulesDocumentPreparationError> {
+	return cause instanceof RulesDocumentPreparationError
 }
 
 function causedOutputError(

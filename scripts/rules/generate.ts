@@ -141,7 +141,11 @@ export const generateRules = Effect.fn('generateRules')(function* (options: Rule
 
 	// Families and their large PDFs stay sequential to cap memory usage and stop at the first failure.
 	const coreVersions = yield* Effect.forEach(manifest.coreRules.registeredVersions, (registeredVersion) =>
-		extractCoreRulesVersion(registeredVersion, sourcesDirectory),
+		Effect.gen(function* () {
+			const extracted = yield* extractCoreRulesVersion(registeredVersion, sourcesDirectory)
+			for (const { message } of extracted.diagnostics) yield* Console.warn(message)
+			return extracted
+		}),
 	).pipe(
 		Effect.mapError((cause) =>
 			causedGenerationError('core-rules', 'Core Rules generation failed', cause, extractionContext(cause)),

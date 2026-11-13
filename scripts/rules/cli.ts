@@ -1,29 +1,30 @@
 import { Cause, Data, Result, Runtime } from 'effect'
 import * as PlatformError from 'effect/PlatformError'
 
-export const alreadyReportedRulesCliFailure = { [Runtime.errorReported]: false } as const
+const AlreadyReportedRulesCliError = Data.TaggedError('AlreadyReportedRulesCliError')<{
+	readonly [Runtime.errorReported]: false
+}>
 
-export type RulesCliFailure = Error | typeof alreadyReportedRulesCliFailure
+export const alreadyReportedRulesCliFailure = new AlreadyReportedRulesCliError({
+	[Runtime.errorReported]: false,
+})
+
+export type RulesCliFailure = Error
 
 export type RulesInspectionTarget = Readonly<{
 	type: 'core' | 'tournament'
 	path: string
 }>
 
-type RulesInspectionTargetFailure = Data.TaggedEnum<{
-	RulesInspectionTargetError: {
-		readonly operation: 'classify-source'
-		readonly source: Readonly<{
-			family: 'core-rules' | 'tournament-rules' | null
-			version: string | null
-			path: string
-		}>
-	}
-}>
-
-const makeInspectionTargetFailure = Data.taggedEnum<RulesInspectionTargetFailure>()
-
-export type RulesInspectionTargetError = Error & RulesInspectionTargetFailure
+export class RulesInspectionTargetError extends Data.TaggedError('RulesInspectionTargetError')<{
+	readonly operation: 'classify-source'
+	readonly source: Readonly<{
+		family: 'core-rules' | 'tournament-rules' | null
+		version: string | null
+		path: string
+	}>
+	readonly message: string
+}> {}
 
 export function classifyRulesInspectionTarget({
 	filename,
@@ -37,13 +38,11 @@ export function classifyRulesInspectionTarget({
 		return Result.succeed({ type: 'tournament', path })
 	}
 	return Result.fail(
-		Object.assign(
-			new Error(`Unsupported rules PDF filename: ${filename}`),
-			makeInspectionTargetFailure.RulesInspectionTargetError({
-				operation: 'classify-source',
-				source: { family: null, version: null, path },
-			}),
-		),
+		new RulesInspectionTargetError({
+			operation: 'classify-source',
+			source: { family: null, version: null, path },
+			message: `Unsupported rules PDF filename: ${filename}`,
+		}),
 	)
 }
 

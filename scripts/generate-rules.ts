@@ -1,6 +1,6 @@
 import * as NodeRuntime from '@effect/platform-node/NodeRuntime'
 import * as NodeServices from '@effect/platform-node/NodeServices'
-import { Cause, Console, Effect, Logger } from 'effect'
+import { Cause, Console, Effect, Logger, Runtime } from 'effect'
 import { squashRulesCliCause } from './rules/cli'
 import { generateRules } from './rules/generate'
 import { LIVE_LAYER as RULES_PDF_LIVE_LAYER } from './rules/pdf'
@@ -12,9 +12,11 @@ const program = Effect.gen(function* () {
 		`Generated ${coreRules.versions} Core Rules versions, ${tournamentRules.versions} Tournament Rules versions, ${coreRules.transcripts + tournamentRules.transcripts} text transcripts, and ${reference.pages} reference pages.`,
 	)
 }).pipe(
-	Effect.tapCause((cause) =>
-		Cause.hasInterruptsOnly(cause) ? Effect.void : Console.error(squashRulesCliCause(cause)),
-	),
+	Effect.tapCause((cause) => {
+		if (Cause.hasInterruptsOnly(cause)) return Effect.void
+		const error = squashRulesCliCause(cause)
+		return Runtime.getErrorReported(error) ? Console.error(error) : Effect.void
+	}),
 	Effect.provide(NodeServices.layer),
 	Effect.provide(RULES_PDF_LIVE_LAYER),
 	Effect.provide(Logger.layer([])),

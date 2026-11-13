@@ -1,6 +1,6 @@
 import * as NodeServices from '@effect/platform-node/NodeServices'
 import { expect, expectTypeOf, layer } from '@effect/vitest'
-import { Cause, Console, Effect, Exit, Option } from 'effect'
+import { Console, Effect, Option } from 'effect'
 import * as FileSystem from 'effect/FileSystem'
 import * as Path from 'effect/Path'
 import { OPS } from 'pdfjs-dist/legacy/build/pdf.mjs'
@@ -650,6 +650,8 @@ Rule numbers open the corresponding source document in a new tab.
 				'destroy:4',
 			])
 			expect(warnings).toStrictEqual([
+				'CR-v1.0.pdf: Rule 100 has a 20pt label and 40pt body text; classifying it as a primary heading from its body text.',
+				'CR-v1.1.pdf: Rule 100 has a 20pt label and 40pt body text; classifying it as a primary heading from its body text.',
 				'Tournament-Rules-2026-01-01.pdf: preserved structural anomalies (unnumbered-rule: 1)',
 				'Tournament-Rules-2026-02-01.pdf: preserved structural anomalies (unnumbered-rule: 1)',
 			])
@@ -923,7 +925,7 @@ Rule numbers open the corresponding source document in a new tab.
 		}),
 	)
 
-	it.effect('leaves prior output unchanged when structuring defects', () =>
+	it.effect('leaves prior output unchanged when Tournament source validation fails', () =>
 		Effect.gen(function* () {
 			const fileSystem = yield* FileSystem.FileSystem
 			const pathService = yield* Path.Path
@@ -942,14 +944,22 @@ Rule numbers open the corresponding source document in a new tab.
 					}),
 			}
 
-			const exit = yield* Effect.exit(
+			const error = yield* Effect.flip(
 				generateRules({ projectDirectory }).pipe(
 					Effect.provide(rulesPdfLayer({ tournament: unstructuredTournamentPage })),
 				),
 			)
 
-			if (Exit.isSuccess(exit)) throw new Error('Expected Tournament Rules structuring to fail')
-			expect(Cause.hasDies(exit.cause)).toBe(true)
+			expect(error).toBeInstanceOf(RulesGenerationError)
+			expect(error).toMatchObject({
+				stage: 'tournament-rules',
+				context: {
+					family: 'tournament-rules',
+					version: '2026-01-01',
+					page: 1,
+				},
+			})
+			expect(error.message).toContain('active rule before the first primary heading')
 			expect(
 				yield* fileSystem.readFileString(
 					pathService.join(projectDirectory, 'content/rules-documents/prior.mdx'),

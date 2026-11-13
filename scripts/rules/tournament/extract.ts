@@ -286,16 +286,41 @@ function validateSource(
 				validationError(context, `${source.file}: no Tournament Rules source entries found`),
 			)
 		}
-		if (source.entries.some(({ kind, label }) => kind !== 'rule' && !label?.id)) {
-			return yield* Result.fail(validationError(context, `${source.file}: heading without an ID`))
+		const headingWithoutId = source.entries.find(({ kind, label }) => kind !== 'rule' && !label?.id)
+		if (headingWithoutId) {
+			return yield* Result.fail(
+				validationError(
+					context,
+					`${source.file}: heading without an ID`,
+					undefined,
+					headingWithoutId.sourcePages.start,
+				),
+			)
 		}
 
+		let foundPrimaryHeading = false
 		for (const entry of source.entries) {
 			if (entry.activity.status === 'removed' && entry.activity.removalEvidence.coverage === 'partial') {
 				return yield* Result.fail(
 					validationError(
 						context,
 						`${source.file}: partial strikeout on page ${entry.sourcePages.start} requires manual review`,
+						undefined,
+						entry.sourcePages.start,
+					),
+				)
+			}
+			if (entry.activity.status === 'removed') continue
+			if (entry.kind === 'primary-heading') {
+				foundPrimaryHeading = true
+				continue
+			}
+			if (!foundPrimaryHeading) {
+				const entryKind = entry.kind === 'secondary-heading' ? 'secondary heading' : 'rule'
+				return yield* Result.fail(
+					validationError(
+						context,
+						`${source.file}: active ${entryKind} before the first primary heading`,
 						undefined,
 						entry.sourcePages.start,
 					),
