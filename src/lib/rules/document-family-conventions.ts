@@ -19,7 +19,9 @@ type RulesDocumentVersionConventions<Family extends RulesDocumentFamilyId> = Rea
 	version: RulesVersion<Family>
 	source: Readonly<{
 		pdfFilename: string
-		transcriptFilename: string
+	}>
+	transcript: Readonly<{
+		filename: string
 	}>
 	generated: Readonly<{
 		filename: string
@@ -54,17 +56,9 @@ type AnyRulesDocumentFamilyConventions =
 	| RulesDocumentFamilyConventions<'core-rules'>
 	| RulesDocumentFamilyConventions<'tournament-rules'>
 
-export type RecognizedRulesSource =
-	| Readonly<{
-			kind: 'pdf' | 'transcript'
-			family: 'core-rules'
-			version: RulesVersion<'core-rules'>
-	  }>
-	| Readonly<{
-			kind: 'pdf' | 'transcript'
-			family: 'tournament-rules'
-			version: RulesVersion<'tournament-rules'>
-	  }>
+export type RecognizedRulesPdf =
+	| Readonly<{ family: 'core-rules'; version: RulesVersion<'core-rules'> }>
+	| Readonly<{ family: 'tournament-rules'; version: RulesVersion<'tournament-rules'> }>
 
 const CORE_RULES_VERSION = /^1\.(0|[1-9]\d*)$/u
 const TOURNAMENT_RULES_VERSION = /^\d{4}-\d{2}-\d{2}$/u
@@ -81,8 +75,8 @@ function coreRulesVersion(input: string): RulesDocumentVersionConventions<'core-
 		version: input,
 		source: Object.freeze({
 			pdfFilename: `CR-v${input}.pdf`,
-			transcriptFilename: `CR-v${input}.txt`,
 		}),
+		transcript: Object.freeze({ filename: `CR-v${input}.txt` }),
 		generated: Object.freeze({
 			filename: `v${input.replace('.', '-')}.ts`,
 			moduleSpecifier: `@/generated/core-rules/v${input.replace('.', '-')}`,
@@ -135,8 +129,8 @@ function tournamentRulesVersion(input: string): RulesDocumentVersionConventions<
 		version: input,
 		source: Object.freeze({
 			pdfFilename: `Tournament-Rules-${input}.pdf`,
-			transcriptFilename: `Tournament-Rules-${input}.txt`,
 		}),
+		transcript: Object.freeze({ filename: `Tournament-Rules-${input}.txt` }),
 		generated: Object.freeze({
 			filename: `v${input}.ts`,
 			moduleSpecifier: `@/generated/tournament-rules/v${input}`,
@@ -182,24 +176,20 @@ export function rulesDocumentFamily(id: string): AnyRulesDocumentFamilyConventio
 	throw new UnknownRulesDocumentFamilyError(id)
 }
 
-export function recognizeRulesSourceFilename(filename: string): RecognizedRulesSource | undefined {
-	const coreMatch = filename.match(/^CR-v(.+)\.(pdf|txt)$/u)
+export function recognizeRulesPdfFilename(filename: string): RecognizedRulesPdf | undefined {
+	const coreMatch = filename.match(/^CR-v(.+)\.pdf$/u)
 	if (coreMatch && coreRulesConventions.isVersion(coreMatch[1])) {
 		const version = coreRulesConventions.version(coreMatch[1])
-		const kind = coreMatch[2] === 'pdf' ? 'pdf' : 'transcript'
-		const expected = kind === 'pdf' ? version.source.pdfFilename : version.source.transcriptFilename
-		if (filename === expected) {
-			return Object.freeze({ kind, family: 'core-rules', version: version.version })
+		if (filename === version.source.pdfFilename) {
+			return Object.freeze({ family: 'core-rules', version: version.version })
 		}
 	}
 
-	const tournamentMatch = filename.match(/^Tournament-Rules-(.+)\.(pdf|txt)$/u)
+	const tournamentMatch = filename.match(/^Tournament-Rules-(.+)\.pdf$/u)
 	if (tournamentMatch && tournamentRulesConventions.isVersion(tournamentMatch[1])) {
 		const version = tournamentRulesConventions.version(tournamentMatch[1])
-		const kind = tournamentMatch[2] === 'pdf' ? 'pdf' : 'transcript'
-		const expected = kind === 'pdf' ? version.source.pdfFilename : version.source.transcriptFilename
-		if (filename === expected) {
-			return Object.freeze({ kind, family: 'tournament-rules', version: version.version })
+		if (filename === version.source.pdfFilename) {
+			return Object.freeze({ family: 'tournament-rules', version: version.version })
 		}
 	}
 }

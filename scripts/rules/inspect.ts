@@ -3,7 +3,7 @@ import * as FileSystem from 'effect/FileSystem'
 import * as Path from 'effect/Path'
 import {
 	coreRulesConventions,
-	recognizeRulesSourceFilename,
+	recognizeRulesPdfFilename,
 	tournamentRulesConventions,
 } from '@/lib/rules/document-family-conventions'
 import {
@@ -25,10 +25,8 @@ export const defaultCoreRulesPdfPaths = Effect.fnUntraced(function* () {
 	const entries = yield* fileSystem.readDirectory(sourcesDirectory)
 	return entries
 		.flatMap((filename) => {
-			const source = recognizeRulesSourceFilename(filename)
-			return source?.kind === 'pdf' && source.family === 'core-rules'
-				? [{ filename, version: source.version }]
-				: []
+			const source = recognizeRulesPdfFilename(filename)
+			return source?.family === 'core-rules' ? [{ filename, version: source.version }] : []
 		})
 		.toSorted((left, right) => coreRulesConventions.compareVersions(left.version, right.version))
 		.map(({ filename }) => pathService.join(sourcesDirectory, filename))
@@ -41,10 +39,8 @@ export const defaultTournamentRulesPdfPaths = Effect.fnUntraced(function* () {
 	const entries = yield* fileSystem.readDirectory(sourcesDirectory)
 	return entries
 		.flatMap((filename) => {
-			const source = recognizeRulesSourceFilename(filename)
-			return source?.kind === 'pdf' && source.family === 'tournament-rules'
-				? [{ filename, version: source.version }]
-				: []
+			const source = recognizeRulesPdfFilename(filename)
+			return source?.family === 'tournament-rules' ? [{ filename, version: source.version }] : []
 		})
 		.toSorted((left, right) => tournamentRulesConventions.compareVersions(left.version, right.version))
 		.map(({ filename }) => pathService.join(sourcesDirectory, filename))

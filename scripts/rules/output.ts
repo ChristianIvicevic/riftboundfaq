@@ -3,11 +3,7 @@ import * as FileSystem from 'effect/FileSystem'
 import * as Path from 'effect/Path'
 import * as PlatformError from 'effect/PlatformError'
 import type { CoreRulesDocument } from '@/lib/rules/core-rules-document'
-import {
-	coreRulesConventions,
-	recognizeRulesSourceFilename,
-	tournamentRulesConventions,
-} from '@/lib/rules/document-family-conventions'
+import { coreRulesConventions, tournamentRulesConventions } from '@/lib/rules/document-family-conventions'
 import type { RulesDocumentFamilyId } from '@/lib/rules/document-family-identity'
 import type { TournamentRulesDocument } from '@/lib/rules/tournament-rules-document'
 import type { ExtractedCoreRulesFamily } from './core/extract'
@@ -30,15 +26,14 @@ export class RulesOutputError extends Data.TaggedError('RulesOutputError')<{
 	readonly cause: unknown
 }> {}
 
-const OUTPUT_OWNERS = {
-	'core-rules': { kind: 'directory', root: 'src/generated/core-rules' },
-	'tournament-rules': { kind: 'directory', root: 'src/generated/tournament-rules' },
-	'rules-documents': { kind: 'directory', root: 'content/rules-documents' },
-	'core-transcript': { kind: 'transcript', root: 'sources', family: 'core-rules' },
-	'tournament-transcript': { kind: 'transcript', root: 'sources', family: 'tournament-rules' },
+const OUTPUT_ROOTS = {
+	'core-rules': 'src/generated/core-rules',
+	'tournament-rules': 'src/generated/tournament-rules',
+	'rules-documents': 'content/rules-documents',
+	'rules-transcripts': 'artifacts/rules/transcripts',
 } as const
 
-type OutputOwner = keyof typeof OUTPUT_OWNERS
+type OutputOwner = keyof typeof OUTPUT_ROOTS
 
 type DesiredOutputFile = Readonly<{
 	owner: OutputOwner
@@ -69,9 +64,7 @@ type ValidatedOutputPlan = Readonly<{
 	removals: readonly ValidatedOutputRemoval[]
 }>
 
-const OWNED_DIRECTORIES = Object.values(OUTPUT_OWNERS).flatMap(({ kind, root }) =>
-	kind === 'directory' ? [root] : [],
-)
+const OWNED_DIRECTORIES = Object.values(OUTPUT_ROOTS)
 // Preserve removal-only ownership of outputs retired by the rules generator.
 const RETIRED_OUTPUTS = [
 	{ path: 'src/generated/rules-metadata.ts', recursive: false },
@@ -174,7 +167,7 @@ const FIXED_RULES_DOCUMENT_PATHS = [
 ] as const
 
 function desiredOutputFile(owner: OutputOwner, path: string, contents: string): DesiredOutputFile {
-	return { owner, path: `${OUTPUT_OWNERS[owner].root}/${path}`, contents }
+	return { owner, path: `${OUTPUT_ROOTS[owner]}/${path}`, contents }
 }
 
 function serializeRulesVersion(
@@ -241,9 +234,7 @@ function appendCoreRulesFiles(files: DesiredOutputFile[], family: ExtractedCoreR
 		if (registeredVersion.name !== undefined) {
 			versionNames.push({ version: registeredVersion.version, name: registeredVersion.name })
 		}
-		if (transcript !== null) {
-			files.push(desiredOutputFile('core-transcript', conventions.source.transcriptFilename, transcript))
-		}
+		files.push(desiredOutputFile('rules-transcripts', conventions.transcript.filename, transcript))
 	}
 	files.push(
 		desiredOutputFile(
@@ -284,7 +275,7 @@ function appendTournamentRulesFiles(
 					'@/lib/rules/tournament-rules-document',
 				),
 			),
-			desiredOutputFile('tournament-transcript', conventions.source.transcriptFilename, transcript),
+			desiredOutputFile('rules-transcripts', conventions.transcript.filename, transcript),
 		)
 	}
 	files.push(
@@ -575,7 +566,7 @@ function validateVersionSpecificRulesPages(
 	for (const artifact of plans.flatMap(({ artifacts }) => artifacts)) {
 		if (artifact.kind !== 'version-specific-rules-page') continue
 		const source = files.find(
-			({ path }) => path === `${OUTPUT_OWNERS['rules-documents'].root}/${artifact.path}`,
+			({ path }) => path === `${OUTPUT_ROOTS['rules-documents']}/${artifact.path}`,
 		)?.contents
 		if (source === undefined) throw new Error(`Missing version-specific rules page artifact ${artifact.path}`)
 		const conventions =
@@ -696,13 +687,11 @@ function expectedOutputPaths(
 	)
 	return [
 		desiredOutputFile('core-rules', 'index.ts', '').path,
-		...coreRules.versions.flatMap(({ registeredVersion, transcript }) => {
+		...coreRules.versions.flatMap(({ registeredVersion }) => {
 			const conventions = coreRulesConventions.version(registeredVersion.version)
 			return [
 				desiredOutputFile('core-rules', conventions.generated.filename, '').path,
-				...(transcript === null
-					? []
-					: [desiredOutputFile('core-transcript', conventions.source.transcriptFilename, '').path]),
+				desiredOutputFile('rules-transcripts', conventions.transcript.filename, '').path,
 			]
 		}),
 		desiredOutputFile('tournament-rules', 'index.ts', '').path,
@@ -710,7 +699,7 @@ function expectedOutputPaths(
 			const conventions = tournamentRulesConventions.version(registeredVersion.version)
 			return [
 				desiredOutputFile('tournament-rules', conventions.generated.filename, '').path,
-				desiredOutputFile('tournament-transcript', conventions.source.transcriptFilename, '').path,
+				desiredOutputFile('rules-transcripts', conventions.transcript.filename, '').path,
 			]
 		}),
 		...FIXED_RULES_DOCUMENT_PATHS.map((path) => desiredOutputFile('rules-documents', path, '').path),
@@ -802,12 +791,12 @@ function buildDesiredRulesOutput(
 			coreRules: {
 				current: coreRules.currentVersion.registeredVersion.version,
 				versions: coreRules.versions.length,
-				transcripts: files.filter(({ owner }) => owner === 'core-transcript').length,
+				transcripts: coreRules.versions.length,
 			},
 			tournamentRules: {
 				current: tournamentRules.currentVersion.registeredVersion.version,
 				versions: tournamentRules.versions.length,
-				transcripts: files.filter(({ owner }) => owner === 'tournament-transcript').length,
+				transcripts: tournamentRules.versions.length,
 			},
 			reference: {
 				pages: files.filter(({ owner, path }) => owner === 'rules-documents' && path.endsWith('.mdx')).length,
@@ -902,12 +891,7 @@ function safeProjectRelativePath(pathService: Path.Path, path: string): boolean 
 }
 
 function fileMatchesOwner(file: DesiredOutputFile): boolean {
-	const owner = OUTPUT_OWNERS[file.owner]
-	if (owner.kind === 'directory') return file.path.startsWith(`${owner.root}/`)
-	const segments = file.path.split('/')
-	if (segments.length !== 2 || segments[0] !== owner.root) return false
-	const source = recognizeRulesSourceFilename(segments[1])
-	return source?.kind === 'transcript' && source.family === owner.family
+	return file.path.startsWith(`${OUTPUT_ROOTS[file.owner]}/`)
 }
 
 function removalIsOwned(removal: OutputRemoval): boolean {
@@ -919,9 +903,7 @@ function removalIsOwned(removal: OutputRemoval): boolean {
 	) {
 		return true
 	}
-	const segments = removal.path.split('/')
-	if (segments.length !== 2 || segments[0] !== 'sources') return false
-	return recognizeRulesSourceFilename(segments[1])?.kind === 'transcript'
+	return false
 }
 
 function outputValidationError(message: string, path?: string): RulesOutputError {
@@ -1023,36 +1005,17 @@ function validateOutputPlan(
 	})
 }
 
-const planOutputReconciliation = Effect.fnUntraced(function* (
+function planOutputReconciliation(
+	pathService: Path.Path,
 	projectDirectory: string,
 	output: DesiredRulesOutput,
-) {
-	const fileSystem = yield* FileSystem.FileSystem
-	const pathService = yield* Path.Path
-	const sourcesDirectory = pathService.join(projectDirectory, 'sources')
-	const sourceEntries = yield* fileSystem
-		.readDirectory(sourcesDirectory)
-		.pipe(
-			Effect.mapError((cause) =>
-				causedOutputError(
-					'output-reconciliation',
-					`Rules transcripts could not be inspected in ${sourcesDirectory}`,
-					cause,
-					{ kind: 'output', path: sourcesDirectory },
-				),
-			),
-		)
-	const transcriptRemovals = sourceEntries
-		.filter((filename) => recognizeRulesSourceFilename(filename)?.kind === 'transcript')
-		.toSorted()
-		.map((filename): OutputRemoval => ({ path: `sources/${filename}`, recursive: true }))
+): Result.Result<ValidatedOutputPlan, RulesOutputError> {
 	const removals: OutputRemoval[] = [
 		...OWNED_DIRECTORIES.map((path) => ({ path, recursive: true })),
 		...RETIRED_OUTPUTS,
-		...transcriptRemovals,
 	]
-	return yield* Effect.fromResult(validateOutputPlan(pathService, projectDirectory, output.files, removals))
-})
+	return validateOutputPlan(pathService, projectDirectory, output.files, removals)
+}
 
 function reconciliationError(operation: string, path: string, cause: unknown): RulesOutputError {
 	return causedOutputError(
@@ -1101,7 +1064,7 @@ export const generateRulesOutput = Effect.fn('generateRulesOutput')(function* (
 				),
 		}),
 	)
-	const plan = yield* planOutputReconciliation(projectDirectory, output)
+	const plan = yield* Effect.fromResult(planOutputReconciliation(pathService, projectDirectory, output))
 	yield* reconcileOutput(plan)
 	return output.summary
 })

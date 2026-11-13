@@ -202,7 +202,7 @@ export type ExtractedCoreRulesVersion = Readonly<{
 	registeredVersion: RegisteredCoreRulesVersion
 	lastUpdated: string
 	document: CoreRulesDocument
-	transcript: string | null
+	transcript: string
 	diagnostics: readonly Readonly<{ severity: 'warning'; message: string }>[]
 }>
 
@@ -348,7 +348,7 @@ export const extractCoreRulesVersion = Effect.fn('extractCoreRulesVersion')(func
 		registeredVersion,
 		lastUpdated,
 		document,
-		transcript: registeredVersion.name ? serializeCoreRulesTranscript({ ...report, lastUpdated }) : null,
+		transcript: serializeCoreRulesTranscript({ ...report, lastUpdated }),
 		diagnostics: report.structured.diagnostics
 			.filter(({ severity }) => severity === 'warning')
 			.map(({ message }) => ({ severity: 'warning', message })),

@@ -1,10 +1,9 @@
 .local
 .source
+/artifacts/rules/transcripts/
 content/reference/
 content/rules-documents/
 src/generated/
-sources/CR-v*.txt
-sources/Tournament-Rules-*.txt
 next-env.d.ts
 
 ### Intellij+all ###

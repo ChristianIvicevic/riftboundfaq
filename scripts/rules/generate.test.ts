@@ -255,6 +255,10 @@ const filesUnder = Effect.fnUntraced(function* (projectDirectory: string, relati
 })
 
 const expectCompleteGeneratedOutput = Effect.fnUntraced(function* (projectDirectory: string) {
+	expect(yield* filesUnder(projectDirectory, 'artifacts/rules/transcripts')).toStrictEqual([
+		'artifacts/rules/transcripts/CR-v1.0.txt',
+		'artifacts/rules/transcripts/Tournament-Rules-2026-01-01.txt',
+	])
 	expect(yield* filesUnder(projectDirectory, 'src/generated/core-rules')).toStrictEqual([
 		'src/generated/core-rules/index.ts',
 		'src/generated/core-rules/v1-0.ts',
@@ -276,6 +280,7 @@ layer(NodeServices.layer)('generateRules', (it) => {
 			const fileSystem = yield* FileSystem.FileSystem
 			const pathService = yield* Path.Path
 			const projectDirectory = yield* temporaryProject()
+			expect(yield* fileSystem.exists(pathService.join(projectDirectory, 'artifacts'))).toBe(false)
 			expect(yield* fileSystem.exists(pathService.join(projectDirectory, 'src/generated'))).toBe(false)
 			expect(yield* fileSystem.exists(pathService.join(projectDirectory, 'content'))).toBe(false)
 
@@ -297,10 +302,18 @@ layer(NodeServices.layer)('generateRules', (it) => {
 			const summary = yield* generateRules({ projectDirectory }).pipe(Effect.provide(historyRulesPdfLayer()))
 
 			expect(summary).toStrictEqual({
-				coreRules: { current: '1.2', versions: 3, transcripts: 2 },
+				coreRules: { current: '1.2', versions: 3, transcripts: 3 },
 				tournamentRules: { current: '2026-04-29', versions: 3, transcripts: 3 },
 				reference: { pages: 11 },
 			})
+			expect(yield* filesUnder(projectDirectory, 'artifacts/rules/transcripts')).toStrictEqual([
+				'artifacts/rules/transcripts/CR-v1.0.txt',
+				'artifacts/rules/transcripts/CR-v1.1.txt',
+				'artifacts/rules/transcripts/CR-v1.2.txt',
+				'artifacts/rules/transcripts/Tournament-Rules-2025-07-21.txt',
+				'artifacts/rules/transcripts/Tournament-Rules-2026-03-30.txt',
+				'artifacts/rules/transcripts/Tournament-Rules-2026-04-29.txt',
+			])
 			expect(yield* filesUnder(projectDirectory, 'content/rules-documents')).toStrictEqual(
 				[
 					'content/rules-documents/index.mdx',
@@ -726,15 +739,17 @@ Rule numbers open the corresponding source document in a new tab.
 			const fileSystem = yield* FileSystem.FileSystem
 			const pathService = yield* Path.Path
 			const projectDirectory = yield* temporaryProject()
+			yield* writeProjectFile(projectDirectory, 'artifacts/rules/transcripts/stale.txt', 'stale')
 			yield* writeProjectFile(projectDirectory, 'src/generated/core-rules/stale.ts', 'stale')
 			yield* writeProjectFile(projectDirectory, 'src/generated/tournament-rules/stale.ts', 'stale')
 			yield* writeProjectFile(projectDirectory, 'content/rules-documents/stale.mdx', 'stale')
-			yield* writeProjectFile(projectDirectory, 'sources/CR-v1.99.txt', 'stale')
-			yield* writeProjectFile(projectDirectory, 'sources/Tournament-Rules-1999-01-01.txt', 'stale')
-			yield* writeProjectFile(projectDirectory, 'sources/CR-v9.9.txt', 'preserved')
 			yield* writeProjectFile(projectDirectory, 'src/generated/unrelated.ts', 'preserved')
 			yield* writeProjectFile(projectDirectory, 'content/unrelated.mdx', 'preserved')
 			yield* writeProjectFile(projectDirectory, 'sources/notes.txt', 'preserved')
+			yield* writeProjectFile(projectDirectory, 'sources/CR-v1.99.txt', 'preserved')
+			yield* writeProjectFile(projectDirectory, 'sources/card-catalog.json', 'preserved')
+			yield* writeProjectFile(projectDirectory, 'sources/card-errata.json', 'preserved')
+			yield* writeProjectFile(projectDirectory, 'sources/card-gallery-data.json', 'preserved')
 			yield* writeProjectFile(projectDirectory, 'src/generated/rules-metadata.ts', 'retired')
 			yield* writeProjectFile(projectDirectory, 'content/reference/index.mdx', 'retired')
 
@@ -747,18 +762,19 @@ Rule numbers open the corresponding source document in a new tab.
 			})
 			yield* expectCompleteGeneratedOutput(projectDirectory)
 			expect(
-				yield* fileSystem.readFileString(pathService.join(projectDirectory, 'sources', 'CR-v1.0.txt')),
+				yield* fileSystem.readFileString(
+					pathService.join(projectDirectory, 'artifacts/rules/transcripts/CR-v1.0.txt'),
+				),
 			).toBe('Riftbound Core Rules\nLast Updated: 2026-01-01\n100. Game Concepts\n100.1. A generated rule.\n')
 			expect(
 				yield* fileSystem.readFileString(
-					pathService.join(projectDirectory, 'sources', 'Tournament-Rules-2026-01-01.txt'),
+					pathService.join(projectDirectory, 'artifacts/rules/transcripts/Tournament-Rules-2026-01-01.txt'),
 				),
 			).toBe(
 				'Riftbound Tournament Rules\nLast Updated: 2026-01-01\n100. Tournament Operations\n100.1. A tournament rule.\n',
 			)
 			for (const path of [
-				'sources/CR-v1.99.txt',
-				'sources/Tournament-Rules-1999-01-01.txt',
+				'artifacts/rules/transcripts/stale.txt',
 				'src/generated/rules-metadata.ts',
 				'content/reference',
 			]) {
@@ -768,13 +784,16 @@ Rule numbers open the corresponding source document in a new tab.
 				'src/generated/unrelated.ts',
 				'content/unrelated.mdx',
 				'sources/notes.txt',
-				'sources/CR-v9.9.txt',
+				'sources/CR-v1.99.txt',
+				'sources/card-catalog.json',
+				'sources/card-errata.json',
+				'sources/card-gallery-data.json',
 			]) {
 				expect(yield* fileSystem.readFileString(pathService.join(projectDirectory, path))).toBe('preserved')
 			}
 			const stablePaths = [
+				'artifacts/rules/transcripts/CR-v1.0.txt',
 				'src/generated/core-rules/index.ts',
-				'sources/CR-v1.0.txt',
 				'content/rules-documents/index.mdx',
 			]
 			const firstGeneration = yield* Effect.forEach(stablePaths, (path) =>
@@ -818,7 +837,7 @@ Rule numbers open the corresponding source document in a new tab.
 			const pathService = yield* Path.Path
 			const projectDirectory = yield* temporaryProject()
 			yield* writeProjectFile(projectDirectory, 'src/generated/core-rules/prior.ts', 'prior core')
-			yield* writeProjectFile(projectDirectory, 'sources/CR-v1.0.txt', 'prior transcript')
+			yield* writeProjectFile(projectDirectory, 'artifacts/rules/transcripts/CR-v1.0.txt', 'prior transcript')
 			yield* writeProjectFile(projectDirectory, 'sources/rules-manifest.json', 'not JSON')
 
 			const error = yield* Effect.flip(
@@ -839,7 +858,9 @@ Rule numbers open the corresponding source document in a new tab.
 				),
 			).toBe('prior core')
 			expect(
-				yield* fileSystem.readFileString(pathService.join(projectDirectory, 'sources/CR-v1.0.txt')),
+				yield* fileSystem.readFileString(
+					pathService.join(projectDirectory, 'artifacts/rules/transcripts/CR-v1.0.txt'),
+				),
 			).toBe('prior transcript')
 		}),
 	)

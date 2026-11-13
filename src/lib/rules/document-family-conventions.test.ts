@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest'
 import {
 	coreRulesConventions,
 	InvalidRulesVersionError,
-	recognizeRulesSourceFilename,
+	recognizeRulesPdfFilename,
 	rulesDocumentFamily,
 	tournamentRulesConventions,
 	UnknownRulesDocumentFamilyError,
@@ -17,8 +17,8 @@ describe('Rules document family conventions', () => {
 			version: '1.4',
 			source: {
 				pdfFilename: 'CR-v1.4.pdf',
-				transcriptFilename: 'CR-v1.4.txt',
 			},
+			transcript: { filename: 'CR-v1.4.txt' },
 			generated: {
 				filename: 'v1-4.ts',
 				moduleSpecifier: '@/generated/core-rules/v1-4',
@@ -60,8 +60,8 @@ describe('Rules document family conventions', () => {
 			version: '2026-07-16',
 			source: {
 				pdfFilename: 'Tournament-Rules-2026-07-16.pdf',
-				transcriptFilename: 'Tournament-Rules-2026-07-16.txt',
 			},
+			transcript: { filename: 'Tournament-Rules-2026-07-16.txt' },
 			generated: {
 				filename: 'v2026-07-16.ts',
 				moduleSpecifier: '@/generated/tournament-rules/v2026-07-16',
@@ -90,32 +90,22 @@ describe('Rules document family conventions', () => {
 		}
 	})
 
-	test('selects families and recognizes exact canonical source filenames', () => {
+	test('selects families and recognizes exact canonical PDF filenames', () => {
 		expect(rulesDocumentFamily('core-rules')).toBe(coreRulesConventions)
 		expect(rulesDocumentFamily('tournament-rules')).toBe(tournamentRulesConventions)
-		expect(recognizeRulesSourceFilename('CR-v1.4.pdf')).toStrictEqual({
-			kind: 'pdf',
+		expect(recognizeRulesPdfFilename('CR-v1.4.pdf')).toStrictEqual({
 			family: 'core-rules',
 			version: '1.4',
 		})
-		expect(recognizeRulesSourceFilename('Tournament-Rules-2026-07-16.txt')).toStrictEqual({
-			kind: 'transcript',
+		expect(recognizeRulesPdfFilename('Tournament-Rules-2026-07-16.pdf')).toStrictEqual({
 			family: 'tournament-rules',
 			version: '2026-07-16',
 		})
-		expect(recognizeRulesSourceFilename('CR-v1.4.txt')).toStrictEqual({
-			kind: 'transcript',
-			family: 'core-rules',
-			version: '1.4',
-		})
-		expect(recognizeRulesSourceFilename('Tournament-Rules-2026-07-16.pdf')).toStrictEqual({
-			kind: 'pdf',
-			family: 'tournament-rules',
-			version: '2026-07-16',
-		})
-		expect(recognizeRulesSourceFilename('CR-v1.04.pdf')).toBeUndefined()
-		expect(recognizeRulesSourceFilename('sources/CR-v1.4.pdf')).toBeUndefined()
-		expect(recognizeRulesSourceFilename('Tournament-Rules-2026-02-29.pdf')).toBeUndefined()
+		expect(recognizeRulesPdfFilename('CR-v1.4.txt')).toBeUndefined()
+		expect(recognizeRulesPdfFilename('Tournament-Rules-2026-07-16.txt')).toBeUndefined()
+		expect(recognizeRulesPdfFilename('CR-v1.04.pdf')).toBeUndefined()
+		expect(recognizeRulesPdfFilename('sources/CR-v1.4.pdf')).toBeUndefined()
+		expect(recognizeRulesPdfFilename('Tournament-Rules-2026-02-29.pdf')).toBeUndefined()
 		expect(() => rulesDocumentFamily('unknown')).toThrowError(
 			expect.objectContaining({
 				code: 'UNKNOWN_RULES_DOCUMENT_FAMILY',
