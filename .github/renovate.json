@@ -10,6 +10,7 @@
 		":pinDevDependencies",
 		"group:allNonMajor"
 	],
+	"ignorePaths": ["repos/**"],
 	"minimumReleaseAge": "7 days",
 	"pinDigests": false
 }
