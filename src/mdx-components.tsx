@@ -16,6 +16,7 @@ import {
 	renderVersionedRulesDocument,
 	type ResolvedRulesDocumentPage,
 } from '@/features/rules-documents/versioned-route'
+import { TournamentInfractions } from '@/features/tournament-infractions/index-view'
 
 const wikiMdxComponents = {
 	...defaultMdxComponents,
@@ -35,6 +36,7 @@ const wikiMdxComponents = {
 	Might,
 	Universal,
 	Term,
+	TournamentInfractions,
 	del: Del,
 	ins: Ins,
 	...RUNES,

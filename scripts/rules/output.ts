@@ -77,6 +77,7 @@ const TEMPLATE_FILES = [
 	'tournament-rules-current.mdx',
 	'tournament-rules-archive.mdx',
 	'tournament-rules-change.mdx',
+	'tournament-infractions.mdx',
 ] as const
 
 type TemplateFile = (typeof TEMPLATE_FILES)[number]
@@ -149,11 +150,13 @@ const REQUIRED_TEMPLATE_MARKERS = {
 		'RULES_DOCUMENT_FRONTMATTER',
 	],
 	'tournament-rules-change.mdx': ['CREATED_AT', 'DESCRIPTION', 'FROM', 'SIDEBAR_TITLE', 'TITLE', 'TO'],
+	'tournament-infractions.mdx': [],
 } as const satisfies Record<TemplateFile, readonly string[]>
 
 const FIXED_RULES_DOCUMENT_PATHS = [
 	'index.mdx',
 	'meta.json',
+	'tournament-infractions.mdx',
 	'core-rules/changes/meta.json',
 	'core-rules/(archive)/meta.json',
 	'tournament-rules/changes/meta.json',
@@ -544,6 +547,7 @@ function renderNavigationPages(currentCorePath: string, currentTournamentPath: s
 		'---Current Documents---',
 		currentCorePath,
 		currentTournamentPath,
+		'tournament-infractions',
 		'---Core Rules---',
 		'core-rules/changes',
 		'core-rules/(archive)',
@@ -634,6 +638,7 @@ function appendRulesDocumentFiles(
 			PAGES: renderNavigationPages(corePlan.currentNavigationPath, tournamentPlan.currentNavigationPath),
 		}),
 	)
+	add('tournament-infractions.mdx', render('tournament-infractions.mdx', {}))
 	for (const [path, values] of [
 		[
 			'core-rules/changes/meta.json',

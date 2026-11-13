@@ -2,6 +2,10 @@ import { Console, Data, Effect, Result } from 'effect'
 import * as FileSystem from 'effect/FileSystem'
 import * as Path from 'effect/Path'
 import * as PlatformError from 'effect/PlatformError'
+import { compileRulesDocument } from '@/features/rules-documents/compile'
+import { adaptTournamentRulesDocument } from '@/features/rules-documents/tournament-rules-adapter'
+import { projectTournamentInfractions } from '@/features/tournament-infractions/projection'
+import { tournamentRulesConventions } from '@/lib/rules/document-family-conventions'
 import {
 	extractCoreRulesVersion,
 	type CoreRulesExtractionError,
@@ -184,6 +188,37 @@ export const generateRules = Effect.fn('generateRules')(function* (options: Rule
 			({ registeredVersion }) => registeredVersion === manifest.tournamentRules.currentVersion,
 		)!,
 	} satisfies ExtractedTournamentRulesFamily
+	const currentTournamentRules = extractedTournamentRules.currentVersion
+	const currentTournamentRulesVersion = currentTournamentRules.registeredVersion.version
+	const currentTournamentRulesPath = pathService.join(
+		sourcesDirectory,
+		tournamentRulesConventions.version(currentTournamentRulesVersion).source.pdfFilename,
+	)
+	yield* Effect.fromResult(
+		Result.try({
+			try: () =>
+				compileRulesDocument({
+					identity: {
+						type: 'tournament-rules',
+						version: currentTournamentRulesVersion,
+						name: null,
+						status: 'current',
+					},
+					source: adaptTournamentRulesDocument(currentTournamentRules.document),
+				}),
+			catch: (cause) => cause,
+		}).pipe(
+			Result.flatMap(projectTournamentInfractions),
+			Result.mapError((cause) =>
+				causedGenerationError('tournament-rules', 'Tournament Infractions projection failed', cause, {
+					kind: 'input',
+					path: currentTournamentRulesPath,
+					family: 'tournament-rules',
+					version: currentTournamentRulesVersion,
+				}),
+			),
+		),
+	)
 
 	return yield* generateRulesOutput(
 		projectDirectory,

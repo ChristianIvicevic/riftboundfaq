@@ -12,6 +12,7 @@ describe('resolvePageImageTreatment', () => {
 		{ url: '/the-future-of-riftbound-faq', title: 'The Future', kind: 'editorial' },
 		{ url: '/rulings/card-text-updates', title: 'Card Text Updates (Errata)', kind: 'index-cover' },
 		{ url: '/rules-documents', title: 'Rules Documents', kind: 'index-cover' },
+		{ url: '/rules-documents/tournament-infractions', title: 'Tournament Infractions', kind: 'index-cover' },
 		{ url: '/rulings/cards/flash', title: 'Flash', kind: 'card' },
 		{ url: '/rulings/general-rules/targeting', title: 'Targeting', kind: 'general-rules' },
 	])('classifies $url as $kind', ({ url, title, kind }) => {

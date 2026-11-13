@@ -4,6 +4,7 @@ import { Console, Effect, Option } from 'effect'
 import * as FileSystem from 'effect/FileSystem'
 import * as Path from 'effect/Path'
 import { OPS } from 'pdfjs-dist/legacy/build/pdf.mjs'
+import type { TournamentRulesDocument } from '@/lib/rules/tournament-rules-document'
 import { generateRules, RulesGenerationError } from './generate'
 import { layerTest as rulesPdfLayerTest, type PdfJsDocument, type PdfJsPage } from './pdf'
 
@@ -38,7 +39,7 @@ function coreRulesPage(
 	}
 }
 
-function tournamentRulesPage(lastUpdated = '1/1/2026'): PdfJsPage {
+function tournamentRulesPageWithoutInfractions(lastUpdated = '1/1/2026'): PdfJsPage {
 	return {
 		view: [0, 0, 600, 800],
 		getTextContent: () =>
@@ -65,31 +66,87 @@ function tournamentRulesPage(lastUpdated = '1/1/2026'): PdfJsPage {
 	}
 }
 
-function anomalousTournamentRulesPage(version: string): PdfJsPage {
+type TournamentRulesFixtureRow = Readonly<{
+	id: string | null
+	text: string
+	fontSize?: number
+	bodyX?: number
+}>
+
+const TOURNAMENT_INFRACTION_ROWS: readonly TournamentRulesFixtureRow[] = [
+	{ id: '700', text: 'Enforcement and Penalties', fontSize: 20 },
+	{ id: '702', text: 'Game Play Errors', fontSize: 10 },
+	{ id: '702.1', text: 'Overview' },
+	{ id: '702.2', text: 'Missed Trigger [No Penalty]: A triggered ability is missed.' },
+	{ id: '703', text: 'Tournament Errors', fontSize: 10 },
+	{ id: '703.1', text: 'Overview' },
+	{ id: '703.2', text: 'Late to Match: A player arrives after the round clock starts.' },
+	{ id: '703.2.a', text: 'If the player arrives promptly, the penalty is a [Warning].', bodyX: 162 },
+	{ id: '703.2.b', text: 'Otherwise, the penalty is a [Match Loss].', bodyX: 162 },
+	{ id: '704', text: 'Unsporting Conduct', fontSize: 10 },
+	{ id: '704.1', text: 'Overview' },
+	{ id: '704.2', text: 'Unsporting Minor [Warning]:' },
+]
+
+function replaceTournamentInfractionRow(
+	id: string,
+	replacement: Partial<TournamentRulesFixtureRow>,
+): readonly TournamentRulesFixtureRow[] {
+	return TOURNAMENT_INFRACTION_ROWS.map((row) => (row.id === id ? Object.assign({}, row, replacement) : row))
+}
+
+function tournamentRulesPage(
+	lastUpdated = '1/1/2026',
+	rows: readonly TournamentRulesFixtureRow[] = TOURNAMENT_INFRACTION_ROWS,
+): PdfJsPage {
+	const firstBaseline = 700
+	const rowSpacing = 28
+	const baselines = rows.map((_, index) => firstBaseline - index * rowSpacing)
+	const borders = [firstBaseline + rowSpacing / 2, ...baselines.map((y) => y - rowSpacing / 2)]
 	return {
 		view: [0, 0, 600, 800],
 		getTextContent: () =>
 			Promise.resolve({
 				items: [
 					textItem('Riftbound Tournament Rules', 80, 760, 16),
-					textItem(`Last Updated: ${version}`, 80, 740),
-					textItem('100.', 40, 170, 20),
-					textItem('Tournament Operations', 130, 170, 20),
-					textItem('A preserved unnumbered rule.', 130, 110),
+					textItem(`Last Updated: ${lastUpdated}`, 80, 740),
+					...rows.flatMap(({ id, text, fontSize = 8, bodyX = 130 }, index) => {
+						const y = baselines[index]
+						return id === null
+							? [textItem(text, bodyX, y, fontSize)]
+							: [textItem(`${id}.`, 40, y, fontSize), textItem(text, bodyX, y, fontSize)]
+					}),
 				],
 			}),
 		getOperatorList: () =>
 			Promise.resolve({
-				fnArray: [OPS.setFillRGBColor, OPS.constructPath, OPS.constructPath, OPS.constructPath],
-				argsArray: [
-					[0.8, 0.8, 0.8],
-					[OPS.fill, null, [36, 200, 575, 201]],
-					[OPS.fill, null, [36, 140, 575, 141]],
-					[OPS.fill, null, [36, 80, 575, 81]],
-				],
+				fnArray: [OPS.setFillRGBColor, ...borders.map(() => OPS.constructPath)],
+				argsArray: [[0.8, 0.8, 0.8], ...borders.map((y) => [OPS.fill, null, [36, y, 575, y + 1]])],
 			}),
 		cleanup: () => false,
 	}
+}
+
+function anomalousTournamentRulesPage(version: string): PdfJsPage {
+	const overviewIndex = TOURNAMENT_INFRACTION_ROWS.findIndex(({ id }) => id === '702.1')
+	return tournamentRulesPage(version, [
+		...TOURNAMENT_INFRACTION_ROWS.slice(0, overviewIndex + 1),
+		{ id: null, text: 'A preserved unnumbered rule.', bodyX: 162 },
+		...TOURNAMENT_INFRACTION_ROWS.slice(overviewIndex + 1),
+	])
+}
+
+function representativeTournamentRulesPage(version: string): PdfJsPage {
+	const infractionIndex = TOURNAMENT_INFRACTION_ROWS.findIndex(({ id }) => id === '702.2')
+	return tournamentRulesPage(version, [
+		...TOURNAMENT_INFRACTION_ROWS.slice(0, infractionIndex + 1),
+		{ id: '702.2.a', text: 'Remedies:', bodyX: 162 },
+		{ id: null, text: 'A preserved unnumbered remedy.', bodyX: 198 },
+		{ id: '702.2.a.1', text: 'A numbered remedy after the unnumbered one.', bodyX: 198 },
+		{ id: '702.2.a.1.a', text: 'A deeply nested exception.', bodyX: 234 },
+		{ id: '702.2.b', text: 'Example: A preserved example.', bodyX: 162 },
+		...TOURNAMENT_INFRACTION_ROWS.slice(infractionIndex + 1),
+	])
 }
 
 function partiallyStruckTournamentRulesPage(): PdfJsPage {
@@ -145,7 +202,7 @@ function historyRulesPdfLayer() {
 		[3, coreRulesPage('Riftbound Core Rules', 20, '2025-10-01')],
 		[4, tournamentRulesPage('3/30/2026')],
 		[5, coreRulesPage('Riftbound Core Rules', 20, '2025-12-01')],
-		[6, tournamentRulesPage('4/29/2026')],
+		[6, representativeTournamentRulesPage('4/29/2026')],
 	])
 	return rulesPdfLayerTest((data) => {
 		const page = pages.get(data[0])
@@ -267,7 +324,7 @@ const expectCompleteGeneratedOutput = Effect.fnUntraced(function* (projectDirect
 		'src/generated/tournament-rules/index.ts',
 		'src/generated/tournament-rules/v2026-01-01.ts',
 	])
-	expect(yield* filesUnder(projectDirectory, 'content/rules-documents')).toHaveLength(8)
+	expect(yield* filesUnder(projectDirectory, 'content/rules-documents')).toHaveLength(9)
 })
 
 layer(NodeServices.layer)('generateRules', (it) => {
@@ -289,7 +346,7 @@ layer(NodeServices.layer)('generateRules', (it) => {
 			expect(summary).toStrictEqual({
 				coreRules: { current: '1.0', versions: 1, transcripts: 1 },
 				tournamentRules: { current: '2026-01-01', versions: 1, transcripts: 1 },
-				reference: { pages: 3 },
+				reference: { pages: 4 },
 			})
 			yield* expectCompleteGeneratedOutput(projectDirectory)
 		}),
@@ -304,7 +361,7 @@ layer(NodeServices.layer)('generateRules', (it) => {
 			expect(summary).toStrictEqual({
 				coreRules: { current: '1.2', versions: 3, transcripts: 3 },
 				tournamentRules: { current: '2026-04-29', versions: 3, transcripts: 3 },
-				reference: { pages: 11 },
+				reference: { pages: 12 },
 			})
 			expect(yield* filesUnder(projectDirectory, 'artifacts/rules/transcripts')).toStrictEqual([
 				'artifacts/rules/transcripts/CR-v1.0.txt',
@@ -318,6 +375,7 @@ layer(NodeServices.layer)('generateRules', (it) => {
 				[
 					'content/rules-documents/index.mdx',
 					'content/rules-documents/meta.json',
+					'content/rules-documents/tournament-infractions.mdx',
 					'content/rules-documents/core-rules/1.2.mdx',
 					'content/rules-documents/core-rules/(archive)/1.0.mdx',
 					'content/rules-documents/core-rules/(archive)/1.1.mdx',
@@ -409,47 +467,49 @@ export const PDF_TOURNAMENT_RULES_DOCUMENTS: Record<string, TournamentRulesDocum
 				}
 				"
 			`)
-			expect(yield* readProjectFile(projectDirectory, 'src/generated/tournament-rules/v2025-07-21.ts'))
-				.toMatchInlineSnapshot(`
-				"// Generated by pnpm rules:generate. Do not edit.
-
-				import type { TournamentRulesDocument } from '@/lib/rules/tournament-rules-document'
-
-				// oxfmt-ignore
-				export const PDF_TOURNAMENT_RULES_2025_07_21: TournamentRulesDocument = {
-				  "schemaVersion": 1,
-				  "version": "2025-07-21",
-				  "sections": [
-				    {
-				      "heading": {
-				        "sequence": 1,
-				        "id": "100",
-				        "text": "Tournament Operations"
-				      },
-				      "blocks": [
-				        {
-				          "kind": "rules",
-				          "rules": [
-				            {
-				              "sequence": 2,
-				              "id": "100.1",
-				              "label": "100.1.",
-				              "content": [
-				                {
-				                  "kind": "paragraph",
-				                  "text": "A tournament rule."
-				                }
-				              ],
-				              "children": []
-				            }
-				          ]
-				        }
-				      ]
-				    }
-				  ]
-				}
-				"
-			`)
+			const tournamentModule = yield* readProjectFile(
+				projectDirectory,
+				'src/generated/tournament-rules/v2025-07-21.ts',
+			)
+			expect(tournamentModule).toContain(
+				'export const PDF_TOURNAMENT_RULES_2025_07_21: TournamentRulesDocument',
+			)
+			expect(tournamentModule).toContain(
+				'"text": "Missed Trigger [No Penalty]: A triggered ability is missed."',
+			)
+			expect(tournamentModule).toContain(
+				'"text": "Late to Match: A player arrives after the round clock starts."',
+			)
+			expect(tournamentModule).toContain('"text": "Unsporting Minor [Warning]:"')
+			const currentTournamentModule = yield* readProjectFile(
+				projectDirectory,
+				'src/generated/tournament-rules/v2026-04-29.ts',
+			)
+			// SAFETY: generateRules serialized this artifact from a validated TournamentRulesDocument.
+			const currentTournamentDocument = JSON.parse(
+				currentTournamentModule.slice(currentTournamentModule.indexOf(' = ') + 3),
+			) as TournamentRulesDocument
+			const enforcementSection = currentTournamentDocument.sections.find(
+				({ heading }) => heading.id === '700',
+			)
+			const gamePlayErrors = enforcementSection?.blocks.find(
+				(block) => block.kind === 'subsection' && block.heading.id === '702',
+			)
+			expect(gamePlayErrors?.kind).toBe('subsection')
+			const representativeInfraction =
+				gamePlayErrors?.kind === 'subsection'
+					? gamePlayErrors.rules.find(({ id }) => id === '702.2')
+					: undefined
+			expect(representativeInfraction?.children.map(({ id }) => id)).toStrictEqual(['702.2.a', '702.2.b'])
+			const remedies = representativeInfraction?.children[0]
+			expect(remedies?.children.map(({ id }) => id)).toStrictEqual([null, '702.2.a.1'])
+			expect(remedies?.children[0]?.content).toStrictEqual([
+				{ kind: 'paragraph', text: 'A preserved unnumbered remedy.' },
+			])
+			expect(remedies?.children[1]?.children.map(({ id }) => id)).toStrictEqual(['702.2.a.1.a'])
+			expect(representativeInfraction?.children[1]?.content).toStrictEqual([
+				{ kind: 'example', text: 'Example: A preserved example.' },
+			])
 
 			const exactPages = {
 				'content/rules-documents/core-rules/1.2.mdx': `---
@@ -513,6 +573,16 @@ noindex: true
 
 <RulesDocument />
 `,
+				'content/rules-documents/tournament-infractions.mdx': `---
+title: "Tournament Infractions"
+icon: "Gavel"
+createdAt: "2026-11-14"
+description: "A quick reference to Riftbound Tournament Rules infractions, penalties, and remedies."
+noindex: true
+---
+
+<TournamentInfractions />
+`,
 				'content/rules-documents/tournament-rules/(archive)/2026-03-30.mdx': `---
 title: "Tournament Rules (March 30, 2026)"
 sidebarTitle: "March 2026 Tournament Rules"
@@ -564,6 +634,7 @@ Rule numbers open the corresponding source document in a new tab.
 		"---Current Documents---",
 		"core-rules/1.2",
 		"tournament-rules/2026-04-29",
+		"tournament-infractions",
 		"---Core Rules---",
 		"core-rules/changes",
 		"core-rules/(archive)",
@@ -585,6 +656,7 @@ Rule numbers open the corresponding source document in a new tab.
 			const overview = yield* readProjectFile(projectDirectory, 'content/rules-documents/index.mdx')
 			expect(overview).toContain('href="/rules-documents/core-rules/1.2"')
 			expect(overview).toContain('href="/rules-documents/tournament-rules/2026-04-29"')
+			expect(overview).toContain('href="/rules-documents/tournament-infractions"')
 			expect(overview).toContain('Changes from March 30 to April 29, 2026.')
 		}),
 	)
@@ -760,7 +832,7 @@ Rule numbers open the corresponding source document in a new tab.
 			expect(summary).toStrictEqual({
 				coreRules: { current: '1.0', versions: 1, transcripts: 1 },
 				tournamentRules: { current: '2026-01-01', versions: 1, transcripts: 1 },
-				reference: { pages: 3 },
+				reference: { pages: 4 },
 			})
 			yield* expectCompleteGeneratedOutput(projectDirectory)
 			expect(
@@ -773,7 +845,7 @@ Rule numbers open the corresponding source document in a new tab.
 					pathService.join(projectDirectory, 'artifacts/rules/transcripts/Tournament-Rules-2026-01-01.txt'),
 				),
 			).toBe(
-				'Riftbound Tournament Rules\nLast Updated: 2026-01-01\n100. Tournament Operations\n100.1. A tournament rule.\n',
+				'Riftbound Tournament Rules\nLast Updated: 2026-01-01\n700. Enforcement and Penalties\n702. Game Play Errors\n702.1. Overview\n702.2. Missed Trigger [No Penalty]: A triggered ability is missed.\n703. Tournament Errors\n703.1. Overview\n703.2. Late to Match: A player arrives after the round clock starts.\n703.2.a. If the player arrives promptly, the penalty is a [Warning].\n703.2.b. Otherwise, the penalty is a [Match Loss].\n704. Unsporting Conduct\n704.1. Overview\n704.2. Unsporting Minor [Warning]:\n',
 			)
 			for (const path of [
 				'artifacts/rules/transcripts/stale.txt',
@@ -931,7 +1003,7 @@ Rule numbers open the corresponding source document in a new tab.
 			const pathService = yield* Path.Path
 			const projectDirectory = yield* temporaryProject()
 			yield* writeProjectFile(projectDirectory, 'content/rules-documents/prior.mdx', 'prior')
-			const tournamentPage = tournamentRulesPage()
+			const tournamentPage = tournamentRulesPageWithoutInfractions()
 			const unstructuredTournamentPage: PdfJsPage = {
 				...tournamentPage,
 				getTextContent: () =>
@@ -965,6 +1037,146 @@ Rule numbers open the corresponding source document in a new tab.
 					pathService.join(projectDirectory, 'content/rules-documents/prior.mdx'),
 				),
 			).toBe('prior')
+		}),
+	)
+
+	it.effect('rejects missing Tournament Infraction categories before mutating prior output', () =>
+		Effect.gen(function* () {
+			const projectDirectory = yield* temporaryProject()
+			yield* writeProjectFile(projectDirectory, 'content/rules-documents/prior.mdx', 'prior')
+			const rows = TOURNAMENT_INFRACTION_ROWS.filter(({ id }) => id !== '702' && !id?.startsWith('702.'))
+
+			const error = yield* Effect.flip(
+				generateRules({ projectDirectory }).pipe(
+					Effect.provide(rulesPdfLayer({ tournament: tournamentRulesPage('1/1/2026', rows) })),
+				),
+			)
+
+			expect(error).toBeInstanceOf(RulesGenerationError)
+			expect(error).toMatchObject({
+				stage: 'tournament-rules',
+				context: { kind: 'input', family: 'tournament-rules', version: '2026-01-01' },
+			})
+			expect(error.message).toContain('Tournament Rules 2026-01-01, category 702')
+			expect(error.message).toContain('required infraction category is missing')
+			expect(yield* readProjectFile(projectDirectory, 'content/rules-documents/prior.mdx')).toBe('prior')
+		}),
+	)
+
+	it.effect('rejects a malformed Tournament Infraction category overview before mutation', () =>
+		Effect.gen(function* () {
+			const projectDirectory = yield* temporaryProject()
+			yield* writeProjectFile(projectDirectory, 'content/rules-documents/prior.mdx', 'prior')
+			const rows = replaceTournamentInfractionRow('702.1', { text: 'Category introduction' })
+
+			const error = yield* Effect.flip(
+				generateRules({ projectDirectory }).pipe(
+					Effect.provide(rulesPdfLayer({ tournament: tournamentRulesPage('1/1/2026', rows) })),
+				),
+			)
+
+			expect(error).toMatchObject({
+				stage: 'tournament-rules',
+				context: { kind: 'input', family: 'tournament-rules', version: '2026-01-01' },
+			})
+			expect(error.message).toContain('Tournament Rules 2026-01-01, category 702, rule 702.1')
+			expect(error.message).toContain('category overview must be the first rule and contain only Overview')
+			expect(yield* readProjectFile(projectDirectory, 'content/rules-documents/prior.mdx')).toBe('prior')
+		}),
+	)
+
+	it.effect('rejects malformed top-level Tournament Infraction records before mutation', () =>
+		Effect.gen(function* () {
+			const projectDirectory = yield* temporaryProject()
+			yield* writeProjectFile(projectDirectory, 'content/rules-documents/prior.mdx', 'prior')
+			const rows = replaceTournamentInfractionRow('702.2', { id: '702.a' })
+
+			const error = yield* Effect.flip(
+				generateRules({ projectDirectory }).pipe(
+					Effect.provide(rulesPdfLayer({ tournament: tournamentRulesPage('1/1/2026', rows) })),
+				),
+			)
+
+			expect(error).toMatchObject({ stage: 'tournament-rules' })
+			expect(error.message).toContain('Tournament Rules 2026-01-01, category 702, rule 702.a')
+			expect(error.message).toContain(
+				'top-level infraction must have an immediate numeric rule identifier and matching label',
+			)
+			expect(yield* readProjectFile(projectDirectory, 'content/rules-documents/prior.mdx')).toBe('prior')
+		}),
+	)
+
+	it.effect('rejects duplicate Tournament Infraction identifiers before mutation', () =>
+		Effect.gen(function* () {
+			const projectDirectory = yield* temporaryProject()
+			yield* writeProjectFile(projectDirectory, 'content/rules-documents/prior.mdx', 'prior')
+			const duplicateIndex = TOURNAMENT_INFRACTION_ROWS.findIndex(({ id }) => id === '702.2')
+			const rows = [
+				...TOURNAMENT_INFRACTION_ROWS.slice(0, duplicateIndex + 1),
+				{ ...TOURNAMENT_INFRACTION_ROWS[duplicateIndex], text: 'Duplicate [Warning]: Invalid.' },
+				...TOURNAMENT_INFRACTION_ROWS.slice(duplicateIndex + 1),
+			]
+
+			const error = yield* Effect.flip(
+				generateRules({ projectDirectory }).pipe(
+					Effect.provide(rulesPdfLayer({ tournament: tournamentRulesPage('1/1/2026', rows) })),
+				),
+			)
+
+			expect(error).toMatchObject({ stage: 'tournament-rules' })
+			expect(error.message).toContain('Tournament Rules 2026-01-01, category 702, rule 702.2')
+			expect(error.message).toContain('duplicate infraction identifier "702.2"')
+			expect(yield* readProjectFile(projectDirectory, 'content/rules-documents/prior.mdx')).toBe('prior')
+		}),
+	)
+
+	it.effect('rejects unknown fixed Tournament Infraction penalties before mutation', () =>
+		Effect.gen(function* () {
+			const projectDirectory = yield* temporaryProject()
+			yield* writeProjectFile(projectDirectory, 'content/rules-documents/prior.mdx', 'prior')
+			const rows = replaceTournamentInfractionRow('702.2', {
+				text: 'Missed Trigger [Caution]: A triggered ability is missed.',
+			})
+
+			const error = yield* Effect.flip(
+				generateRules({ projectDirectory }).pipe(
+					Effect.provide(rulesPdfLayer({ tournament: tournamentRulesPage('1/1/2026', rows) })),
+				),
+			)
+
+			expect(error).toMatchObject({ stage: 'tournament-rules' })
+			expect(error.message).toContain('Tournament Rules 2026-01-01, category 702, rule 702.2')
+			expect(error.message).toContain('unknown fixed penalty "Caution"')
+			expect(yield* readProjectFile(projectDirectory, 'content/rules-documents/prior.mdx')).toBe('prior')
+		}),
+	)
+
+	it.effect('rejects unsafe Conditional Tournament Infraction inference before mutation', () =>
+		Effect.gen(function* () {
+			const projectDirectory = yield* temporaryProject()
+			yield* writeProjectFile(projectDirectory, 'content/rules-documents/prior.mdx', 'prior')
+			const rows = replaceTournamentInfractionRow('703.2.a', {
+				text: 'The penalty is a [Warning].',
+			}).map((row) =>
+				row.id === '703.2.b'
+					? Object.assign({}, row, {
+							text: 'At high OPL, upgrade the penalty to [Match Loss].',
+						})
+					: row,
+			)
+
+			const error = yield* Effect.flip(
+				generateRules({ projectDirectory }).pipe(
+					Effect.provide(rulesPdfLayer({ tournament: tournamentRulesPage('1/1/2026', rows) })),
+				),
+			)
+
+			expect(error).toMatchObject({ stage: 'tournament-rules' })
+			expect(error.message).toContain('Tournament Rules 2026-01-01, category 703, rule 703.2')
+			expect(error.message).toContain(
+				'Conditional requires at least two distinct recognized descendant penalties',
+			)
+			expect(yield* readProjectFile(projectDirectory, 'content/rules-documents/prior.mdx')).toBe('prior')
 		}),
 	)
 

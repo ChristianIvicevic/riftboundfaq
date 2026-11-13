@@ -104,7 +104,11 @@ export function resolvePageImageTreatment(page: PageImagePage): PageImageTreatme
 
 	if (page.url === '/about-riftbound-faq') return { kind: 'landing' }
 	if (page.url === '/the-future-of-riftbound-faq') return { kind: 'editorial' }
-	if (page.url === CARD_TEXT_UPDATES_PATH || page.url === '/rules-documents') {
+	if (
+		page.url === CARD_TEXT_UPDATES_PATH ||
+		page.url === '/rules-documents' ||
+		page.url === '/rules-documents/tournament-infractions'
+	) {
 		return { kind: 'index-cover' }
 	}
 

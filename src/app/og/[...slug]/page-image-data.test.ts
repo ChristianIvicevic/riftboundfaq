@@ -21,6 +21,7 @@ describe('getPageImageData', () => {
 		['/the-future-of-riftbound-faq', 'The Future of Riftbound FAQ'],
 		['/rulings/card-text-updates', 'Card Text Updates (Errata)'],
 		['/rules-documents', 'Rules Documents'],
+		['/rules-documents/tournament-infractions', 'Tournament Infractions'],
 	])('uses the shared site-mark composition for %s', (url, title) => {
 		expect(getPageImageData(page(url, title), noSetLogo)).toEqual({
 			title,
