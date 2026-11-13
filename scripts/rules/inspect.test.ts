@@ -4,7 +4,7 @@ import { Effect } from 'effect'
 import * as FileSystem from 'effect/FileSystem'
 import * as Path from 'effect/Path'
 import { vi } from 'vitest'
-import { defaultCoreRulesPdfPaths, defaultTournamentRulesPdfPaths } from './inspect'
+import { discoverCoreRulesPdfPaths, discoverTournamentRulesPdfPaths } from './inspect'
 
 layer(NodeServices.layer)('rules inspection discovery', (it) => {
 	it.effect('discovers canonical Core Rules PDFs in version order', () =>
@@ -24,7 +24,7 @@ layer(NodeServices.layer)('rules inspection discovery', (it) => {
 			)
 			const controlledFileSystem = FileSystem.FileSystem.of({ ...fileSystem, readDirectory })
 
-			const paths = yield* defaultCoreRulesPdfPaths().pipe(
+			const paths = yield* discoverCoreRulesPdfPaths().pipe(
 				Effect.provideService(FileSystem.FileSystem, controlledFileSystem),
 			)
 
@@ -53,7 +53,7 @@ layer(NodeServices.layer)('rules inspection discovery', (it) => {
 			)
 			const controlledFileSystem = FileSystem.FileSystem.of({ ...fileSystem, readDirectory })
 
-			const paths = yield* defaultTournamentRulesPdfPaths().pipe(
+			const paths = yield* discoverTournamentRulesPdfPaths().pipe(
 				Effect.provideService(FileSystem.FileSystem, controlledFileSystem),
 			)
 

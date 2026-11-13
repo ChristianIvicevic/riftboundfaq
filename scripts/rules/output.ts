@@ -533,12 +533,12 @@ function renderOverviewTiles(tiles: readonly PlannedOverviewTile[]): string {
 		.join('\n')
 }
 
-function metadataPages(pages: readonly string[]): string {
+function renderMetadataPages(pages: readonly string[]): string {
 	return pages.map((page) => `\t\t${JSON.stringify(page)}`).join(',\n')
 }
 
-function navigationPages(currentCorePath: string, currentTournamentPath: string): string {
-	return metadataPages([
+function renderNavigationPages(currentCorePath: string, currentTournamentPath: string): string {
+	return renderMetadataPages([
 		'---Introduction---',
 		'index',
 		'---Current Documents---',
@@ -631,25 +631,33 @@ function appendRulesDocumentFiles(
 	add(
 		'meta.json',
 		render('meta.json.template', {
-			PAGES: navigationPages(corePlan.currentNavigationPath, tournamentPlan.currentNavigationPath),
+			PAGES: renderNavigationPages(corePlan.currentNavigationPath, tournamentPlan.currentNavigationPath),
 		}),
 	)
 	for (const [path, values] of [
 		[
 			'core-rules/changes/meta.json',
-			{ ICON: 'FileDiff', PAGES: metadataPages(corePlan.changeNavigationPages), TITLE: 'Changes' },
+			{ ICON: 'FileDiff', PAGES: renderMetadataPages(corePlan.changeNavigationPages), TITLE: 'Changes' },
 		],
 		[
 			'core-rules/(archive)/meta.json',
-			{ ICON: 'Archive', PAGES: metadataPages(corePlan.archiveNavigationPages), TITLE: 'Archive' },
+			{ ICON: 'Archive', PAGES: renderMetadataPages(corePlan.archiveNavigationPages), TITLE: 'Archive' },
 		],
 		[
 			'tournament-rules/changes/meta.json',
-			{ ICON: 'FileDiff', PAGES: metadataPages(tournamentPlan.changeNavigationPages), TITLE: 'Changes' },
+			{
+				ICON: 'FileDiff',
+				PAGES: renderMetadataPages(tournamentPlan.changeNavigationPages),
+				TITLE: 'Changes',
+			},
 		],
 		[
 			'tournament-rules/(archive)/meta.json',
-			{ ICON: 'Archive', PAGES: metadataPages(tournamentPlan.archiveNavigationPages), TITLE: 'Archive' },
+			{
+				ICON: 'Archive',
+				PAGES: renderMetadataPages(tournamentPlan.archiveNavigationPages),
+				TITLE: 'Archive',
+			},
 		],
 	] as const) {
 		add(path, render('group-meta.json.template', values))
@@ -667,7 +675,7 @@ function appendRulesDocumentFiles(
 	try {
 		validateVersionSpecificRulesPages(files, [corePlan, tournamentPlan])
 	} catch (cause) {
-		throw rulesDocumentPreparationError('artifacts', cause)
+		throw rulesDocumentPreparationError('validate-artifacts', cause)
 	}
 }
 
@@ -814,26 +822,27 @@ function causeMessage(cause: unknown): string {
 	return outward instanceof Error ? outward.message : String(outward)
 }
 
-const RULES_DOCUMENT_PREPARATION_OPERATIONS = {
-	templates: 'Reference publication templates could not be loaded',
+const RULES_DOCUMENT_PREPARATION_PHASE_MESSAGES = {
+	'load-templates': 'Reference publication templates could not be loaded',
+	'validate-templates': 'Reference publication templates are invalid',
 	render: 'Reference publication could not be rendered',
-	artifacts: 'Reference publication artifacts are invalid',
+	'validate-artifacts': 'Reference publication artifacts are invalid',
 } as const
 const RULES_DOCUMENT_PREPARATION_ERROR_TAG = 'RulesDocumentPreparationError'
 
 const RulesDocumentPreparationError = Data.TaggedError(RULES_DOCUMENT_PREPARATION_ERROR_TAG)<{
-	readonly phase: keyof typeof RULES_DOCUMENT_PREPARATION_OPERATIONS
+	readonly phase: keyof typeof RULES_DOCUMENT_PREPARATION_PHASE_MESSAGES
 	readonly message: string
 	readonly cause: unknown
 }>
 
 function rulesDocumentPreparationError(
-	phase: keyof typeof RULES_DOCUMENT_PREPARATION_OPERATIONS,
+	phase: keyof typeof RULES_DOCUMENT_PREPARATION_PHASE_MESSAGES,
 	cause: unknown,
 ) {
 	return new RulesDocumentPreparationError({
 		phase,
-		message: `${RULES_DOCUMENT_PREPARATION_OPERATIONS[phase]}: ${causeMessage(cause)}`,
+		message: `${RULES_DOCUMENT_PREPARATION_PHASE_MESSAGES[phase]}: ${causeMessage(cause)}`,
 		cause,
 	})
 }
@@ -865,20 +874,23 @@ export const loadRulesOutputTemplates = Effect.fn('loadRulesOutputTemplates')(fu
 ) {
 	const templates = yield* loadRulesDocumentTemplates(templatesDirectory).pipe(
 		Effect.mapError((cause) =>
-			rulesDocumentOutputError(rulesDocumentPreparationError('templates', cause), templatesDirectory),
+			rulesDocumentOutputError(rulesDocumentPreparationError('load-templates', cause), templatesDirectory),
 		),
 	)
 	yield* Effect.fromResult(
 		Result.try({
 			try: () => validateRulesDocumentTemplates(templates),
 			catch: (cause) =>
-				rulesDocumentOutputError(rulesDocumentPreparationError('render', cause), templatesDirectory),
+				rulesDocumentOutputError(
+					rulesDocumentPreparationError('validate-templates', cause),
+					templatesDirectory,
+				),
 		}),
 	)
 	return templates
 })
 
-function safeProjectRelativePath(pathService: Path.Path, path: string): boolean {
+function isSafeProjectRelativePath(pathService: Path.Path, path: string): boolean {
 	return (
 		path.length > 0 &&
 		!path.includes('\\') &&
@@ -917,7 +929,7 @@ function resolveOutputPath(
 	projectDirectory: string,
 	path: string,
 ): Result.Result<string, RulesOutputError> {
-	if (!safeProjectRelativePath(pathService, path)) {
+	if (!isSafeProjectRelativePath(pathService, path)) {
 		return Result.fail(outputValidationError(`Unsafe generated output path ${JSON.stringify(path)}`, path))
 	}
 	const resolved = pathService.resolveWithin(projectDirectory, path)
@@ -1056,7 +1068,9 @@ export const generateRulesOutput = Effect.fn('generateRulesOutput')(function* (
 			try: () => buildDesiredRulesOutput(coreRules, tournamentRules, templates),
 			catch: (cause) =>
 				rulesDocumentOutputError(
-					isRulesDocumentPreparationError(cause) ? cause : rulesDocumentPreparationError('artifacts', cause),
+					isRulesDocumentPreparationError(cause)
+						? cause
+						: rulesDocumentPreparationError('validate-artifacts', cause),
 					templatesDirectory,
 				),
 		}),

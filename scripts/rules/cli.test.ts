@@ -8,6 +8,23 @@ import {
 	RulesInspectionTargetError,
 } from './cli'
 
+it.each([
+	{
+		filename: 'CR-v1.0.pdf',
+		path: 'sources/CR-v1.0.pdf',
+		family: 'core-rules',
+	},
+	{
+		filename: 'Tournament-Rules-2026-01-01.pdf',
+		path: 'sources/Tournament-Rules-2026-01-01.pdf',
+		family: 'tournament-rules',
+	},
+] as const)('classifies $filename with canonical family identity', ({ family, filename, path }) => {
+	const result = classifyRulesInspectionTarget({ filename, path })
+
+	expect(result).toStrictEqual(Result.succeed({ family, path }))
+})
+
 it('classifies unsupported inspection targets as typed contextual failures', () => {
 	const path = 'sources/not-rules.pdf'
 	const result = classifyRulesInspectionTarget({ filename: 'not-rules.pdf', path })

@@ -9,14 +9,14 @@ function block({
 	text,
 	heading = null,
 	headingStyleMismatch = null,
-	lines = [{ kind: 'paragraph' as const, text }],
+	content = [{ kind: 'paragraph' as const, text }],
 }: {
 	sequence: number
 	id: string
 	text: string
 	heading?: RuleBlock['heading']
 	headingStyleMismatch?: RuleBlock['headingStyleMismatch']
-	lines?: RuleBlock['lines']
+	content?: RuleBlock['content']
 }): RuleBlock {
 	return {
 		sequence,
@@ -47,7 +47,7 @@ function block({
 				text,
 			},
 		],
-		lines,
+		content,
 		text,
 		source: { startPage: 1, startLine: sequence, endPage: 1, endLine: sequence },
 	}
@@ -63,7 +63,7 @@ describe('structureRuleBlocks', () => {
 				sequence: 4,
 				id: '100.2.1',
 				text: 'Resolve it. Example: Do this. See rule 200.1.',
-				lines: [
+				content: [
 					{ kind: 'paragraph', text: 'Resolve it.' },
 					{ kind: 'example', text: 'Example: Do this.' },
 					{ kind: 'reference', text: 'See rule 200.1.' },
@@ -73,7 +73,7 @@ describe('structureRuleBlocks', () => {
 				sequence: 5,
 				id: '100.2.1.a',
 				text: '* Then finish.',
-				lines: [{ kind: 'bullet', text: 'Then finish.' }],
+				content: [{ kind: 'bullet', text: 'Then finish.' }],
 			}),
 		]
 

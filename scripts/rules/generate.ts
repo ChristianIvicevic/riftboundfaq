@@ -140,25 +140,27 @@ export const generateRules = Effect.fn('generateRules')(function* (options: Rule
 	)
 
 	// Families and their large PDFs stay sequential to cap memory usage and stop at the first failure.
-	const coreVersions = yield* Effect.forEach(manifest.coreRules.registeredVersions, (registeredVersion) =>
-		Effect.gen(function* () {
-			const extracted = yield* extractCoreRulesVersion(registeredVersion, sourcesDirectory)
-			for (const { message } of extracted.diagnostics) yield* Console.warn(message)
-			return extracted
-		}),
+	const extractedCoreRulesVersions = yield* Effect.forEach(
+		manifest.coreRules.registeredVersions,
+		(registeredVersion) =>
+			Effect.gen(function* () {
+				const extracted = yield* extractCoreRulesVersion(registeredVersion, sourcesDirectory)
+				for (const { message } of extracted.diagnostics) yield* Console.warn(message)
+				return extracted
+			}),
 	).pipe(
 		Effect.mapError((cause) =>
 			causedGenerationError('core-rules', 'Core Rules generation failed', cause, extractionContext(cause)),
 		),
 	)
 	const extractedCoreRules = {
-		versions: coreVersions,
-		currentVersion: coreVersions.find(
+		versions: extractedCoreRulesVersions,
+		currentVersion: extractedCoreRulesVersions.find(
 			({ registeredVersion }) => registeredVersion === manifest.coreRules.currentVersion,
 		)!,
 	} satisfies ExtractedCoreRulesFamily
 
-	const tournamentVersions = yield* Effect.forEach(
+	const extractedTournamentRulesVersions = yield* Effect.forEach(
 		manifest.tournamentRules.registeredVersions,
 		(registeredVersion) =>
 			Effect.gen(function* () {
@@ -177,8 +179,8 @@ export const generateRules = Effect.fn('generateRules')(function* (options: Rule
 		),
 	)
 	const extractedTournamentRules = {
-		versions: tournamentVersions,
-		currentVersion: tournamentVersions.find(
+		versions: extractedTournamentRulesVersions,
+		currentVersion: extractedTournamentRulesVersions.find(
 			({ registeredVersion }) => registeredVersion === manifest.tournamentRules.currentVersion,
 		)!,
 	} satisfies ExtractedTournamentRulesFamily

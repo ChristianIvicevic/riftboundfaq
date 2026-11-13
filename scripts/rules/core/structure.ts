@@ -69,7 +69,7 @@ function ruleNode(block: RuleBlock): StructuredRuleNode {
 	return {
 		key: `${block.page}:${block.sourceLine}:${block.sequence}`,
 		id: block.id,
-		content: block.lines,
+		content: block.content,
 		children: [],
 		source: sourceLocation(block),
 	}

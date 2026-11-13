@@ -47,17 +47,17 @@ function countRuleNodes(nodes: readonly StructuredRuleNode[]): number {
 	return nodes.reduce((total, node) => total + 1 + countRuleNodes(node.children), 0)
 }
 
-function groupOccurrences(records: readonly RuleBlock[]) {
+function groupRuleBlocksById(blocks: readonly RuleBlock[]) {
 	const occurrencesById = new Map<string, RuleBlock[]>()
-	for (const record of records) {
-		const occurrences = occurrencesById.get(record.id) ?? []
-		occurrences.push(record)
-		occurrencesById.set(record.id, occurrences)
+	for (const block of blocks) {
+		const occurrences = occurrencesById.get(block.id) ?? []
+		occurrences.push(block)
+		occurrencesById.set(block.id, occurrences)
 	}
 	return occurrencesById
 }
 
-function duplicateDetails(occurrencesById: ReadonlyMap<string, RuleBlock[]>) {
+function duplicateRuleIdDetails(occurrencesById: ReadonlyMap<string, RuleBlock[]>) {
 	return Object.fromEntries(
 		[...occurrencesById].flatMap(([id, occurrences]) =>
 			occurrences.length > 1
@@ -122,16 +122,16 @@ export const inspectCoreRulesPdf = Effect.fn('inspectCoreRulesPdf')(function* (p
 	const headingCounts = new Map<NonNullable<RuleBlock['heading']>, number>()
 	const headingSamples = new Map<NonNullable<RuleBlock['heading']>, string[]>()
 	const { blocks, unassignedLines, ruleLikeTextOutsideLabelColumn } = assembleRuleBlocks(pages)
-	for (const record of blocks) {
-		increment(labelSizeCounts, record.fontSize)
-		if (!record.heading) continue
-		increment(headingCounts, record.heading)
-		const samples = headingSamples.get(record.heading) ?? []
-		if (samples.length < 12) samples.push(`${record.label} ${record.text}`.trim())
-		headingSamples.set(record.heading, samples)
+	for (const block of blocks) {
+		increment(labelSizeCounts, block.fontSize)
+		if (!block.heading) continue
+		increment(headingCounts, block.heading)
+		const samples = headingSamples.get(block.heading) ?? []
+		if (samples.length < 12) samples.push(`${block.label} ${block.text}`.trim())
+		headingSamples.set(block.heading, samples)
 	}
 
-	const occurrencesById = groupOccurrences(blocks)
+	const occurrencesById = groupRuleBlocksById(blocks)
 	const backwardsIds: { previousId: string; id: string; pageNumber: number }[] = []
 	for (let index = 1; index < blocks.length; index++) {
 		const previousId = blocks[index - 1].id
@@ -143,7 +143,7 @@ export const inspectCoreRulesPdf = Effect.fn('inspectCoreRulesPdf')(function* (p
 
 	const xCoordinates = blocks.map(({ x }) => x)
 	const malformedLabels = blocks.filter(({ issues }) => issues.length > 0)
-	const duplicateIds = duplicateDetails(occurrencesById)
+	const duplicateIds = duplicateRuleIdDetails(occurrencesById)
 	const structured = structureRuleBlocks(blocks)
 	const structuredRuleCount = structured.sections.reduce(
 		(total, section) =>
@@ -157,8 +157,8 @@ export const inspectCoreRulesPdf = Effect.fn('inspectCoreRulesPdf')(function* (p
 		0,
 	)
 	const crossPageBlocks = blocks.filter(({ source }) => source.startPage !== source.endPage).length
-	const assembledSourceLines = blocks.reduce((total, record) => total + record.sourceLines.length, 0)
-	const assignedPhysicalLines = blocks.reduce((total, record) => total + record.physicalLineCount, 0)
+	const assembledSourceLines = blocks.reduce((total, block) => total + block.sourceLines.length, 0)
+	const assignedPhysicalLines = blocks.reduce((total, block) => total + block.physicalLineCount, 0)
 
 	return {
 		file: pathService.basename(absolutePath),
@@ -179,18 +179,18 @@ export const inspectCoreRulesPdf = Effect.fn('inspectCoreRulesPdf')(function* (p
 		unassignedLines,
 		labelXRange: xCoordinates.length > 0 ? [Math.min(...xCoordinates), Math.max(...xCoordinates)] : null,
 		labelSizes: Object.fromEntries([...labelSizeCounts].toSorted(([left], [right]) => right - left)),
-		headings: Object.fromEntries(headingCounts),
+		headingCounts: Object.fromEntries(headingCounts),
 		headingSamples: Object.fromEntries(headingSamples),
 		structured: {
 			...structured,
 			ruleCount: structuredRuleCount,
 			subsectionCount: structuredSubsectionCount,
 		},
-		records: blocks,
+		blocks,
 	}
 })
 
-export type CoreRulesReport = Effect.Success<ReturnType<typeof inspectCoreRulesPdf>>
+export type CoreRulesPdfReport = Effect.Success<ReturnType<typeof inspectCoreRulesPdf>>
 
 type CoreRulesSourceContext = Readonly<{
 	family: 'core-rules'
@@ -213,11 +213,11 @@ export type ExtractedCoreRulesFamily = Readonly<{
 
 type CoreRulesExtractionReport = Readonly<
 	Pick<
-		CoreRulesReport,
-		'file' | 'title' | 'lastUpdated' | 'physicalLineCount' | 'assignedPhysicalLines' | 'records'
+		CoreRulesPdfReport,
+		'file' | 'title' | 'lastUpdated' | 'physicalLineCount' | 'assignedPhysicalLines' | 'blocks'
 	> & {
-		unassignedLines: readonly Readonly<Pick<CoreRulesReport['unassignedLines'][number], 'text'>>[]
-		structured: Readonly<Pick<CoreRulesReport['structured'], 'sections' | 'diagnostics'>>
+		unassignedLines: readonly Readonly<Pick<CoreRulesPdfReport['unassignedLines'][number], 'text'>>[]
+		structured: Readonly<Pick<CoreRulesPdfReport['structured'], 'sections' | 'diagnostics'>>
 	}
 >
 
@@ -310,10 +310,10 @@ function validateReport(
 
 function serializeCoreRulesTranscript(report: CoreRulesExtractionReport): string {
 	const lines = [report.title, `Last Updated: ${report.lastUpdated}`]
-	for (const record of report.records) {
-		const [firstLine, ...continuationLines] = record.sourceLines
+	for (const block of report.blocks) {
+		const [firstLine, ...continuationLines] = block.sourceLines
 		lines.push(
-			`${record.label}${firstLine?.text ? ` ${firstLine.text}` : ''}`,
+			`${block.label}${firstLine?.text ? ` ${firstLine.text}` : ''}`,
 			...continuationLines.map(({ text }) => text),
 		)
 	}

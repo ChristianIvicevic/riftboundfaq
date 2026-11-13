@@ -4,7 +4,7 @@ import { Cause, Effect, Exit, Fiber } from 'effect'
 import * as FileSystem from 'effect/FileSystem'
 import * as Path from 'effect/Path'
 import { vi } from 'vitest'
-import { testLayer } from '../pdf'
+import { layerTest } from '../pdf'
 import { inspectCoreRulesPdf } from './extract'
 
 function textItem(str: string, x: number, y: number, size = 8, width = str.length * 4) {
@@ -71,7 +71,7 @@ layer(NodeServices.layer)('Core Rules inspection', (it) => {
 			})
 			const load = vi.fn(() => ({ promise: Promise.resolve(document), destroy }))
 
-			const report = yield* inspectCoreRulesPdf(sourcePath).pipe(Effect.provide(testLayer(load)))
+			const report = yield* inspectCoreRulesPdf(sourcePath).pipe(Effect.provide(layerTest(load)))
 
 			expect(report).toMatchObject({
 				file: 'CR-v1.0.pdf',
@@ -82,9 +82,9 @@ layer(NodeServices.layer)('Core Rules inspection', (it) => {
 				physicalLineCount: 5,
 				crossPageBlocks: 1,
 			})
-			expect(report.records[1]).toMatchObject({
+			expect(report.blocks[1]).toMatchObject({
 				id: '100.1',
-				lines: [{ kind: 'paragraph', text: 'First sentence. Continued sentence.' }],
+				content: [{ kind: 'paragraph', text: 'First sentence. Continued sentence.' }],
 				source: { startPage: 1, startLine: 4, endPage: 2, endLine: 1 },
 			})
 			expect(events).toStrictEqual([
@@ -123,7 +123,7 @@ layer(NodeServices.layer)('Core Rules inspection', (it) => {
 			const document = { numPages: 1, getPage: vi.fn(() => Promise.resolve(page)) }
 			const destroy = vi.fn(() => Promise.resolve())
 			const load = vi.fn(() => ({ promise: Promise.resolve(document), destroy }))
-			const inspection = inspectCoreRulesPdf(sourcePath).pipe(Effect.provide(testLayer(load)))
+			const inspection = inspectCoreRulesPdf(sourcePath).pipe(Effect.provide(layerTest(load)))
 			const fiber = yield* Effect.forkChild(inspection, { startImmediately: true })
 			yield* Effect.promise(() => extractionStarted.promise)
 

@@ -18,8 +18,8 @@ import {
 } from './source-rows'
 import { structureTournamentRulesEntries, type TournamentStructureDiagnostic } from './structure'
 
-const FORENSIC_PDF_FILENAME = /^Tournament-Rules-(\d{4}-\d{2}-\d{2})\.pdf$/u
-const TITLE = 'Riftbound Tournament Rules'
+const TOURNAMENT_RULES_PDF_FILENAME = /^Tournament-Rules-(\d{4}-\d{2}-\d{2})\.pdf$/u
+const EXPECTED_TOURNAMENT_RULES_TITLE = 'Riftbound Tournament Rules'
 
 function compareIds(left: string, right: string): number {
 	const leftParts = left.split('.')
@@ -68,13 +68,13 @@ export type TournamentRulesSource = Readonly<{
 	entries: readonly TournamentRulesSourceEntry[]
 }>
 
-const readTournamentPdf = Effect.fnUntraced(function* (path: string) {
+const readTournamentRulesPdf = Effect.fnUntraced(function* (path: string) {
 	const fileSystem = yield* FileSystem.FileSystem
 	const pathService = yield* Path.Path
 	const pdf = yield* RulesPdf
 	const absolutePath = pathService.resolve(path)
 	const filename = pathService.basename(absolutePath)
-	const version = filename.match(FORENSIC_PDF_FILENAME)?.[1] ?? null
+	const version = filename.match(TOURNAMENT_RULES_PDF_FILENAME)?.[1] ?? null
 	const data = new Uint8Array(yield* fileSystem.readFile(absolutePath))
 	return yield* pdf.withDocument({ path: absolutePath, data }, (document) =>
 		Effect.gen(function* () {
@@ -118,9 +118,9 @@ const readTournamentPdf = Effect.fnUntraced(function* (path: string) {
 	)
 })
 
-export const inspectTournamentPdf = Effect.fn('inspectTournamentPdf')(function* (path: string) {
+export const inspectTournamentRulesPdf = Effect.fn('inspectTournamentRulesPdf')(function* (path: string) {
 	const fileSystem = yield* FileSystem.FileSystem
-	const inspected = yield* readTournamentPdf(path)
+	const inspected = yield* readTournamentRulesPdf(path)
 	const fileStats = yield* fileSystem.stat(inspected.absolutePath)
 	const { filename, version, pageCount, physicalLineCount, title, lastUpdated, reconstruction } = inspected
 	const rows = reconstruction.forensicRows
@@ -139,7 +139,7 @@ export const inspectTournamentPdf = Effect.fn('inspectTournamentPdf')(function* 
 	)
 	const malformedLabels = diagnostics.filter(({ code }) => code === 'malformed-label')
 	const unnumberedRows = rows.filter((row) => !row.rawLabel)
-	const deletedRows = rows.filter((row) => !row.active)
+	const removedRows = rows.filter((row) => !row.active)
 	const highlightedActiveRows = rows.filter((row) => row.active && row.highlighted)
 	const headingCounts = {
 		primary: rows.filter(({ kind }) => kind === 'primary-heading').length,
@@ -157,15 +157,15 @@ export const inspectTournamentPdf = Effect.fn('inspectTournamentPdf')(function* 
 		headingCounts,
 		rowCount: rows.length,
 		numberedRowCount: numberedRows.length,
-		activeRowCount: rows.length - deletedRows.length,
-		deletedRowCount: deletedRows.length,
+		activeRowCount: rows.length - removedRows.length,
+		removedRowCount: removedRows.length,
 		unnumberedRowCount: unnumberedRows.length,
 		unnumberedRows: unnumberedRows.map(({ page, text, geometry }) => ({
 			page,
 			text,
 			geometry: geometry.bounds,
 		})),
-		crossPageJoins: rows.filter(({ continuation }) => continuation).length,
+		crossPageRowCount: rows.filter(({ continuation }) => continuation).length,
 		crossPageRows: rows
 			.filter(({ continuation }) => continuation)
 			.map(({ id, rawLabel, text, source }) => ({ id, rawLabel, text, source })),
@@ -175,7 +175,7 @@ export const inspectTournamentPdf = Effect.fn('inspectTournamentPdf')(function* 
 		missingIds: rows
 			.filter((row) => row.rawLabel && !row.id)
 			.map((row) => ({ page: row.page, rawLabel: row.rawLabel })),
-		strikeoutRemovals: deletedRows.map(({ page, rawLabel, id, text, removedText }) => ({
+		strikeoutRemovals: removedRows.map(({ page, rawLabel, id, text, removedText }) => ({
 			page,
 			rawLabel,
 			id,
@@ -194,7 +194,7 @@ export const inspectTournamentPdf = Effect.fn('inspectTournamentPdf')(function* 
 })
 
 const readTournamentRulesSource = Effect.fn('readTournamentRulesSource')(function* (path: string) {
-	const { filename, version, title, lastUpdated, reconstruction } = yield* readTournamentPdf(path)
+	const { filename, version, title, lastUpdated, reconstruction } = yield* readTournamentRulesPdf(path)
 	return {
 		file: filename,
 		version,
@@ -204,7 +204,7 @@ const readTournamentRulesSource = Effect.fn('readTournamentRulesSource')(functio
 	} satisfies TournamentRulesSource
 })
 
-export type TournamentPdfReport = Effect.Success<ReturnType<typeof inspectTournamentPdf>>
+export type TournamentRulesPdfReport = Effect.Success<ReturnType<typeof inspectTournamentRulesPdf>>
 
 type TournamentRulesSourceContext = Readonly<{
 	family: 'tournament-rules'
@@ -276,7 +276,7 @@ function validateSource(
 				),
 			)
 		}
-		if (source.title !== TITLE) {
+		if (source.title !== EXPECTED_TOURNAMENT_RULES_TITLE) {
 			return yield* Result.fail(
 				validationError(context, `${source.file}: unexpected document title ${source.title}`),
 			)

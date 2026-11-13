@@ -3,7 +3,7 @@ import * as NodeServices from '@effect/platform-node/NodeServices'
 import { Cause, Console, Effect, Logger, Runtime } from 'effect'
 import { squashRulesCliCause } from './rules/cli'
 import { generateRules } from './rules/generate'
-import { LIVE_LAYER as RULES_PDF_LIVE_LAYER } from './rules/pdf'
+import { layer as rulesPdfLayer } from './rules/pdf'
 
 const program = Effect.gen(function* () {
 	const { coreRules, tournamentRules, reference } = yield* generateRules()
@@ -18,7 +18,7 @@ const program = Effect.gen(function* () {
 		return Runtime.getErrorReported(error) ? Console.error(error) : Effect.void
 	}),
 	Effect.provide(NodeServices.layer),
-	Effect.provide(RULES_PDF_LIVE_LAYER),
+	Effect.provide(rulesPdfLayer),
 	Effect.provide(Logger.layer([])),
 )
 

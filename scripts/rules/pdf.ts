@@ -52,7 +52,7 @@ type RulesPdfService = Readonly<{
 	) => Effect.Effect<A, E | RulesPdfError, R>
 }>
 
-export const RulesPdf = Context.Service<RulesPdfService>('riftboundfaq/RulesPdf')
+export const RulesPdf = Context.Service<RulesPdfService>('riftboundfaq/scripts/rules/RulesPdf')
 
 export type PdfJsPage = Readonly<{
 	view: readonly number[]
@@ -190,11 +190,11 @@ function makeRulesPdf(load: PdfJsLoader): RulesPdfService {
 	}
 }
 
-export const LIVE_LAYER = Layer.succeed(
+export const layer = Layer.succeed(
 	RulesPdf,
 	makeRulesPdf((data) => getDocument({ data })),
 )
 
-export function testLayer(load: PdfJsLoader) {
+export function layerTest(load: PdfJsLoader) {
 	return Layer.succeed(RulesPdf, makeRulesPdf(load))
 }

@@ -62,7 +62,7 @@ describe('assembleRuleBlocks', () => {
 			{ id: '100.2', heading: 'secondary', issues: [] },
 			{ id: '100.2.1', heading: null, issues: [] },
 		])
-		expect(result.blocks[3].lines).toStrictEqual([{ kind: 'bullet', text: 'Resolve it.' }])
+		expect(result.blocks[3].content).toStrictEqual([{ kind: 'bullet', text: 'Resolve it.' }])
 	})
 
 	test('uses body text size to classify mismatched heading labels', () => {
@@ -124,7 +124,7 @@ describe('assembleRuleBlocks', () => {
 
 		expect(result.blocks[1]).toMatchObject({
 			physicalLineCount: 4,
-			lines: [
+			content: [
 				{ kind: 'paragraph', text: 'First sentence. wrapped sentence.' },
 				{ kind: 'reference', text: 'See rule 200.1.' },
 				{ kind: 'example', text: 'Example: Continued example.' },
@@ -145,7 +145,7 @@ describe('assembleRuleBlocks', () => {
 		])
 
 		expect(result.blocks[0]).toMatchObject({
-			lines: [
+			content: [
 				{ kind: 'paragraph', text: 'Game Objects include the following:' },
 				{ kind: 'bullet', text: 'Main Deck cards' },
 				{ kind: 'bullet', text: 'Runes' },
@@ -164,7 +164,7 @@ describe('assembleRuleBlocks', () => {
 			]),
 		])
 
-		expect(result.blocks[0].lines).toStrictEqual([
+		expect(result.blocks[0].content).toStrictEqual([
 			{
 				kind: 'paragraph',
 				text: 'Statuses include: Attached, Attacking, Buffed, Banished, Controlled, Defending, Empowered, Equipped, Exhausted, Facedown, Readied, and Stunned.',
@@ -184,7 +184,7 @@ describe('assembleRuleBlocks', () => {
 			]),
 		])
 
-		expect(result.blocks[0].lines).toStrictEqual([
+		expect(result.blocks[0].content).toStrictEqual([
 			{ kind: 'paragraph', text: 'Modifications stop being tracked when the object changes zones.' },
 			{ kind: 'paragraph', text: 'Examples:' },
 			{ kind: 'example', text: 'Damage is cleared.' },
@@ -212,7 +212,7 @@ describe('assembleRuleBlocks', () => {
 			]),
 		])
 
-		expect(result.blocks[0].lines).toStrictEqual([
+		expect(result.blocks[0].content).toStrictEqual([
 			{ kind: 'paragraph', text: 'Targeting examples follow.' },
 			{ kind: 'paragraph', text: 'Examples:' },
 			{ kind: 'example', text: 'The first example wraps here.' },

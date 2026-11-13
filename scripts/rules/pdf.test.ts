@@ -1,7 +1,7 @@
 import { expect, it } from '@effect/vitest'
 import { Cause, Effect, Exit, Fiber, Result } from 'effect'
 import { vi } from 'vitest'
-import { RulesPdf, RulesPdfError, testLayer } from './pdf'
+import { layerTest, RulesPdf, RulesPdfError } from './pdf'
 
 function assertFailureExit<A, E>(exit: Exit.Exit<A, E>): Cause.Cause<E> {
 	if (Exit.isSuccess(exit)) throw new Error('Expected PDF operation to fail')
@@ -34,7 +34,7 @@ it.effect('extracts plain page data and releases the page and loading task', () 
 			return yield* pdf.withDocument({ path: '/rules/core.pdf', data }, (pdfDocument) =>
 				pdfDocument.extractTextPage(1),
 			)
-		}).pipe(Effect.provide(testLayer(load)))
+		}).pipe(Effect.provide(layerTest(load)))
 
 		expect(extracted).toStrictEqual({ page: 1, width: 612, items: [textItem] })
 		expect(load).toHaveBeenCalledExactlyOnceWith(data)
@@ -80,7 +80,7 @@ it.effect('extracts text and operators concurrently as plain page data', () =>
 				{ path: '/rules/tournament.pdf', data: new Uint8Array([4]) },
 				(pdfDocument) => pdfDocument.extractTextAndOperatorsPage(1),
 			)
-		}).pipe(Effect.provide(testLayer(load)))
+		}).pipe(Effect.provide(layerTest(load)))
 		const fiber = yield* Effect.forkChild(extraction)
 		yield* Effect.promise(() => bothExtractionsStarted.promise)
 		textContent.resolve({ items: [{ str: 'Tournament Rules' }] })
@@ -115,7 +115,7 @@ it.effect('reports loading-task creation failures with source context', () =>
 					{ path: '/rules/broken.pdf', data: new Uint8Array([1]) },
 					() => Effect.void,
 				)
-			}).pipe(Effect.provide(testLayer(load))),
+			}).pipe(Effect.provide(layerTest(load))),
 		)
 
 		expect(error).toBeInstanceOf(RulesPdfError)
@@ -142,7 +142,7 @@ it.effect('retains a non-stringifiable PDF.js failure as a typed error', () =>
 				{ path: '/rules/unprintable.pdf', data: new Uint8Array([1]) },
 				() => Effect.void,
 			)
-		}).pipe(Effect.provide(testLayer(load)), Effect.exit)
+		}).pipe(Effect.provide(layerTest(load)), Effect.exit)
 
 		const error = Result.getOrThrow(Cause.findError(assertFailureExit(exit)))
 		expect(error).toBeInstanceOf(RulesPdfError)
@@ -167,7 +167,7 @@ it.effect('destroys the loading task after document initialization rejects', () 
 					{ path: '/rules/invalid.pdf', data: new Uint8Array([2]) },
 					() => Effect.void,
 				)
-			}).pipe(Effect.provide(testLayer(load))),
+			}).pipe(Effect.provide(layerTest(load))),
 		)
 
 		expect(error).toBeInstanceOf(RulesPdfError)
@@ -194,7 +194,7 @@ it.effect('destroys the loading task when page acquisition rejects', () =>
 					{ path: '/rules/pages.pdf', data: new Uint8Array([3]) },
 					(pdfDocument) => pdfDocument.extractTextPage(2),
 				)
-			}).pipe(Effect.provide(testLayer(load))),
+			}).pipe(Effect.provide(layerTest(load))),
 		)
 
 		expect(error).toBeInstanceOf(RulesPdfError)
@@ -230,7 +230,7 @@ it.effect('cleans the page and destroys the loading task when text extraction re
 					{ path: '/rules/text.pdf', data: new Uint8Array([4]) },
 					(pdfDocument) => pdfDocument.extractTextPage(1),
 				)
-			}).pipe(Effect.provide(testLayer(load))),
+			}).pipe(Effect.provide(layerTest(load))),
 		)
 
 		expect(error).toBeInstanceOf(RulesPdfError)
@@ -261,7 +261,7 @@ it.effect('cleans the page and destroys the loading task when operator extractio
 					{ path: '/rules/operators.pdf', data: new Uint8Array([5]) },
 					(pdfDocument) => pdfDocument.extractTextAndOperatorsPage(1),
 				)
-			}).pipe(Effect.provide(testLayer(load))),
+			}).pipe(Effect.provide(layerTest(load))),
 		)
 
 		expect(error).toBeInstanceOf(RulesPdfError)
@@ -294,7 +294,7 @@ it.effect('releases resources after a downstream typed failure', () =>
 					{ path: '/rules/downstream.pdf', data: new Uint8Array([6]) },
 					(pdfDocument) => pdfDocument.extractTextPage(1).pipe(Effect.andThen(Effect.fail(downstreamError))),
 				)
-			}).pipe(Effect.provide(testLayer(load))),
+			}).pipe(Effect.provide(layerTest(load))),
 		)
 
 		expect(error).toBe(downstreamError)
@@ -323,7 +323,7 @@ it.effect('releases the page and loading task after a downstream defect', () =>
 				{ path: '/rules/defect.pdf', data: new Uint8Array([7]) },
 				(pdfDocument) => pdfDocument.extractTextPage(1).pipe(Effect.andThen(Effect.die(defect))),
 			)
-		}).pipe(Effect.provide(testLayer(load)), Effect.exit)
+		}).pipe(Effect.provide(layerTest(load)), Effect.exit)
 
 		expect(Cause.hasDies(assertFailureExit(exit))).toBe(true)
 		expect(Cause.squash(assertFailureExit(exit))).toBe(defect)
@@ -355,7 +355,7 @@ it.effect('cleans the page and destroys the loading task when extraction is inte
 				{ path: '/rules/interrupted.pdf', data: new Uint8Array([8]) },
 				(pdfDocument) => pdfDocument.extractTextPage(1),
 			)
-		}).pipe(Effect.provide(testLayer(load)))
+		}).pipe(Effect.provide(layerTest(load)))
 		const fiber = yield* Effect.forkChild(extraction, { startImmediately: true })
 		yield* Effect.promise(() => extractionStarted.promise)
 
@@ -391,7 +391,7 @@ it.effect('reports page cleanup failure and still destroys the loading task', ()
 					{ path: '/rules/cleanup.pdf', data: new Uint8Array([9]) },
 					(pdfDocument) => pdfDocument.extractTextPage(1),
 				)
-			}).pipe(Effect.provide(testLayer(load))),
+			}).pipe(Effect.provide(layerTest(load))),
 		)
 
 		expect(error).toBeInstanceOf(RulesPdfError)
@@ -422,7 +422,7 @@ it.effect('reports loading-task destruction failure after successful extraction'
 					{ path: '/rules/destroy.pdf', data: new Uint8Array([10]) },
 					(pdfDocument) => pdfDocument.extractTextPage(1),
 				)
-			}).pipe(Effect.provide(testLayer(load))),
+			}).pipe(Effect.provide(layerTest(load))),
 		)
 
 		expect(error).toBeInstanceOf(RulesPdfError)

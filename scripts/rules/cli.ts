@@ -1,5 +1,6 @@
 import { Cause, Data, Result, Runtime } from 'effect'
 import * as PlatformError from 'effect/PlatformError'
+import type { RulesDocumentFamilyId } from '@/lib/rules/document-family-identity'
 
 const AlreadyReportedRulesCliError = Data.TaggedError('AlreadyReportedRulesCliError')<{
 	readonly [Runtime.errorReported]: false
@@ -12,14 +13,14 @@ export const alreadyReportedRulesCliFailure = new AlreadyReportedRulesCliError({
 export type RulesCliFailure = Error
 
 export type RulesInspectionTarget = Readonly<{
-	type: 'core' | 'tournament'
+	family: RulesDocumentFamilyId
 	path: string
 }>
 
 export class RulesInspectionTargetError extends Data.TaggedError('RulesInspectionTargetError')<{
 	readonly operation: 'classify-source'
 	readonly source: Readonly<{
-		family: 'core-rules' | 'tournament-rules' | null
+		family: RulesDocumentFamilyId | null
 		version: string | null
 		path: string
 	}>
@@ -33,9 +34,9 @@ export function classifyRulesInspectionTarget({
 	RulesInspectionTarget,
 	RulesInspectionTargetError
 > {
-	if (/^CR-v.+\.pdf$/u.test(filename)) return Result.succeed({ type: 'core', path })
+	if (/^CR-v.+\.pdf$/u.test(filename)) return Result.succeed({ family: 'core-rules', path })
 	if (/^Tournament-Rules-.+\.pdf$/u.test(filename)) {
-		return Result.succeed({ type: 'tournament', path })
+		return Result.succeed({ family: 'tournament-rules', path })
 	}
 	return Result.fail(
 		new RulesInspectionTargetError({

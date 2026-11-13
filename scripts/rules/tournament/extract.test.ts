@@ -5,8 +5,8 @@ import * as FileSystem from 'effect/FileSystem'
 import * as Path from 'effect/Path'
 import { OPS } from 'pdfjs-dist/legacy/build/pdf.mjs'
 import { vi } from 'vitest'
-import { testLayer } from '../pdf'
-import { inspectTournamentPdf } from './extract'
+import { layerTest } from '../pdf'
+import { inspectTournamentRulesPdf } from './extract'
 
 function textItem(str: string, x: number, y: number, size = 8, width = str.length * 4) {
 	return { str, transform: [size, 0, 0, size, x, y], width, height: size }
@@ -72,7 +72,7 @@ layer(NodeServices.layer)('Tournament Rules inspection', (it) => {
 			})
 			const load = vi.fn(() => ({ promise: Promise.resolve(document), destroy }))
 
-			const report = yield* inspectTournamentPdf(sourcePath).pipe(Effect.provide(testLayer(load)))
+			const report = yield* inspectTournamentRulesPdf(sourcePath).pipe(Effect.provide(layerTest(load)))
 
 			expect(report).toMatchObject({
 				file: 'Tournament-Rules-2026-01-02.pdf',
@@ -83,7 +83,8 @@ layer(NodeServices.layer)('Tournament Rules inspection', (it) => {
 				lastUpdated: '2026-01-02',
 				physicalLineCount: 4,
 				rowCount: 1,
-				crossPageJoins: 1,
+				removedRowCount: 0,
+				crossPageRowCount: 1,
 			})
 			expect(report.rows[0]).toMatchObject({
 				id: '100.1',

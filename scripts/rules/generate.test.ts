@@ -5,7 +5,7 @@ import * as FileSystem from 'effect/FileSystem'
 import * as Path from 'effect/Path'
 import { OPS } from 'pdfjs-dist/legacy/build/pdf.mjs'
 import { generateRules, RulesGenerationError } from './generate'
-import { testLayer as rulesPdfTestLayer, type PdfJsDocument, type PdfJsPage } from './pdf'
+import { layerTest as rulesPdfLayerTest, type PdfJsDocument, type PdfJsPage } from './pdf'
 
 const SCRIPTS_DIRECTORY = import.meta.dirname
 const CORE_RULES_PDF_MARKER = 1
@@ -128,7 +128,7 @@ function partiallyStruckTournamentRulesPage(): PdfJsPage {
 }
 
 function rulesPdfLayer(pages: Readonly<{ core?: PdfJsPage; tournament?: PdfJsPage }> = {}) {
-	return rulesPdfTestLayer((data) => {
+	return rulesPdfLayerTest((data) => {
 		const page =
 			data[0] === CORE_RULES_PDF_MARKER
 				? (pages.core ?? coreRulesPage())
@@ -147,7 +147,7 @@ function historyRulesPdfLayer() {
 		[5, coreRulesPage('Riftbound Core Rules', 20, '2025-12-01')],
 		[6, tournamentRulesPage('4/29/2026')],
 	])
-	return rulesPdfTestLayer((data) => {
+	return rulesPdfLayerTest((data) => {
 		const page = pages.get(data[0])
 		if (!page) throw new Error(`Unexpected history PDF marker ${data[0]}`)
 		const document: PdfJsDocument = { numPages: 1, getPage: () => Promise.resolve(page) }
@@ -614,7 +614,7 @@ Rule numbers open the corresponding source document in a new tab.
 			)
 
 			const events: string[] = []
-			const pdfLayer = rulesPdfTestLayer((data) => {
+			const pdfLayer = rulesPdfLayerTest((data) => {
 				const marker = data[0]
 				events.push(`load:${marker}`)
 				const page =
@@ -684,7 +684,7 @@ Rule numbers open the corresponding source document in a new tab.
 			)
 
 			const loads: number[] = []
-			const pdfLayer = rulesPdfTestLayer((data) => {
+			const pdfLayer = rulesPdfLayerTest((data) => {
 				const marker = data[0]
 				loads.push(marker)
 				if (marker === 4) throw new Error('controlled later-version failure')
@@ -873,7 +873,7 @@ Rule numbers open the corresponding source document in a new tab.
 			const pathService = yield* Path.Path
 			const projectDirectory = yield* temporaryProject()
 			yield* writeProjectFile(projectDirectory, 'content/rules-documents/prior.mdx', 'prior content')
-			const failedPdfLayer = rulesPdfTestLayer(() => {
+			const failedPdfLayer = rulesPdfLayerTest(() => {
 				throw new Error('controlled PDF failure')
 			})
 
@@ -987,6 +987,7 @@ Rule numbers open the corresponding source document in a new tab.
 			expect(error.message).toMatch(
 				/^Rules-document generation failed: Reference publication templates could not be loaded:/u,
 			)
+			expect(error.cause).toMatchObject({ phase: 'load-templates' })
 			expect(
 				yield* fileSystem.readFileString(
 					pathService.join(projectDirectory, 'src/generated/tournament-rules/prior.ts'),
@@ -1007,7 +1008,7 @@ Rule numbers open the corresponding source document in a new tab.
 				'invalid template',
 			)
 			const loads: number[] = []
-			const pdfLayer = rulesPdfTestLayer((data) => {
+			const pdfLayer = rulesPdfLayerTest((data) => {
 				loads.push(data[0])
 				const page = data[0] === CORE_RULES_PDF_MARKER ? coreRulesPage() : tournamentRulesPage()
 				return {
@@ -1021,8 +1022,9 @@ Rule numbers open the corresponding source document in a new tab.
 			expect(error).toBeInstanceOf(RulesGenerationError)
 			expect(error).toMatchObject({ stage: 'rules-documents' })
 			expect(error.message).toMatch(
-				/^Rules-document generation failed: Reference publication could not be rendered:/u,
+				/^Rules-document generation failed: Reference publication templates are invalid:/u,
 			)
+			expect(error.cause).toMatchObject({ phase: 'validate-templates' })
 			expect(loads).toStrictEqual([])
 			expect(
 				yield* fileSystem.readFileString(
@@ -1051,6 +1053,7 @@ Rule numbers open the corresponding source document in a new tab.
 
 			expect(error).toMatchObject({ stage: 'rules-documents' })
 			expect(error.message).toMatch(/core-rules-current\.mdx: unresolved placeholders \{\{UNKNOWN\}\}/u)
+			expect(error.cause).toMatchObject({ phase: 'render' })
 			expect(yield* readProjectFile(projectDirectory, 'content/rules-documents/prior.mdx')).toBe('prior')
 		}),
 	)
@@ -1074,6 +1077,7 @@ Rule numbers open the corresponding source document in a new tab.
 				/^Rules-document generation failed: Reference publication artifacts are invalid:/u,
 			)
 			expect(error.message).toMatch(/must contain one <RulesDocument \/>/u)
+			expect(error.cause).toMatchObject({ phase: 'validate-artifacts' })
 			expect(yield* readProjectFile(projectDirectory, 'content/rules-documents/prior.mdx')).toBe('prior')
 		}),
 	)

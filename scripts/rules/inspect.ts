@@ -11,14 +11,14 @@ import {
 	classifyRulesInspectionTarget,
 	type RulesInspectionTarget,
 } from './cli'
-import { inspectCoreRulesPdf, type CoreRulesReport } from './core/extract'
-import { inspectTournamentPdf, type TournamentPdfReport } from './tournament/extract'
+import { inspectCoreRulesPdf, type CoreRulesPdfReport } from './core/extract'
+import { inspectTournamentRulesPdf, type TournamentRulesPdfReport } from './tournament/extract'
 
 type InspectionReport =
-	| { type: 'core'; report: CoreRulesReport }
-	| { type: 'tournament'; report: TournamentPdfReport }
+	| { family: 'core-rules'; report: CoreRulesPdfReport }
+	| { family: 'tournament-rules'; report: TournamentRulesPdfReport }
 
-export const defaultCoreRulesPdfPaths = Effect.fnUntraced(function* () {
+export const discoverCoreRulesPdfPaths = Effect.fnUntraced(function* () {
 	const fileSystem = yield* FileSystem.FileSystem
 	const pathService = yield* Path.Path
 	const sourcesDirectory = pathService.resolve(import.meta.dirname, '..', '..', 'sources')
@@ -32,7 +32,7 @@ export const defaultCoreRulesPdfPaths = Effect.fnUntraced(function* () {
 		.map(({ filename }) => pathService.join(sourcesDirectory, filename))
 })
 
-export const defaultTournamentRulesPdfPaths = Effect.fnUntraced(function* () {
+export const discoverTournamentRulesPdfPaths = Effect.fnUntraced(function* () {
 	const fileSystem = yield* FileSystem.FileSystem
 	const pathService = yield* Path.Path
 	const sourcesDirectory = pathService.resolve(import.meta.dirname, '..', '..', 'sources')
@@ -46,7 +46,10 @@ export const defaultTournamentRulesPdfPaths = Effect.fnUntraced(function* () {
 		.map(({ filename }) => pathService.join(sourcesDirectory, filename))
 })
 
-function printCoreRulesReport(report: CoreRulesReport, log: (...args: ReadonlyArray<unknown>) => void): void {
+function printCoreRulesReport(
+	report: CoreRulesPdfReport,
+	log: (...args: ReadonlyArray<unknown>) => void,
+): void {
 	log(`\n${report.file}`)
 	log(`  ${report.title || 'Unknown title'} | Last Updated: ${report.lastUpdated || 'unknown'}`)
 	log(`  ${(report.bytes / 1024 / 1024).toFixed(1)} MiB | ${report.pages} pages`)
@@ -57,7 +60,7 @@ function printCoreRulesReport(report: CoreRulesReport, log: (...args: ReadonlyAr
 	log(`  Assigned physical lines: ${report.assignedPhysicalLines}`)
 	log(`  Block content lines: ${report.assembledSourceLines} (${report.crossPageBlocks} cross-page blocks)`)
 	log(`  Unassigned lines before first block: ${report.unassignedLines.length}`)
-	log(`  Heading candidates: ${JSON.stringify(report.headings)}`)
+	log(`  Heading candidates: ${JSON.stringify(report.headingCounts)}`)
 	log(
 		`  Structured document: ${report.structured.sections.length} sections, ${report.structured.subsectionCount} subsections, ${report.structured.ruleCount} rules`,
 	)
@@ -84,7 +87,7 @@ function printCoreRulesReport(report: CoreRulesReport, log: (...args: ReadonlyAr
 }
 
 function printTournamentRulesReport(
-	report: TournamentPdfReport,
+	report: TournamentRulesPdfReport,
 	log: (...args: ReadonlyArray<unknown>) => void,
 ): void {
 	log(`\n${report.file}`)
@@ -93,9 +96,9 @@ function printTournamentRulesReport(
 	log(
 		`  Rows: ${report.rowCount} (${report.numberedRowCount} numbered, ${report.unnumberedRowCount} unnumbered)`,
 	)
-	log(`  Active/deleted: ${report.activeRowCount}/${report.deletedRowCount}`)
+	log(`  Active/removed: ${report.activeRowCount}/${report.removedRowCount}`)
 	log(`  Headings: ${report.headingCounts.primary} primary, ${report.headingCounts.secondary} secondary`)
-	log(`  Cross-page joins: ${report.crossPageJoins}`)
+	log(`  Cross-page rows: ${report.crossPageRowCount}`)
 	log(
 		`  Missing label periods: ${report.diagnostics.filter(({ code }) => code === 'missing-label-period').length}`,
 	)
@@ -124,11 +127,11 @@ export const inspectRules = Effect.fn('inspectRules')(function* (cliArguments: r
 			)
 		}
 	} else {
-		const corePaths = yield* defaultCoreRulesPdfPaths()
-		const tournamentPaths = yield* defaultTournamentRulesPdfPaths()
+		const corePaths = yield* discoverCoreRulesPdfPaths()
+		const tournamentPaths = yield* discoverTournamentRulesPdfPaths()
 		targets.push(
-			...corePaths.map((path): RulesInspectionTarget => ({ type: 'core', path })),
-			...tournamentPaths.map((path): RulesInspectionTarget => ({ type: 'tournament', path })),
+			...corePaths.map((path): RulesInspectionTarget => ({ family: 'core-rules', path })),
+			...tournamentPaths.map((path): RulesInspectionTarget => ({ family: 'tournament-rules', path })),
 		)
 	}
 
@@ -141,9 +144,9 @@ export const inspectRules = Effect.fn('inspectRules')(function* (cliArguments: r
 	for (const target of targets) {
 		// Documents stay sequential so PDF.js workers, fonts, and operator caches do not accumulate.
 		const inspected: InspectionReport =
-			target.type === 'core'
-				? { type: target.type, report: yield* inspectCoreRulesPdf(target.path) }
-				: { type: target.type, report: yield* inspectTournamentPdf(target.path) }
+			target.family === 'core-rules'
+				? { family: target.family, report: yield* inspectCoreRulesPdf(target.path) }
+				: { family: target.family, report: yield* inspectTournamentRulesPdf(target.path) }
 		reports.push(inspected)
 	}
 
@@ -152,8 +155,8 @@ export const inspectRules = Effect.fn('inspectRules')(function* (cliArguments: r
 		yield* Console.consoleWith((console) =>
 			Effect.sync(() => {
 				const log = console.log.bind(console)
-				for (const { type, report } of reports) {
-					if (type === 'core') printCoreRulesReport(report, log)
+				for (const { family, report } of reports) {
+					if (family === 'core-rules') printCoreRulesReport(report, log)
 					else printTournamentRulesReport(report, log)
 				}
 			}),

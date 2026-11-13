@@ -34,7 +34,7 @@ export type RuleBlock = {
 	headingStyleMismatch: { labelFontSize: number; bodyFontSize: number | null } | null
 	physicalLineCount: number
 	sourceLines: SourceLine[]
-	lines: RuleContent[]
+	content: RuleContent[]
 	text: string
 	source: { startPage: number; startLine: number; endPage: number; endLine: number }
 }
@@ -45,7 +45,7 @@ export type RulePage = {
 	lines: PhysicalLine[]
 }
 
-type PendingRuleBlock = Omit<RuleBlock, 'lines' | 'text' | 'source'>
+type PendingRuleBlock = Omit<RuleBlock, 'content' | 'text' | 'source'>
 
 function fontSize(item: PdfTextItem) {
 	return Math.hypot(item.transform[0], item.transform[1])
@@ -237,7 +237,7 @@ function normalizeExamples(marker: SourceLine, lines: readonly SourceLine[]): Ru
 	return examples
 }
 
-function normalizedLines(lines: readonly SourceLine[], bodyX: number | null): RuleContent[] {
+function normalizeRuleContent(lines: readonly SourceLine[], bodyX: number | null): RuleContent[] {
 	if (lines.length === 0) return []
 	const effectiveBodyX = bodyX ?? lines[0].x
 	const examplesIndex = lines.findIndex(({ text }) => text === 'Examples:')
@@ -252,11 +252,11 @@ function normalizedLines(lines: readonly SourceLine[], bodyX: number | null): Ru
 }
 
 function finalizeBlock(block: PendingRuleBlock): RuleBlock {
-	const lines = normalizedLines(block.sourceLines, block.bodyX)
+	const content = normalizeRuleContent(block.sourceLines, block.bodyX)
 	const lastSourceLine = block.sourceLines.at(-1)
 	return {
 		...block,
-		lines,
+		content,
 		text: joinedText(block.sourceLines),
 		source: {
 			startPage: block.page,
