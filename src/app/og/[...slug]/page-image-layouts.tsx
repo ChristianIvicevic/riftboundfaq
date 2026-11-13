@@ -374,7 +374,7 @@ function Intro({ data }: { data: PageImageData }) {
 					fontFamily: 'Noto Serif',
 					fontSize: titleFontSize(data.title),
 					fontWeight: 900,
-					lineHeight: 0.94,
+					lineHeight: 1,
 					letterSpacing: '-3px',
 					textWrap: 'balance',
 				}}
@@ -384,10 +384,10 @@ function Intro({ data }: { data: PageImageData }) {
 			<p
 				style={{
 					width: '610px',
-					margin: '20px 0 0',
+					margin: '26px 0 0',
 					color: MUTED,
 					fontSize: descriptionFontSize(data.description),
-					lineHeight: 1.22,
+					lineHeight: 1.3,
 					textWrap: 'pretty',
 				}}
 			>

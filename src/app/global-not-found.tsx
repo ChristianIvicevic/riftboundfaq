@@ -4,7 +4,7 @@ import { House, MapPinned } from 'lucide-react'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import { connection } from 'next/server'
-import { INTER, NOTO_SERIF } from '@/app/fonts'
+import { NOTO_SANS, NOTO_SERIF } from '@/app/fonts'
 import pageIcon from '@/app/icon.png'
 import { SITE_NAME } from '@/lib/site'
 
@@ -55,7 +55,7 @@ export default async function GlobalNotFound() {
 	const copy = NOT_FOUND_COPY_VARIANTS[Math.floor(Math.random() * NOT_FOUND_COPY_VARIANTS.length)]
 
 	return (
-		<html lang="en" className={INTER.className}>
+		<html lang="en" className={NOTO_SANS.className}>
 			<body>
 				<main className="relative isolate flex min-h-screen overflow-hidden bg-slate-950 text-white">
 					<Image

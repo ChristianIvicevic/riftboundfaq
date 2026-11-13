@@ -1,7 +1,7 @@
 import './global.css'
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata } from 'next'
-import { INTER } from '@/app/fonts'
+import { NOTO_SANS } from '@/app/fonts'
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site'
 
 export const metadata: Metadata = {
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: LayoutProps<'/'>) {
 	return (
-		<html lang="en" className={INTER.className} suppressHydrationWarning>
+		<html lang="en" className={NOTO_SANS.className} suppressHydrationWarning>
 			<body className="flex min-h-screen flex-col">
 				{children}
 				<Analytics />
