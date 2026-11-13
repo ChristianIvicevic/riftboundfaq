@@ -22,7 +22,7 @@ The development server runs at <http://localhost:3000>. Environment configuratio
 
 ## Rules Data
 
-The rules PDFs and [`sources/rules-manifest.json`](sources/rules-manifest.json) are authoritative, and the tracked rules-document templates own presentation. `pnpm rules:generate` prepares and validates the complete desired output before directly rebuilding the generated rules artifacts, including the [authoring transcripts](artifacts/rules/README.md). If a filesystem failure interrupts writing, rerun the command to repair the output; do not edit generated artifacts directly.
+The rules PDFs and [`sources/rules-manifest.json`](sources/rules-manifest.json) are authoritative, and the tracked [rules-document templates](scripts/rules/templates/) own presentation. `pnpm rules:generate` prepares and validates the complete desired output before directly rebuilding the generated rules artifacts, including the [authoring transcripts](artifacts/rules/README.md). If a filesystem failure interrupts writing, rerun the command to repair the output; do not edit generated artifacts directly.
 
 ## Validation
 

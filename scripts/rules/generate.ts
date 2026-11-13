@@ -134,7 +134,7 @@ export const generateRules = Effect.fn('generateRules')(function* (options: Rule
 		),
 	)
 
-	const templatesDirectory = pathService.join(projectDirectory, 'templates', 'rules-documents')
+	const templatesDirectory = pathService.join(projectDirectory, 'scripts', 'rules', 'templates')
 	const templates = yield* loadRulesOutputTemplates(templatesDirectory).pipe(
 		Effect.mapError(outputGenerationError),
 	)

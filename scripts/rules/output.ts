@@ -1053,7 +1053,7 @@ export const generateRulesOutput = Effect.fn('generateRulesOutput')(function* (
 	templates: RulesOutputTemplates,
 ) {
 	const pathService = yield* Path.Path
-	const templatesDirectory = pathService.join(projectDirectory, 'templates', 'rules-documents')
+	const templatesDirectory = pathService.join(projectDirectory, 'scripts', 'rules', 'templates')
 	const output = yield* Effect.fromResult(
 		Result.try({
 			try: () => buildDesiredRulesOutput(coreRules, tournamentRules, templates),

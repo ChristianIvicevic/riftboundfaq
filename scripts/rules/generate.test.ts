@@ -204,8 +204,8 @@ const temporaryProject = Effect.fnUntraced(function* () {
 		new Uint8Array([TOURNAMENT_RULES_PDF_MARKER]),
 	)
 	yield* fileSystem.copy(
-		pathService.join(SCRIPTS_DIRECTORY, '..', '..', 'templates', 'rules-documents'),
-		pathService.join(projectDirectory, 'templates', 'rules-documents'),
+		pathService.join(SCRIPTS_DIRECTORY, 'templates'),
+		pathService.join(projectDirectory, 'scripts', 'rules', 'templates'),
 	)
 	return projectDirectory
 })
@@ -965,7 +965,7 @@ Rule numbers open the corresponding source document in a new tab.
 			const projectDirectory = yield* temporaryProject()
 			yield* writeProjectFile(projectDirectory, 'src/generated/tournament-rules/prior.ts', 'prior')
 			yield* fileSystem.remove(
-				pathService.join(projectDirectory, 'templates/rules-documents/core-rules-current.mdx'),
+				pathService.join(projectDirectory, 'scripts/rules/templates/core-rules-current.mdx'),
 			)
 
 			const error = yield* Effect.flip(
@@ -993,7 +993,7 @@ Rule numbers open the corresponding source document in a new tab.
 			yield* writeProjectFile(projectDirectory, 'src/generated/tournament-rules/prior.ts', 'prior')
 			yield* writeProjectFile(
 				projectDirectory,
-				'templates/rules-documents/core-rules-current.mdx',
+				'scripts/rules/templates/core-rules-current.mdx',
 				'invalid template',
 			)
 			const loads: number[] = []
@@ -1051,7 +1051,7 @@ Rule numbers open the corresponding source document in a new tab.
 			yield* writeProjectFile(projectDirectory, 'content/rules-documents/prior.mdx', 'prior')
 			yield* writeProjectFile(
 				projectDirectory,
-				'templates/rules-documents/core-rules-current.mdx',
+				'scripts/rules/templates/core-rules-current.mdx',
 				'---\ntitle: "{{TITLE}}"\ncreatedAt: "{{CREATED_AT}}"\n{{RULES_DOCUMENT_FRONTMATTER}}\n---\n',
 			)
 
