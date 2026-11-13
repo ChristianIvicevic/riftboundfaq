@@ -258,7 +258,9 @@ test('links the index from its publication surfaces while keeping it out of disc
 	await page.setViewportSize({ width: 1440, height: 900 })
 	await page.goto(INFRACTIONS_ROUTE)
 	const sidebar = page.getByRole('complementary').first()
-	const sidebarLink = sidebar.getByRole('link', { name: 'Tournament Infractions', exact: true })
+	const sidebarLink = sidebar.getByRole('link', {
+		name: /^Tournament Infractions(?: New)?$/u,
+	})
 	await expect(sidebarLink).toHaveAttribute('href', INFRACTIONS_ROUTE)
 	await expect(sidebarLink.locator('svg')).toHaveClass(/lucide-gavel/u)
 	const sidebarEntries = (await sidebar.locator('p, a').allTextContents()).map((entry) => entry.trim())
@@ -267,6 +269,6 @@ test('links the index from its publication surfaces while keeping it out of disc
 	expect(sidebarEntries.slice(currentDocumentsIndex + 1, coreRulesGroupIndex)).toEqual([
 		'Core Rules',
 		'Tournament Rules',
-		'Tournament Infractions',
+		expect.stringMatching(/^Tournament Infractions(?:New)?$/u),
 	])
 })
