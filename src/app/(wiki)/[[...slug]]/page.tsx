@@ -156,7 +156,7 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 				<CopyableDocsBody
 					className={
 						resolvedRulesDocumentPage || resolvedRulesChangePage
-							? undefined
+							? NOTO_SERIF.variable
 							: `${NOTO_SERIF.variable} content-headings`
 					}
 				>

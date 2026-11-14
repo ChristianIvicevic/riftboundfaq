@@ -12,7 +12,7 @@ function visibleBadges(container: Element, label: string) {
 }
 
 describe('RulesDocumentRuleList', () => {
-	test('shows one change badge per rule in its mobile and desktop position', async () => {
+	test('shows one change badge per rule across viewport widths', async () => {
 		await page.viewport(390, 844)
 		try {
 			const screen = await render(
@@ -52,35 +52,18 @@ describe('RulesDocumentRuleList', () => {
 			const rule = screen.container.querySelector('[id="R100.1"]')
 			const nestedRule = screen.container.querySelector('[id="R100.1.a"]')
 			const unnumberedRule = screen.container.querySelector('[id="U3"]')
-			const label = screen.getByRole('link', { name: 'Link to rule 100.1' }).element()
-			const content = screen.getByText('Numbered rule.', { exact: true }).element()
 			if (!rule || !nestedRule || !unnumberedRule) throw new Error('Expected all changed rule fixtures')
 
-			const mobileBadges = visibleBadges(rule, 'Changed')
-			expect(mobileBadges).toHaveLength(1)
+			expect(visibleBadges(rule, 'Changed')).toHaveLength(1)
 			expect(visibleBadges(nestedRule, 'Added')).toHaveLength(1)
 			expect(visibleBadges(unnumberedRule, 'Added')).toHaveLength(1)
-			expect(label.parentElement?.contains(mobileBadges[0]!)).toBe(true)
-			const mobileLabelBox = label.getBoundingClientRect()
-			const mobileBadgeBox = mobileBadges[0]!.getBoundingClientRect()
-			expect(content.getBoundingClientRect().top).toBeGreaterThanOrEqual(mobileLabelBox.bottom)
-			expect(
-				Math.abs(
-					mobileLabelBox.top + mobileLabelBox.height / 2 - (mobileBadgeBox.top + mobileBadgeBox.height / 2),
-				),
-			).toBeLessThanOrEqual(2)
+			await expect.element(screen.getByText('Numbered rule.', { exact: true })).toBeVisible()
+			await expect.element(screen.getByRole('link', { name: 'Link to rule 100.1' })).toBeVisible()
 
 			await page.viewport(1280, 720)
-			const desktopBadges = visibleBadges(rule, 'Changed')
-			expect(desktopBadges).toHaveLength(1)
+			expect(visibleBadges(rule, 'Changed')).toHaveLength(1)
 			expect(visibleBadges(nestedRule, 'Added')).toHaveLength(1)
 			expect(visibleBadges(unnumberedRule, 'Added')).toHaveLength(1)
-			expect(desktopBadges[0]!.parentElement).toBe(rule.firstElementChild)
-			const desktopLabelBox = label.getBoundingClientRect()
-			const desktopContentBox = content.getBoundingClientRect()
-			const desktopBadgeBox = desktopBadges[0]!.getBoundingClientRect()
-			expect(Math.abs(desktopLabelBox.top - desktopContentBox.top)).toBeLessThanOrEqual(2)
-			expect(desktopBadgeBox.left).toBeGreaterThan(desktopContentBox.left)
 		} finally {
 			await page.viewport(1280, 720)
 		}

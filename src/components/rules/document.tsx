@@ -2,12 +2,19 @@ import type { ReactNode } from 'react'
 import { Card } from '@/components/cards/card'
 import { RulesChangeBadge } from '@/components/rules/change-badge'
 import { RulesContentBlock } from '@/components/rules/content-block'
-import { RulesHeadingShell, RulesRuleListShell, RulesRuleShell } from '@/components/rules/document-shell'
+import {
+	RulesHeadingShell,
+	RulesRuleLabelShell,
+	RulesRuleListShell,
+	RulesRuleShell,
+} from '@/components/rules/document-shell'
+import styles from '@/components/rules/document.module.css'
 import type {
 	RuleChangeMarker,
 	RulesReferenceTarget,
 	TraversedRule,
 } from '@/features/rules-documents/registry'
+import { cn } from '@/lib/cn'
 import type { RulesDocumentContent, RulesDocumentHeading } from '@/lib/rules/document-types'
 import { segmentRulesExampleText } from '@/lib/rules/example-text'
 import type { RuleIdLookup, RuleReference } from '@/lib/rules/types'
@@ -167,11 +174,11 @@ export function RulesDocumentRuleList({
 				const anchor = rule.anchor
 				const hasLabel = rule.id || (labelMode === 'source' && rule.label)
 				const label = hasLabel ? (
-					<span className="flex min-w-0 items-center justify-between gap-2">
+					<RulesRuleLabelShell>
 						{labelMode === 'id-with-period' ? (
 							<a
 								aria-label={`Link to rule ${rule.id}`}
-								className="font-mono text-sm leading-6 font-medium whitespace-nowrap text-fd-muted-foreground no-underline hover:text-fd-primary"
+								className="font-mono leading-6 font-medium whitespace-nowrap text-fd-muted-foreground no-underline hover:text-fd-primary"
 								href={`#${anchor}`}
 							>
 								{rule.id}.
@@ -179,14 +186,14 @@ export function RulesDocumentRuleList({
 						) : (
 							<a
 								aria-label={`Link to rule ${rule.id ?? rule.label}`}
-								className="font-mono text-sm leading-6 font-medium whitespace-nowrap text-fd-muted-foreground no-underline hover:text-fd-primary"
+								className="font-mono leading-6 font-medium whitespace-nowrap text-fd-muted-foreground no-underline hover:text-fd-primary"
 								href={`#${anchor}`}
 							>
 								{rule.label}
 							</a>
 						)}
 						{rule.changeMarker ? <RulesChangeBadge className="sm:hidden" status={rule.changeMarker} /> : null}
-					</span>
+					</RulesRuleLabelShell>
 				) : undefined
 				return (
 					<RulesRuleShell
@@ -226,11 +233,16 @@ export function RulesDocumentRuleList({
 
 function RulesDocumentHeadingLink({ heading, anchor }: { heading: DisplayRulesHeading; anchor: string }) {
 	return (
-		<a className="group flex items-baseline gap-3 no-underline" href={`#${anchor}`}>
-			<span className="font-mono text-[0.7em] font-medium text-fd-muted-foreground group-hover:text-fd-primary">
+		<a className={cn('group no-underline', styles.headingLink)} href={`#${anchor}`}>
+			<span
+				className={cn(
+					'font-mono font-medium text-fd-muted-foreground group-hover:text-fd-primary',
+					styles.headingNumber,
+				)}
+			>
 				{heading.id}.
 			</span>
-			<span>{heading.text}</span>
+			<span className={styles.headingTitle}>{heading.text}</span>
 		</a>
 	)
 }

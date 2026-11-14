@@ -1,0 +1,186 @@
+.document {
+	--rules-document-line: var(--color-fd-border);
+	--rules-document-line-soft: color-mix(in oklab, var(--color-fd-border) 68%, transparent);
+	--rules-document-line-strong: color-mix(in oklab, var(--color-fd-foreground) 24%, var(--color-fd-border));
+}
+
+.leadingGap {
+	margin-top: 2rem;
+}
+
+.document .rulesDocument {
+	display: grid;
+	gap: 3rem;
+	margin-top: 0;
+}
+
+.document .rulesDocument > section {
+	margin: 0;
+}
+
+.document .headingLink,
+.document .content {
+	min-width: 0;
+}
+
+.document .sectionHeading {
+	margin: 0;
+	padding-top: 0;
+	padding-bottom: 1.25rem;
+	border-top: 0;
+	border-right: 0;
+	border-bottom: 1px solid var(--rules-document-line-strong);
+	font-family: var(--font-noto-serif, ui-serif), Georgia, serif;
+	font-size: 1.5rem;
+	font-weight: 600;
+	letter-spacing: normal;
+	line-height: 2rem;
+}
+
+.document .sectionHeading .headingLink {
+	display: grid;
+	grid-template-columns: 4.75rem minmax(0, 1fr);
+	align-items: baseline;
+	gap: 1rem;
+}
+
+.document .sectionHeading .headingNumber {
+	font-size: 0.75rem;
+	letter-spacing: 0.06em;
+}
+
+.document .sectionHeading .headingTitle {
+	font: inherit;
+}
+
+.document .preamble,
+.document .sectionBody {
+	margin-top: 1.75rem;
+}
+
+.document .sectionBody {
+	display: grid;
+	gap: 2rem;
+}
+
+.document .sectionBody > * {
+	margin-block: 0;
+}
+
+.document .subsectionHeading {
+	margin: 0 0 1rem;
+	padding-top: 0;
+	padding-bottom: 0.75rem;
+	border-top: 0;
+	border-right: 0;
+	border-bottom: 1px solid var(--rules-document-line-soft);
+	font-family: var(--font-noto-serif, ui-serif), Georgia, serif;
+	font-size: 1.25rem;
+	font-weight: 600;
+	letter-spacing: normal;
+	line-height: 2rem;
+}
+
+.document .subsectionHeading .headingLink {
+	display: grid;
+	grid-template-columns: 4.75rem minmax(0, 1fr);
+	align-items: baseline;
+	gap: 1rem;
+}
+
+.document .subsectionHeading .headingNumber {
+	font-size: 0.75rem;
+	letter-spacing: 0.035em;
+}
+
+.document .ruleList {
+	display: grid;
+	gap: 0.45rem;
+}
+
+.document .ruleList > .rule {
+	position: relative;
+	margin-block: 0;
+}
+
+.document .row {
+	padding-block: 0.4rem;
+}
+
+.document .ruleLabel {
+	min-width: 4.75rem;
+	justify-content: flex-start;
+}
+
+.document .ruleLabel > :first-child {
+	font-size: 0.78rem;
+	letter-spacing: 0.015em;
+}
+
+.document .nestedRuleList {
+	margin: 0.5rem 0 0.1rem 0.5rem;
+	padding-left: 1.2rem;
+	border-left: 1px solid var(--rules-document-line);
+}
+
+.document .nestedRuleList > .rule::before {
+	position: absolute;
+	top: 1.2rem;
+	left: -1.2rem;
+	width: 0.75rem;
+	border-top: 1px solid var(--rules-document-line);
+	content: '';
+}
+
+/* Tournament subsections arrive pre-indented; normalize them to the same visual level as Core Rules. */
+.document .sectionBody > section > .nestedRuleList {
+	margin-left: 0;
+	padding-left: 0;
+	border-left: 0;
+}
+
+.document .sectionBody > section > .nestedRuleList > .rule::before {
+	display: none;
+}
+
+@media (min-width: 640px) {
+	.document .labeledRow {
+		grid-template-columns: minmax(4.75rem, max-content) minmax(0, 1fr) max-content;
+		column-gap: 1rem;
+	}
+}
+
+@media (max-width: 639px) {
+	.document .heading,
+	.document .rule {
+		scroll-margin-top: 10rem;
+	}
+
+	.document .ruleLabel {
+		min-width: 0;
+	}
+
+	.document .sectionHeading .headingLink,
+	.document .subsectionHeading .headingLink {
+		grid-template-columns: 3.25rem minmax(0, 1fr);
+		gap: 0.75rem;
+	}
+
+	.document .nestedRuleList {
+		margin-left: 0.2rem;
+		padding-left: 0.75rem;
+	}
+
+	.document .nestedRuleList > .rule::before {
+		left: -0.75rem;
+		width: 0.45rem;
+	}
+}
+
+@media (forced-colors: active) {
+	.document .rulesDocument > section,
+	.document .sectionBody > section,
+	.document .nestedRuleList {
+		border-color: CanvasText;
+	}
+}

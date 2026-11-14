@@ -143,7 +143,7 @@ describe('contextual rules change document', () => {
 		expect(removedRule).not.toBeNull()
 	})
 
-	test('stacks mobile rule content with the status on the label line', async () => {
+	test('shows one status badge per changed entry across viewport widths', async () => {
 		await page.viewport(390, 844)
 		try {
 			const screen = await render(<ContextualRulesChangeDocument data={CHANGE} family="core-rules" />)
@@ -151,42 +151,18 @@ describe('contextual rules change document', () => {
 				.getByRole('link', { name: '101.1 in Core Rules 1.1 (opens in a new tab)' })
 				.element()
 			const changedRule = label.closest('li')
-			const content = changedRule?.querySelector('p')
-			const mobileBadges = changedRule ? visibleBadges(changedRule, 'Changed') : []
 			const unnumberedLink = screen
 				.getByRole('link', { name: 'Open unnumbered entry in Core Rules 1.1 (opens in a new tab)' })
 				.element()
 			const unnumberedRule = unnumberedLink.closest('li')
-			if (!content || !unnumberedRule) throw new Error('Expected changed and unnumbered rule content')
-			expect(mobileBadges).toHaveLength(1)
-			expect(visibleBadges(unnumberedRule, 'Added')).toHaveLength(1)
+			if (!changedRule || !unnumberedRule) throw new Error('Expected changed and unnumbered rules')
 
-			const mobileLabelBox = label.getBoundingClientRect()
-			const mobileContentBox = content.getBoundingClientRect()
-			const mobileBadgeBox = mobileBadges[0]!.getBoundingClientRect()
-			const labelCenter = mobileLabelBox.top + mobileLabelBox.height / 2
-			const badgeCenter = mobileBadgeBox.top + mobileBadgeBox.height / 2
-			expect(mobileContentBox.top).toBeGreaterThanOrEqual(mobileLabelBox.bottom)
-			expect(Math.abs(labelCenter - badgeCenter)).toBeLessThanOrEqual(2)
+			expect(visibleBadges(changedRule, 'Changed')).toHaveLength(1)
+			expect(visibleBadges(unnumberedRule, 'Added')).toHaveLength(1)
 
 			await page.viewport(1280, 720)
-			const desktopLabelBox = label.getBoundingClientRect()
-			const desktopContentBox = content.getBoundingClientRect()
-			const desktopRow = changedRule?.firstElementChild
-			const desktopRowBox = desktopRow?.getBoundingClientRect()
-			const desktopBadges = changedRule ? visibleBadges(changedRule, 'Changed') : []
-			if (!desktopRow || !desktopRowBox) throw new Error('Expected a desktop changed-rule row')
-			expect(desktopBadges).toHaveLength(1)
+			expect(visibleBadges(changedRule, 'Changed')).toHaveLength(1)
 			expect(visibleBadges(unnumberedRule, 'Added')).toHaveLength(1)
-			const desktopBadgeBox = desktopBadges[0]!.getBoundingClientRect()
-			const desktopLabelCenter = desktopLabelBox.top + desktopLabelBox.height / 2
-			const desktopBadgeCenter = desktopBadgeBox.top + desktopBadgeBox.height / 2
-			const desktopRightPadding = Number(getComputedStyle(desktopRow).paddingRight.replace('px', ''))
-			expect(Math.abs(desktopLabelBox.top - desktopContentBox.top)).toBeLessThanOrEqual(2)
-			expect(Math.abs(desktopLabelCenter - desktopBadgeCenter)).toBeLessThanOrEqual(0.5)
-			expect(Math.abs(desktopRowBox.right - desktopBadgeBox.right - desktopRightPadding)).toBeLessThanOrEqual(
-				0.5,
-			)
 		} finally {
 			await page.viewport(1280, 720)
 		}

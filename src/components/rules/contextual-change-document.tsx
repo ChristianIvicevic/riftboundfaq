@@ -5,14 +5,17 @@ import { Del, Ins } from '@/components/diff-marks'
 import { RulesChangeBadge } from '@/components/rules/change-badge'
 import { RulesContentBlock } from '@/components/rules/content-block'
 import {
+	RulesDocumentPresentation,
 	RulesDocumentShell,
 	RulesHeadingShell,
+	RulesRuleLabelShell,
 	RulesRuleListShell,
 	RulesRuleShell,
 	RulesSectionBody,
 	RulesSectionPreamble,
 	type RulesDocumentTone,
 } from '@/components/rules/document-shell'
+import styles from '@/components/rules/document.module.css'
 import type {
 	ContextualChangeBlock,
 	ContextualChangeNode,
@@ -123,7 +126,8 @@ function NodeSourceLink({
 		<a
 			className={cn(
 				'font-mono font-medium whitespace-nowrap text-fd-muted-foreground no-underline hover:text-fd-primary',
-				heading ? 'text-[0.7em]' : 'text-sm leading-6',
+				!heading && 'leading-6',
+				heading && styles.headingNumber,
 			)}
 			href={source.href}
 			rel="noopener noreferrer"
@@ -169,11 +173,12 @@ function HeadingNode({ node }: { node: ContextualChangeNode }) {
 			trailing={node.status ? <NodeStatus status={node.status} placement="desktop" /> : undefined}
 		>
 			<span className="min-w-0">
-				<span className="flex min-w-0 items-baseline gap-3">
+				<span className={styles.headingLink}>
 					<NodeLabel heading node={node} />
 					<span
 						className={cn(
-							'min-w-0 font-semibold tracking-tight text-fd-foreground',
+							'min-w-0 text-fd-foreground',
+							styles.headingTitle,
 							node.status === 'deleted' && 'text-fd-muted-foreground',
 						)}
 					>
@@ -189,10 +194,10 @@ function HeadingNode({ node }: { node: ContextualChangeNode }) {
 function RuleNode({ node }: { node: ContextualChangeNode }) {
 	const hasLabel = node.label !== null
 	const label = hasLabel ? (
-		<span className="flex min-w-0 items-center justify-between gap-2">
+		<RulesRuleLabelShell>
 			<NodeLabel node={node} />
 			<NodeStatus placement="mobile-inline" status={node.status} />
-		</span>
+		</RulesRuleLabelShell>
 	) : undefined
 	return (
 		<RulesRuleShell
@@ -328,10 +333,12 @@ export function ContextualRulesChangeDocument({
 }) {
 	const groups = groupContextualNodes(data.items)
 	return (
-		<RulesDocumentShell>
-			{groups.map((group) => (
-				<ContextualNodeGroupView family={family} group={group} key={group.key} />
-			))}
-		</RulesDocumentShell>
+		<RulesDocumentPresentation>
+			<RulesDocumentShell>
+				{groups.map((group) => (
+					<ContextualNodeGroupView family={family} group={group} key={group.key} />
+				))}
+			</RulesDocumentShell>
+		</RulesDocumentPresentation>
 	)
 }

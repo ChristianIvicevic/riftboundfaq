@@ -552,11 +552,6 @@ description: "Changes between Riftbound Core Rules 1.0 and 1.1 (Origins)."
 noindex: true
 ---
 
-Badges identify **Added**, **Changed**, and **Removed** rules.
-Removed wording is struck through, while added wording is highlighted.
-Each change appears with the unchanged rules needed to preserve its context; other unchanged rules are omitted.
-Rule numbers open the corresponding source document in a new tab.
-
 <CoreRulesDiff from="1.0" to="1.1" />
 `,
 				'content/rules-documents/tournament-rules/2026-04-29.mdx': `---
@@ -608,11 +603,6 @@ createdAt: "2026-04-29"
 description: "Changes between the March 2026 and April 2026 Riftbound Tournament Rules."
 noindex: true
 ---
-
-Badges identify **Added**, **Changed**, and **Removed** rules.
-Removed wording is struck through, while added wording is highlighted.
-Each change appears with the unchanged rules needed to preserve its context; other unchanged rules are omitted.
-Rule numbers open the corresponding source document in a new tab.
 
 <TournamentRulesDiff
 	from="2026-03-30"

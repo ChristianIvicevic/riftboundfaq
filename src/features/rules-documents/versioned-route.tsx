@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { RulesDocumentPresentation } from '@/components/rules/document-shell'
 import { CoreRulesDocumentView } from '@/features/core-rules/document-view'
 import {
 	rulesDocuments,
@@ -90,5 +91,9 @@ export function renderVersionedRulesDocument(page: ResolvedRulesDocumentPage | u
 		)
 	}
 
-	return RULES_DOCUMENT_RENDER_ADAPTERS[page.document.identity.type](page.document)
+	return (
+		<RulesDocumentPresentation leadingGap={page.document.identity.status === 'archived'}>
+			{RULES_DOCUMENT_RENDER_ADAPTERS[page.document.identity.type](page.document)}
+		</RulesDocumentPresentation>
+	)
 }
