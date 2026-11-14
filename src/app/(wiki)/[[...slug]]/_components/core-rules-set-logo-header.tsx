@@ -16,14 +16,20 @@ export type CoreRulesSetLogoHeaderData =
 			to: RegisteredRulesVersionSummary
 	  }>
 
-function SetLogo({ className, edition }: { className?: string; edition: RegisteredRulesVersionSummary }) {
+function SetLogo({
+	compact = false,
+	edition,
+}: {
+	compact?: boolean
+	edition: RegisteredRulesVersionSummary
+}) {
 	const asset = getCoreRulesSetLogo(edition.name)
 	if (!asset) {
 		return (
 			<span
 				className={cn(
-					'flex min-h-10 items-center justify-center rounded border border-dashed border-current/25 px-3 text-center text-sm font-semibold tracking-widest uppercase',
-					className,
+					'flex min-h-10 max-w-full items-center justify-center rounded border border-dashed border-current/25 px-3 text-center text-sm font-semibold tracking-widest uppercase',
+					compact && 'px-1 text-xs tracking-wide whitespace-nowrap',
 				)}
 			>
 				{edition.name ?? `Core Rules ${edition.version}`}
@@ -34,7 +40,7 @@ function SetLogo({ className, edition }: { className?: string; edition: Register
 	return (
 		<Image
 			alt={`${edition.name} logo`}
-			className={cn('h-auto w-auto max-w-full object-contain', className)}
+			className={cn('h-auto w-auto max-w-full object-contain', compact ? 'max-h-12' : 'max-h-16')}
 			height={asset.height}
 			src={asset.src}
 			width={asset.width}
@@ -42,10 +48,16 @@ function SetLogo({ className, edition }: { className?: string; edition: Register
 	)
 }
 
-function SetLogoSlot({ edition }: { edition: RegisteredRulesVersionSummary }) {
+function SetLogoSlot({
+	compact = false,
+	edition,
+}: {
+	compact?: boolean
+	edition: RegisteredRulesVersionSummary
+}) {
 	return (
-		<div className="grid h-16 place-items-center">
-			<SetLogo className="max-h-16" edition={edition} />
+		<div className={cn('grid min-w-0 place-items-center', compact ? 'h-12' : 'h-16')}>
+			<SetLogo compact={compact} edition={edition} />
 		</div>
 	)
 }
@@ -67,20 +79,19 @@ export function CoreRulesSetLogoHeader({
 				<DocsTitle className={titleClassName}>{title}</DocsTitle>
 				<DocsDescription className="mb-0">{description}</DocsDescription>
 			</div>
-			<div className="rounded-xl border border-fd-border bg-fd-muted/30 px-5 py-5 text-fd-foreground">
+			<div
+				className={cn(
+					'rounded-xl border border-fd-border bg-fd-muted/30 text-fd-foreground',
+					data.kind === 'document' ? 'px-5 py-5' : 'px-4 py-3',
+				)}
+			>
 				{data.kind === 'document' ? (
 					<SetLogoSlot edition={data.edition} />
 				) : (
-					<div className="space-y-3">
-						<SetLogoSlot edition={data.from} />
-						<div className="flex items-center gap-2 text-[10px] tracking-[0.14em] text-fd-muted-foreground uppercase">
-							<span className="h-px flex-1 bg-fd-border" />
-							{data.from.version}
-							<ArrowRight className="size-3" />
-							{data.to.version}
-							<span className="h-px flex-1 bg-fd-border" />
-						</div>
-						<SetLogoSlot edition={data.to} />
+					<div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2">
+						<SetLogoSlot compact edition={data.from} />
+						<ArrowRight aria-hidden className="size-3 text-fd-muted-foreground" />
+						<SetLogoSlot compact edition={data.to} />
 					</div>
 				)}
 			</div>

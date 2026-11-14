@@ -59,6 +59,7 @@ test('aligns Core Rules titles independently of set-logo aspect ratio', async ({
 				throw new Error('Core Rules set-logo header is incomplete')
 			return {
 				logoSlotHeights: logoSlots.map((slot) => slot!.getBoundingClientRect().height),
+				logoSlotTops: logoSlots.map((slot) => slot!.getBoundingClientRect().top),
 				panelTop: panel.getBoundingClientRect().top,
 				titleTop: title.getBoundingClientRect().top,
 			}
@@ -69,9 +70,9 @@ test('aligns Core Rules titles independently of set-logo aspect ratio', async ({
 	const radiance = await measureHeader('/rules-documents/core-rules/1.5')
 	const comparison = await measureHeader('/rules-documents/core-rules/changes/1.5')
 
-	expect(
-		new Set([...unleashed.logoSlotHeights, ...radiance.logoSlotHeights, ...comparison.logoSlotHeights]).size,
-	).toBe(1)
+	expect(new Set([...unleashed.logoSlotHeights, ...radiance.logoSlotHeights]).size).toBe(1)
+	expect(new Set(comparison.logoSlotHeights).size).toBe(1)
+	expect(new Set(comparison.logoSlotTops).size).toBe(1)
 	expect(unleashed.titleTop).toBe(unleashed.panelTop)
 	expect(radiance.titleTop).toBe(radiance.panelTop)
 	expect(comparison.titleTop).toBe(comparison.panelTop)

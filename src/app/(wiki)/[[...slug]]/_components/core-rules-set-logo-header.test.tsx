@@ -71,6 +71,8 @@ describe('CoreRulesSetLogoHeader', () => {
 		expect(imageSource(markup, 'Vendetta logo')).toBe('/images/sets/vendetta.webp')
 		expect(markup).toContain('alt="Radiance logo"')
 		expect(imageSource(markup, 'Radiance logo')).toBe('/images/sets/radiance.webp')
+		expect(occurrenceCount(markup, '1.4')).toBe(1)
+		expect(occurrenceCount(markup, '1.5')).toBe(2)
 	})
 
 	test('falls back to the edition name when no set logo exists', () => {
@@ -84,5 +86,22 @@ describe('CoreRulesSetLogoHeader', () => {
 
 		expect(markup).toContain('>Pre-Origins</span>')
 		expect(markup).not.toContain('<img')
+	})
+
+	test('uses the edition fallback in a Core Rules comparison', () => {
+		const markup = renderToStaticMarkup(
+			<CoreRulesSetLogoHeader
+				data={{
+					kind: 'change',
+					from: edition('1.0', 'Pre-Origins'),
+					to: edition('1.1', 'Origins'),
+				}}
+				description="Changes between Core Rules 1.0 and 1.1."
+				title="Core Rules 1.1 Changes (Origins)"
+			/>,
+		)
+
+		expect(markup).toContain('>Pre-Origins</span>')
+		expect(imageSource(markup, 'Origins logo')).toBe('/images/sets/origins.webp')
 	})
 })
