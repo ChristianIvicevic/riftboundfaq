@@ -7,6 +7,10 @@ function edition(version: string, name: string | null): RegisteredRulesVersionSu
 	return { type: 'core-rules', version, name, status: version === '1.5' ? 'current' : 'archived' }
 }
 
+function occurrenceCount(value: string, search: string) {
+	return value.split(search).length - 1
+}
+
 function imageSource(markup: string, alt: string) {
 	const image = markup
 		.split('<img')
@@ -47,6 +51,7 @@ describe('CoreRulesSetLogoHeader', () => {
 		expect(markup).toContain(title)
 		expect(markup).toContain(`alt="${name} logo"`)
 		expect(imageSource(markup, `${name} logo`)).toBe(src)
+		expect(occurrenceCount(markup, `Core Rules ${version}`)).toBe(1)
 	})
 
 	test('renders both set logos for a Core Rules comparison', () => {

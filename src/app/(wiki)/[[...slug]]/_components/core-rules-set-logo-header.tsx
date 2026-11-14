@@ -69,12 +69,7 @@ export function CoreRulesSetLogoHeader({
 			</div>
 			<div className="rounded-xl border border-fd-border bg-fd-muted/30 px-5 py-5 text-fd-foreground">
 				{data.kind === 'document' ? (
-					<div className="space-y-4">
-						<SetLogoSlot edition={data.edition} />
-						<p className="border-t border-fd-border pt-3 text-center text-[11px] tracking-[0.16em] text-fd-muted-foreground uppercase">
-							Core Rules {data.edition.version}
-						</p>
-					</div>
+					<SetLogoSlot edition={data.edition} />
 				) : (
 					<div className="space-y-3">
 						<SetLogoSlot edition={data.from} />
